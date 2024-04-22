@@ -1,0 +1,45 @@
+{
+  "name": "isos",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "src",
+    "packages/**"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1",
+    "classnames": "^2.5.1",
+    "preact": "^10.20.2",
+    "rehype-document": "^7.0.3",
+    "rehype-format": "^5.0.0",
+    "rehype-mathjax": "^6.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "runtime": "0.0.1",
+    "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
+    "tauri-plugin-window-state-api": "github:tauri-apps/tauri-plugin-window-state#v1",
+    "unified": "^11.0.4"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.1",
+    "@linaria/core": "^6.1.0",
+    "@linaria/react": "^6.1.0",
+    "@preact/preset-vite": "^2.5.0",
+    "@tauri-apps/cli": "^1",
+    "@types/hast": "^3.0.4",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.0.2",
+    "vite": "^5.0.0",
+    "@wyw-in-js/babel-preset": "^0.5.1",
+    "@wyw-in-js/vite": "^0.5.1"
+  }
+}
