@@ -1,7 +1,7 @@
 import { Code, InlineCode, Literal, Parent } from 'mdast';
 import { Node } from 'unist';
 import { visit } from 'unist-util-visit';
-import { createCounter } from '../utils/counter';
+import { createCounter } from './counter';
 import { Context } from './context';
 // import { latexArticleWrapper } from './utils/latex-article-wrapper';
 import { processLatex } from '../process-latex';

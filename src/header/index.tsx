@@ -1,6 +1,6 @@
 import { styled } from '@linaria/react';
 import { open, save } from '@tauri-apps/api/dialog';
-import { writeTextFile } from '@tauri-apps/api/fs';
+import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 import { useEffect } from 'preact/hooks';
 import classNames from 'classnames';
@@ -18,23 +18,9 @@ export function Header() {
   const [filePath, setFilePath] = useLocalStorage('file-path', null);
   const [isWatching, setIsWatching] = useLocalStorage('watching', 'false');
 
-  function setMdx(mdx: string) {
-    console.log('setting mdx:', mdx);
-    textArea.value = mdx;
-    textArea.dispatchEvent(new Event('onchange'));
-  }
-
   // allow file to be rendered on load from a locally stored filePath
   useEffect(() => {
-    async function run() {
-      // console.log('setting mdx for filepath:', filePath);
-      if (filePath === null) {
-        setMdx('');
-      } else {
-        setMdx(await latexToMarkdown(filePath));
-      }
-    }
-    run();
+    setMdx(filePath);
   }, [filePath]);
 
   async function handleOpenFile() {
@@ -64,11 +50,11 @@ export function Header() {
       // console.log('starting watcher');
       watcher = await watchImmediate(
         filePath,
-        async (event) => {
+        (event) => {
           // @ts-expect-error
           if (event.type.modify.kind === 'data') {
             // console.log('recompiling...')
-            setMdx(await latexToMarkdown(filePath));
+            setMdx(filePath);
           }
         },
         {}
@@ -96,6 +82,19 @@ export function Header() {
     // console.log(runtimeHtml);
 
     await writeTextFile(filePath, runtimeHtml);
+  }
+
+  async function setMdx(filePath: string | null) {
+    let markdown = '';
+
+    if (filePath !== null) {
+      const fileContents = await readTextFile(filePath);
+      markdown = await latexToMarkdown(fileContents);
+    }
+
+    // console.log('setting markdown:', markdown);
+    textArea.value = markdown;
+    textArea.dispatchEvent(new Event('onchange'));
   }
 
   return (

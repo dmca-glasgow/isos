@@ -16,6 +16,7 @@ import { match } from '@unified-latex/unified-latex-util-match';
 export function expandDocumentMacrosPlugin() {
   return (tree: Root) => {
     const newcommands = listNewcommands(tree);
+    // console.dir(newcommands, { depth: null });
 
     const macroInfo = Object.fromEntries(
       newcommands.map((m) => [m.name, { signature: m.signature }])

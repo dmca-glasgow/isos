@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import linaria from '@wyw-in-js/vite';

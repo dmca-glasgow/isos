@@ -5,13 +5,11 @@ import { unifiedLatexFromString } from '@isos/unified-latex-util-parse';
 import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
 import remarkDirective from 'remark-directive';
 import rehypeStringify from 'rehype-stringify';
-import { State } from 'hast-util-to-mdast';
-import { TextDirective } from 'mdast-util-directive';
-import { Root, Element } from 'hast';
-import { Text, PhrasingContent } from 'mdast';
+import { Root } from 'hast';
 import { expandDocumentMacrosPlugin } from './expand-macros';
 import remarkMath from 'remark-math';
-import { InlineMath, Math } from 'mdast-util-math';
+import { handlers } from './rehype-remark-handlers';
+import { expandMathOperatorPlugin } from './expand-math-op';
 
 export async function processLatex(latex: string) {
   const latexAst = unified()
@@ -27,18 +25,13 @@ export async function processLatex(latex: string) {
 
   const hast = await unified()
     .use(expandDocumentMacrosPlugin)
+    .use(expandMathOperatorPlugin)
     // @ts-expect-error
     .use(unifiedLatexToHast)
     .run(latexAst);
 
   const mdast = await unified()
-    .use(rehypeRemark, {
-      handlers: {
-        span: customSpanHandler,
-        div: customDivHandler,
-      },
-    })
-
+    .use(rehypeRemark, { handlers })
     .run(hast as Root);
 
   const markdown = unified()
@@ -59,55 +52,4 @@ export async function processLatex(latex: string) {
     mdast,
     markdown,
   };
-}
-
-function customSpanHandler(state: State, node: Element) {
-  const { className } = node.properties;
-
-  if (Array.isArray(className)) {
-    if (className.includes('macro-sidenote')) {
-      const result: TextDirective = {
-        type: 'textDirective',
-        name: 'sidenote',
-        children: state.all(node) as PhrasingContent[],
-      };
-
-      state.patch(node, result);
-      return result;
-    }
-
-    if (className.includes('inline-math')) {
-      const math = node.children[0] as Text;
-
-      const result: InlineMath = {
-        type: 'inlineMath',
-        value: math.value,
-      };
-
-      state.patch(node, result);
-      return result;
-    }
-  }
-
-  return state.all(node);
-}
-
-function customDivHandler(state: State, node: Element) {
-  const { className } = node.properties;
-
-  if (Array.isArray(className)) {
-    if (className.includes('display-math')) {
-      const math = node.children[0] as Text;
-
-      const result: Math = {
-        type: 'math',
-        value: math.value,
-      };
-
-      state.patch(node, result);
-      return result;
-    }
-  }
-
-  return state.all(node);
 }

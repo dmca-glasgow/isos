@@ -2,7 +2,7 @@ import { processLatex } from '../process-latex';
 import { unindentString } from '../utils/unindent-string';
 
 test('latex to markdown with sidenotes', async () => {
-  const md = await processLatex(`
+  const { markdown } = await processLatex(`
     Some \\textbf{bold} text.
 
     \\begin{framed}
@@ -16,11 +16,11 @@ test('latex to markdown with sidenotes', async () => {
     My content :sidenote[and **sidenote**].
   `);
 
-  expect(md).toBe(expected);
+  expect(markdown).toBe(expected);
 });
 
 test('latex to markdown with documentclass', async () => {
-  const md = await processLatex(`
+  const { markdown } = await processLatex(`
     \\documentclass{tufte-handout}
     \\begin{document}
 
@@ -39,11 +39,11 @@ test('latex to markdown with documentclass', async () => {
     My content :sidenote[and **sidenote**].
   `);
 
-  expect(md).toBe(expected);
+  expect(markdown).toBe(expected);
 });
 
 test('latex to markdown with maths', async () => {
-  const md = await processLatex(`
+  const { markdown } = await processLatex(`
     \\documentclass{article}
 
     \\begin{document}
@@ -66,11 +66,11 @@ test('latex to markdown with maths', async () => {
     $$
   `);
 
-  expect(md).toBe(expected);
+  expect(markdown).toBe(expected);
 });
 
 test('latex to markdown with maths and renewcommand', async () => {
-  const md = await processLatex(`
+  const { markdown } = await processLatex(`
     \\documentclass{article}
 
     \\renewcommand{\\Im}{\\mathop{\\textup{Im}}}
@@ -86,5 +86,25 @@ test('latex to markdown with maths and renewcommand', async () => {
     And $\\mathop{\\textup{Im}}(z)$, respectively.
   `);
 
-  expect(md).toBe(expected);
+  expect(markdown).toBe(expected);
+});
+
+test('latex to markdown with maths and DeclareMathOperator', async () => {
+  const { markdown } = await processLatex(`
+    \\documentclass{article}
+
+    \\DeclareMathOperator{\\N}{\\mathbb{N}}
+
+    \\begin{document}
+
+    A sequence of complex numbers is a function $ \\N $.
+
+    \\end{document}
+  `);
+
+  const expected = unindentString(`
+    A sequence of complex numbers is a function $\\mathbb{N}$.
+  `);
+
+  expect(markdown).toBe(expected);
 });
