@@ -25,7 +25,10 @@
   },
   "include": [
     "src",
-    "packages/**/src",
+    "packages/**/src"
+  ],
+  "types": [
+    "vitest/globals"
   ],
   // "exclude": "/node_modules/",
   "references": [

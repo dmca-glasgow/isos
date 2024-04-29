@@ -1,0 +1,12 @@
+{
+  "name": "@isos/markdown-to-html",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": "./src/index.ts",
+  "dependencies": {},
+  "devDependencies": {}
+}

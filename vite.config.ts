@@ -33,4 +33,7 @@ export default defineConfig(async () => ({
   build: {
     sourcemap: true,
   },
+  test: {
+    globals: true,
+  },
 }));

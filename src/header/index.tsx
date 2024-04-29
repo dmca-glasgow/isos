@@ -5,10 +5,10 @@ import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 import { useEffect } from 'preact/hooks';
 import classNames from 'classnames';
 
-import { latexToMarkdown } from '../processor/latex-to-md';
+import { latexToMarkdown } from '@isos/latex-to-markdown';
 import { useLocalStorage } from './use-local-storage';
 
-import { createRuntimeHtml } from '../runtime';
+import { createRuntimeHtml } from '../export';
 
 const textArea = document.getElementById('article') as HTMLTextAreaElement;
 
@@ -27,7 +27,7 @@ export function Header() {
   // allow file to be rendered on load from a locally stored filePath
   useEffect(() => {
     async function run() {
-      console.log('setting mdx for filepath:', filePath);
+      // console.log('setting mdx for filepath:', filePath);
       if (filePath === null) {
         setMdx('');
       } else {
@@ -54,14 +54,14 @@ export function Header() {
       return;
     }
     if (isWatching === 'true') {
-      console.log('stopping watcher');
+      // console.log('stopping watcher');
       if (watcher !== null) {
         watcher();
         watcher = null;
       }
       setIsWatching('false');
     } else {
-      console.log('starting watcher');
+      // console.log('starting watcher');
       watcher = await watchImmediate(
         filePath,
         async (event) => {
@@ -88,12 +88,12 @@ export function Header() {
     })) as string;
 
     const mdx = textArea.value.trim();
-    console.log('mdx to save:', mdx);
+    // console.log('mdx to save:', mdx);
 
     const runtimeHtml = await createRuntimeHtml(mdx, {
       docTitle: 'Testing 1 2 3',
     });
-    console.log(runtimeHtml);
+    // console.log(runtimeHtml);
 
     await writeTextFile(filePath, runtimeHtml);
   }

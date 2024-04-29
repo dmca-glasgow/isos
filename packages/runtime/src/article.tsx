@@ -9,9 +9,8 @@ import rehypeMathjax from 'rehype-mathjax';
 import * as components from './components';
 
 const textArea = document.getElementById('article') as HTMLTextAreaElement;
-const initialMdx = (textArea?.innerHTML || '')
-  .trim()
-  .replace('\\\\', '\\');
+const initialMdx = (textArea?.innerHTML || '').trim();
+// .replace('\\\\', '\\');
 
 // @ts-expect-error preact/jsx-runtime is incompatible for unknown reasons
 const options: EvaluateOptions = {
@@ -27,7 +26,7 @@ options.rehypePlugins = [rehypeMathjax];
 export function Article() {
   const [mdx, setMdx] = useState(initialMdx);
 
-  console.log({ initialMdx });
+  // console.log({ initialMdx });
 
   const MDX = useMemo(() => {
     return evaluateSync(mdx, options).default;
@@ -39,15 +38,15 @@ export function Article() {
     }
 
     function cacheChanges() {
-      console.log('caching changes');
+      // console.log('caching changes');
       if (textArea !== null) {
         const newMdx = textArea.value || '';
-        console.log('changes:', newMdx);
+        // console.log('changes:', newMdx);
         setMdx(newMdx.trim());
       }
     }
 
-    console.log('registering change handlers for', textArea);
+    // console.log('registering change handlers for', textArea);
     textArea.addEventListener('input', cacheChanges, false);
     textArea.addEventListener('onchange', cacheChanges, false);
 
