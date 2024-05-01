@@ -108,3 +108,38 @@ test('latex to markdown with maths and DeclareMathOperator', async () => {
 
   expect(markdown).toBe(expected);
 });
+
+test('latex to markdown with tildes', async () => {
+  const { markdown } = await processLatex(`
+    One says that $ f $~is \\emph{differentiable} at~$ a $, with \\emph{derivative}~$ l $.
+  `);
+
+  const expected = unindentString(`
+    One says that $f$\\&nbsp;is *differentiable* at\\&nbsp;$a$, with *derivative*\\&nbsp;$l$.
+  `);
+
+  expect(markdown).toBe(expected);
+});
+
+test.only('latex to markdown Misplaced & error', async () => {
+  const { markdown } = await processLatex(`
+    Then the difference quotient is
+
+    \\begin{align*}
+    \\dfrac{z\\bar z - a\\bar a}{z-a}
+    &= \\dfrac{(a + re^{i\\theta})(\\bar{a} + re^{-i\\theta}) - a\\bar{a}}{re^{i\\theta}} \\\\
+    &= \\dfrac{are^{-i\\theta} + \\bar{a} re^{i\\theta} + r^2}{re^{i\\theta}} \\\\
+    &= ae^{-2i\\theta} + \\bar{a} + re^{-i\\theta}.
+    \\end{align*}
+  `);
+
+  const expected = unindentString(`
+    Then the difference quotient is
+
+    $$
+    \\begin{align*}\\dfrac{z\\bar z - a\\bar a}{z-a}&= \\dfrac{(a + re^{i\\theta})(\\bar{a} + re^{-i\\theta}) - a\\bar{a}}{re^{i\\theta}}\\\\&= \\dfrac{are^{-i\\theta} + \\bar{a} re^{i\\theta} + r^2}{re^{i\\theta}}\\\\&= ae^{-2i\\theta}+ \\bar{a}+ re^{-i\\theta}.\\end{align*}
+    $$
+  `);
+
+  expect(markdown).toBe(expected);
+});

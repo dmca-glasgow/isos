@@ -1,20 +1,18 @@
-import rehypeFormat from 'rehype-format';
-import rehypeStringify from 'rehype-stringify';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import remarkMath from 'remark-math';
-import rehypeMathjax from 'rehype-mathjax';
-import { unified } from 'unified';
+import { createContext } from './context';
+import { processMarkdown } from './process-markdown';
+import { createRehypePlugins } from './rehype-plugins';
+import { createRemarkPlugins } from './remark-plugins';
 
-export async function markdownToHtml(md: string) {
-  const file = await unified()
-    .use(remarkParse, { fragment: true })
-    .use(remarkMath)
-    .use(remarkRehype)
-    .use(rehypeMathjax)
-    .use(rehypeFormat)
-    .use(rehypeStringify)
-    .process(md);
+export function createUnifiedPlugins() {
+  const ctx = createContext();
+  return {
+    remarkPlugins: createRemarkPlugins(ctx),
+    rehypePlugins: createRehypePlugins(ctx),
+  };
+}
 
-  return String(file);
+export async function markdownToHtml(fileContents: string) {
+  const { html } = await processMarkdown(fileContents);
+  // console.log(html);
+  return html;
 }

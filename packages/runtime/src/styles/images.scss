@@ -1,0 +1,32 @@
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+figure {
+  text-align: center;
+  margin: 3rem auto;
+  .img-bg {
+    display: inline-block;
+    background: white;
+    width: 75%;
+    max-width: 100%;
+    height: auto;
+  }
+  svg.pdftex, svg.knitr-svg {
+    margin-bottom: 0;
+  }
+  figcaption {
+    margin-bottom: 3rem;
+    padding-top: 0.5rem;
+    a {
+      font-style: italic;
+      color: var(--fadedTextColor);
+      .caption-count {
+        color: var(--highlightColor);
+      }
+    }
+  }
+}

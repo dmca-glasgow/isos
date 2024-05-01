@@ -4,7 +4,7 @@ import { Plugin, unified } from 'unified';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { deleteComments } from '@unified-latex/unified-latex-util-comments';
 import { match } from '@unified-latex/unified-latex-util-match';
-import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 import {
   replaceNode,
   unifiedLatexReplaceStreamingCommands,

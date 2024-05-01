@@ -25,7 +25,8 @@
   },
   "include": [
     "src",
-    "packages/**/src"
+    "packages/**/src",
+    "index.d.ts"
   ],
   "types": [
     "vitest/globals"

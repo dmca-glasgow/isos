@@ -5,7 +5,7 @@ import {
   isHtmlLikeTag,
 } from '@unified-latex/unified-latex-util-html-like';
 import * as Ast from '@unified-latex/unified-latex-types';
-import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 function formatNodeForError(node: Ast.Node | any): string {
   try {
@@ -63,7 +63,9 @@ export function toHastWithLoggerFactory(
           printRaw(node.content)
         );
       case 'mathenv':
+        return h('div', { className: 'display-math' }, printRaw(node));
       case 'displaymath':
+        // console.dir(node, { depth: null });
         return h(
           'div',
           { className: 'display-math' },

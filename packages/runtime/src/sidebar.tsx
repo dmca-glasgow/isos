@@ -5,5 +5,5 @@ export function Sidebar() {
 }
 
 const StyledSidebar = styled.aside`
-  background: black;
+  /* background: black; */
 `;

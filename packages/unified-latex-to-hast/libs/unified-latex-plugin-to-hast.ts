@@ -37,7 +37,7 @@ export const unifiedLatexToHast: Plugin<
 
     // This should happen right before converting to HTML because macros like `\&` should
     // be expanded via html rules first (and not turned into their corresponding ligature directly)
-    // expandUnicodeLigatures(tree);
+    expandUnicodeLigatures(tree);
 
     // If there is a \begin{document}...\end{document}, that's the only
     // content we want to convert.

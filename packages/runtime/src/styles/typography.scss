@@ -1,0 +1,220 @@
+// @import url('../fonts/Martel-Black.ttf');
+// @import url('../fonts/Newsreader-Regular.ttf');
+
+// ------------------------
+// font -------------------
+// ------------------------
+
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.75;
+
+  color: #222;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+// .pageNumber,
+// .totalPages {
+//   font-size: 14px !important;
+// }
+
+// #root {
+//   &.font-serif main {
+//     font-family: 'Newsreader';
+//   }
+//   &.font-monospace main {
+//     font-family: monospace;
+//   }
+
+//   &.font-default,
+//   &.font-serif {
+//     h1,
+//     h2,
+//     h3,
+//     h4,
+//     h5,
+//     h6,
+//     .boxout .title {
+//       font-family: 'Martel';
+//     }
+//   }
+// }
+
+// readability
+article {
+  padding: 2em 0 5em;
+  font-size: calc(1rem * var(--fontSize, 1));
+  line-height: calc(1.75 * var(--lineSpacing, 1));
+  letter-spacing: calc(var(--letterSpacing, 0) * 1em);
+  & > .wrapper {
+    width: calc(66% * var(--lineWidth, 1));
+  }
+
+  #root.pdf & {
+    font-size: 14px;
+    & > .wrapper {
+      width: 90%;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  article > .wrapper {
+    width: calc(85% * var(--lineWidth, 1));
+  }
+}
+
+// ------------------------
+// global -----------------
+// ------------------------
+
+p {
+  margin-bottom: 1em;
+}
+
+a {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--linkColor);
+}
+
+// ------------------------
+// titles -----------------
+// ------------------------
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.boxout .title {
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 1.5em 0 1em;
+}
+
+h1 {
+  color: rgb(var(--primaryColor));
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--highlightColor);
+}
+
+h2 {
+  font-size: 2.25em;
+  margin: 1em 0 0.5em;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin: 2em 0 0.5em;
+}
+
+h4 {
+  font-size: 1.25em;
+  margin-top: 2em;
+}
+
+h2 + h3,
+h3 + h4,
+h4 + h5,
+h5 + h6 {
+  margin-top: 0;
+}
+
+h2 + .boxout,
+h3 + .boxout,
+h4 + .boxout,
+h5 + .boxout {
+  margin-top: 0;
+}
+
+// link icon on hover
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  $diam: 0.6em;
+  $spacing: 0.5em;
+  .link {
+    display: inline-block;
+    vertical-align: middle;
+    width: $diam + $spacing;
+    height: $diam;
+    margin-top: -0.15em;
+    margin-left: ($diam + $spacing) * -1;
+    opacity: 0;
+    transition: opacity 0.2s;
+    .icon {
+      display: block;
+      width: $diam + $spacing;
+      height: $diam;
+      fill: rgb(var(--primaryColor));
+    }
+  }
+
+  &:hover {
+    .link {
+      opacity: 0.5;
+    }
+  }
+}
+
+// ------------------------
+// list -------------------
+// ------------------------
+
+ul,
+ol {
+  padding: 0rem 2rem 1rem;
+}
+li:not(:last-child) {
+  padding-bottom: 0.5rem;
+}
+
+// ------------------------
+// tag --------------------
+// ------------------------
+
+#view-options-toggle,
+.boxout .type,
+.answer-trigger {
+  display: inline-block;
+  padding: 0.3rem 0.8rem 0.25rem;
+  font-size: 0.8rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+  color: rgba(var(--primaryColor), 1);
+  background: rgba(var(--primaryColor), 0.1);
+  border-radius: 0.2rem;
+  user-select: none;
+  transition: background 0.2s;
+  &:hover {
+    background: rgba(var(--primaryColor), 0.2);
+  }
+}
+
+// ------------------------
+// blockquote -------------
+// ------------------------
+
+blockquote {
+  padding: 1rem;
+  border: 3px solid rgba(var(--primaryColor), 0.1);
+  border-radius: 0.6rem;
+}
