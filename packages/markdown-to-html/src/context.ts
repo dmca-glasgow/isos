@@ -1,5 +1,6 @@
 export type Options = {
   noEmbedAssetUrl: boolean;
+  noSyntaxHighlight: boolean;
 };
 
 export type Context = {
@@ -16,6 +17,7 @@ export function createContext(): Context {
     figureCounter: 0,
     options: {
       noEmbedAssetUrl: false,
+      noSyntaxHighlight: false,
     },
   };
 }

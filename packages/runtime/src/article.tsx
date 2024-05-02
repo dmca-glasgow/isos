@@ -14,21 +14,34 @@ const options: EvaluateOptions = {
   ...runtime,
 };
 
+// const initialMarkdown = getMarkdown();
+
 export function Article() {
   const [mdx, setMdx] = useState(getMarkdown());
+  // const [loading, setLoading] = useState(false);
 
   const MDX = useMemo(() => {
-    // console.log(mdx);
+    // setLoading(true)
 
+    // clear context by recreating plugins with fresh context:
     const { remarkPlugins, rehypePlugins } = createUnifiedPlugins();
     options.remarkPlugins = remarkPlugins;
     options.rehypePlugins = rehypePlugins;
 
-    return evaluateSync(mdx.replace(/\{/g, '\\{'), options).default;
+    // console.log(mdx);
+    const { default: MDXContent } = evaluateSync(
+      mdx.replace(/\{/g, '\\{'),
+      options
+    );
+
+    // setLoading(false)
+
+    return MDXContent;
   }, [mdx]);
 
   useEffect(() => {
     function cacheChanges() {
+      console.log('anything?');
       setMdx(getMarkdown());
     }
 
@@ -42,6 +55,8 @@ export function Article() {
       textArea.removeEventListener('onchange', cacheChanges);
     };
   }, []);
+
+  // console.log('loading:', loading);
 
   return (
     <article>

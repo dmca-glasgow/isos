@@ -6,7 +6,7 @@ import { useEffect } from 'preact/hooks';
 import classNames from 'classnames';
 
 import { latexToMarkdown } from '@isos/latex-to-markdown';
-import { getMarkdown, setMarkdown } from '@isos/textarea-store';
+import { setMarkdown } from '@isos/textarea-store';
 
 import { createRuntimeHtml } from '../export';
 import { useLocalStorage } from './use-local-storage';
@@ -17,14 +17,15 @@ async function _setMarkdown(filePath: string) {
   setMarkdown(markdown);
 }
 
-let watcher: null | (() => unknown) = null;
+let watcher = () => {};
 
 export function Header() {
   const [filePath, setFilePath] = useLocalStorage('file-path', null);
 
   async function setFilePathAndWatch(filePath: string | null) {
+    console.log('setFilePathAndWatch:', filePath);
     setFilePath(filePath);
-    watcher = null;
+    watcher();
 
     if (filePath === null) {
       setMarkdown('');
@@ -48,6 +49,7 @@ export function Header() {
 
   // allow file to be rendered on load from a locally stored filePath
   useEffect(() => {
+    console.log('useEffect:', filePath);
     setFilePathAndWatch(filePath);
   }, [filePath]);
 
@@ -105,6 +107,7 @@ const Wrapper = styled.header`
   /* background: #003865; */
   color: #fff;
   padding: 0.6rem;
+  font-weight: 600;
 `;
 
 const Button = styled.button`
@@ -112,9 +115,9 @@ const Button = styled.button`
   border-radius: 0.4rem;
   background: #fff2;
   color: #fff;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.2s background;
-  font-weight: 600;
 
   &:hover {
     background: #f50;
