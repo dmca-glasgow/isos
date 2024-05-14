@@ -1,4 +1,10 @@
 import { render } from 'preact';
 import { App } from './app';
+import { LoadingProvider } from './loading-provider';
 
-render(<App />, document.getElementById('root')!);
+render(
+  <LoadingProvider>
+    <App />
+  </LoadingProvider>,
+  document.getElementById('root')!
+);

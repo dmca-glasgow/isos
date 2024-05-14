@@ -6,10 +6,12 @@
   "files": [
     "src"
   ],
-  "exports": "./src/app.tsx",
+  "exports": [
+    "./src/app.tsx"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && cp -r dist/assets/ ../src/assets",
+    "build": "vite build && cp -r dist/assets/ ../../src/assets",
     "serve": "serve ./dist"
   },
   "dependencies": {

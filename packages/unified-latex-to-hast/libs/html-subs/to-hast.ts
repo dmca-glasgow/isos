@@ -103,6 +103,7 @@ export function toHastWithLoggerFactory(
         return h(
           'span',
           { className: ['macro', `macro-${node.content}`] },
+          // TODO: check if this has been fixed by change to line 125
           node.content === 'sidenote'
             ? (node.args || [])[0].content.map(toHast).flat()
             : (node.args || []).map(toHast).flat()
@@ -115,7 +116,7 @@ export function toHastWithLoggerFactory(
             'data-open-mark': node.openMark,
             'data-close-mark': node.closeMark,
           },
-          printRaw(node.content)
+          node.content.flatMap(toHast)
         );
       case 'root':
         return node.content.flatMap(toHast);

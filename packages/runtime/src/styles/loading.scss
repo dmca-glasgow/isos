@@ -1,0 +1,21 @@
+article {
+  position: relative;
+
+  .loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    padding: 2em;
+    pointer-events: none;
+
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+}

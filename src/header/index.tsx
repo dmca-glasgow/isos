@@ -2,16 +2,16 @@ import { styled } from '@linaria/react';
 import { open, save } from '@tauri-apps/api/dialog';
 import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 import { watchImmediate } from 'tauri-plugin-fs-watch-api';
-import { useEffect } from 'preact/hooks';
-import classNames from 'classnames';
+import { useContext, useEffect } from 'preact/hooks';
 
 import { latexToMarkdown } from '@isos/latex-to-markdown';
-import { setMarkdown } from '@isos/textarea-store';
+import { getMarkdown, setMarkdown } from '@isos/textarea-store';
 
 import { createRuntimeHtml } from '../export';
 import { useLocalStorage } from './use-local-storage';
+import { LoadingContext } from '@isos/runtime';
 
-async function _setMarkdown(filePath: string) {
+async function setMarkdownFromFilePath(filePath: string) {
   const fileContents = await readTextFile(filePath);
   const markdown = await latexToMarkdown(fileContents);
   setMarkdown(markdown);
@@ -21,25 +21,29 @@ let watcher = () => {};
 
 export function Header() {
   const [filePath, setFilePath] = useLocalStorage('file-path', null);
+  const { loading, setLoading } = useContext(LoadingContext);
 
   async function setFilePathAndWatch(filePath: string | null) {
-    console.log('setFilePathAndWatch:', filePath);
+    // console.log('setFilePathAndWatch:', filePath);
+    setLoading(true);
     setFilePath(filePath);
     watcher();
 
     if (filePath === null) {
       setMarkdown('');
-      console.log('stop watching', filePath);
+      // console.log('stop watching', filePath);
     } else {
-      _setMarkdown(filePath);
-      console.log('watching', filePath);
+      setMarkdownFromFilePath(filePath);
+      // console.log('watching', filePath);
       watcher = await watchImmediate(
         filePath,
         (event) => {
+          // TODO: find a better way to do this
           // @ts-expect-error
           if (event.type.modify.kind === 'data') {
-            console.log('recompiling...');
-            _setMarkdown(filePath);
+            // console.log('recompiling...');
+            setLoading(true);
+            setMarkdownFromFilePath(filePath);
           }
         },
         {}
@@ -49,7 +53,7 @@ export function Header() {
 
   // allow file to be rendered on load from a locally stored filePath
   useEffect(() => {
-    console.log('useEffect:', filePath);
+    // console.log('useEffect:', filePath);
     setFilePathAndWatch(filePath);
   }, [filePath]);
 
@@ -66,21 +70,21 @@ export function Header() {
   }
 
   async function handleSave() {
-    // const filePath = (await save({
-    //   filters: [
-    //     {
-    //       name: 'HTML',
-    //       extensions: ['html'],
-    //     },
-    //   ],
-    // })) as string;
-    // const mdx = getMarkdown();
-    // // console.log('mdx to save:', mdx);
-    // const runtimeHtml = await createRuntimeHtml(mdx, {
-    //   docTitle: 'Testing 1 2 3',
-    // });
-    // // console.log(runtimeHtml);
-    // await writeTextFile(filePath, runtimeHtml);
+    const filePath = (await save({
+      filters: [
+        {
+          name: 'HTML',
+          extensions: ['html'],
+        },
+      ],
+    })) as string;
+    const mdx = getMarkdown();
+    // console.log('mdx to save:', mdx);
+    const runtimeHtml = await createRuntimeHtml(mdx, {
+      docTitle: 'Testing 1 2 3',
+    });
+    // console.log(runtimeHtml);
+    await writeTextFile(filePath, runtimeHtml);
   }
 
   return (
@@ -90,7 +94,11 @@ export function Header() {
         <>
           <FilePath>
             {filePath}
-            <FileStatus>Watching for changes</FileStatus>
+            {loading ? (
+              <Loading>Loading changes...</Loading>
+            ) : (
+              <Watching>Watching for changes</Watching>
+            )}
           </FilePath>
           <Button onClick={handleSave}>Save HTML</Button>
         </>
@@ -132,6 +140,14 @@ const FilePath = styled.span`
 
 const FileStatus = styled.span`
   display: block;
-  opacity: 0.5;
+  color: #29e808;
   line-height: 1;
+`;
+
+const Watching = styled(FileStatus)`
+  color: #29e808;
+`;
+
+const Loading = styled(FileStatus)`
+  color: #e88308;
 `;

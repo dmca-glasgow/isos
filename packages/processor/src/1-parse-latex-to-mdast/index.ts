@@ -37,8 +37,8 @@ export async function parseLatexToMdast(latex: string) {
 
   const mdast = await unified()
     .use(rehypeRemark, { handlers })
-    .use(remarkMath)
-    .use(remarkDirective)
+    .use(remarkMath) // Probably move this to 2-transform-mdast
+    .use(remarkDirective) // Probably move this to 2-transform-mdast
     .run(hast as Root);
 
   // console.dir(latexAst, { depth: null });

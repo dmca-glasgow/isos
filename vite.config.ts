@@ -7,7 +7,6 @@ import linaria from '@wyw-in-js/vite';
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [
-    preact(),
     linaria({
       include: ['**/*.tsx'],
 
@@ -16,6 +15,9 @@ export default defineConfig(async () => ({
         ...context,
         $RefreshSig$: () => () => () => {},
       }),
+    }),
+    preact({
+      prefreshEnabled: false,
     }),
   ],
 
