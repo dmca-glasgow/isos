@@ -19,7 +19,7 @@ const options: EvaluateOptions = {
 
 export function Article() {
   const { loading, setLoading } = useContext(LoadingContext);
-  const [mdx, setMdx] = useState(getMarkdown());
+  const [mdx, setMdx] = useState(getMarkdown()); // TODO should be initialMarkdown
   const [MDX, setMDX] = useState<MDXModule | null>(null);
   const Content = MDX ? MDX.default : Fragment;
 
