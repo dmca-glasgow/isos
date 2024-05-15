@@ -1,47 +1,31 @@
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { Fragment } from 'preact';
+import { useContext, useEffect, useState } from 'preact/hooks';
 import { MDXProvider } from '@mdx-js/preact';
-import { EvaluateOptions, evaluateSync } from '@mdx-js/mdx';
-import { MDXComponents } from 'mdx/types';
+import { EvaluateOptions, evaluate } from '@mdx-js/mdx';
+import { MDXComponents, MDXModule } from 'mdx/types';
 import * as runtime from 'preact/jsx-runtime';
 
 import { getTextArea, getMarkdown } from '@isos/textarea-store';
 import { createUnifiedPlugins } from '@isos/markdown-to-html';
 // import * as components from './components';
 import './styles/index.scss';
+import { LoadingContext } from './loading-provider';
+import classNames from 'classnames';
 
 // @ts-expect-error preact/jsx-runtime is incompatible for unknown reasons
 const options: EvaluateOptions = {
   ...runtime,
 };
 
-// const initialMarkdown = getMarkdown();
-
 export function Article() {
-  const [mdx, setMdx] = useState(getMarkdown());
-  // const [loading, setLoading] = useState(false);
+  const { loading, setLoading } = useContext(LoadingContext);
+  const [mdx, setMdx] = useState(getMarkdown()); // TODO should be initialMarkdown
+  const [MDX, setMDX] = useState<MDXModule | null>(null);
+  const Content = MDX ? MDX.default : Fragment;
 
-  const MDX = useMemo(() => {
-    // setLoading(true)
-
-    // clear context by recreating plugins with fresh context:
-    const { remarkPlugins, rehypePlugins } = createUnifiedPlugins();
-    options.remarkPlugins = remarkPlugins;
-    options.rehypePlugins = rehypePlugins;
-
-    // console.log(mdx);
-    const { default: MDXContent } = evaluateSync(
-      mdx.replace(/\{/g, '\\{'),
-      options
-    );
-
-    // setLoading(false)
-
-    return MDXContent;
-  }, [mdx]);
-
+  // on load
   useEffect(() => {
     function cacheChanges() {
-      console.log('anything?');
       setMdx(getMarkdown());
     }
 
@@ -56,13 +40,32 @@ export function Article() {
     };
   }, []);
 
-  // console.log('loading:', loading);
+  useEffect(() => {
+    async function run() {
+      // clear context by recreating plugins with fresh context:
+      const { remarkPlugins, rehypePlugins } = createUnifiedPlugins();
+      options.remarkPlugins = remarkPlugins;
+      options.rehypePlugins = rehypePlugins;
+
+      // console.log(mdx);
+      const MDXContent = await evaluate(
+        // TODO: https://github.com/goodproblems/remark-mdx-math-enhanced
+        mdx.replace(/\{/g, '\\{'),
+        options
+      );
+
+      setLoading(false);
+      setMDX(MDXContent);
+    }
+    run();
+  }, [mdx]);
 
   return (
     <article>
       <div className="wrapper">
+        <div className={classNames('loading', { active: loading })} />
         <MDXProvider components={{} as MDXComponents}>
-          <MDX />
+          <Content />
         </MDXProvider>
       </div>
     </article>

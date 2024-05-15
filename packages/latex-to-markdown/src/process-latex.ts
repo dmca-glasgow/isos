@@ -20,6 +20,7 @@ export async function processLatex(latex: string) {
         // signatures are defined in section 3 of:
         // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
         sidenote: { signature: 'm' },
+        title: { signature: 'om' },
       },
     })
     .parse(latex);

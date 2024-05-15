@@ -52,14 +52,12 @@ function listMathOps(tree: Ast.Ast): MathOpSpec[] {
 
       ret.push({ name, signature, body, definition: node });
     },
-    { test: newcommandMatcher }
+    { test: mathOpsMatcher }
   );
   return ret;
 }
 
-const newcommandMatcher = match.createMacroMatcher([
-  'DeclareMathOperator',
-]);
+const mathOpsMatcher = match.createMacroMatcher(['DeclareMathOperator']);
 
 function macroToName(node: Ast.Macro): string {
   if (!node.args?.length) {
