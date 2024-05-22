@@ -1,12 +1,15 @@
-import { useContext, useEffect, useState } from 'preact/hooks';
-import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 import { styled } from '@linaria/react';
-import { Article, LoadingContext } from '@isos/runtime';
-import { inputToMarkdown, parseFilePath } from '@isos/processor';
-import { useLocalStorage } from './hooks/use-local-storage';
-import { Header } from './header';
-import './styles.scss';
+import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
+import { useContext, useEffect, useState } from 'preact/hooks';
+
 import { createRuntimeHtml } from '@isos/export';
+import { inputToMarkdown, parseFilePath } from '@isos/processor';
+import { Article, LoadingContext } from '@isos/runtime';
+
+import { Header } from './header';
+import { useLocalStorage } from './use-local-storage';
+
+import './styles.scss';
 
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', null);

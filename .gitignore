@@ -10,3 +10,5 @@ dist-ssr
 
 src-tauri/binaries/*
 !src-tauri/binaries/.gitkeep
+
+playwright-report/*

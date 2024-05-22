@@ -1,6 +1,6 @@
 import { styled } from '@linaria/react';
-import { OpenFileButton } from './components/open-file-button';
-import { SaveFileButton } from './components/save-file-button';
+import { OpenFileButton } from './open-file-button';
+import { SaveFileButton } from './save-file-button';
 
 type Props = {
   filePath: string | null;

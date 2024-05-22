@@ -29,7 +29,7 @@
     "index.d.ts"
   ],
   "types": [
-    "vitest/globals"
+    // "vitest/globals"
   ],
   // "exclude": "/node_modules/",
   "references": [

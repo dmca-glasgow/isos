@@ -20,17 +20,12 @@ export function SaveFileButton({ filePath, onSave }: Props) {
       ],
     });
 
-    if (saveFilePath !== null) {
-      onSave(saveFilePath);
+    // user clicked Cancel in save file dialog
+    if (saveFilePath === null) {
+      return;
     }
 
-    // const mdx = getMarkdown();
-    // // console.log('mdx to save:', mdx);
-    // const runtimeHtml = await createRuntimeHtml(mdx, {
-    //   docTitle: 'Testing 1 2 3',
-    // });
-    // // console.log(runtimeHtml);
-    // await writeTextFile(filePath, runtimeHtml);
+    onSave(saveFilePath);
   }
 
   return <Button onClick={handleSave}>Save HTML</Button>;
