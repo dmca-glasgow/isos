@@ -6,6 +6,7 @@ import linaria from '@wyw-in-js/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
+  assetsDir: './src/assets',
   plugins: [
     linaria({
       include: ['**/*.tsx'],
@@ -39,5 +40,6 @@ export default defineConfig(async () => ({
   },
   test: {
     globals: true,
+    environment: 'jsdom',
   },
 }));

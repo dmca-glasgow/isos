@@ -3,6 +3,7 @@ import { Element } from 'hast';
 
 import { createSideNote } from './sidenote';
 import { createInlineMaths, createMaths } from './maths';
+import { createTitle } from './title';
 
 export const handlers = {
   span: customSpanHandler,
@@ -15,6 +16,12 @@ function customSpanHandler(state: State, node: Element) {
   if (Array.isArray(className)) {
     if (className.includes('macro-sidenote')) {
       const result = createSideNote(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-title')) {
+      const result = createTitle(state, node);
       state.patch(node, result);
       return result;
     }

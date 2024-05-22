@@ -1,79 +1,44 @@
-import { Fragment } from 'preact';
-import { useContext, useEffect, useState } from 'preact/hooks';
-import { MDXProvider } from '@mdx-js/preact';
-import { EvaluateOptions, evaluate } from '@mdx-js/mdx';
-import { MDXComponents, MDXModule } from 'mdx/types';
-import * as runtime from 'preact/jsx-runtime';
-
-import { getTextArea, getMarkdown } from '@isos/textarea-store';
-import { createUnifiedPlugins } from '@isos/markdown-to-html';
-// import * as components from './components';
+import { useEffect, useState } from 'preact/hooks';
+import { Fragment, jsx, jsxs, jsxDEV } from 'preact/jsx-runtime';
+import { RunOptions, run } from '@mdx-js/mdx';
+import { MDXModule } from 'mdx/types';
+import { MathJax } from 'better-react-mathjax';
+import { markdownToJs } from '@isos/processor';
 import './styles/index.scss';
-import { LoadingContext } from './loading-provider';
-import classNames from 'classnames';
 
-// @ts-expect-error preact/jsx-runtime is incompatible for unknown reasons
-const options: EvaluateOptions = {
-  ...runtime,
+const mdxOptions: RunOptions = {
+  Fragment,
+  // @ts-expect-error: jsx is incompatible for unknown reasons
+  jsx,
+  // @ts-expect-error: jsxs is incompatible for unknown reasons
+  jsxs,
+  // @ts-expect-error: jsxDEV is incompatible for unknown reasons
+  jsxDEV,
 };
 
-export function Article() {
-  const { loading, setLoading } = useContext(LoadingContext);
-  const [mdx, setMdx] = useState(getMarkdown()); // TODO should be initialMarkdown
+type Props = {
+  markdown: string;
+};
+
+export function Article({ markdown }: Props) {
   const [MDX, setMDX] = useState<MDXModule | null>(null);
-  const Content = MDX ? MDX.default : Fragment;
-
-  // on load
-  useEffect(() => {
-    function cacheChanges() {
-      setMdx(getMarkdown());
-    }
-
-    // console.log('registering change handlers for', textArea);
-    const textArea = getTextArea();
-    textArea.addEventListener('input', cacheChanges, false);
-    textArea.addEventListener('onchange', cacheChanges, false);
-
-    return () => {
-      textArea.removeEventListener('input', cacheChanges);
-      textArea.removeEventListener('onchange', cacheChanges);
-    };
-  }, []);
+  const MDXContent = MDX ? MDX.default : Fragment;
 
   useEffect(() => {
-    async function run() {
-      // clear context by recreating plugins with fresh context:
-      const { remarkPlugins, rehypePlugins } = createUnifiedPlugins();
-      options.remarkPlugins = remarkPlugins;
-      options.rehypePlugins = rehypePlugins;
-
-      // console.log(mdx);
-      const MDXContent = await evaluate(
-        // TODO: https://github.com/goodproblems/remark-mdx-math-enhanced
-        mdx.replace(/\{/g, '\\{'),
-        options
-      );
-
-      setLoading(false);
-      setMDX(MDXContent);
-    }
-    run();
-  }, [mdx]);
+    (async () => {
+      const jsString = await markdownToJs(markdown);
+      const newMdx = await run(jsString, mdxOptions);
+      setMDX(newMdx);
+    })();
+  }, [markdown]);
 
   return (
     <article>
       <div className="wrapper">
-        <div className={classNames('loading', { active: loading })} />
-        <MDXProvider components={{} as MDXComponents}>
-          <Content />
-        </MDXProvider>
+        <MathJax>
+          <MDXContent />
+        </MathJax>
       </div>
     </article>
   );
 }
-
-// TODO: MathJax and https://wyw-in-js.dev are currently incompatible
-// but it's easy to avoid for now (and maybe not necessary to fix)
-// const StyledArticle = styled.article`
-//   flex: 1;
-// `;

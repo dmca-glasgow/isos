@@ -1,10 +1,15 @@
 import { render } from 'preact';
-import { App } from './app';
-import { LoadingProvider } from './loading-provider';
+import { Article } from './article';
+import { Providers } from './providers';
+import './styles/index.scss';
+
+// lift markdown from embedded textarea
+const textarea = document.getElementById('article') as HTMLTextAreaElement;
+const markdown = textarea?.value || '';
 
 render(
-  <LoadingProvider>
-    <App />
-  </LoadingProvider>,
+  <Providers>
+    <Article markdown={markdown} />
+  </Providers>,
   document.getElementById('root')!
 );

@@ -1,13 +1,4 @@
-import { Article } from './article';
-import { Sidebar } from './sidebar';
-
-export { LoadingContext, LoadingProvider } from './loading-provider';
-
-export function App() {
-  return (
-    <>
-      {/* <Sidebar /> */}
-      <Article />
-    </>
-  );
-}
+export { Article } from './article';
+export { Sidebar } from './sidebar';
+export { Providers } from './providers';
+export { LoadingContext } from './providers/loading-provider';
