@@ -11,12 +11,13 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp -r dist/assets/ ../../src/assets",
+    "build": "vite build && cp -r dist/assets/ ../export/assets",
     "serve": "serve ./dist"
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.0.1",
     "@mdx-js/preact": "^3.0.1",
+    "better-react-mathjax": "^2.0.3",
     "classnames": "^2.5.1",
     "preact": "^10.20.2",
     "rehype-mathjax": "^6.0.0",

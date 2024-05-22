@@ -1,13 +1,13 @@
 import { render } from 'preact';
 import { App } from './app';
-import { LoadingProvider } from '../packages/runtime/src/loading-provider';
+import { Providers } from '@isos/runtime';
 // import { cli } from './cli';
 
 // cli();
 
 render(
-  <LoadingProvider>
+  <Providers>
     <App />
-  </LoadingProvider>,
+  </Providers>,
   document.getElementById('root')!
 );

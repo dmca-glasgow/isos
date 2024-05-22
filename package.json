@@ -12,14 +12,18 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "test": "vitest"
+    "test": "vitest",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@isos/latex-to-markdown": "0.0.1",
     "@isos/markdown-to-html": "0.0.1",
     "@isos/runtime": "0.0.1",
     "@tauri-apps/api": "^1",
+    "@typescript-eslint/parser": "^7.9.0",
     "classnames": "^2.5.1",
+    "eslint": "^9.2.0",
+    "import-sort-style-module": "^6.0.0",
     "preact": "^10.20.2",
     "rehype-document": "^7.0.3",
     "rehype-format": "^5.0.0",
@@ -33,17 +37,26 @@
     "unified": "^11.0.4"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.9.1",
     "@babel/preset-react": "^7.24.1",
     "@linaria/core": "^6.1.0",
     "@linaria/react": "^6.1.0",
+    "@playwright/test": "^1.44.0",
     "@preact/preset-vite": "^2.5.0",
     "@tauri-apps/cli": "^1",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.12.7",
     "@wyw-in-js/babel-preset": "^0.5.1",
     "@wyw-in-js/vite": "^0.5.1",
+    "playwright": "^1.44.0",
     "typescript": "^5.0.2",
     "vite": "^5.0.0",
     "vitest": "^1.5.0"
+  },
+  "importSort": {
+    ".ts, .tsx, .js, .jsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
   }
 }

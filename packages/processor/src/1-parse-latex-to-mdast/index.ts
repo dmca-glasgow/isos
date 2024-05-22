@@ -1,10 +1,8 @@
 import { unified } from 'unified';
-import remarkStringify from 'remark-stringify';
 import rehypeRemark from 'rehype-remark';
 import { unifiedLatexFromString } from '@isos/unified-latex-util-parse';
 import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
 import remarkDirective from 'remark-directive';
-import rehypeStringify from 'rehype-stringify';
 import { Root } from 'hast';
 import { expandDocumentMacrosPlugin } from './latex-ast-plugins/expand-macros';
 import remarkMath from 'remark-math';
@@ -20,6 +18,7 @@ export async function parseLatexToMdast(latex: string) {
         // signatures are defined in section 3 of:
         // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
         sidenote: { signature: 'm' },
+        title: { signature: 'om' },
       },
     })
     .parse(latex);
@@ -37,8 +36,8 @@ export async function parseLatexToMdast(latex: string) {
 
   const mdast = await unified()
     .use(rehypeRemark, { handlers })
-    .use(remarkMath) // Probably move this to 2-transform-mdast
-    .use(remarkDirective) // Probably move this to 2-transform-mdast
+    .use(remarkMath)
+    .use(remarkDirective)
     .run(hast as Root);
 
   // console.dir(latexAst, { depth: null });
@@ -46,17 +45,10 @@ export async function parseLatexToMdast(latex: string) {
   // console.dir(mdast, { depth: null });
 
   return {
+    mdast,
+
+    // useful for debugging
     latexAst,
     hast,
-    mdast,
-    // HTML isn't serialised for production so just add getter for testing
-    getHtml() {
-      return unified()
-        .use(rehypeStringify)
-        .stringify(hast as Root);
-    },
-    getMarkdown() {
-      return unified().use(remarkStringify).stringify(mdast).trim();
-    },
   };
 }

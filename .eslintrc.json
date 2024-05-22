@@ -1,0 +1,33 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "ignorePatterns": [
+    "node_modules/"
+  ],
+  "plugins": [
+    "react-hooks"
+  ],
+  "extends": [
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "no-shadow": "off",
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+    // "@typescript-eslint/no-shadow": [
+    //   "error"
+    // ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "env": {
+    "vitest": true
+  }
+}
