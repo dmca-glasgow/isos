@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp -r dist/assets/ ../export/assets",
+    "build": "vite build && cp -r dist/assets/ ../../src-tauri/resources",
     "serve": "serve ./dist"
   },
   "dependencies": {

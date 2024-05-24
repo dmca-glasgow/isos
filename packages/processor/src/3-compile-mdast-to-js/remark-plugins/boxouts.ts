@@ -2,19 +2,19 @@ import {
   Element,
   ElementContent,
   Parent as HastParent,
-  Text,
   Node,
+  Text,
 } from 'hast';
 import startCase from 'lodash/startCase.js';
-import { Paragraph, Parent as MdastParent, Root, Literal } from 'mdast';
+import { Literal, Paragraph, Root } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { toHast } from 'mdast-util-to-hast';
 import { Parent } from 'unist';
 import { visit } from 'unist-util-visit';
 
-import { Context } from '../context';
-import { createCounter } from '../../utils/counter';
 import { boxoutAllowList } from '../../utils/boxout-allow-list';
+import { createCounter } from '../../utils/counter';
+import { Context } from '../context';
 
 export function boxouts(refStore: Context['refStore']) {
   const counter = createCounter();
@@ -26,7 +26,7 @@ export function boxouts(refStore: Context['refStore']) {
         const count = counter.increment(name);
         node.data = {
           hProperties: createAttributes(node, count, refStore),
-          hChildren: createBoxout(node, count) as any,
+          // hChildren: createBoxout(node, count) as any,
         };
       }
     });
@@ -68,31 +68,14 @@ export function createBoxout(
   const titles = [];
   const content = [];
   const children = node.children as Paragraph[];
+  const typeTitle = createBoxoutType(node, count);
+  titles.push(typeTitle);
 
-  if (hasPandocCounterFormatting(node)) {
-    const typeTitle = createBoxoutTypeFromPandoc(node);
-    titles.push(typeTitle);
-
-    const titleValue = getTitleValueFromPandoc(node);
-    if (titleValue.length > 0) {
-      const title = createTitleFromPandoc(node);
-      titles.push(title);
-      removeTitleFormattingFromPandoc(children);
-    } else {
-      removeNameFormattingFromPandoc(children);
-    }
-  } else {
-    const typeTitle = createBoxoutType(node, count);
-    titles.push(typeTitle);
-
-    const titleValue = getTitleValue(node);
-    if (titleValue.length > 0) {
-      const title = createTitle(node);
-      titles.push(title);
-    }
+  const titleValue = getTitleValue(node);
+  if (titleValue.length > 0) {
+    const title = createTitle(node);
+    titles.push(title);
   }
-
-  removePandocProofFormatting(node);
 
   content.push(
     ...children
@@ -265,130 +248,4 @@ function createAnswer(node: ContainerDirective, count: number) {
       },
     ],
   };
-}
-
-function hasPandocCounterFormatting(node: ContainerDirective) {
-  if (!node.children || node.children.length === 0) {
-    return false;
-  }
-  const content = node.children[0] as Paragraph;
-  const counter = content.children[0] as Parent;
-
-  let hasCounter = false;
-  if (counter.children) {
-    const counterText = counter.children[0] as Literal;
-    hasCounter = /\d+$/.test(counterText.value);
-  }
-
-  const counterValue = content.children[1];
-
-  return (
-    counter.type === 'strong' &&
-    hasCounter &&
-    counterValue?.type === 'text' &&
-    (counterValue?.value.startsWith('. ') ||
-      /^\s\((.+)\)\./.test(counterValue?.value))
-  );
-}
-
-function removePandocProofFormatting(node: ContainerDirective) {
-  if (node.name !== 'proof') {
-    return;
-  }
-
-  const content = node.children[0] as Paragraph;
-  const emphasis = content.children[0] as Parent;
-  if (!emphasis.children || emphasis.children.length === 0) {
-    return;
-  }
-
-  const emText = emphasis.children[0] as Literal;
-  if (emText.value !== 'Proof.') {
-    return;
-  }
-
-  content.children = content.children.slice(1);
-}
-
-function removeTitleFormattingFromPandoc(children: Paragraph[]) {
-  children[0].children = children[0].children.slice(1);
-  const p1 = children[0].children[0] as Literal;
-  p1.value = p1.value.slice(p1.value.indexOf('). ') + 3);
-}
-
-function removeNameFormattingFromPandoc(children: Paragraph[]) {
-  children[0].children = children[0].children.slice(1);
-  const p1 = children[0].children[0] as Literal;
-  p1.value = p1.value.slice(2);
-}
-
-function createBoxoutTypeFromPandoc(node: ContainerDirective) {
-  const content = node.children as Paragraph[];
-  const strong = content[0].children[0] as MdastParent;
-  const title = strong.children[0] as Literal;
-  return {
-    type: 'element',
-    tagName: 'span',
-    properties: {
-      className: ['type'],
-    },
-    children: [
-      {
-        type: 'text',
-        value: title.value,
-      },
-    ],
-  };
-}
-
-function getTitleValueFromPandoc(node: ContainerDirective): Literal[] {
-  const content = node.children[0] as Paragraph;
-  const counter = content.children[1] as Literal;
-  const counterValue = counter?.value || '';
-  const match = counterValue.match(/^\s\((.+)\)\./);
-
-  if (match === null) {
-    return [];
-  }
-
-  return [
-    {
-      type: 'text',
-      value: match[1],
-    },
-  ];
-}
-
-function createTitleFromPandoc(node: ContainerDirective) {
-  return {
-    type: 'element',
-    tagName: 'h3',
-    children: createTitleValueFromPandoc(node) as ElementContent[],
-    properties: {},
-  };
-}
-
-function createTitleValueFromPandoc(node: ContainerDirective) {
-  const name = node.name as string;
-  const newRoot = {
-    type: 'root',
-    children: getTitleValueFromPandoc(node),
-  };
-  const { children = [] } = toHast(newRoot as Root) as Parent;
-  if (name !== 'weblink') {
-    return children;
-  }
-  const { target } = node.attributes as Record<string, string>;
-  return [
-    {
-      type: 'element',
-      tagName: 'a',
-      properties: {
-        href: target,
-        target: '_blank',
-        className: ['target'],
-      },
-      children,
-    },
-  ];
 }

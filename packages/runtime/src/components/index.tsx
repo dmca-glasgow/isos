@@ -1,8 +1,14 @@
 // import classnames from 'classnames';
+import { ComponentChildren } from 'preact';
 
-// type SectionProps = {
-//   children: React.ReactNode;
-// };
+type Props = {
+  children: ComponentChildren;
+};
+
+export function Div({ children }: Props) {
+  console.log('hey!');
+  return <div>{children}</div>;
+}
 
 // export function Section({ children }: SectionProps) {
 //   // const [show, setShow] = useState(false);

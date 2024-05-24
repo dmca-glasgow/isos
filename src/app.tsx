@@ -1,6 +1,8 @@
 import { styled } from '@linaria/react';
 import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
+import { resolveResource } from '@tauri-apps/api/path';
 import { useContext, useEffect, useState } from 'preact/hooks';
+import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 
 import { createRuntimeHtml } from '@isos/export';
 import { inputToMarkdown, parseFilePath } from '@isos/processor';
@@ -10,6 +12,8 @@ import { Header } from './header';
 import { useLocalStorage } from './use-local-storage';
 
 import './styles.scss';
+
+let destroyWatcher = () => {};
 
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', null);
@@ -32,12 +36,33 @@ export function App() {
     // console.log(newMarkdown);
     setMarkdown(newMarkdown);
     setLoading(false);
+
+    // destroy previous watcher by calling it
+    // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
+    destroyWatcher();
+
+    destroyWatcher = await watchImmediate(newFilePath, async (event) => {
+      // TODO: find a better way to do this
+      // @ts-expect-error
+      if (event.type.modify.kind === 'data') {
+        handleProcessFile(newFilePath);
+      }
+    });
   }
 
   async function handleExportFile(saveFilePath: string) {
-    const html = await createRuntimeHtml(markdown, {
+    const frontmatter = {
       docTitle: 'Test', // TODO
-    });
+    };
+    const bundle = {
+      css: await readTextFile(
+        await resolveResource('resources/runtime.css')
+      ),
+      js: await readTextFile(
+        await resolveResource('resources/runtime.js')
+      ),
+    };
+    const html = await createRuntimeHtml(markdown, frontmatter, bundle);
     await writeTextFile(saveFilePath, html);
   }
 

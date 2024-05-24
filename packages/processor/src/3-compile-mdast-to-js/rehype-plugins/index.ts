@@ -1,9 +1,10 @@
 // import rehypeMath from 'rehype-math';
-import { PluggableList } from 'unified';
+import { createSvg } from '../../utils/icons';
+import headings from 'rehype-autolink-headings';
 // import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
-import headings from 'rehype-autolink-headings';
-import { createSvg } from '../../utils/icons';
+import { PluggableList } from 'unified';
+
 import { Context } from '../context';
 
 export function createRehypePlugins(ctx: Context): PluggableList {
@@ -18,5 +19,8 @@ export function createRehypePlugins(ctx: Context): PluggableList {
         properties: { className: 'link' },
       },
     ],
+    // () => (tree) => {
+    //   console.log(JSON.stringify(tree, null, 2));
+    // },
   ];
 }
