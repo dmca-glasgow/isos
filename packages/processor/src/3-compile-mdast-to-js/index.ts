@@ -1,25 +1,25 @@
-import { createProcessor, ProcessorOptions } from '@mdx-js/mdx';
-
-import { createContext } from './context';
 import { createRehypePlugins } from './rehype-plugins';
 import { createRemarkPlugins } from './remark-plugins';
+import { createProcessor } from '@mdx-js/mdx';
 
-const options: ProcessorOptions = {
-  outputFormat: 'function-body',
-  elementAttributeNameCase: 'html',
-};
+import { createContext } from './context';
+
+export { runOptions } from './run-options';
 
 export async function compileMarkdownToJs(markdown: string) {
   const ctx = createContext();
-  options.remarkPlugins = createRemarkPlugins(ctx);
-  options.rehypePlugins = createRehypePlugins(ctx);
 
-  const processor = createProcessor(options);
+  const processor = createProcessor({
+    outputFormat: 'function-body',
+    elementAttributeNameCase: 'html',
+    providerImportSource: '@mdx-js/preact',
+    remarkPlugins: createRemarkPlugins(ctx),
+    rehypePlugins: createRehypePlugins(ctx),
+  });
+
   const prepared = prepareMarkdown(markdown);
 
-  return {
-    jsString: String(await processor.process(prepared)),
-  };
+  return String(await processor.process(prepared));
 }
 
 // https://mdxjs.com/docs/troubleshooting-mdx/#problems-writing-mdx

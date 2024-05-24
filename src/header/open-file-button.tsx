@@ -1,16 +1,14 @@
-import { open } from '@tauri-apps/api/dialog';
-import { watchImmediate } from 'tauri-plugin-fs-watch-api';
-import {
-  supportedMarkdownExtensions,
-  supportedLaTeXExtensions,
-} from '@isos/processor';
 import { Button } from '../styles';
+import { open } from '@tauri-apps/api/dialog';
+
+import {
+  supportedLaTeXExtensions,
+  supportedMarkdownExtensions,
+} from '@isos/processor';
 
 type Props = {
   onChange: (filePath: string) => unknown;
 };
-
-let destroyWatcher = () => {};
 
 export function OpenFileButton({ onChange }: Props) {
   async function handleOpenFile() {
@@ -37,19 +35,7 @@ export function OpenFileButton({ onChange }: Props) {
       return;
     }
 
-    // destroy previous watcher by calling it
-    // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
-    destroyWatcher();
-
     onChange(selected);
-
-    destroyWatcher = await watchImmediate(selected, async (event) => {
-      // TODO: find a better way to do this
-      // @ts-expect-error
-      if (event.type.modify.kind === 'data') {
-        onChange(selected);
-      }
-    });
   }
 
   return <Button onClick={handleOpenFile}>Open File</Button>;

@@ -1,12 +1,11 @@
 /// <reference types="vitest" />
-
-import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import linaria from '@wyw-in-js/vite';
+import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  assetsDir: './src/assets',
   plugins: [
     linaria({
       include: ['**/*.tsx'],
@@ -39,7 +38,18 @@ export default defineConfig(async () => ({
     sourcemap: true,
   },
   test: {
-    globals: true,
-    environment: 'jsdom',
+    exclude: [
+      ...configDefaults.exclude,
+      '**/_old/**',
+      'packages/unified-latex-*/**',
+    ],
+    // globals: true,
+    // environment: 'jsdom',
+    // browser: {
+    //   enabled: true,
+    //   name: 'chromium',
+    //   provider: 'playwright',
+    //   fileParallelism: false,
+    // },
   },
 }));

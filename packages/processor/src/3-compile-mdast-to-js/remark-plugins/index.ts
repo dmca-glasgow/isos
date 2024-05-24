@@ -1,12 +1,13 @@
 // import remarkMath from 'remark-math';
-import { PluggableList } from 'unified';
-import directive from 'remark-directive';
+import { boxouts } from './boxouts';
 // import remarkMdxEnhanced from 'remark-mdx-math-enhanced';
 // import frontmatter from 'remark-frontmatter';
-
 // import { unescapeOpenBrace } from './unescape-open-brace';
 import { headingAttributes } from './heading-attributes';
 import { linkAttributes } from './link-attributes';
+import directive from 'remark-directive';
+import { PluggableList } from 'unified';
+
 // import { columns } from './columns';
 // import { embedAssetUrl } from './embed-asset-url';
 // import { youtubeVideos } from './youtube-videos';
@@ -20,7 +21,6 @@ import { linkAttributes } from './link-attributes';
 // import { images } from './images';
 // import { pagebreaks } from './pagebreaks';
 import { Context } from '../context';
-import { boxouts } from './boxouts';
 
 export function createRemarkPlugins(ctx: Context): PluggableList {
   return [
@@ -48,5 +48,8 @@ export function createRemarkPlugins(ctx: Context): PluggableList {
     // styledTerminal,
     // [images, ctx],
     // pagebreaks,
+    // () => (tree) => {
+    //   console.log(JSON.stringify(tree, null, 2));
+    // },
   ];
 }

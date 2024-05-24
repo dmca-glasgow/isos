@@ -1,17 +1,21 @@
-import cssFile from '../assets/runtime.css?raw';
-import jsFile from '../assets/runtime.js?raw';
-
 // TODO
 type FrontMatter = {
   docTitle: string;
 };
 
+type RuntimeBundle = {
+  css: string;
+  js: string;
+};
+
 export async function createRuntimeHtml(
   markdown: string,
-  frontmatter: FrontMatter
+  frontmatter: FrontMatter,
+  bundle: RuntimeBundle
 ) {
-  // console.log('markdown:', markdown);
-  return `<!doctype html>
+  return `
+
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -19,8 +23,6 @@ export async function createRuntimeHtml(
 <meta content="width=device-width, initial-scale=1" name="viewport">
 </head>
 <body>
-
-<!--be sure to escape all backslashes: \\ becomes \\\\ -->
 <textarea id="article" style="display: none;">
 
 ${markdown.trim()}
@@ -28,14 +30,15 @@ ${markdown.trim()}
 </textarea>
 <div id="root"></div>
 <style>
-${cssFile}
+${bundle.css}
 </style>
 <script>
-${jsFile}
+${bundle.js}
 </script>
 </body>
 </html>
-`.trim();
+
+  `.trim();
 }
 
 // function escapeMarkdown(markdown: string) {
