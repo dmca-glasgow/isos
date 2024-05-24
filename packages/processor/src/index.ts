@@ -1,4 +1,9 @@
-import { compileMarkdownToJs, runOptions } from './3-compile-mdast-to-js';
+import {
+  compileMarkdownToJs,
+  compileMarkdownToSidebarJs,
+  runOptions,
+  sidebarRunOptions,
+} from './3-compile-mdast-to-js';
 
 import { parseLatexToMdast } from './1-parse-latex-to-mdast';
 import { transformMdast } from './2-transform-mdast';
@@ -25,6 +30,11 @@ export async function inputToMarkdown(type: FileType, content: string) {
 export async function markdownToJs(markdown: string) {
   const jsString = await compileMarkdownToJs(markdown);
   return { jsString, runOptions };
+}
+
+export async function markdownToSidebarJs(markdown: string) {
+  const jsString = await compileMarkdownToSidebarJs(markdown);
+  return { jsString, runOptions: sidebarRunOptions };
 }
 
 function getMdast(type: FileType, content: string) {

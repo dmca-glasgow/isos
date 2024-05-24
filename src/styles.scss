@@ -1,6 +1,13 @@
 html#editor {
-  &, body, #root {
+  &,
+  body,
+  #root {
     height: 100%;
     overflow: hidden;
+  }
+
+  main aside {
+    top: 60px;
+    height: calc(100% - 60px);
   }
 }

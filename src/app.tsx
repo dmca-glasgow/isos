@@ -6,7 +6,7 @@ import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 
 import { createRuntimeHtml } from '@isos/export';
 import { inputToMarkdown, parseFilePath } from '@isos/processor';
-import { Article, LoadingContext } from '@isos/runtime';
+import { LoadingContext, Runtime } from '@isos/runtime';
 
 import { Header } from './header';
 import { useLocalStorage } from './use-local-storage';
@@ -74,7 +74,7 @@ export function App() {
         handleProcessFile={handleProcessFile}
         handleExportFile={handleExportFile}
       />
-      <Article markdown={markdown} />
+      <Runtime markdown={markdown} />
     </StyledApp>
   );
 }

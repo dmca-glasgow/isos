@@ -10,6 +10,11 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  flex: 1;
+  position: relative;
+}
+
 .hamburger-icon {
   position: absolute;
   width: 22px;
@@ -70,13 +75,12 @@ aside {
 }
 
 article {
-  flex: 1;
   overflow: auto;
   // transform: translateX(9rem);
   transition: transform 0.2s;
 
   // #root.hide-sidebar & {
-    transform: translateX(0);
+  transform: translateX(0);
   // }
 
   & > .wrapper {

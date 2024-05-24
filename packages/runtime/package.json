@@ -7,7 +7,7 @@
     "src"
   ],
   "exports": [
-    "./src/app.tsx"
+    "./src/index.ts"
   ],
   "scripts": {
     "dev": "vite",
@@ -19,6 +19,7 @@
     "@mdx-js/preact": "^3.0.1",
     "better-react-mathjax": "^2.0.3",
     "classnames": "^2.5.1",
+    "mdast-util-toc": "^7.0.1",
     "preact": "^10.20.2",
     "rehype-mathjax": "^6.0.0",
     "remark-math": "^6.0.0"

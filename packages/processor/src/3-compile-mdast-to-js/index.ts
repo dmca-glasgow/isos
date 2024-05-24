@@ -1,18 +1,20 @@
+import { useMDXComponents } from './components';
 import { createRehypePlugins } from './rehype-plugins';
 import { createRemarkPlugins } from './remark-plugins';
-import { createProcessor } from '@mdx-js/mdx';
+import { processorOptions } from './utils/processor-options';
+import { defaultRunOptions } from './utils/run-options';
+import { RunOptions, createProcessor } from '@mdx-js/mdx';
 
 import { createContext } from './context';
+import { prepareMarkdown } from './utils/prepare-markdown';
 
-export { runOptions } from './run-options';
+export { compileMarkdownToSidebarJs, sidebarRunOptions } from './sidebar';
 
 export async function compileMarkdownToJs(markdown: string) {
   const ctx = createContext();
 
   const processor = createProcessor({
-    outputFormat: 'function-body',
-    elementAttributeNameCase: 'html',
-    providerImportSource: '@mdx-js/preact',
+    ...processorOptions,
     remarkPlugins: createRemarkPlugins(ctx),
     rehypePlugins: createRehypePlugins(ctx),
   });
@@ -22,7 +24,7 @@ export async function compileMarkdownToJs(markdown: string) {
   return String(await processor.process(prepared));
 }
 
-// https://mdxjs.com/docs/troubleshooting-mdx/#problems-writing-mdx
-function prepareMarkdown(markdown: string) {
-  return markdown.replace(/\{/g, '\\{').replace(/</g, '\\<');
-}
+export const runOptions: RunOptions = {
+  ...defaultRunOptions,
+  useMDXComponents,
+};

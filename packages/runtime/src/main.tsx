@@ -1,6 +1,8 @@
-import { render } from 'preact';
-import { Article } from './article';
 import { Providers } from './providers';
+import { render } from 'preact';
+
+import { Runtime } from './runtime';
+
 import './styles/index.scss';
 
 // lift markdown from embedded textarea
@@ -9,7 +11,7 @@ const markdown = textarea?.value || '';
 
 render(
   <Providers>
-    <Article markdown={markdown} />
+    <Runtime markdown={markdown} />
   </Providers>,
   document.getElementById('root')!
 );
