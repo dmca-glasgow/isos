@@ -4,27 +4,23 @@ import { MDXModule } from 'mdx/types';
 import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
-import { markdownToJs } from '@isos/processor';
+import { runOptions } from '@isos/processor';
 
 import './styles/index.scss';
 
 type Props = {
-  markdown: string;
+  jsString: string;
 };
 
-export function Article({ markdown }: Props) {
+export function Article({ jsString }: Props) {
   const [MDX, setMDX] = useState<MDXModule | null>(null);
   const MDXContent = MDX ? MDX.default : Fragment;
 
   useEffect(() => {
-    if (markdown !== '') {
-      (async () => {
-        const { jsString, runOptions } = await markdownToJs(markdown);
-        const newMdx = await run(jsString, runOptions);
-        setMDX(newMdx);
-      })();
-    }
-  }, [markdown]);
+    (async () => {
+      setMDX(await run(jsString, runOptions));
+    })();
+  }, [jsString]);
 
   return (
     <article>

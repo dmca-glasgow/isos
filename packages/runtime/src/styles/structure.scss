@@ -47,6 +47,7 @@ aside {
   overflow-y: scroll;
   overflow-x: hidden;
   background: var(--boxoutBg);
+  margin-left: -18rem;
   transition: margin-left 0.2s;
 
   scroll-behavior: smooth;
@@ -65,8 +66,8 @@ aside {
     }
   }
 
-  #root.hide-sidebar & {
-    margin-left: -18rem;
+  .show-sidebar & {
+    margin-left: 0;
   }
 
   #toc {
