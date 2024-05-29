@@ -41,7 +41,6 @@ const Wrapper = styled.header`
   flex: 0 0 auto;
   align-items: center;
 
-  height: 60px;
   padding: 0.6rem;
   box-sizing: border-box;
 

@@ -20,11 +20,9 @@ const StyledLogo = styled.div`
 `;
 
 const Wrapper = styled.div`
-  .logo-wrapper {
-    display: flex;
-    align-items: center;
-    width: 70%;
-  }
+  display: flex;
+  align-items: center;
+  width: 70%;
 `;
 
 const Crest = styled(CrestSvg)`

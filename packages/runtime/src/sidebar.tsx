@@ -1,19 +1,21 @@
+import { ViewOptions } from './view-options';
 import { styled } from '@linaria/react';
 import { run } from '@mdx-js/mdx';
-import classNames from 'classnames';
 import { MDXModule } from 'mdx/types';
 import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
 import { runOptions } from '@isos/processor';
 
+import { Hamburger } from './components/hamburger';
 import { Logo } from './components/logo';
 
 type Props = {
   jsString: string;
+  onHamburgerClick: () => unknown;
 };
 
-export function Sidebar({ jsString }: Props) {
+export function Sidebar({ jsString, onHamburgerClick }: Props) {
   const [TOC, setTOC] = useState<MDXModule | null>(null);
   const [showViewOptions, setShowViewOptions] = useState(false);
   const TOCContent = TOC ? TOC.default : Fragment;
@@ -25,26 +27,30 @@ export function Sidebar({ jsString }: Props) {
   }, [jsString]);
 
   return (
-    <StyledSidebar
-      className={classNames({
-        'show-toc': !showViewOptions,
-        'show-view-options': showViewOptions,
-      })}>
+    <StyledSidebar>
       <Logo />
+      <StyledHamburger onClick={onHamburgerClick} />
       <ViewOptionsToggle
         onClick={() => setShowViewOptions(!showViewOptions)}>
         View options
       </ViewOptionsToggle>
-      <Nav>
-        <TOCContent />
-      </Nav>
-      <ViewOptionsPane>View options pane</ViewOptionsPane>
+      {showViewOptions ? (
+        <ViewOptions />
+      ) : (
+        <Nav>
+          <TOCContent />
+        </Nav>
+      )}
     </StyledSidebar>
   );
 }
 
 const StyledSidebar = styled.aside`
   /* background: #ae7070; */
+`;
+
+const StyledHamburger = styled(Hamburger)`
+  right: 1rem;
 `;
 
 const ViewOptionsToggle = styled.div`
@@ -68,14 +74,4 @@ const ViewOptionsToggle = styled.div`
 
 const Nav = styled.nav`
   padding-top: 2rem;
-
-  .show-view-options & {
-    display: none;
-  }
-`;
-
-const ViewOptionsPane = styled.div`
-  .show-toc & {
-    display: none;
-  }
 `;

@@ -7,7 +7,7 @@ import {
   createProcessor,
 } from '@mdx-js/mdx';
 import { Nodes, Root } from 'mdast';
-import { toc as getToc } from 'mdast-util-toc';
+import { toc } from 'mdast-util-toc';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 
 import { prepareMarkdown } from '../utils/prepare-markdown';
@@ -46,28 +46,22 @@ export async function markdownToJs(markdown: string) {
   const estree = await processor.run(mdast);
 
   return {
-    article: String(processor.stringify(estree)),
+    article: processor.stringify(estree),
     tableOfContents: await createTableOfContents(mdast),
   };
 }
 
 async function createTableOfContents(mdast: Root) {
-  const toc = getToc(mdast as Nodes, { maxDepth: 3 }).map;
+  const tocMdast = toc(mdast as Nodes, { maxDepth: 3 }).map;
 
-  if (toc === undefined) {
+  if (tocMdast === undefined) {
     return '';
   }
 
-  console.log(toc);
-
-  const processor = createProcessor({
-    ...processorOptions,
-    remarkPlugins: [],
-    rehypePlugins: [],
-  });
+  const processor = createProcessor(processorOptions);
 
   // @ts-expect-error: mdast is not of type Program
-  const estree = await processor.run(toc);
+  const estree = await processor.run(tocMdast);
 
-  return String(processor.stringify(estree));
+  return processor.stringify(estree);
 }

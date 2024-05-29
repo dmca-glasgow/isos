@@ -1,4 +1,3 @@
-import { HamburgerIcon, IconDefs } from './components/icons';
 import { styled } from '@linaria/react';
 import classNames from 'classnames';
 import { useEffect, useState } from 'preact/hooks';
@@ -6,6 +5,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { markdownToJs } from '@isos/processor';
 
 import { Article } from './article';
+import { Hamburger } from './components/hamburger';
 import { Sidebar } from './sidebar';
 
 type Props = {
@@ -26,17 +26,25 @@ export function Runtime({ markdown }: Props) {
   }, [markdown]);
 
   return (
-    <Wrapper className={classNames({ 'show-sidebar': showSidebar })}>
-      <IconDefs />
+    <Wrapper
+      className={classNames('runtime', { 'show-sidebar': showSidebar })}>
       <main>
         <Article jsString={article} />
       </main>
-      <HamburgerIcon onClick={() => setShowSidebar(true)} />
-      <Sidebar jsString={toc} />
+      <StyledHamburger onClick={() => setShowSidebar(true)} />
+      <Sidebar
+        jsString={toc}
+        onHamburgerClick={() => setShowSidebar(false)}
+      />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  /* position: relative; */
+  /* overflow: auto; */
+`;
+
+const StyledHamburger = styled(Hamburger)`
+  position: fixed;
+  left: 2rem;
 `;
