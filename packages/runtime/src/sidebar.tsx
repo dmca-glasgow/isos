@@ -6,6 +6,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
 import { runOptions } from '@isos/processor';
+import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Hamburger } from './components/hamburger';
 import { Logo } from './components/logo';
@@ -17,8 +18,11 @@ type Props = {
 
 export function Sidebar({ jsString, onHamburgerClick }: Props) {
   const [TOC, setTOC] = useState<MDXModule | null>(null);
-  const [showViewOptions, setShowViewOptions] = useState(false);
   const TOCContent = TOC ? TOC.default : Fragment;
+  const [showViewOptions, setShowViewOptions] = useLocalStorage(
+    'show-view-options',
+    'false'
+  );
 
   useEffect(() => {
     (async () => {
@@ -31,10 +35,12 @@ export function Sidebar({ jsString, onHamburgerClick }: Props) {
       <Logo />
       <StyledHamburger onClick={onHamburgerClick} />
       <ViewOptionsToggle
-        onClick={() => setShowViewOptions(!showViewOptions)}>
+        onClick={() =>
+          setShowViewOptions(showViewOptions === 'true' ? 'false' : 'true')
+        }>
         View options
       </ViewOptionsToggle>
-      {showViewOptions ? (
+      {showViewOptions === 'true' ? (
         <ViewOptions />
       ) : (
         <Nav>

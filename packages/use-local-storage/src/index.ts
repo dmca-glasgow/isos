@@ -1,21 +1,18 @@
-import { useEffect, useState, useCallback } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 
 const evtTarget = new EventTarget();
 
-type UseLocalStorage = [
-  string | null,
-  (updatedValue: string | null) => unknown
-];
+type UseLocalStorage = [string, (updatedValue: string) => unknown];
 
 export function useLocalStorage(
   key: string,
-  defaultValue: string | null = ''
+  defaultValue: string
 ): UseLocalStorage {
   const cached = localStorage.getItem(key);
-  const [value, setValue] = useState(defaultValue || cached || '');
+  const [value, setValue] = useState(cached || defaultValue || '');
 
   const handleUpdate = useCallback(
-    (updatedValue: string | null) => {
+    (updatedValue: string) => {
       setValue(updatedValue || '');
       localStorage.setItem(key, updatedValue || '');
       evtTarget.dispatchEvent(
@@ -24,12 +21,6 @@ export function useLocalStorage(
     },
     [key]
   );
-
-  useEffect(() => {
-    if (defaultValue) {
-      handleUpdate(defaultValue);
-    }
-  }, [handleUpdate, defaultValue]);
 
   useEffect(() => {
     function listener({ detail }: CustomEvent) {
@@ -52,5 +43,5 @@ export function useLocalStorage(
     };
   });
 
-  return [value || null, handleUpdate];
+  return [value, handleUpdate];
 }
