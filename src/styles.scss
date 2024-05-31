@@ -1,6 +1,27 @@
+/* these styles override the runtime styles when viewed in the Tauri app */
+
 html#editor {
-  &, body, #root {
+  &,
+  body,
+  #root {
     height: 100%;
     overflow: hidden;
+  }
+
+  header {
+    height: 60px;
+  }
+
+  .runtime {
+    overflow: auto;
+
+    & > svg {
+      top: calc(2.5rem + 60px);
+    }
+
+    aside {
+      top: 60px;
+      height: calc(100% - 60px);
+    }
   }
 }

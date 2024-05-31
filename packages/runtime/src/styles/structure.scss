@@ -10,6 +10,11 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  flex: 1;
+  position: relative;
+}
+
 .hamburger-icon {
   position: absolute;
   width: 22px;
@@ -42,6 +47,7 @@ aside {
   overflow-y: scroll;
   overflow-x: hidden;
   background: var(--boxoutBg);
+  margin-left: -18rem;
   transition: margin-left 0.2s;
 
   scroll-behavior: smooth;
@@ -60,8 +66,8 @@ aside {
     }
   }
 
-  #root.hide-sidebar & {
-    margin-left: -18rem;
+  .show-sidebar & {
+    margin-left: 0;
   }
 
   #toc {
@@ -70,13 +76,12 @@ aside {
 }
 
 article {
-  flex: 1;
   overflow: auto;
   // transform: translateX(9rem);
   transition: transform 0.2s;
 
   // #root.hide-sidebar & {
-    transform: translateX(0);
+  transform: translateX(0);
   // }
 
   & > .wrapper {

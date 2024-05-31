@@ -6,23 +6,23 @@ import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 
 import { createRuntimeHtml } from '@isos/export';
 import { inputToMarkdown, parseFilePath } from '@isos/processor';
-import { Article, LoadingContext } from '@isos/runtime';
+import { LoadingContext, Runtime } from '@isos/runtime';
+import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Header } from './header';
-import { useLocalStorage } from './use-local-storage';
 
 import './styles.scss';
 
 let destroyWatcher = () => {};
 
 export function App() {
-  const [filePath, setFilePath] = useLocalStorage('file-path', null);
+  const [filePath, setFilePath] = useLocalStorage('file-path', '');
   const { loading, setLoading } = useContext(LoadingContext);
   const [markdown, setMarkdown] = useState('');
 
   // on load
   useEffect(() => {
-    if (filePath !== null) {
+    if (filePath !== '') {
       handleProcessFile(filePath);
     }
   }, []);
@@ -74,7 +74,7 @@ export function App() {
         handleProcessFile={handleProcessFile}
         handleExportFile={handleExportFile}
       />
-      <Article markdown={markdown} />
+      <Runtime markdown={markdown} />
     </StyledApp>
   );
 }

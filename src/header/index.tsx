@@ -1,4 +1,5 @@
 import { styled } from '@linaria/react';
+
 import { OpenFileButton } from './open-file-button';
 import { SaveFileButton } from './save-file-button';
 
@@ -39,10 +40,13 @@ const Wrapper = styled.header`
   display: flex;
   flex: 0 0 auto;
   align-items: center;
+
+  padding: 0.6rem;
+  box-sizing: border-box;
+
+  color: #fff;
   background: #000;
   /* background: #003865; */
-  color: #fff;
-  padding: 0.6rem;
   font-weight: 600;
 `;
 

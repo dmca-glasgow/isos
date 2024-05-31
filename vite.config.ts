@@ -2,11 +2,15 @@
 import preact from '@preact/preset-vite';
 import linaria from '@wyw-in-js/vite';
 import { defineConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
 import { configDefaults } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [
+    svgr({
+      include: '**/*.svg',
+    }),
     linaria({
       include: ['**/*.tsx'],
 
