@@ -6,13 +6,13 @@ import formatHtml from 'pretty';
 
 import { unindentStringAndTrim } from './unindent-string';
 
-export async function unitTestProcessor(markdown: string) {
-  const prepared = unindentStringAndTrim(markdown);
-  const md = await inputToMarkdown(FileType.markdown, prepared);
-  const { article } = await markdownToJs(md);
+export async function unitTestProcessor(md: string) {
+  const prepared = unindentStringAndTrim(md);
+  const markdown = await inputToMarkdown(FileType.markdown, prepared);
+  const { article } = await markdownToJs(markdown);
   const component = await run(article, runOptions);
   // @ts-expect-error
   const element = createElement(component.default);
-  const html = renderToString(element);
-  return formatHtml(html);
+  const html = formatHtml(renderToString(element));
+  return { markdown, html };
 }

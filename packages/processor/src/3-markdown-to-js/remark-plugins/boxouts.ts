@@ -19,14 +19,14 @@ import { Context } from '../context';
 export function boxouts(refStore: Context['refStore']) {
   const counter = createCounter();
   return (tree: Node) => {
-    // console.log('hey!', tree);
+    // console.dir(tree, { depth: null });
     visit(tree, 'containerDirective', (node: ContainerDirective) => {
       const name = node.name.trim();
       if (boxoutAllowList.includes(name)) {
         const count = counter.increment(name);
         node.data = {
           hProperties: createAttributes(node, count, refStore),
-          // hChildren: createBoxout(node, count) as any,
+          hChildren: createBoxout(node, count) as any,
         };
       }
     });

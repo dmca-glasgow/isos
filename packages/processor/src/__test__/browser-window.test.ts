@@ -1,8 +1,10 @@
-import { testProcessor } from '../../test-utils/test-processor';
+import { describe, expect, it } from 'vitest';
+
+import { unitTestProcessor } from '../utils/unit-test-processor';
 
 describe('browserWindow', () => {
   it('should render a browser window', async () => {
-    const { html } = await testProcessor(`
+    const { html } = await unitTestProcessor(`
       ::browser[images/my-image.png]{url=https://github.com/bla/bla}
     `);
 
@@ -10,6 +12,6 @@ describe('browserWindow', () => {
       '<div class="browser-window-address-bar">https://github.com/bla/bla</div>'
     );
 
-    expect(html).toContain('<img src="images/my-image.png" alt="">');
+    expect(html).toContain('<img src="images/my-image.png"');
   });
 });

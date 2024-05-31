@@ -4,7 +4,7 @@ import { unindentStringAndTrim } from '../../../utils/unindent-string';
 import { unitTestProcessor } from '../../../utils/unit-test-processor';
 
 test('task and answer', async () => {
-  const html = await unitTestProcessor(`
+  const { html } = await unitTestProcessor(`
     ::::task
     Test task
 

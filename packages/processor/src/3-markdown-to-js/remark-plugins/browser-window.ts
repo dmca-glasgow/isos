@@ -11,6 +11,7 @@ export function browserWindow() {
   return (tree: Node, file: VFile) => {
     visit(tree, 'leafDirective', (node: LeafDirective) => {
       if (node.name === 'browser') {
+        // console.dir(tree, { depth: null });
         template(node, file);
       }
     });
@@ -20,10 +21,15 @@ export function browserWindow() {
 function template(node: LeafDirective, file: VFile) {
   const url = node.attributes?.url || '';
   const alt = node.attributes?.alt || '';
-  const imagePath = getImagePath(node, file);
 
+  const imagePath = getImagePath(node, file);
   const browser = createBrowserWindow(imagePath, url, alt);
-  const caption = createCaption(alt);
+  const children = [browser];
+
+  if (alt.trim() !== '') {
+    const caption = createCaption(alt);
+    children.push(caption);
+  }
 
   Object.assign(node, {
     type: 'browser-window',
@@ -32,7 +38,7 @@ function template(node: LeafDirective, file: VFile) {
       hProperties: {
         className: ['browser'],
       },
-      hChildren: [browser, caption],
+      hChildren: children,
     },
   });
 }
@@ -118,10 +124,7 @@ function createBrowserHeader(url: string): Element {
   };
 }
 
-function createCaption(alt: string): Element | null {
-  if (alt.trim() === '') {
-    return null;
-  }
+function createCaption(alt: string): Element {
   return {
     type: 'element',
     tagName: 'figcaption',
@@ -147,7 +150,7 @@ function getImagePath(node: LeafDirective, file: VFile) {
   const firstChild = children[0] as Literal;
   const title = firstChild?.value || '';
   if (title.trim() === '') {
-    failMessage(file, 'Video has no title', node.position);
+    failMessage(file, 'Image has no title', node.position);
   }
   return title;
 }

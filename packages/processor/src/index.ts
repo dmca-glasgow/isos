@@ -18,6 +18,7 @@ export {
 export async function inputToMarkdown(type: FileType, content: string) {
   const { mdast } = await getMdast(type, content);
   const { precompiled } = await transformMdast(mdast);
+  // console.dir(precompiled, { depth: null });
   const { markdown } = serialiseMdastToMarkdown(precompiled);
   return markdown;
 }

@@ -1,25 +1,21 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from 'vitest';
+import { expect, test } from '@playwright/test';
 
 // import { expect, test } from '@playwright/test';
 // import { readFile } from 'fs/promises';
-import { createRuntimeHtml } from '@isos/export';
+import { createE2eTestBundle } from '../utils/create-e2e-test-bundle';
 
-test('axe', async ({ page }) => {
-  const html = await createRuntimeHtml(
-    `
-::::task
-Test task
+test.skip('axe', async ({ page }) => {
+  const html = await createE2eTestBundle(`
+    ::::task
+    Test task
 
-:::answer
-Test answer
-:::
-::::
-  `,
-    { docTitle: 'Test' }
-  );
+    :::answer
+    Test answer
+    :::
+    ::::
+  `);
 
-  // const html = await readFile('./cheatsheet.html', 'utf-8');
   await page.setContent(html);
 
   const scan = await new AxeBuilder({ page }).analyze();

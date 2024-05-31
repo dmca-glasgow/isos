@@ -6,7 +6,7 @@ export function useMDXComponents(): MDXComponents {
   // const ctx = {}
   return {
     div(props) {
-      if (props.class.includes('task')) {
+      if (props.class?.includes('task')) {
         return <Task {...props} />;
       }
       return <div {...props} />;
