@@ -15,7 +15,7 @@ type Props = {
 export function Runtime({ markdown }: Props) {
   const [toc, setToc] = useState('');
   const [article, setArticle] = useState('');
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
     (async () => {

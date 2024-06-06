@@ -25,9 +25,7 @@ export function Providers({ children }: Props) {
   return (
     <ViewOptionsProvider>
       <LoadingProvider>
-        {/* <MDXProvider components={components}> */}
         <MathJaxContext config={mathjaxConfig}>{children}</MathJaxContext>
-        {/* </MDXProvider> */}
       </LoadingProvider>
     </ViewOptionsProvider>
   );

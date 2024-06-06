@@ -9,7 +9,7 @@ import { configDefaults } from 'vitest/config';
 export default defineConfig(async () => ({
   plugins: [
     svgr({
-      include: '**/*.svg',
+      include: '**/assets/*.svg',
     }),
     linaria({
       include: ['**/*.tsx'],
@@ -24,17 +24,12 @@ export default defineConfig(async () => ({
       prefreshEnabled: false,
     }),
   ],
-
-  // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
-  //
   // 1. prevent vite from obscuring rust errors
-  clearScreen: false,
-  // 2. tauri expects a fixed port, fail if that port is not available
+  // clearScreen: false,
   server: {
     port: 1420,
     strictPort: true,
     watch: {
-      // 3. tell vite to ignore watching `src-tauri`
       ignored: ['**/src-tauri/**'],
     },
   },
@@ -47,13 +42,5 @@ export default defineConfig(async () => ({
       '**/_old/**',
       'packages/unified-latex-*/**',
     ],
-    // globals: true,
-    // environment: 'jsdom',
-    // browser: {
-    //   enabled: true,
-    //   name: 'chromium',
-    //   provider: 'playwright',
-    //   fileParallelism: false,
-    // },
   },
 }));

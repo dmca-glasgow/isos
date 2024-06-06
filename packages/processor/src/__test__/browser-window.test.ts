@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { unitTestProcessor } from '../utils/unit-test-processor';
+import { testProcessor } from '../utils/unit-test-processor';
 
 describe('browserWindow', () => {
   it('should render a browser window', async () => {
-    const { html } = await unitTestProcessor(`
+    const html = await testProcessor.md(`
       ::browser[images/my-image.png]{url=https://github.com/bla/bla}
     `);
 

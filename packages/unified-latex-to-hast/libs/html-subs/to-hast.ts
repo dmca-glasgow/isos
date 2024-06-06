@@ -1,10 +1,11 @@
-import * as Hast from 'hast';
-import { h } from 'hastscript';
+import * as Ast from '@unified-latex/unified-latex-types';
 import {
   extractFromHtmlLike,
   isHtmlLikeTag,
 } from '@unified-latex/unified-latex-util-html-like';
-import * as Ast from '@unified-latex/unified-latex-types';
+import * as Hast from 'hast';
+import { h } from 'hastscript';
+
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 function formatNodeForError(node: Ast.Node | any): string {
@@ -72,6 +73,7 @@ export function toHastWithLoggerFactory(
           printRaw(node.content)
         );
       case 'verb':
+        return h('code', { className: node.env }, printRaw(node.content));
       case 'verbatim':
         return h('pre', { className: node.env }, node.content);
       case 'whitespace':
@@ -103,7 +105,7 @@ export function toHastWithLoggerFactory(
         return h(
           'span',
           { className: ['macro', `macro-${node.content}`] },
-          // TODO: check if this has been fixed by change to line 125
+          // TODO: check if this has been fixed by change to line 121
           node.content === 'sidenote'
             ? (node.args || [])[0].content.map(toHast).flat()
             : (node.args || []).map(toHast).flat()

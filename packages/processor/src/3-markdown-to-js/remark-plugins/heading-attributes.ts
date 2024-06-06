@@ -1,7 +1,7 @@
+import { parseAttributes } from '../../utils/parse-attributes';
 import { Heading, Literal } from 'mdast';
 import { Node } from 'unist';
 import { visit } from 'unist-util-visit';
-import { parseAttributes } from '../../utils/parse-attributes';
 
 export function headingAttributes() {
   return (tree: Node) => {
@@ -12,6 +12,7 @@ export function headingAttributes() {
 }
 
 function transformHeadings(node: Heading) {
+  console.dir(node, { depth: null });
   const text = node.children[0] as Literal;
   const match = text.value.match(/^(.+)\{(.+)\}$/);
   if (match === null) {

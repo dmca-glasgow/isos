@@ -10,7 +10,7 @@ import { Nodes, Root } from 'mdast';
 import { toc } from 'mdast-util-toc';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 
-// import { prepareMarkdown } from '../utils/prepare-markdown';
+import { prepareMdast } from '../utils/prepare-mdast';
 import { createContext } from './context';
 
 export const runOptions: RunOptions = {
@@ -39,9 +39,10 @@ export async function markdownToJs(markdown: string) {
     rehypePlugins: createRehypePlugins(ctx),
   });
 
-  // TODO: do I need this?
-  // const prepared = prepareMarkdown(markdown);
-  const mdast = processor.parse(markdown);
+  console.log(markdown);
+  const mdast = await prepareMdast(markdown);
+  // console.log(prepared);
+  // const mdast = processor.parse(prepared);
 
   // @ts-expect-error: mdast is not of type Program
   const estree = await processor.run(mdast);

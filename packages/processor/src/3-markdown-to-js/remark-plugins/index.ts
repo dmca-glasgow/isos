@@ -1,10 +1,10 @@
-// import remarkMath from 'remark-math';
 import { boxouts } from './boxouts';
 import { headingAttributes } from './heading-attributes';
 import { linkAttributes } from './link-attributes';
-import directive from 'remark-directive';
 import { PluggableList } from 'unified';
 
+// import { visit } from 'unist-util-visit';
+import { remarkDefaultPlugins } from '../../utils/remark';
 // import { codeBlocks } from './code-blocks';
 // import { styledTerminal } from './styled-terminal';
 // import { images } from './images';
@@ -18,27 +18,26 @@ import { Context } from '../context';
 // import { textFile } from './text-file';
 // import { sideNote } from './sidenote';
 import { browserWindow } from './browser-window';
+
 // import remarkMdxEnhanced from 'remark-mdx-math-enhanced';
 // import frontmatter from 'remark-frontmatter';
-import { unescapeOpenBrace } from './unescape-open-brace';
+// import { unescapeOpenBrace } from './unescape-open-brace';
+// import { remarkDefaultPlugins } from '../../utils/remark';
 
 export function createRemarkPlugins(ctx: Context): PluggableList {
+  // console.log('hey!');
   return [
-    unescapeOpenBrace,
-    // remarkMath,
-    directive,
     // () => (tree) => {
     //   console.log(JSON.stringify(tree, null, 2));
     // },
-    // remarkMdxEnhanced,
-    // frontmatter,
-    // // custom plugins:
+    ...remarkDefaultPlugins,
     [boxouts, ctx],
+    // linkAttributes,
+    // headingAttributes,
+
     // [programSwitcher, ctx],
     // [languageSwitcher, ctx],
     // [plotAccessibilitySwitcher, ctx],
-    headingAttributes,
-    linkAttributes,
     // columns,
     // [embedAssetUrl, ctx],
     // youtubeVideos,
@@ -46,7 +45,7 @@ export function createRemarkPlugins(ctx: Context): PluggableList {
     // gitGraph,
     // textFile,
     // [sideNote, ctx],
-    browserWindow,
+    // browserWindow,
     // [codeBlocks, ctx],
     // styledTerminal,
     // [images, ctx],

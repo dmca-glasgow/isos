@@ -1,3 +1,4 @@
+// import { MathJax } from 'better-react-mathjax';
 import { MDXComponents } from 'mdx/types';
 
 import { Task } from './boxout/Task';
@@ -11,5 +12,11 @@ export function useMDXComponents(): MDXComponents {
       }
       return <div {...props} />;
     },
+    // code(props) {
+    //   if (props.class?.includes('math-inline')) {
+    //     return <MathJax {...props} />;
+    //   }
+    //   return <code {...props} />;
+    // },
   };
 }

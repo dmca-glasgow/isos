@@ -42,9 +42,13 @@ export function App() {
     destroyWatcher();
 
     destroyWatcher = await watchImmediate(newFilePath, async (event) => {
-      // TODO: find a better way to do this
-      // @ts-expect-error
-      if (event.type.modify.kind === 'data') {
+      const type = event.type as Record<string, any>;
+
+      if (type.create?.kind === 'file') {
+        handleProcessFile(newFilePath);
+      }
+
+      if (type.modify?.kind === 'data') {
         handleProcessFile(newFilePath);
       }
     });
