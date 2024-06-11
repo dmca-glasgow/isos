@@ -102,6 +102,9 @@ export function toHastWithLoggerFactory(
           )}\``,
           node
         );
+        if (node.content === 'begin') {
+          console.log(node);
+        }
         return h(
           'span',
           { className: ['macro', `macro-${node.content}`] },

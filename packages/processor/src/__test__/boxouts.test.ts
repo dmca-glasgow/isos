@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { unindentStringAndTrim } from '../utils/unindent-string';
-import { testProcessor } from '../utils/unit-test-processor';
+import { unindentStringAndTrim } from '../test-utils/unindent-string';
+import { testProcessor } from '../test-utils/unit-test-processor';
 
 test('render a boxout', async () => {
   const latex = `
@@ -19,8 +19,8 @@ test('render a boxout', async () => {
   const html = await testProcessor.both(latex, markdown);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="boxout example" id="example-1"><span class="type">Example 1</span>
-      <p>An <code>example\\n</code> of <em>this</em>!</p>
+    <div id="example-1" class="boxout example">
+      <p><span class="type">Example <span class="count">1.</span></span> An <code>example\\n</code> of <em>this</em>!</p>
     </div>
   `);
 
