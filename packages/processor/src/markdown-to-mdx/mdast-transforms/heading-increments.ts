@@ -58,12 +58,10 @@ function transformHeading(
   }
 
   const id = slugger.slug(attributes.id || text);
+  const label = headingCounter.getCounts(heading.depth).join('.');
 
   if (attributes.id) {
-    ctx.refMap[attributes.id] = {
-      id,
-      label: headingCounter.getCounts(heading.depth).join('.'),
-    };
+    ctx.refMap[attributes.id] = { id, label };
   }
 
   heading.data = {
@@ -74,12 +72,10 @@ function transformHeading(
     },
   };
 
-  if (!headingShouldIncrement(attributes)) {
-    return;
-  }
-
-  if (headingShouldDisplayCount(heading)) {
-    const label = headingCounter.format(heading.depth);
+  if (
+    headingShouldIncrement(attributes) &&
+    headingShouldDisplayCount(heading)
+  ) {
     heading.children.unshift(
       {
         type: 'text',
@@ -92,7 +88,7 @@ function transformHeading(
           hChildren: [
             {
               type: 'text',
-              value: label,
+              value: `${label}.`,
             },
           ],
         },
@@ -198,11 +194,13 @@ function transformEnvironment(
       children: [type],
     });
   } else {
-    const paragraph = container.children[0] as Paragraph;
-    paragraph.children.unshift(type, {
-      type: 'text',
-      value: ' ',
-    });
+    const firstChild = container.children[0];
+    if (firstChild.type === 'paragraph') {
+      firstChild.children.unshift(type, {
+        type: 'text',
+        value: ' ',
+      });
+    }
   }
 }
 

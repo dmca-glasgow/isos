@@ -1,0 +1,162 @@
+// https://www.smashingmagazine.com/2013/02/setting-weights-and-styles-at-font-face-declaration
+@font-face {
+  font-family: 'ComputerModern';
+  src: url('../assets/fonts/cm-serif.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ComputerModernBold';
+  src: url('../assets/fonts/cm-serif-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ComputerModernItalic';
+  src: url('../assets/fonts/cm-serif-italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'ComputerModernBoldItalic';
+  src: url('../assets/fonts/cm-serif-bold-italic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
+
+body {
+  font-family: 'ComputerModern', arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+.boxout .type {
+  font-family: 'ComputerModernBold', arial, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+em {
+  font-family: 'ComputerModernItalic', arial, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+strong em,
+em strong {
+  font-family: 'ComputerModernBoldItalic', arial, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+a {
+  text-decoration: none;
+  color: $burgundy;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1em;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1em 0 0.5em;
+}
+
+p {
+  text-indent: 2em;
+  margin-bottom: 1em;
+}
+
+.center {
+  text-align: center;
+}
+
+@counter-style latex-style-ol {
+  symbols: '1' '2' '4' '5' '6' '7' '8' '9';
+  prefix: '(';
+  suffix: ')';
+}
+
+ol {
+  list-style: latex-style-ol;
+}
+
+// ol {
+//   list-style: none;
+//   counter-reset: muffins;
+//   li {
+//     counter-increment: muffins;
+//     &:before {
+//       content: '(' counter(muffins) ')';
+//     }
+//   }
+// }
+
+ul,
+ol {
+  li {
+    padding-left: 0.3em;
+    p {
+      margin-left: 4em;
+      text-indent: 0;
+    }
+  }
+}
+
+.boxout {
+  &.proposition,
+  &.lemma {
+    font-style: italic;
+  }
+
+  .type {
+    text-indent: 0;
+    display: inline-block;
+    padding-right: 0.3em;
+
+    // homemade small-caps
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    &::first-letter,
+    .count {
+      font-size: 1rem;
+    }
+  }
+
+  &.proof,
+  &.solution {
+    padding-right: 1rem;
+    .proof-box {
+      float: right;
+      font-size: 1.4em;
+      position: relative;
+      bottom: 0.15em;
+    }
+  }
+}

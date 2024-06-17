@@ -2,13 +2,19 @@ import { createHeadings } from './headings';
 import { createInlineMaths, createMaths } from './maths';
 import { Element } from 'hast';
 import { State } from 'hast-util-to-mdast';
+import { PhrasingContent } from 'mdast';
+import { ContainerDirective } from 'mdast-util-directive';
 
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
 import { createEnvironment } from './environment';
+import { createFancySection } from './fancysection';
+import { createFramed } from './framed';
 import { createLabel } from './label';
 import { createReference } from './reference';
 import { createSideNote } from './sidenote';
 import { createTitle } from './title';
+
+// import { createUnderline } from './underline';
 
 export const handlers = {
   h1: headingHandler,
@@ -20,6 +26,8 @@ export const handlers = {
 
   span: spanHandler,
   div: divHandler,
+  center: centerHandler,
+  // img: imgHandler,
 };
 
 function headingHandler(state: State, node: Element) {
@@ -61,6 +69,12 @@ function spanHandler(state: State, node: Element) {
       state.patch(node, result);
       return result;
     }
+
+    if (className.includes('macro-fancysection')) {
+      const result = createFancySection(state, node);
+      state.patch(node, result);
+      return result;
+    }
   }
 
   return state.all(node);
@@ -85,8 +99,27 @@ function divHandler(state: State, node: Element) {
         state.patch(node, result);
         return result;
       }
+
+      if (environmentName === 'framed') {
+        const result = createFramed(state, node);
+        state.patch(node, result);
+        return result;
+      }
     }
   }
 
   return state.all(node);
+}
+
+function centerHandler(state: State, node: Element): ContainerDirective {
+  return {
+    type: 'containerDirective',
+    name: 'center',
+    children: [
+      {
+        type: 'paragraph',
+        children: state.all(node) as PhrasingContent[],
+      },
+    ],
+  };
 }

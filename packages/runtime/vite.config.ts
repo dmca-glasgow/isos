@@ -21,11 +21,12 @@ export default defineConfig(async () => ({
   },
   build: {
     sourcemap: true,
+    assetsInlineLimit: 5 * 1000 * 1000,
     rollupOptions: {
       output: {
         entryFileNames: `assets/runtime.js`,
-        assetFileNames: `assets/runtime.[ext]`,
-        chunkFileNames: `assets/chunk-[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
+        chunkFileNames: `assets/[name]-chunk.js`,
       },
     },
   },

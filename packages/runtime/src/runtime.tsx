@@ -7,6 +7,8 @@ import { Article } from './article';
 import { Hamburger } from './components/hamburger';
 import { Sidebar, setShowSidebar } from './sidebar';
 
+import './styles/index.scss';
+
 type Props = {
   markdown: string;
 };
@@ -28,7 +30,10 @@ export function Runtime({ markdown }: Props) {
       <main>
         <Article jsString={article} />
       </main>
-      <StyledHamburger onClick={() => setShowSidebar(true)} />
+      <Hamburger
+        className="hamburger"
+        onClick={() => setShowSidebar(true)}
+      />
       <Sidebar jsString={toc} />
     </Wrapper>
   );
@@ -36,9 +41,4 @@ export function Runtime({ markdown }: Props) {
 
 const Wrapper = styled.div`
   /* overflow: auto; */
-`;
-
-const StyledHamburger = styled(Hamburger)`
-  position: fixed;
-  left: 2rem;
 `;

@@ -1,0 +1,154 @@
+// https://www.smashingmagazine.com/2013/02/setting-weights-and-styles-at-font-face-declaration
+@font-face {
+  font-family: 'LinuxLibertine';
+  src: url('../assets/fonts/ll.woff2') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LinuxLibertineBold';
+  src: url('../assets/fonts/ll-bold.woff2') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LinuxLibertineItalic';
+  src: url('../assets/fonts/ll-italic.woff2') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'LinuxLibertineBoldItalic';
+  src: url('../assets/fonts/ll-bold-italic.woff2') format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
+
+body {
+  font-family: 'LinuxLibertine', arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+strong,
+.boxout .type {
+  font-family: 'LinuxLibertineBold', arial, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+em {
+  font-family: 'LinuxLibertineItalic', arial, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+strong em,
+em strong {
+  font-family: 'LinuxLibertineBoldItalic', arial, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+a {
+  text-decoration: none;
+  color: $burgundy;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+h2 {
+  position: relative;
+  background: #b9e1ee;
+  padding: 0 0 0.2em 1.5em;
+  font-size: 1rem;
+  margin: 1.5em 0;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: -1.5em;
+    top: 0;
+    bottom: 0;
+    width: 2.5em;
+    background: #4ec0e3;
+    border-radius: 1em;
+  }
+}
+
+p {
+  text-indent: 1em;
+  margin-bottom: 1em;
+}
+
+ul {
+  li {
+    margin-left: 1.5em;
+    // padding-left: 1em;
+    p {
+      text-indent: 0;
+      margin-bottom: 0.3em;
+    }
+
+    li {
+      list-style-type: none;
+      margin-left: 1em;
+      &:before {
+        content: '–';
+        float: left;
+      }
+      p {
+        margin-left: 1em;
+      }
+    }
+  }
+}
+
+.framed {
+  border: 1px solid black;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  p {
+    text-indent: 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.boxout {
+  &.proposition,
+  &.lemma {
+    font-style: italic;
+  }
+
+  .type {
+    text-indent: 0;
+    display: inline-block;
+    padding-right: 0.3em;
+  }
+
+  &.proof,
+  &.solution {
+    padding-right: 1rem;
+    .proof-box {
+      float: right;
+      font-size: 1.4em;
+      position: relative;
+      bottom: 0.15em;
+    }
+  }
+}

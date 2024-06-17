@@ -1,7 +1,7 @@
 import { createRehypePlugins } from './hast-transforms';
 import { markdownToMdast } from './mdast-transforms';
 import { useMDXComponents } from './mdx-handlers';
-import { Options } from './options';
+import { Options, defaultOptions } from './options';
 import {
   ProcessorOptions,
   RunOptions,
@@ -31,14 +31,20 @@ const processorOptions: ProcessorOptions = {
   providerImportSource: '@mdx-js/preact',
 };
 
-export async function markdownToJs(markdown: string, options?: Options) {
+export async function markdownToJs(
+  markdown: string,
+  options: Partial<Options> = {}
+) {
   const ctx = createContext();
   const mdast = await markdownToMdast(markdown, ctx);
   // console.dir(mdast, { depth: null });
 
   const processor = createProcessor({
     ...processorOptions,
-    rehypePlugins: createRehypePlugins(ctx, options),
+    rehypePlugins: createRehypePlugins(ctx, {
+      ...defaultOptions,
+      ...options,
+    }),
   });
 
   // @ts-expect-error: mdast is not of type Program

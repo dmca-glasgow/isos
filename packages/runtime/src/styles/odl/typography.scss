@@ -50,24 +50,24 @@
 
 // readability
 article {
+  position: relative;
   padding: 2em 0 5em;
+  margin: 0 auto;
+  width: calc(66% * var(--lineWidth, 1));
   font-size: calc(1rem * var(--fontSize, 1));
   line-height: calc(1.75 * var(--lineSpacing, 1));
-  letter-spacing: calc(var(--letterSpacing, 0) * 1em);
-  & > .wrapper {
-    width: calc(66% * var(--lineWidth, 1));
-  }
+  letter-spacing: calc(1em * var(--letterSpacing, 0));
 
   #root.pdf & {
     font-size: 14px;
-    & > .wrapper {
+    article {
       width: 90%;
     }
   }
 }
 
 @media (max-width: 1000px) {
-  article > .wrapper {
+  article {
     width: calc(85% * var(--lineWidth, 1));
   }
 }

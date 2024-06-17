@@ -22,6 +22,16 @@ export function boxouts(ctx: Context) {
 
         createProofBox(node);
       }
+
+      if (name === 'framed') {
+        node.data = {
+          ...(node.data || {}),
+          hProperties: {
+            ...(node.data?.hProperties || {}),
+            className: 'framed',
+          },
+        };
+      }
     });
   };
 }
@@ -45,7 +55,14 @@ function createProofBox(node: ContainerDirective) {
       },
     };
 
-    // @ts-expect-error
-    node.children.push(proofBox);
+    const lastP = node.children.findLast((o) => o.type === 'paragraph');
+
+    if (lastP) {
+      // @ts-expect-error
+      lastP.children.push(proofBox);
+    } else {
+      // @ts-expect-error
+      node.children.push(proofBox);
+    }
   }
 }

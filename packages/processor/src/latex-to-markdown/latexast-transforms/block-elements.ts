@@ -10,35 +10,29 @@ const parbreak: Parbreak = {
   type: 'parbreak',
 };
 
-export function insertParbreaksAroundDisplayMaths() {
+export function insertParbreaksAroundBlockElements() {
   return (tree: Root) => {
     visit(tree, (node, info) => {
-      if (isDisplayMath(node)) {
+      if (shouldGetParbreaks(node)) {
         const parent = (info.parents[0] || {}) as Root;
         const children = parent.content || [];
 
         parent.content = children.reduce((acc: Node[], child, idx) => {
-          const siblingBefore = (children[idx - 1] || {}) as Node;
-          const siblingAfter = (children[idx + 1] || {}) as Node;
-
           if (
             idx > 0 &&
-            isDisplayMath(child) &&
-            !isParBreak(siblingBefore)
+            shouldGetParbreaks(child) &&
+            !isParBreak(children[idx - 1])
           ) {
             acc.push(parbreak, parbreak);
           }
-
           acc.push(child);
-
           if (
             idx < children.length - 1 &&
-            isDisplayMath(child) &&
-            !isParBreak(siblingAfter)
+            shouldGetParbreaks(child) &&
+            !isParBreak(children[idx + 1])
           ) {
             acc.push(parbreak, parbreak);
           }
-
           return acc;
         }, []);
       }
@@ -46,10 +40,22 @@ export function insertParbreaksAroundDisplayMaths() {
   };
 }
 
+function shouldGetParbreaks(node: Node | Argument) {
+  return isDisplayMath(node) || isEnumerate(node) || isItemize(node);
+}
+
 function isDisplayMath(node: Node | Argument) {
   return node.type === 'displaymath' || node.type === 'mathenv';
 }
 
-function isParBreak(node: Node) {
-  return node.type === 'parbreak';
+function isEnumerate(node: Node | Argument) {
+  return node.type === 'environment' && node.env === 'enumerate';
+}
+
+function isItemize(node: Node | Argument) {
+  return node.type === 'environment' && node.env === 'itemize';
+}
+
+function isParBreak(node?: Node) {
+  return node?.type === 'parbreak';
 }

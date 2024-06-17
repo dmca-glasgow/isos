@@ -15,7 +15,8 @@ export function createHeadingCounter(): HeadingCounter {
       return count[depth - 1];
     },
     getCounts(depth: number) {
-      return count.slice(1, depth);
+      // TODO: `2` relates to headingDepth - (subsection - 1)
+      return count.slice(2, depth);
     },
     increment(depth: number) {
       ++count[depth - 1];

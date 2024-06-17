@@ -20,7 +20,6 @@ export async function inputToMarkdown(type: FileType, content: string) {
   const mdast = await getMdast(type, content, ctx);
   const processor = createRemarkProcessor(createMdastTransforms(ctx));
   const precompiled = await processor.run(mdast);
-  // console.dir(precompiled, { depth: null });
   return processor.stringify(precompiled as MDastRoot).trim();
 }
 
@@ -42,6 +41,8 @@ async function parseLatexToMdast(latex: string, ctx: Context) {
         // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
         sidenote: { signature: 'm' },
         title: { signature: 'om' },
+        underline: { signature: 'm' }, // TODO: create PR in unified-latex-ctan
+        fancysection: { signature: 'm' },
       },
     })
     .parse(latex);

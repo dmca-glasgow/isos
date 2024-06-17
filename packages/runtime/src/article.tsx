@@ -6,8 +6,6 @@ import { Fragment } from 'preact/jsx-runtime';
 
 import { runOptions } from '@isos/processor';
 
-import './styles/index.scss';
-
 type Props = {
   jsString: string;
 };
@@ -24,11 +22,9 @@ export function Article({ jsString }: Props) {
 
   return (
     <article>
-      <div className="wrapper">
-        {/* <MathJax> */}
-        <MDXContent />
-        {/* </MathJax> */}
-      </div>
+      {/* <MathJax> */}
+      <MDXContent />
+      {/* </MathJax> */}
     </article>
   );
 }

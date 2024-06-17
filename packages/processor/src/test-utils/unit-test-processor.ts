@@ -33,6 +33,7 @@ async function markdownToHtml(md: string) {
   const markdown = await inputToMarkdown(FileType.markdown, prepared);
   const { article } = await markdownToJs(markdown, {
     mathsAsTex: true,
+    noWrapper: true,
   });
   const component = await run(article, runOptions);
   // @ts-expect-error

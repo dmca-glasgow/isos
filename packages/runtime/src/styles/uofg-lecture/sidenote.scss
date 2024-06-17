@@ -1,0 +1,20 @@
+article > .wrapper.has-sidenotes {
+  width: calc(50% * var(--lineWidth, 1));
+  padding-right: 22vw;
+}
+
+.sidenote {
+  display: inline;
+  small {
+    float: right;
+    clear: both;
+    width: 20vw;
+    margin-right: calc(-20vw - 2rem);
+    margin-bottom: 1em;
+
+    .sidenote-parenthesis {
+      position: absolute;
+      left: -99999px;
+    }
+  }
+}

@@ -60,7 +60,7 @@ export function App() {
     };
     const bundle = {
       css: await readTextFile(
-        await resolveResource('resources/runtime.css')
+        await resolveResource('resources/index.css')
       ),
       js: await readTextFile(
         await resolveResource('resources/runtime.js')

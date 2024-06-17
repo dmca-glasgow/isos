@@ -20,12 +20,14 @@ export type Reference = {
 export type Context = {
   theorems: Theorems;
   refMap: Record<string, Reference>;
+  hasSidenotes: boolean;
 };
 
 export function createContext(): Context {
   return {
     theorems: {},
     refMap: {},
+    hasSidenotes: false,
     // cacheDir: '',
     // hasSidenotes: false,
     // figureCounter: 0,
