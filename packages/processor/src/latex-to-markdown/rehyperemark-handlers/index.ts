@@ -6,8 +6,9 @@ import { PhrasingContent } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
+import { Context } from '../context';
 import { createEnvironment } from './environment';
-import { createFancySection } from './fancysection';
+import { createFancySection, createFancyTitle } from './fancy';
 import { createFramed } from './framed';
 import { createLabel } from './label';
 import { createReference } from './reference';
@@ -15,6 +16,24 @@ import { createSideNote } from './sidenote';
 import { createTitle } from './title';
 
 // import { createUnderline } from './underline';
+
+export function createRehypeRemarkHandlers(ctx: Context) {
+  return {
+    h1: headingHandler,
+    h2: headingHandler,
+    h3: headingHandler,
+    h4: headingHandler,
+    h5: headingHandler,
+    h6: headingHandler,
+
+    span(state: State, node: Element) {
+      return spanHandler(ctx, state, node);
+    },
+    div: divHandler,
+    center: centerHandler,
+    // img: imgHandler,
+  };
+}
 
 export const handlers = {
   h1: headingHandler,
@@ -36,7 +55,7 @@ function headingHandler(state: State, node: Element) {
   return result;
 }
 
-function spanHandler(state: State, node: Element) {
+function spanHandler(ctx: Context, state: State, node: Element) {
   const { className } = node.properties;
 
   if (Array.isArray(className)) {
@@ -75,6 +94,12 @@ function spanHandler(state: State, node: Element) {
       state.patch(node, result);
       return result;
     }
+
+    if (className.includes('macro-fancytitle')) {
+      const result = createFancyTitle(ctx);
+      state.patch(node, result);
+      return result;
+    }
   }
 
   return state.all(node);
@@ -102,7 +127,9 @@ function divHandler(state: State, node: Element) {
 
       if (environmentName === 'framed') {
         const result = createFramed(state, node);
+        // console.log(result);
         state.patch(node, result);
+        // console.log(state);
         return result;
       }
     }

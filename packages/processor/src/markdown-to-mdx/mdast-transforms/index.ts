@@ -10,10 +10,12 @@ import { createRemarkProcessor } from '../../shared-utils/remark-pipeline';
 import { Context } from '../context';
 import { center } from './center';
 import { extractFrontmatter } from './extract-frontmatter';
+import { fancyTitle } from './fancy-title';
 
 export async function markdownToMdast(markdown: string, ctx: Context) {
   const processor = createRemarkProcessor([
     [extractFrontmatter, ctx],
+    fancyTitle,
     [headingIncrements, ctx],
     headingAttributes,
     [references, ctx],

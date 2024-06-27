@@ -5,6 +5,7 @@ import { extractTheoremDefinitions } from './extract-theorem-definitions';
 import { PluggableList } from 'unified';
 
 import { Context } from '../context';
+import { extractFancyTitle } from './extract-fancytitle';
 import { replaceTildeWithSpace } from './replace-tilde-with-space';
 
 export function createLatexastTransforms(ctx: Context): PluggableList {
@@ -12,6 +13,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     expandDocumentMacrosPlugin,
     expandMathOperatorPlugin,
     [extractTheoremDefinitions, ctx],
+    [extractFancyTitle, ctx],
     replaceTildeWithSpace,
     insertParbreaksAroundBlockElements,
   ];

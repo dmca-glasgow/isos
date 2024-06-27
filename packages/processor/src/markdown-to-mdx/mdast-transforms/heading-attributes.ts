@@ -15,12 +15,17 @@ export function headingAttributes() {
 }
 
 function transformHeadings(node: Heading) {
-  const lastChild = node.children[node.children.length - 1] as Text;
-  const lastChildValue = lastChild?.value || '';
-  const { text, attributes } = parseAttributes(lastChildValue);
-  lastChild.value = text;
+  const lastTextIdx = node.children.findLastIndex(
+    (o) => o.type === 'text'
+  );
+  const lastTextChild = node.children[lastTextIdx] as Text;
+  const lastChildValue = lastTextChild?.value || '';
 
   if (hasAttributes(lastChildValue)) {
+    const { text, attributes } = parseAttributes(lastChildValue);
+
+    lastTextChild.value = text;
+
     const classes = attributes.classes.filter((s) => s !== 'starred');
     if (classes.length) {
       node.data = {

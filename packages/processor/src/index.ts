@@ -8,3 +8,5 @@ export {
 export { inputToMarkdown } from './latex-to-markdown';
 
 export { markdownToJs, runOptions } from './markdown-to-mdx';
+
+export { createContext } from './latex-to-markdown/context';

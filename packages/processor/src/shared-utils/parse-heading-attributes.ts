@@ -29,6 +29,8 @@ export function parseAttributes(attributeStr: string): ParsedAttributes {
     };
   }
 
+  const text = match[1].trim();
+
   const attributes = match[2].split(' ').reduce((acc: Attributes, str) => {
     if (str.startsWith('#')) {
       acc.id = str.slice(1);
@@ -41,7 +43,7 @@ export function parseAttributes(attributeStr: string): ParsedAttributes {
   }, defaultAttributes);
 
   return {
-    text: match[1].trim(),
+    text,
     attributes,
   };
 }

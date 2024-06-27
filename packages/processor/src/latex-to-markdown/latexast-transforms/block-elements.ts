@@ -16,7 +16,6 @@ export function insertParbreaksAroundBlockElements() {
       if (shouldGetParbreaks(node)) {
         const parent = (info.parents[0] || {}) as Root;
         const children = parent.content || [];
-
         parent.content = children.reduce((acc: Node[], child, idx) => {
           if (
             idx > 0 &&

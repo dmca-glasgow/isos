@@ -1,6 +1,6 @@
 import { createLatexastTransforms } from './latexast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
-import { handlers } from './rehyperemark-handlers';
+import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
 import { Root as HastRoot } from 'hast';
 import { Root as MDastRoot } from 'mdast';
 import rehypeRemark from 'rehype-remark';
@@ -10,29 +10,29 @@ import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
 import { unifiedLatexFromString } from '@isos/unified-latex-util-parse';
 
 import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
-import { Context, createContext } from './context';
+import { Context } from './context';
 import { addFrontmatter } from './mdast-transforms/add-frontmatter';
 import { formatBreak } from './mdast-transforms/format-break';
 import { FileType } from './utils/parse-file-path';
 
-export async function inputToMarkdown(type: FileType, content: string) {
-  const ctx = createContext();
-  const mdast = await getMdast(type, content, ctx);
+export async function inputToMarkdown(ctx: Context) {
+  const mdast = await getMdast(ctx);
   const processor = createRemarkProcessor(createMdastTransforms(ctx));
   const precompiled = await processor.run(mdast);
-  return processor.stringify(precompiled as MDastRoot).trim();
+  const markdown = processor.stringify(precompiled as MDastRoot).trim();
+  return markdown;
 }
 
-function getMdast(type: FileType, content: string, ctx: Context) {
-  switch (type) {
+function getMdast(ctx: Context) {
+  switch (ctx.type) {
     case FileType.latex:
-      return parseLatexToMdast(content, ctx);
+      return parseLatexToMdast(ctx);
     default:
-      return createRemarkProcessor().parse(content);
+      return createRemarkProcessor().parse(ctx.content);
   }
 }
 
-async function parseLatexToMdast(latex: string, ctx: Context) {
+export async function parseLatexToMdast(ctx: Context) {
   const parsed = unified()
     // @ts-expect-error
     .use(unifiedLatexFromString, {
@@ -41,11 +41,12 @@ async function parseLatexToMdast(latex: string, ctx: Context) {
         // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
         sidenote: { signature: 'm' },
         title: { signature: 'om' },
-        underline: { signature: 'm' }, // TODO: create PR in unified-latex-ctan
+        underline: { signature: 'm' }, // TODO: create PR in unified-latex-ctan?
         fancysection: { signature: 'm' },
+        exsheetnumber: { signature: 'm' },
       },
     })
-    .parse(latex);
+    .parse(ctx.content);
 
   const latexAst = await unified()
     .use(createLatexastTransforms(ctx))
@@ -57,7 +58,7 @@ async function parseLatexToMdast(latex: string, ctx: Context) {
     .run(latexAst);
 
   const mdast = await createRemarkProcessor([
-    [rehypeRemark, { handlers }],
+    [rehypeRemark, { handlers: createRehypeRemarkHandlers(ctx) }],
     [addFrontmatter, ctx],
     formatBreak,
   ]).run(hast as HastRoot);

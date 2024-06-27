@@ -9,8 +9,11 @@ article > .wrapper.has-sidenotes {
     float: right;
     clear: both;
     width: 20vw;
+    margin-top: 0.1em;
     margin-right: calc(-20vw - 2rem);
     margin-bottom: 1em;
+    line-height: 1.25;
+    text-indent: 0;
 
     .sidenote-parenthesis {
       position: absolute;

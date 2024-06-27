@@ -4,6 +4,7 @@ import { createElement } from 'preact';
 import renderToString from 'preact-render-to-string';
 import formatHtml from 'pretty';
 
+import { Context, createTestContext } from '../latex-to-markdown/context';
 import { unindentStringAndTrim } from './unindent-string';
 
 export const testProcessor = {
@@ -25,12 +26,14 @@ export const testProcessor = {
 
 async function latexToMarkdown(latex: string) {
   const prepared = unindentStringAndTrim(latex);
-  return inputToMarkdown(FileType.latex, prepared);
+  const ctx = createTestContext(FileType.latex, prepared);
+  return inputToMarkdown(ctx);
 }
 
 async function markdownToHtml(md: string) {
   const prepared = unindentStringAndTrim(md);
-  const markdown = await inputToMarkdown(FileType.markdown, prepared);
+  const ctx = createTestContext(FileType.markdown, prepared);
+  const markdown = await inputToMarkdown(ctx);
   const { article } = await markdownToJs(markdown, {
     mathsAsTex: true,
     noWrapper: true,

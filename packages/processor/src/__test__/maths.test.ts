@@ -1,5 +1,9 @@
+import { Root } from 'mdast';
 import { expect, test } from 'vitest';
 
+import { parseLatexToMdast } from '../latex-to-markdown';
+import { createContext } from '../latex-to-markdown/context';
+import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
 import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
@@ -186,7 +190,35 @@ test('parsing bug3', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="solution-1" class="boxout solution">
-      <p><span class="type">Solution.</span> We treat the equation</p>$$\\tfrac{1}{2}(e^{iz}+ e^{-iz}) = 10$$<p>as a quadratic equation in $e^{iz}$. After rearrangement it becomes</p>$$(e^{iz})^{2}-20 e^{iz}+ 1 = 0.$$<p>The solutions are</p>$$e^{iz}= \\dfrac{20\\pm\\sqrt{396}}{2}= 10\\pm\\sqrt{99},$$<p>so that</p>$$iz = \\log(10\\pm\\sqrt{99}) + 2k\\pi i,$$<p>that is,</p>$$z = -i\\log(10\\pm\\sqrt{99}) + 2k\\pi,$$<p>where $k$ is an arbitrary integer.</p><span class="proof-box">◻</span>
+      <p><span class="type">Solution.</span> We treat the equation</p>$$\\tfrac{1}{2}(e^{iz}+ e^{-iz}) = 10$$<p>as a quadratic equation in $e^{iz}$. After rearrangement it becomes</p>$$(e^{iz})^{2}-20 e^{iz}+ 1 = 0.$$<p>The solutions are</p>$$e^{iz}= \\dfrac{20\\pm\\sqrt{396}}{2}= 10\\pm\\sqrt{99},$$<p>so that</p>$$iz = \\log(10\\pm\\sqrt{99}) + 2k\\pi i,$$<p>that is,</p>$$z = -i\\log(10\\pm\\sqrt{99}) + 2k\\pi,$$<p>where $k$ is an arbitrary integer.<span class="proof-box">◻</span></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('parsing bug4', async () => {
+  const markdown = await testProcessor.latex(`
+    \\begin{framed}
+    The $A$.
+    \\end{framed}
+  `);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    :::framed
+    The $A$.
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <div class="framed">
+      <p>The $A$.</p>
     </div>
   `);
 

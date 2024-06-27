@@ -4,7 +4,7 @@ import {
 } from '../../shared-utils/parse-heading-attributes';
 import GithubSlugger from 'github-slugger';
 import { startCase } from 'lodash';
-import { Heading, Paragraph, Root, Text } from 'mdast';
+import { Heading, Root, Text } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
@@ -51,7 +51,8 @@ function transformHeading(
   headingCounter: HeadingCounter,
   ctx: Context
 ) {
-  const { text, attributes } = parseAttributes(toString(heading.children));
+  const textChildren = heading.children.filter((o) => o.type === 'text');
+  const { text, attributes } = parseAttributes(toString(textChildren));
 
   if (headingShouldIncrement(attributes)) {
     headingCounter.increment(heading.depth);

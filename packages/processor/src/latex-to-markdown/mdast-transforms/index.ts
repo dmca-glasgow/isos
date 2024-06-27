@@ -1,4 +1,5 @@
 import { headingLabels } from './heading-labels';
+import { inlineImages } from './inline-images';
 // import { Node, Root } from 'mdast';
 import { PluggableList } from 'unified';
 
@@ -16,5 +17,6 @@ export function createMdastTransforms(ctx: Context): PluggableList {
     //   });
     // },
     headingLabels,
+    [inlineImages, ctx],
   ];
 }
