@@ -37,23 +37,26 @@ test('environment references', async () => {
 });
 
 test('heading references', async () => {
-  const latex = `
+  const markdown = await testProcessor.latex(`
     \\section{Hello} \\label{CMD3.5}
 
     Definition~\\ref{CMD3.5} is automatically satisfied.
-  `;
-  const markdown = `
+  `);
+
+  const expectedMarkdown = unindentStringAndTrim(`
     ## Hello {#CMD3.5}
 
     Definition :ref[CMD3.5] is automatically satisfied.
-  `;
+  `);
 
-  const html = await testProcessor.both(latex, markdown);
+  expect(markdown).toBe(expectedMarkdown);
 
-  const expected = unindentStringAndTrim(`
+  const html = await testProcessor.md(markdown);
+
+  const expectedHtml = unindentStringAndTrim(`
     <h2 id="cmd35"><span class="count">1.</span> Hello</h2>
     <p>Definition <a href="#cmd35" class="ref">1</a> is automatically satisfied.</p>
   `);
 
-  expect(html).toBe(expected);
+  expect(html).toBe(expectedHtml);
 });

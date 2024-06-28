@@ -1,0 +1,14 @@
+{
+  "name": "@isos/fs",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "@tauri-apps/api": "^1"
+  },
+  "devDependencies": {}
+}

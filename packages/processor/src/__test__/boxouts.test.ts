@@ -4,19 +4,25 @@ import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
 test('render a boxout', async () => {
-  const latex = `
+  const markdown = await testProcessor.latex(`
     \\begin{example}
     An \\verb|example\\n| of \\emph{this}!
     \\end{example}
-  `;
+  `);
 
-  const markdown = `
+  // console.log(markdown)
+
+  const expectedMarkdown = unindentStringAndTrim(`
     :::example
     An \`example\\n\` of *this*!
     :::
-  `;
+  `);
 
-  const html = await testProcessor.both(latex, markdown);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+
+  // console.log(html)
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="example-1" class="boxout example">

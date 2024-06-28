@@ -1,27 +1,20 @@
 import { FileType, inputToMarkdown, markdownToJs, runOptions } from '..';
 import { run } from '@mdx-js/mdx';
+import { resolve } from 'pathe';
 import { createElement } from 'preact';
 import renderToString from 'preact-render-to-string';
 import formatHtml from 'pretty';
 
-import { Context, createTestContext } from '../latex-to-markdown/context';
+import {
+  createContext,
+  createTestContext,
+} from '../latex-to-markdown/context';
 import { unindentStringAndTrim } from './unindent-string';
 
 export const testProcessor = {
   latex: latexToMarkdown,
   md: markdownToHtml,
-  async both(latex: string, md: string) {
-    const markdown = await latexToMarkdown(latex);
-
-    const prepared = unindentStringAndTrim(md);
-    if (markdown !== prepared) {
-      console.log('latexToMarkdown:', `"${markdown}"`);
-      console.log('markdown:', `"${prepared}"`);
-      throw new Error('markdown does not match');
-    }
-
-    return markdownToHtml(markdown);
-  },
+  fixture: fixtureToMarkdown,
 };
 
 async function latexToMarkdown(latex: string) {
@@ -42,4 +35,13 @@ async function markdownToHtml(md: string) {
   // @ts-expect-error
   const element = createElement(component.default);
   return formatHtml(renderToString(element));
+}
+
+async function fixtureToMarkdown(fixturePath: string) {
+  const __dirname = import.meta.dirname;
+  const filePath = resolve(__dirname, '../../fixtures', fixturePath);
+  const ctx = await createContext(filePath);
+  return inputToMarkdown(ctx, {
+    noInlineImages: true,
+  });
 }

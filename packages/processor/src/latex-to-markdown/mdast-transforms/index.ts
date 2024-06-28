@@ -1,3 +1,4 @@
+import { Options } from '../options';
 import { headingLabels } from './heading-labels';
 import { inlineImages } from './inline-images';
 // import { Node, Root } from 'mdast';
@@ -6,7 +7,10 @@ import { PluggableList } from 'unified';
 // import { visit } from 'unist-util-visit';
 import { Context } from '../context';
 
-export function createMdastTransforms(ctx: Context): PluggableList {
+export function createMdastTransforms(
+  ctx: Context,
+  options: Options
+): PluggableList {
   // console.log(ctx);
   return [
     // () => (tree: Root) => {
@@ -17,6 +21,6 @@ export function createMdastTransforms(ctx: Context): PluggableList {
     //   });
     // },
     headingLabels,
-    [inlineImages, ctx],
+    [inlineImages, ctx, options],
   ];
 }

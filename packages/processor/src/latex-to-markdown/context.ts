@@ -1,4 +1,4 @@
-import { readTextFile } from '@tauri-apps/api/fs';
+import { readTextFile } from '@isos/fs';
 
 import { Theorems } from '../shared-utils/theorem';
 import { FancyTitle } from './latexast-transforms/extract-fancytitle';

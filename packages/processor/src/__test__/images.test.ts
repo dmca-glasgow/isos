@@ -26,3 +26,9 @@ test('parsing bug', async () => {
 
   // expect(html).toBe(expectedHtml);
 });
+
+test.only('parsing bug 2', async () => {
+  const markdown = await testProcessor.fixture('images/article.tex');
+
+  console.log(markdown);
+});
