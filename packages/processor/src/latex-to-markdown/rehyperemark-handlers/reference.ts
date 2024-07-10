@@ -3,7 +3,7 @@ import { State } from 'hast-util-to-mdast';
 import { TextDirective } from 'mdast-util-directive';
 
 export function createReference(
-  state: State,
+  _state: State,
   node: Element
 ): TextDirective {
   const id = findRefLabel(node);

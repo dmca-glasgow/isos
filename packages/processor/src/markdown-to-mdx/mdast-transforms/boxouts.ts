@@ -3,9 +3,8 @@ import { ContainerDirective } from 'mdast-util-directive';
 import { visit } from 'unist-util-visit';
 
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
-import { Context } from '../context';
 
-export function boxouts(ctx: Context) {
+export function boxouts() {
   return (tree: Root) => {
     visit(tree, 'containerDirective', (node: ContainerDirective) => {
       const name = node.name.trim();

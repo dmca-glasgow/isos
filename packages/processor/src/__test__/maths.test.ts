@@ -1,9 +1,5 @@
-import { Root } from 'mdast';
 import { expect, test } from 'vitest';
 
-import { parseLatexToMdast } from '../latex-to-markdown';
-import { createContext } from '../latex-to-markdown/context';
-import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
 import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 

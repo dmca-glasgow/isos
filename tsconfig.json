@@ -20,10 +20,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "packages/**/src", "index.d.ts"],
+  "exclude": ["/node_modules/", "packages/unified-latex-*/**"],
   "types": [
     // "vitest/globals"
   ],
-  // "exclude": "/node_modules/",
   "references": [
     {
       "path": "./tsconfig.node.json"

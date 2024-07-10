@@ -126,7 +126,7 @@ export function toHastWithLoggerFactory(
       case 'root':
         return node.content.flatMap(toHast);
       default: {
-        const _exhaustiveCheck: never = node;
+        // const _exhaustiveCheck: never = node;
         throw new Error(
           `Unknown node type; cannot convert to HAST ${JSON.stringify(
             node

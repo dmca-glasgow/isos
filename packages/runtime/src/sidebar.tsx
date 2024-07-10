@@ -9,7 +9,8 @@ import { runOptions } from '@isos/processor';
 import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Hamburger } from './components/hamburger';
-import { Logo } from './components/logo';
+
+// import { Logo } from './components/logo';
 
 type Props = {
   jsString: string;

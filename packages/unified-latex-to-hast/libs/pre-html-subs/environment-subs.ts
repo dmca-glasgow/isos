@@ -1,19 +1,21 @@
-import cssesc from 'cssesc';
+import { wrapPars } from '../wrap-pars';
 import {
-  parseTabularSpec,
   TabularColumn,
+  parseTabularSpec,
 } from '@unified-latex/unified-latex-ctan/package/tabularx';
-import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { parseAlignEnvironment } from '@unified-latex/unified-latex-util-align';
 import {
   getArgsContent,
   getNamedArgsContent,
 } from '@unified-latex/unified-latex-util-arguments';
+import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
 import { match } from '@unified-latex/unified-latex-util-match';
-import { printRaw } from '@isos/unified-latex-util-print-raw';
-import { wrapPars } from '../wrap-pars';
 import { VisitInfo } from '@unified-latex/unified-latex-util-visit';
+// @ts-expect-error
+import cssesc from 'cssesc';
+
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 const ITEM_ARG_NAMES_REG = ['label'] as const;
 const ITEM_ARG_NAMES_BEAMER = [null, 'label', null] as const;
