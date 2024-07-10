@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'preact/hooks';
 import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 
 import { createRuntimeHtml } from '@isos/export';
-import { inputToMarkdown, parseFilePath } from '@isos/processor';
+import { createContext, inputToMarkdown } from '@isos/processor';
 import { LoadingContext, Runtime } from '@isos/runtime';
 import { useLocalStorage } from '@isos/use-local-storage';
 
@@ -30,10 +30,8 @@ export function App() {
   async function handleProcessFile(newFilePath: string) {
     setLoading(true);
     setFilePath(newFilePath);
-    const { type } = parseFilePath(newFilePath);
-    const content = await readTextFile(newFilePath);
-    const newMarkdown = await inputToMarkdown(type, content);
-    // console.log(newMarkdown);
+    const ctx = await createContext(newFilePath);
+    const newMarkdown = await inputToMarkdown(ctx);
     setMarkdown(newMarkdown);
     setLoading(false);
 
@@ -42,9 +40,13 @@ export function App() {
     destroyWatcher();
 
     destroyWatcher = await watchImmediate(newFilePath, async (event) => {
-      // TODO: find a better way to do this
-      // @ts-expect-error
-      if (event.type.modify.kind === 'data') {
+      const type = event.type as Record<string, any>;
+
+      if (type.create?.kind === 'file') {
+        handleProcessFile(newFilePath);
+      }
+
+      if (type.modify?.kind === 'data') {
         handleProcessFile(newFilePath);
       }
     });
@@ -56,7 +58,7 @@ export function App() {
     };
     const bundle = {
       css: await readTextFile(
-        await resolveResource('resources/runtime.css')
+        await resolveResource('resources/index.css')
       ),
       js: await readTextFile(
         await resolveResource('resources/runtime.js')

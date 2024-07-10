@@ -1,20 +1,20 @@
-import * as Hast from 'hast';
-import { Plugin, unified } from 'unified';
+import { environmentReplacements as _environmentReplacements } from './pre-html-subs/environment-subs';
+import { macroReplacements as _macroReplacements } from './pre-html-subs/macro-subs';
+import { streamingMacroReplacements } from './pre-html-subs/streaming-command-subs';
+import { unifiedLatexWrapPars } from './unified-latex-wrap-pars';
 // import { unifiedLatexLintNoTexFontShapingCommands } from "@unified-latex/unified-latex-lint/rules/unified-latex-lint-no-tex-font-shaping-commands";
 import * as Ast from '@unified-latex/unified-latex-types';
 import { deleteComments } from '@unified-latex/unified-latex-util-comments';
 import { match } from '@unified-latex/unified-latex-util-match';
-import { printRaw } from '@isos/unified-latex-util-print-raw';
 import {
   replaceNode,
   unifiedLatexReplaceStreamingCommands,
 } from '@unified-latex/unified-latex-util-replace';
 import { EXIT, visit } from '@unified-latex/unified-latex-util-visit';
-import { environmentReplacements as _environmentReplacements } from './pre-html-subs/environment-subs';
+import * as Hast from 'hast';
+import { Plugin, unified } from 'unified';
 
-import { macroReplacements as _macroReplacements } from './pre-html-subs/macro-subs';
-import { streamingMacroReplacements } from './pre-html-subs/streaming-command-subs';
-import { unifiedLatexWrapPars } from './unified-latex-wrap-pars';
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 type EnvironmentReplacements = typeof _environmentReplacements;
 type MacroReplacements = typeof _macroReplacements;
@@ -58,6 +58,7 @@ export const unifiedLatexToHtmlLike: Plugin<
   const isReplaceableEnvironment = match.createEnvironmentMatcher(
     environmentReplacements
   );
+
   // const isKatexMacro = match.createMacroMatcher(
   //     katexSpecificMacroReplacements
   // );

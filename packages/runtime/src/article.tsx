@@ -1,12 +1,10 @@
 import { run } from '@mdx-js/mdx';
-import { MathJax } from 'better-react-mathjax';
+// import { MathJax } from 'better-react-mathjax';
 import { MDXModule } from 'mdx/types';
 import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
 import { runOptions } from '@isos/processor';
-
-import './styles/index.scss';
 
 type Props = {
   jsString: string;
@@ -24,11 +22,9 @@ export function Article({ jsString }: Props) {
 
   return (
     <article>
-      <div className="wrapper">
-        <MathJax>
-          <MDXContent />
-        </MathJax>
-      </div>
+      {/* <MathJax> */}
+      <MDXContent />
+      {/* </MathJax> */}
     </article>
   );
 }

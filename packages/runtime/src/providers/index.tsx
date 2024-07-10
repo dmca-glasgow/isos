@@ -1,4 +1,4 @@
-import { MathJax3Config, MathJaxContext } from 'better-react-mathjax';
+// import { MathJax3Config, MathJaxContext } from 'better-react-mathjax';
 import { ComponentChildren } from 'preact';
 
 import { LoadingProvider } from './loading-provider';
@@ -8,26 +8,26 @@ type Props = {
   children: ComponentChildren;
 };
 
-const mathjaxConfig: MathJax3Config = {
-  tex: {
-    inlineMath: [
-      ['$', '$'],
-      // ['\\(', '\\)'],
-    ],
-    displayMath: [
-      ['$$', '$$'],
-      // [`\\[`, `\\]`],
-    ],
-  },
-};
+// const mathjaxConfig: MathJax3Config = {
+//   tex: {
+//     inlineMath: [
+//       ['$', '$'],
+//       // ['\\(', '\\)'],
+//     ],
+//     displayMath: [
+//       ['$$', '$$'],
+//       // [`\\[`, `\\]`],
+//     ],
+//   },
+// };
 
 export function Providers({ children }: Props) {
   return (
     <ViewOptionsProvider>
       <LoadingProvider>
-        {/* <MDXProvider components={components}> */}
-        <MathJaxContext config={mathjaxConfig}>{children}</MathJaxContext>
-        {/* </MDXProvider> */}
+        {/* <MathJaxContext config={mathjaxConfig}> */}
+        {children}
+        {/* </MathJaxContext> */}
       </LoadingProvider>
     </ViewOptionsProvider>
   );

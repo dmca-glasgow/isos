@@ -1,4 +1,5 @@
-import { Plugin, Parser, unified } from 'unified';
+import { unifiedLatexProcessAtLetterAndExplMacros } from './process-at-letter-and-expl-macros';
+import { unifiedLatexProcessMacrosAndEnvironmentsWithMathReparse } from './process-macros-and-environments';
 import {
   environmentInfo,
   macroInfo,
@@ -12,10 +13,10 @@ import {
   unifiedLatexTrimEnvironmentContents,
   unifiedLatexTrimRoot,
 } from '@unified-latex/unified-latex-util-trim';
+import { Parser, Plugin, unified } from 'unified';
+
 import { unifiedLatexAstComplier } from './compiler-ast';
 import { unifiedLatexFromStringMinimal } from './plugin-from-string-minimal';
-import { unifiedLatexProcessMacrosAndEnvironmentsWithMathReparse } from './process-macros-and-environments';
-import { unifiedLatexProcessAtLetterAndExplMacros } from './process-at-letter-and-expl-macros';
 
 export type PluginOptions =
   | {

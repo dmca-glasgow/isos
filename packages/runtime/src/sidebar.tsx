@@ -13,10 +13,9 @@ import { Logo } from './components/logo';
 
 type Props = {
   jsString: string;
-  onHamburgerClick: () => unknown;
 };
 
-export function Sidebar({ jsString, onHamburgerClick }: Props) {
+export function Sidebar({ jsString }: Props) {
   const [TOC, setTOC] = useState<MDXModule | null>(null);
   const TOCContent = TOC ? TOC.default : Fragment;
   const [showViewOptions, setShowViewOptions] = useLocalStorage(
@@ -32,9 +31,13 @@ export function Sidebar({ jsString, onHamburgerClick }: Props) {
 
   return (
     <StyledSidebar>
-      <Logo />
-      <StyledHamburger onClick={onHamburgerClick} />
+      {/* <Logo /> */}
+      <Hamburger
+        className="hamburger"
+        onClick={() => setShowSidebar(false)}
+      />
       <ViewOptionsToggle
+        className="view-options-btn"
         onClick={() =>
           setShowViewOptions(showViewOptions === 'true' ? 'false' : 'true')
         }>
@@ -51,12 +54,16 @@ export function Sidebar({ jsString, onHamburgerClick }: Props) {
   );
 }
 
+export function setShowSidebar(open: boolean) {
+  if (open) {
+    document.documentElement.classList.add('sidebar-open');
+  } else {
+    document.documentElement.classList.remove('sidebar-open');
+  }
+}
+
 const StyledSidebar = styled.aside`
   /* background: #ae7070; */
-`;
-
-const StyledHamburger = styled(Hamburger)`
-  right: 1rem;
 `;
 
 const ViewOptionsToggle = styled.div`
