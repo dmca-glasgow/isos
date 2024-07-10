@@ -26,16 +26,6 @@
     },
     "allowlist": {
       "all": false,
-      "shell": {
-        "sidecar": true,
-        "scope": [
-          {
-            "name": "binaries/pandoc",
-            "sidecar": true,
-            "args": true
-          }
-        ]
-      },
       "dialog": {
         "open": true,
         "save": true
@@ -70,8 +60,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": ["resources/*"],
-      "externalBin": ["binaries/pandoc"]
+      "resources": ["resources/*"]
     }
   }
 }
