@@ -1,6 +1,6 @@
 import { createLatexastTransforms } from './latexast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
-import { Options } from './options';
+import { Options, defaultOptions } from './options';
 import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
 import { Root as HastRoot } from 'hast';
 import { Root as MDastRoot } from 'mdast';
@@ -16,10 +16,16 @@ import { addFrontmatter } from './mdast-transforms/add-frontmatter';
 import { formatBreak } from './mdast-transforms/format-break';
 import { FileType } from './utils/parse-file-path';
 
-export async function inputToMarkdown(ctx: Context, options: Options) {
+export async function inputToMarkdown(
+  ctx: Context,
+  options: Partial<Options> = {}
+) {
   const mdast = await getMdast(ctx);
   const processor = createRemarkProcessor(
-    createMdastTransforms(ctx, options)
+    createMdastTransforms(ctx, {
+      ...defaultOptions,
+      ...options,
+    })
   );
   const precompiled = await processor.run(mdast);
   const markdown = processor.stringify(precompiled as MDastRoot).trim();
