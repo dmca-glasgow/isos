@@ -23,7 +23,7 @@ test('parsing bug', async () => {
 
     *Example 2.1*
 
-    Example 2.1
+    :underline[Example 2.1]
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -36,7 +36,7 @@ test('parsing bug', async () => {
     <p><strong>Example 2.1</strong></p>
     <p><em>Example 2.1</em></p>
     <p><em>Example 2.1</em></p>
-    <p>Example 2.1</p>
+    <p><u>Example 2.1</u></p>
   `);
 
   expect(html).toBe(expectedHtml);

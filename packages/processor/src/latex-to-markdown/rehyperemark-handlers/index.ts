@@ -14,6 +14,7 @@ import { createLabel } from './label';
 import { createReference } from './reference';
 import { createSideNote } from './sidenote';
 import { createTitle } from './title';
+import { createUnderline } from './underline';
 
 // import { createUnderline } from './underline';
 
@@ -100,6 +101,12 @@ function spanHandler(ctx: Context, state: State, node: Element) {
       state.patch(node, result);
       return result;
     }
+
+    if (className.includes('underline')) {
+      const result = createUnderline(state, node);
+      state.patch(node, result);
+      return result;
+    }
   }
 
   return state.all(node);
@@ -138,15 +145,25 @@ function divHandler(state: State, node: Element) {
   return state.all(node);
 }
 
-function centerHandler(state: State, node: Element): ContainerDirective {
-  return {
-    type: 'containerDirective',
-    name: 'center',
-    children: [
-      {
-        type: 'paragraph',
-        children: state.all(node) as PhrasingContent[],
-      },
-    ],
-  };
+function centerHandler(state: State, node: Element) {
+  return [
+    {
+      type: 'text',
+      value: '\n\n',
+    },
+    {
+      type: 'containerDirective',
+      name: 'center',
+      children: [
+        {
+          type: 'paragraph',
+          children: state.all(node) as PhrasingContent[],
+        },
+      ],
+    },
+    {
+      type: 'text',
+      value: '\n\n',
+    },
+  ];
 }

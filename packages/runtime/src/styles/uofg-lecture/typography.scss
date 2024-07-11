@@ -38,27 +38,6 @@ body {
   font-style: normal;
 }
 
-strong,
-.boxout .type,
-h1 .part .number {
-  font-family: 'LinuxLibertineBold', arial, sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-em {
-  font-family: 'LinuxLibertineItalic', arial, sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-strong em,
-em strong {
-  font-family: 'LinuxLibertineBoldItalic', arial, sans-serif;
-  font-weight: 700;
-  font-style: italic;
-}
-
 a {
   text-decoration: none;
   color: $burgundy;
@@ -67,157 +46,180 @@ a {
   }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: normal;
-}
-
-h1 {
-  font-size: 2rem;
-  border: solid #4ec0e3;
-  border-width: 3px 0 3px 3px;
-  margin-left: -0.7em;
-  margin-bottom: 1.5em;
-  padding: 0.2em 0 0.4em 1em;
-  border-radius: 1.1em 0 0 1.1em;
-  display: flex;
-  justify-content: space-between;
-
-  .wrapper.has-sidenotes & {
-    margin-right: -22vw;
+article {
+  strong,
+  .boxout .type,
+  h1 .part .number {
+    font-family: 'LinuxLibertineBold', arial, sans-serif;
+    font-weight: 700;
+    font-style: normal;
   }
 
-  .part {
-    padding-right: 0.5em;
-    .label {
-      // homemade small-caps
-      display: inline-block;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      transform: translateX(-20px) rotate(-90deg);
-      &::first-letter {
-        font-size: 1rem;
-      }
-    }
-    .number {
-      display: inline-block;
-      transform: translate(5px, -5px) scale(4.7);
-      $colour: white;
-      $size: 1px;
-      text-shadow: (-$size) (-$size) 0 $colour, $size (-$size) 0 $colour,
-        (-$size) $size 0 $colour, $size $size 0 $colour;
-    }
-  }
-}
-
-h2 {
-  position: relative;
-  background: #b9e1ee;
-  padding: 0 0 0.2em 1.5em;
-  font-size: 1rem;
-  margin: 1.5em 0;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: -1.5em;
-    top: 0;
-    bottom: 0;
-    width: 2.5em;
-    background: #4ec0e3;
-    border-radius: 1em;
-  }
-}
-
-p {
-  text-indent: 1em;
-  margin-bottom: 1em;
-}
-
-ul,
-ol {
-  li {
-    margin-left: 1.5em;
-    p {
-      text-indent: 0;
-      margin-bottom: 0.3em;
-    }
-  }
-}
-
-ul {
-  li li {
-    list-style-type: none;
-    margin-left: 1em;
-    &:before {
-      content: '–';
-      float: left;
-    }
-    p {
-      margin-left: 1em;
-    }
-  }
-}
-
-@counter-style uofg-lecture-style-ol {
-  system: alphabetic;
-  symbols: a b c d e f g h;
-  prefix: '(';
-  suffix: ')';
-}
-
-ol li {
-  list-style: uofg-lecture-style-ol;
-}
-
-// ol {
-//   li {
-//     list-style: lower-alpha;
-//   }
-// }
-
-.framed {
-  border: 1px solid black;
-  padding: 0.5em 1em 1em;
-  margin-bottom: 1em;
-  p {
-    text-indent: 0;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.boxout {
-  &.proposition,
-  &.lemma {
+  em {
+    font-family: 'LinuxLibertineItalic', arial, sans-serif;
+    font-weight: 400;
     font-style: italic;
   }
 
-  // &.theorem {
-  //   .count {
-  //     display: none;
+  strong em,
+  em strong {
+    font-family: 'LinuxLibertineBoldItalic', arial, sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: normal;
+  }
+
+  h1 {
+    font-size: 2rem;
+    border: solid #4ec0e3;
+    border-width: 3px 0 3px 3px;
+    margin-left: -0.7em;
+    margin-bottom: 1.5em;
+    padding: 0.2em 0 0.4em 1em;
+    border-radius: 1.1em 0 0 1.1em;
+    display: flex;
+    justify-content: space-between;
+
+    .wrapper.has-sidenotes & {
+      margin-right: -22vw;
+    }
+
+    .part {
+      padding-right: 0.5em;
+      .label {
+        // homemade small-caps
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        transform: translateX(-20px) rotate(-90deg);
+        &::first-letter {
+          font-size: 1rem;
+        }
+      }
+      .number {
+        display: inline-block;
+        transform: translate(5px, -5px) scale(4.7);
+        $colour: white;
+        $size: 1px;
+        text-shadow: (-$size) (-$size) 0 $colour, $size (-$size) 0 $colour,
+          (-$size) $size 0 $colour, $size $size 0 $colour;
+      }
+    }
+  }
+
+  h2 {
+    position: relative;
+    background: #b9e1ee;
+    padding: 0 0 0.2em 1.5em;
+    font-size: 1rem;
+    margin: 1.5em 0;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: -1.5em;
+      top: 0;
+      bottom: 0;
+      width: 2.5em;
+      background: #4ec0e3;
+      border-radius: 1em;
+    }
+  }
+
+  p {
+    text-indent: 1em;
+    margin-bottom: 1em;
+  }
+
+  ul,
+  ol {
+    li {
+      margin-left: 1.5em;
+      p {
+        text-indent: 0;
+        margin-bottom: 0.3em;
+      }
+    }
+  }
+
+  ul {
+    li li {
+      list-style-type: none;
+      margin-left: 1em;
+      &:before {
+        content: '–';
+        float: left;
+      }
+      p {
+        margin-left: 1em;
+      }
+    }
+  }
+
+  @counter-style uofg-lecture-style-ol {
+    system: alphabetic;
+    symbols: a b c d e f g h;
+    prefix: '(';
+    suffix: ')';
+  }
+
+  ol li {
+    list-style: uofg-lecture-style-ol;
+  }
+
+  // ol {
+  //   li {
+  //     list-style: lower-alpha;
   //   }
   // }
 
-  .type {
-    text-indent: 0;
-    display: inline-block;
-    padding-right: 0.3em;
+  .framed {
+    border: 1px solid black;
+    padding: 0.5em 1em 1em;
+    margin-bottom: 1em;
+    p {
+      text-indent: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 
-  &.proof,
-  &.solution {
-    padding-right: 1rem;
-    .proof-box {
-      float: right;
-      font-size: 1.4em;
-      position: relative;
-      bottom: 0.15em;
+  .boxout {
+    &.proposition,
+    &.lemma {
+      font-style: italic;
+    }
+
+    // &.theorem {
+    //   .count {
+    //     display: none;
+    //   }
+    // }
+
+    .type {
+      text-indent: 0;
+      display: inline-block;
+      padding-right: 0.3em;
+    }
+
+    &.proof,
+    &.solution {
+      padding-right: 1rem;
+      .proof-box {
+        float: right;
+        font-size: 1.4em;
+        position: relative;
+        bottom: 0.15em;
+      }
     }
   }
 }

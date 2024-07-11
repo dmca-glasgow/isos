@@ -9,8 +9,7 @@ import { runOptions } from '@isos/processor';
 import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Hamburger } from './components/hamburger';
-
-// import { Logo } from './components/logo';
+import { Logo } from './components/logo';
 
 type Props = {
   jsString: string;
@@ -72,7 +71,7 @@ const ViewOptionsToggle = styled.div`
   padding: 0.3rem 0.8rem 0.25rem;
   font-size: 0.8rem;
   line-height: 1.5rem;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: rgba(var(--primaryColor), 1);
   background: rgba(var(--primaryColor), 0.1);
   border-radius: 0.2rem;

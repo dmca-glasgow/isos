@@ -11,8 +11,13 @@ import { Context } from '../context';
 import { center } from './center';
 import { extractFrontmatter } from './extract-frontmatter';
 import { fancyTitle } from './fancy-title';
+import { underline } from './underline';
 
-export async function markdownToMdast(markdown: string, ctx: Context) {
+export async function markdownToMdast(
+  markdown: string,
+  ctx: Context
+  // options: Options
+) {
   const processor = createRemarkProcessor([
     [extractFrontmatter, ctx],
     fancyTitle,
@@ -22,6 +27,7 @@ export async function markdownToMdast(markdown: string, ctx: Context) {
     [boxouts, ctx],
     center,
     [sidenotes, ctx],
+    underline,
 
     // should be last
     escapeCharsForMdx,

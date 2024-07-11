@@ -40,7 +40,12 @@ export function insertParbreaksAroundBlockElements() {
 }
 
 function shouldGetParbreaks(node: Node | Argument) {
-  return isDisplayMath(node) || isEnumerate(node) || isItemize(node);
+  return (
+    isDisplayMath(node) ||
+    isEnumerate(node) ||
+    isItemize(node) ||
+    isCenter(node)
+  );
 }
 
 function isDisplayMath(node: Node | Argument) {
@@ -53,6 +58,10 @@ function isEnumerate(node: Node | Argument) {
 
 function isItemize(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'itemize';
+}
+
+function isCenter(node: Node | Argument) {
+  return node.type === 'macro' && node.content === 'html-tag:center';
 }
 
 function isParBreak(node?: Node) {

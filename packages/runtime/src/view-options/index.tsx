@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 const Title = styled.h3`
   margin: 2rem 0 0 0;
   font-size: 1rem;
-  font-weight: 600;
+  /* font-weight: 600; */
   line-height: 1.4;
   color: rgb(var(--primaryColor));
 `;

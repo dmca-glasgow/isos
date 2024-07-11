@@ -33,18 +33,19 @@ const processorOptions: ProcessorOptions = {
 
 export async function markdownToJs(
   markdown: string,
-  options: Partial<Options> = {}
+  _options: Partial<Options> = {}
 ) {
   const ctx = createContext();
-  const mdast = await markdownToMdast(markdown, ctx);
+  const options = {
+    ...defaultOptions,
+    ..._options,
+  };
+  const mdast = await markdownToMdast(markdown, ctx, options);
   // console.dir(mdast, { depth: null });
 
   const processor = createProcessor({
     ...processorOptions,
-    rehypePlugins: createRehypePlugins(ctx, {
-      ...defaultOptions,
-      ...options,
-    }),
+    rehypePlugins: createRehypePlugins(ctx, options),
   });
 
   // @ts-expect-error: mdast is not of type Program

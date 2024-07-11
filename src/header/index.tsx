@@ -4,7 +4,7 @@ import { OpenFileButton } from './open-file-button';
 import { SaveFileButton } from './save-file-button';
 
 type Props = {
-  filePath: string | null;
+  filePath: string;
   loading: boolean;
   handleProcessFile: (filePath: string) => unknown;
   handleExportFile: (saveFilePath: string) => unknown;
@@ -19,7 +19,7 @@ export function Header({
   return (
     <Wrapper>
       <OpenFileButton onChange={handleProcessFile} />
-      {filePath !== null && (
+      {filePath !== '' && (
         <>
           <FilePath>
             {filePath}
