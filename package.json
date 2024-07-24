@@ -17,13 +17,10 @@
     "prettier": "prettier"
   },
   "dependencies": {
-    "@isos/latex-to-markdown": "0.0.1",
-    "@isos/markdown-to-html": "0.0.1",
+    "@isos/processor": "0.0.1",
     "@isos/runtime": "0.0.1",
     "@tauri-apps/api": "^1",
-    "@typescript-eslint/parser": "^7.9.0",
     "classnames": "^2.5.1",
-    "eslint": "^9.2.0",
     "preact": "^10.20.2",
     "rehype-document": "^7.0.3",
     "rehype-format": "^5.0.0",
@@ -48,15 +45,17 @@
     "@types/hast": "^3.0.4",
     "@types/node": "^20.12.7",
     "@types/pretty": "^2.0.3",
-    "@vitest/browser": "^1.6.0",
+    "@typescript-eslint/parser": "^7.9.0",
+    "@vitest/browser": "^2.0.4",
     "@wyw-in-js/babel-preset": "^0.5.1",
     "@wyw-in-js/vite": "^0.5.1",
     "playwright": "^1.44.0",
     "preact-render-to-string": "^6.5.2",
     "pretty": "^2.0.0",
+    "sass": "^1.77.8",
     "typescript": "^5.0.2",
     "vite": "^5.0.0",
     "vite-plugin-svgr": "^4.2.0",
-    "vitest": "^1.5.0"
+    "vitest": "^2.0.4"
   }
 }

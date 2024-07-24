@@ -25,7 +25,6 @@
     "@unified-latex/unified-latex-util-trim": "^1.7.0",
     "@unified-latex/unified-latex-util-visit": "^1.7.0",
     "cssesc": "^3.0.0",
-    "hast": "^1.0.0",
     "hastscript": "^7.2.0",
     "rehype-raw": "^6.1.1",
     "rehype-stringify": "^9.0.4",
