@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "check-types": "tsc",
+    "build": "vite build",
     "preview": "vite preview",
     "tauri": "tauri",
     "test": "vitest",
