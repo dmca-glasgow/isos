@@ -33,7 +33,7 @@ const mathjaxOptions = {
 };
 
 function createRehypeFragmentPlugins(
-  ctx: Context,
+  _ctx: Context,
   options: Partial<Options> = {}
 ) {
   const plugins: PluggableList = [];

@@ -40,7 +40,7 @@ export async function markdownToJs(
     ...defaultOptions,
     ..._options,
   };
-  const mdast = await markdownToMdast(markdown, ctx, options);
+  const mdast = await markdownToMdast(markdown, ctx);
   // console.dir(mdast, { depth: null });
 
   const processor = createProcessor({

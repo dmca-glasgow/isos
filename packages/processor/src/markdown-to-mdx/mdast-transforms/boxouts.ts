@@ -57,7 +57,6 @@ function createProofBox(node: ContainerDirective) {
     const lastP = node.children.findLast((o) => o.type === 'paragraph');
 
     if (lastP) {
-      // @ts-expect-error
       lastP.children.push(proofBox);
     } else {
       // @ts-expect-error

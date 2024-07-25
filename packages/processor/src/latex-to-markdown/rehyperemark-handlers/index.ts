@@ -3,7 +3,6 @@ import { createInlineMaths, createMaths } from './maths';
 import { Element } from 'hast';
 import { State } from 'hast-util-to-mdast';
 import { PhrasingContent } from 'mdast';
-import { ContainerDirective } from 'mdast-util-directive';
 
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
 import { Context } from '../context';
