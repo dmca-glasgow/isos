@@ -1,7 +1,6 @@
 {
   "name": "isos",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "workspaces": [
     "src",
