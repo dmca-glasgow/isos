@@ -11,6 +11,8 @@ jobs:
     outputs:
       has_version_increment: ${{ steps.check_for_version_increment_step.outputs.has_version_increment }}
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
       - name: Use local check-for-version-increment
         uses: ./.github/actions/check-for-version-increment
         id: check_for_version_increment_step
