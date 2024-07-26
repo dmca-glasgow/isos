@@ -1,0 +1,22 @@
+{
+  "name": "check-for-version-increment",
+  "version": "0.0.1",
+  "description": "A GitHub action that checks if the version in src-tauri/tauri.conf.json has incremented",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Makepad Developers <dev@makepad.fr>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^6.0.0",
+    "@actions/io": "^1.1.3"
+  }
+}

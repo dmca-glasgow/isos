@@ -6,7 +6,17 @@ on:
       - main
 
 jobs:
+  check_for_version_increment_job:
+    runs-on: ubuntu-latest
+    outputs:
+      has_version_increment: ${{ steps.check_for_version_increment_step.outputs.has_version_increment }}
+    steps:
+      - name: Use local check-for-version-increment
+        uses: ./.github/actions/check-for-version-increment
+        id: check_for_version_increment_step
   publish-tauri:
+    needs: check_for_version_increment_job
+    if: ${{ needs.check_for_version_increment_job.outputs.has_version_increment == 'true' }}
     permissions:
       contents: write
     strategy:

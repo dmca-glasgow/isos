@@ -1,0 +1,13 @@
+name: 'Check for version increment'
+branding:
+  icon: package
+  color: green
+description: 'Checks if the version in src-tauri/tauri.conf.json has incremented'
+inputs:
+  token:
+    description: 'GitHub token'
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
