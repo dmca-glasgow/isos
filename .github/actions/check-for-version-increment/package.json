@@ -2,7 +2,7 @@
   "name": "check-for-version-increment",
   "version": "0.0.1",
   "description": "A GitHub action that checks if the version in src-tauri/tauri.conf.json has incremented",
-  "main": "dist/index.js",
+  "main": "out/index.js",
   "scripts": {
     "build": "tsc"
   },
