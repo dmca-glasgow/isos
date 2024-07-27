@@ -16,8 +16,6 @@ jobs:
       - name: Use local check-for-version-increment
         uses: ./.github/actions/check-for-version-increment
         id: has_version_increment_step
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-tauri:
     needs: check_for_version_increment_job

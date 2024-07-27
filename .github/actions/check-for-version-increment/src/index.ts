@@ -10,8 +10,6 @@ async function run(): Promise<void> {
     try {
         const { owner, repo } = github.context.repo;
 
-        await exec.exec('git', ['--version']);
-
         await io.mkdirP('workspace');
         await exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
 
@@ -22,11 +20,9 @@ async function run(): Promise<void> {
         const oldVersion: string = getVersion();
         console.log(`Old version: ${oldVersion}`);
 
-        if (newVersion === oldVersion) {
-          core.setOutput("has_version_increment", 'false');
-        } else {
-          core.setOutput("has_version_increment", 'true');
-        }
+        const hasVersionIncrement = `${newVersion !== oldVersion}`
+        console.log(`Has version increment: ${hasVersionIncrement}`);
+        core.setOutput('has_version_increment', hasVersionIncrement)
 
     } catch (error) {
         core.setFailed(error as Error);
