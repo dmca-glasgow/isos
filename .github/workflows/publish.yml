@@ -26,6 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           file-name: ./src-tauri/tauri.conf.json
           diff-search: true
+          assume-same-version: old
 
   # publish-tauri:
   #   needs: check_for_version_increment_job
