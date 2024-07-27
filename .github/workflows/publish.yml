@@ -21,12 +21,12 @@ jobs:
 
       - name: Use local check-for-version-increment
         uses: ./.github/actions/check-for-version-increment
-        id: check
+        id: has_version_increment_step
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          file-name: ./src-tauri/tauri.conf.json
-          diff-search: true
-          assume-same-version: old
+          # file-name: ./src-tauri/tauri.conf.json
+          # diff-search: true
+          # assume-same-version: old
 
   # publish-tauri:
   #   needs: check_for_version_increment_job
