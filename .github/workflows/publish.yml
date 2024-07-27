@@ -8,21 +8,23 @@ on:
 jobs:
   check_for_version_increment_job:
     runs-on: ubuntu-20.04
-    permissions:
-      contents: write
-    outputs:
-      has_version_increment: ${{ steps.check_for_version_increment_step.outputs.has_version_increment }}
+    # permissions:
+    #   contents: write
+    # outputs:
+    #   has_version_increment: ${{ steps.check_for_version_increment_step.outputs.has_version_increment }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
 
-      - name: install action dependencies
-        run: cd .github/actions/check-for-version-increment && npm ci
+      # - name: install action dependencies
+      #   run: cd .github/actions/check-for-version-increment && npm ci
 
       - name: Use local check-for-version-increment
         uses: ./.github/actions/check-for-version-increment
-        id: check_for_version_increment_step
+        id: check
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          file-name: ./src-tauri/tauri.conf.json
 
   # publish-tauri:
   #   needs: check_for_version_increment_job
