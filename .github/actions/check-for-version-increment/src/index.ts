@@ -27,141 +27,141 @@ const packageFileName = normalize(getInput('file-name') || 'package.json'),
     | 'old'
     | 'new'
     | undefined,
-  staticChecking = getInput('static-checking') as
-    | 'localIsNew'
-    | 'remoteIsNew'
-    | undefined,
+  // staticChecking = getInput('static-checking') as
+  //   | 'localIsNew'
+  //   | 'remoteIsNew'
+  //   | undefined,
   token = getInput('token')
 
-let packageFileURL = (getInput('file-url') || '').trim()
-const allowedTags = ['::before']
+// let packageFileURL = (getInput('file-url') || '').trim()
+// const allowedTags = ['::before']
 
 type outputKey = 'changed' | 'type' | 'version' | 'commit'
 const outputs: Partial<Record<outputKey, string | boolean>> = {}
 
 // #region Functions
 async function main() {
-  if (
-    packageFileURL &&
-    !isURL(packageFileURL) &&
-    !allowedTags.includes(packageFileURL)
-  )
-    return setFailed(
-      `The provided package file URL is not valid (received: ${packageFileURL})`
-    )
+  // if (
+  //   packageFileURL &&
+  //   !isURL(packageFileURL) &&
+  //   !allowedTags.includes(packageFileURL)
+  // )
+  //   return setFailed(
+  //     `The provided package file URL is not valid (received: ${packageFileURL})`
+  //   )
   if (assumeSameVersion && !['old', 'new'].includes(assumeSameVersion))
     return setFailed(
       `The provided assume-same-version parameter is not valid (received ${assumeSameVersion})`
     )
-  if (staticChecking && !['localIsNew', 'remoteIsNew'].includes(staticChecking))
-    return setFailed(
-      `The provided static-checking parameter is not valid (received ${staticChecking})`
-    )
+  // if (staticChecking && !['localIsNew', 'remoteIsNew'].includes(staticChecking))
+  //   return setFailed(
+  //     `The provided static-checking parameter is not valid (received ${staticChecking})`
+  //   )
 
-  const isPackageFileURLBefore = packageFileURL === '::before'
+  // const isPackageFileURLBefore = packageFileURL === '::before'
 
-  if (isPackageFileURLBefore) {
-    const event = await readJson(eventFile)
-    if (!event) throw new Error(`Can't find event file (${eventFile})`)
+  // if (isPackageFileURLBefore) {
+  //   const event = await readJson(eventFile)
+  //   if (!event) throw new Error(`Can't find event file (${eventFile})`)
 
-    const { before, repository } = event
-    if (before && repository) {
-      packageFileURL = `https://raw.githubusercontent.com/${repository?.full_name}/${before}/${packageFileName}`
-      startGroup('URL tag resolution...')
-      info(
-        `::before tag resolved to ${repository?.full_name}/${String(
-          before
-        ).substr(0, 7)}/${packageFileName}`
-      )
-      info(`Current package file URL: ${packageFileURL}`)
-      info(`Using token for remote url: ${!!token}`)
-      endGroup()
-    } else
-      throw new Error(
-        `Can't correctly read event file (before: ${before}, repository: ${repository})`
-      )
-  }
+  //   const { before, repository } = event
+  //   if (before && repository) {
+  //     packageFileURL = `https://raw.githubusercontent.com/${repository?.full_name}/${before}/${packageFileName}`
+  //     startGroup('URL tag resolution...')
+  //     info(
+  //       `::before tag resolved to ${repository?.full_name}/${String(
+  //         before
+  //       ).substr(0, 7)}/${packageFileName}`
+  //     )
+  //     info(`Current package file URL: ${packageFileURL}`)
+  //     info(`Using token for remote url: ${!!token}`)
+  //     endGroup()
+  //   } else
+  //     throw new Error(
+  //       `Can't correctly read event file (before: ${before}, repository: ${repository})`
+  //     )
+  // }
 
-  if (staticChecking) {
-    if (!packageFileURL)
-      return setFailed(
-        'Static checking cannot be performed without a `file-url` argument.'
-      )
+  // if (staticChecking) {
+  //   if (!packageFileURL)
+  //     return setFailed(
+  //       'Static checking cannot be performed without a `file-url` argument.'
+  //     )
 
-    startGroup('Static-checking files...')
-    info(`Package file name: "${packageFileName}"`)
-    info(`Package file URL: "${packageFileURL}"`)
-    const local: string = (await readJson(join(dir, packageFileName)))?.package?.version,
-      remote: string = (
-        await readJson(
-          packageFileURL,
-          isPackageFileURLBefore && token ? token : undefined
-        )
-      )?.package?.version
-    if (!local || !remote) {
-      endGroup()
-      return setFailed(`Couldn't find ${local ? 'local' : 'remote'} version.`)
-    }
+  //   startGroup('Static-checking files...')
+  //   info(`Package file name: "${packageFileName}"`)
+  //   info(`Package file URL: "${packageFileURL}"`)
+  //   const local: string = (await readJson(join(dir, packageFileName)))?.package?.version,
+  //     remote: string = (
+  //       await readJson(
+  //         packageFileURL,
+  //         isPackageFileURLBefore && token ? token : undefined
+  //       )
+  //     )?.package?.version
+  //   if (!local || !remote) {
+  //     endGroup()
+  //     return setFailed(`Couldn't find ${local ? 'local' : 'remote'} version.`)
+  //   }
 
-    if (!semverRE.test(local)) {
-      return setFailed(`Local version does not match semver pattern`)
-    }
+  //   if (!semverRE.test(local)) {
+  //     return setFailed(`Local version does not match semver pattern`)
+  //   }
 
-    if (!semverRE.test(remote)) {
-      return setFailed(`Remote version does not match semver pattern`)
-    }
+  //   if (!semverRE.test(remote)) {
+  //     return setFailed(`Remote version does not match semver pattern`)
+  //   }
 
-    const versionDiff =
-      staticChecking === 'localIsNew'
-        ? semverDiff(remote, local)
-        : semverDiff(local, remote)
+  //   const versionDiff =
+  //     staticChecking === 'localIsNew'
+  //       ? semverDiff(remote, local)
+  //       : semverDiff(local, remote)
 
-    if (versionDiff) {
-      output('changed', true)
-      output('version', staticChecking == 'localIsNew' ? local : remote)
-      output('type', versionDiff)
+  //   if (versionDiff) {
+  //     output('changed', true)
+  //     output('version', staticChecking == 'localIsNew' ? local : remote)
+  //     output('type', versionDiff)
 
-      endGroup()
-      info(
-        `Found match for version ${
-          staticChecking == 'localIsNew' ? local : remote
-        }`
-      )
-    }
-  } else {
+  //     endGroup()
+  //     info(
+  //       `Found match for version ${
+  //         staticChecking == 'localIsNew' ? local : remote
+  //       }`
+  //     )
+  //   }
+  // } else {
     const eventObj = await readJson(eventFile)
     const commits =
       eventObj.commits ||
       (await request(eventObj.pull_request._links.commits.href))
     await processDirectory(dir, commits)
-  }
+  // }
 }
 
-function isURL(str: string) {
-  try {
-    new URL(str)
-    return true
-  } catch {
-    return false
-  }
-}
+// function isURL(str: string) {
+//   try {
+//     new URL(str)
+//     return true
+//   } catch {
+//     return false
+//   }
+// }
 
 async function readJson(file: string, token?: string) {
-  if (isURL(file)) {
-    const headers = token
-      ? {
-          Authorization: `token ${token}`
-        }
-      : {}
-    return (
-      await got({
-        url: file,
-        method: 'GET',
-        headers,
-        responseType: 'json'
-      })
-    ).body
-  } else {
+  // if (isURL(file)) {
+  //   const headers = token
+  //     ? {
+  //         Authorization: `token ${token}`
+  //       }
+  //     : {}
+  //   return (
+  //     await got({
+  //       url: file,
+  //       method: 'GET',
+  //       headers,
+  //       responseType: 'json'
+  //     })
+  //   ).body
+  // } else {
     const data = readFileSync(file, { encoding: 'utf8' })
     if (typeof data == 'string')
       try {
@@ -169,10 +169,11 @@ async function readJson(file: string, token?: string) {
       } catch (e) {
         error(e instanceof Error ? e.stack || e.message : e + '')
       }
-  }
+  // }
 }
 
 async function request(url: string) {
+  console.log('is making request!')
   const headers = token
     ? {
         Authorization: `Bearer ${token}`
@@ -193,10 +194,7 @@ async function processDirectory(
   commits: LocalCommit[] | PartialCommitResponse[]
 ) {
   try {
-    const packageObj = await (
-      packageFileURL
-        ? readJson(packageFileURL)
-        : readJson(join(dir, packageFileName))
+    const packageObj = await readJson(join(dir, packageFileName)
     ).catch(() => {
       Promise.reject(
         new NeutralExitError(`Package file not found: ${packageFileName}`)
@@ -217,7 +215,7 @@ async function processDirectory(
       return
     }
 
-    await checkCommits(commits, packageObj.version)
+    await checkCommits(commits, packageObj.package.version)
   } catch (e) {
     setFailed(`${e}`)
   }
@@ -234,32 +232,32 @@ async function checkCommits(
       }...`
     )
     info(`Package file name: "${packageFileName}"`)
-    info(
-      `Package file URL: ${
-        packageFileURL ? `"${packageFileURL}"` : 'undefined'
-      }`
-    )
+    // info(
+    //   `Package file URL: ${
+    //     packageFileURL ? `"${packageFileURL}"` : 'undefined'
+    //   }`
+    // )
     info(
       `Version assumptions: ${
         assumeSameVersion ? `"${assumeSameVersion}"` : 'undefined'
       }`
     )
-    for (const commit of commits) {
-      const { message, sha } = getBasicInfo(commit)
-      const match: string[] = message.match(semverReGlobal) || []
-      if (match.includes(version)) {
-        if (await checkDiff(sha, version)) {
-          endGroup()
-          info(
-            `Found match for version ${version}: ${sha.substring(
-              0,
-              7
-            )} ${message}`
-          )
-          return true
-        }
-      }
-    }
+    // for (const commit of commits) {
+    //   const { message, sha } = getBasicInfo(commit)
+    //   const match: string[] = message.match(semverReGlobal) || []
+    //   if (match.includes(version)) {
+    //     if (await checkDiff(sha, version)) {
+    //       endGroup()
+    //       info(
+    //         `Found match for version ${version}: ${sha.substring(
+    //           0,
+    //           7
+    //         )} ${message}`
+    //       )
+    //       return true
+    //     }
+    //   }
+    // }
     endGroup()
 
     if (getBooleanInput('diff-search')) {
@@ -492,7 +490,9 @@ function isLocalCommitArray(value: any[]): value is LocalCommit[] {
 }
 
 interface PackageObj {
-  version: string
+  package: {
+    version: string
+  }
 }
 function isPackageObj(value): value is PackageObj {
   return !!value && !!value.package && !!value.package.version
