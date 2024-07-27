@@ -7,33 +7,30 @@ import fs from 'fs';
 run();
 
 async function run(): Promise<void> {
-    // try {
+    try {
         const { owner, repo } = github.context.repo;
-
-        console.log('owner:', owner)
-        console.log('repo:', repo)
 
         await exec.exec('git', ['--version']);
 
-        // await io.mkdirP('workspace');
+        await io.mkdirP('workspace');
         await exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
 
-        // const newVersion: string = getVersion();
-        // console.log(`New version: ${newVersion}`);
+        const newVersion: string = getVersion();
+        console.log(`New version: ${newVersion}`);
 
-        // await exec.exec('git', ['checkout', 'HEAD^'], { cwd: 'workspace', silent: true });
-        // const oldVersion: string = getVersion();
-        // console.log(`Old version: ${oldVersion}`);
+        await exec.exec('git', ['checkout', 'HEAD^'], { cwd: 'workspace', silent: true });
+        const oldVersion: string = getVersion();
+        console.log(`Old version: ${oldVersion}`);
 
-        // if (newVersion === oldVersion) {
-        //   core.setOutput("has_version_increment", 'false');
-        // } else {
-        //   core.setOutput("has_version_increment", 'true');
-        // }
+        if (newVersion === oldVersion) {
+          core.setOutput("has_version_increment", 'false');
+        } else {
+          core.setOutput("has_version_increment", 'true');
+        }
 
-    // } catch (error) {
-    //     core.setFailed(error as Error);
-    // }
+    } catch (error) {
+        core.setFailed(error as Error);
+    }
 }
 
 function getVersion(): string {
