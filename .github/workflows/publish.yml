@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-
       - name: Use local check-for-version-increment
         uses: ./.github/actions/check-for-version-increment
         id: has_version_increment_step
