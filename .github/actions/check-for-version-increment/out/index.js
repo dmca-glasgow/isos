@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const github = __importStar(require("@actions/github"));
 const exec = __importStar(require("@actions/exec"));
+const io = __importStar(require("@actions/io"));
 const fs_1 = __importDefault(require("fs"));
 run();
 function run() {
@@ -46,8 +47,8 @@ function run() {
         console.log('owner:', owner);
         console.log('repo:', repo);
         yield exec.exec('git', ['--version']);
-        // await io.mkdirP('workspace');
-        // await exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
+        yield io.mkdirP('workspace');
+        yield exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
         // const newVersion: string = getVersion();
         // console.log(`New version: ${newVersion}`);
         // await exec.exec('git', ['checkout', 'HEAD^'], { cwd: 'workspace', silent: true });

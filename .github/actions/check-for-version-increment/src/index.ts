@@ -15,8 +15,8 @@ async function run(): Promise<void> {
 
         await exec.exec('git', ['--version']);
 
-        // await io.mkdirP('workspace');
-        // await exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
+        await io.mkdirP('workspace');
+        await exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
 
         // const newVersion: string = getVersion();
         // console.log(`New version: ${newVersion}`);
