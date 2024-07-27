@@ -19,7 +19,7 @@ jobs:
 
   publish-tauri:
     needs: check_for_version_increment_job
-    if: ${{ needs.check_for_version_increment_job.outputs.has_version_increment == 'true' }}
+    if: needs.check_for_version_increment_job.outputs.has_version_increment == 'true'
     permissions:
       contents: write
     strategy:
