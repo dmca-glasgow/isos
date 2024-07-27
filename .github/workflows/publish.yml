@@ -13,9 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - name: Use local check-for-version-increment
+      - id: check_for_version_increment_step
         uses: ./.github/actions/check-for-version-increment
-        id: has_version_increment_step
 
   publish-tauri:
     needs: check_for_version_increment_job
