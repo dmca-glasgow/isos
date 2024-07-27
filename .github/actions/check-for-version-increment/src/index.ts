@@ -203,6 +203,8 @@ async function processDirectory(
       )
     })
 
+    console.log('packageObj:', packageObj)
+
     if (!isPackageObj(packageObj)) throw new Error("Can't find version field")
 
     if (commits.length >= 20)
