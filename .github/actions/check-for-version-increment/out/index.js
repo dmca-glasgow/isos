@@ -35,36 +35,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(require("@actions/core"));
 const github = __importStar(require("@actions/github"));
 const exec = __importStar(require("@actions/exec"));
-const io = __importStar(require("@actions/io"));
 const fs_1 = __importDefault(require("fs"));
 run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const { owner, repo } = github.context.repo;
-            yield io.mkdirP('workspace');
-            yield exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
-            const newVersion = getVersion();
-            console.log(`New version: ${newVersion}`);
-            yield exec.exec('git', ['checkout', 'HEAD^'], { cwd: 'workspace', silent: true });
-            const oldVersion = getVersion();
-            console.log(`Old version: ${oldVersion}`);
-            if (newVersion === oldVersion) {
-                core.setOutput("has_version_increment", 'false');
-            }
-            else {
-                core.setOutput("has_version_increment", 'true');
-            }
-        }
-        catch (error) {
-            core.setFailed(error);
-        }
+        // try {
+        const { owner, repo } = github.context.repo;
+        console.log('owner:', owner);
+        console.log('repo:', repo);
+        yield exec.exec('git', ['--version']);
+        // await io.mkdirP('workspace');
+        // await exec.exec('git', ['clone', `https://github.com/${owner}/${repo}.git`, 'workspace'], { silent: true });
+        // const newVersion: string = getVersion();
+        // console.log(`New version: ${newVersion}`);
+        // await exec.exec('git', ['checkout', 'HEAD^'], { cwd: 'workspace', silent: true });
+        // const oldVersion: string = getVersion();
+        // console.log(`Old version: ${oldVersion}`);
+        // if (newVersion === oldVersion) {
+        //   core.setOutput("has_version_increment", 'false');
+        // } else {
+        //   core.setOutput("has_version_increment", 'true');
+        // }
+        // } catch (error) {
+        //     core.setFailed(error as Error);
+        // }
     });
 }
 function getVersion() {
-    return JSON.parse(fs_1.default.readFileSync('./workspace/package.json', 'utf-8')).version;
+    return JSON.parse(fs_1.default.readFileSync('./workspace/src-tauri/tauri.conf.json', 'utf-8')).package.version;
 }
 //# sourceMappingURL=index.js.map
