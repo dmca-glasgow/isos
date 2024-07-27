@@ -493,7 +493,7 @@ interface PackageObj {
   version: string
 }
 function isPackageObj(value): value is PackageObj {
-  return !!value && !!value.version
+  return !!value && !!value.package && !!value.package.version
 }
 
 interface PartialCommitResponse {
