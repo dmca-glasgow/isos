@@ -7,12 +7,10 @@ import { readFile } from 'fs/promises';
 run();
 
 async function run() {
-  await exec('ls', ['-la', '/github/workspace']);
+  await exec('ls', ['-la', '.']);
   // try {
   //   const { owner, repo } = context.repo;
   //   const url = `https://github.com/${owner}/${repo}.git`
-
-  //   await exec('ls', ['-la', '/github/workspace']);
 
   //   await mkdirP('workspace');
   //   await exec('git', ['clone', url, 'workspace'], { silent: true });
