@@ -1,8 +1,8 @@
 {
-  "name": "check-for-version-increment",
+  "name": "version-check",
   "version": "0.0.1",
   "description": "A GitHub action that checks if the version in src-tauri/tauri.conf.json has incremented",
-  "main": "out/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "ncc build src/index.ts --minify --out lib"
   },

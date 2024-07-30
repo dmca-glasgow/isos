@@ -6,66 +6,61 @@ on:
       - main
 
 jobs:
-  check_for_version_increment_job:
+  version-check:
     runs-on: ubuntu-20.04
     outputs:
-      has_version_increment: ${{ steps.check_for_version_increment_step.outputs.has_version_increment }}
+      has-version-change: ${{ steps.check-for-version-change.outputs.has-version-change }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - id: check_for_version_increment_step
-        uses: ./.github/actions/check-for-version-increment
+      - id: check-for-version-change
+        uses: ./.github/actions/version-check
 
-  publish-tauri:
-    needs: check_for_version_increment_job
-    if: needs.check_for_version_increment_job.outputs.has_version_increment == 'true'
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-20.04'
-            args: ''
-          - platform: 'windows-latest'
-            args: ''
+  # build-tauri-release:
+  #   needs: version-check
+  #   if: needs.version-check.outputs.has-version-change == 'true'
+  #   permissions:
+  #     contents: write
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         - platform: 'macos-latest'
+  #           args: '--target aarch64-apple-darwin'
+  #         - platform: 'macos-latest'
+  #           args: '--target x86_64-apple-darwin'
+  #         - platform: 'ubuntu-20.04'
+  #           args: ''
+  #         - platform: 'windows-latest'
+  #           args: ''
 
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04' # This must match the platform value defined above.
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
-
-      - name: install frontend dependencies
-        run: npm ci
-
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-        with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          prerelease: false
-          args: ${{ matrix.args }}
+  #   runs-on: ${{ matrix.platform }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: lts/*
+  #     - name: install Rust stable
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+  #     - name: install dependencies (ubuntu only)
+  #       if: matrix.platform == 'ubuntu-20.04' # This must match the platform value defined above.
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+  #       # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
+  #     - name: install frontend dependencies
+  #       run: npm ci
+  #     - uses: tauri-apps/tauri-action@v0
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+  #       with:
+  #         tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+  #         releaseName: 'v__VERSION__'
+  #         releaseBody: 'See the assets to download this version and install.'
+  #         releaseDraft: true
+  #         prerelease: false
+  #         args: ${{ matrix.args }}
