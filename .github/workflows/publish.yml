@@ -15,6 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
       - id: check-for-version-change
         uses: ./.github/actions/version-check
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   # build-tauri-release:
   #   needs: version-check
