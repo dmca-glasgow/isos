@@ -7,7 +7,26 @@ import { readFile } from 'fs/promises';
 run();
 
 async function run() {
-  await exec('ls', ['-la', '.']);
+  const newVersion = await getVersion();
+  console.log(`New version: ${newVersion}`);
+
+  let cmdOutput = ''
+  const options = {
+    listeners: {
+      stdout: (data) => {
+        cmdOutput += data.toString()
+      }
+    }
+  }
+
+  await exec('gh', ['release', 'list', '--json', 'name']);
+
+  console.log('cmdOutput:', cmdOutput)
+
+  // git blame -L '/version/',+1 -- src-tauri/tauri.conf.json
+  // git log -L 10,11:src-tauri/tauri.conf.json
+  // gh release list --json name
+
   // try {
   //   const { owner, repo } = context.repo;
   //   const url = `https://github.com/${owner}/${repo}.git`
@@ -30,7 +49,7 @@ async function run() {
 }
 
 async function getVersion(): Promise<string> {
-  const filePath = './workspace/src-tauri/tauri.conf.json'
+  const filePath = './src-tauri/tauri.conf.json'
   const contents = await readFile(filePath, 'utf-8')
   const json = JSON.parse(contents)
   return json.package.version;
