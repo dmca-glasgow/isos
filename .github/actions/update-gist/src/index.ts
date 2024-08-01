@@ -20,8 +20,7 @@ async function run() {
   try {
     await mkdirP(workingDir);
 
-    // const version = await getVersion();
-    const version = '0.0.15'
+    const version = await getVersion();
 
     console.log('version:', version)
 
@@ -34,16 +33,14 @@ async function run() {
       'latest.json'
     ], execOptions)
 
-    console.log('json:', await readFile(`${workingDir}/latest.json`, 'utf-8'))
-
     // Delete the json file from the release
-    // await exec('gh', [
-    //   'release',
-    //   'delete-asset',
-    //   `v${version}`,
-    //   'latest.json',
-    //   '--yes'
-    // ])
+    await exec('gh', [
+      'release',
+      'delete-asset',
+      `v${version}`,
+      'latest.json',
+      '--yes'
+    ])
 
     // Publish the release that was previously a draft
     await exec('gh', [
@@ -52,24 +49,6 @@ async function run() {
       `v${version}`,
       "--draft=false"
     ])
-
-    // Get permission to edit the gist file
-    // await exec('gh', [
-    //   'auth',
-    //   'login',
-    //   '--with-token',
-    //   String(process.env.ACCESS_TOKEN)
-    // ], execOptions)
-
-    // Edit updater gist file
-    // await exec('gh', [
-    //   'gist',
-    //   'edit',
-    //   gistId,
-    //   '-f',
-    //   'isos-update.json',
-    //   'latest.json'
-    // ], execOptions)
 
     // Get permission to edit the gist file
     const octokit = getOctokit(String(process.env.ACCESS_TOKEN))
@@ -89,9 +68,9 @@ async function run() {
   }
 }
 
-// async function getVersion(): Promise<string> {
-//   const filePath = `src-tauri/tauri.conf.json`
-//   const contents = await readFile(filePath, 'utf-8')
-//   const json = JSON.parse(contents)
-//   return json.package.version;
-// }
+async function getVersion(): Promise<string> {
+  const filePath = `src-tauri/tauri.conf.json`
+  const contents = await readFile(filePath, 'utf-8')
+  const json = JSON.parse(contents)
+  return json.package.version;
+}
