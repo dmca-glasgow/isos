@@ -4,20 +4,22 @@ import { exec } from '@actions/exec';
 import { mkdirP } from '@actions/io';
 import { readFile } from 'fs/promises';
 
+const workingDir = 'workspace'
+
 run();
 
 async function run() {
   try {
-    await mkdirP('workspace');
+    await mkdirP(workingDir);
 
     const { owner, repo } = context.repo;
     const url = `https://github.com/${owner}/${repo}.git`
 
-    await exec('git', ['clone', url, 'workspace'], { silent: true });
+    await exec('git', ['clone', url, workingDir], { silent: true });
     const newVersion = await getVersion();
     console.log(`New version: ${newVersion}`);
 
-    await exec('git', ['checkout', 'HEAD^'], { cwd: 'workspace', silent: true });
+    await exec('git', ['checkout', 'HEAD^'], { cwd: workingDir, silent: true });
     const oldVersion = await getVersion();
     console.log(`Old version: ${oldVersion}`);
 
@@ -39,7 +41,7 @@ async function run() {
 }
 
 async function getVersion(): Promise<string> {
-  const filePath = './src-tauri/tauri.conf.json'
+  const filePath = `${workingDir}/src-tauri/tauri.conf.json`
   const contents = await readFile(filePath, 'utf-8')
   const json = JSON.parse(contents)
   return json.package.version;
