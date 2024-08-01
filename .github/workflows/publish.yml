@@ -79,3 +79,4 @@ jobs:
       - uses: ./.github/actions/update-gist
         env:
           GH_TOKEN: ${{ github.token }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}

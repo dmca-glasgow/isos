@@ -4,7 +4,7 @@ import { exec } from '@actions/exec';
 import { mkdirP } from '@actions/io';
 import { readFile } from 'fs/promises';
 
-const gistId = 'https://gist.github.com/dmca-glasgow/12a09637fb047aa519cc2ea5fd662a8c'
+const gistId = '12a09637fb047aa519cc2ea5fd662a8c'
 
 const workingDir = 'workspace'
 
