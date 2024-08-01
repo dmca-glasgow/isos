@@ -30,7 +30,7 @@ async function run() {
       'download',
       `v${version}`,
       '--pattern',
-      "'latest.json'"
+      'latest.json'
     ], execOptions)
 
     console.log('json:', await readFile(`${workingDir}/latest.json`, 'utf-8'))
