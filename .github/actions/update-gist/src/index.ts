@@ -4,8 +4,6 @@ import { exec } from '@actions/exec';
 import { mkdirP } from '@actions/io';
 import { readFile } from 'fs/promises';
 
-run();
-
 const gistId = '12a09637fb047aa519cc2ea5fd662a8c'
 
 const workingDir = 'workspace'
@@ -15,12 +13,16 @@ const execOptions = {
   // silent: true
 }
 
+run();
+
 async function run() {
   try {
     await mkdirP(workingDir);
 
     // const version = await getVersion();
     const version = '0.0.15'
+
+    console.log('version:', version)
 
     // Download the release json file
     await exec('gh', [
@@ -65,9 +67,9 @@ async function run() {
   }
 }
 
-async function getVersion(): Promise<string> {
-  const filePath = `src-tauri/tauri.conf.json`
-  const contents = await readFile(filePath, 'utf-8')
-  const json = JSON.parse(contents)
-  return json.package.version;
-}
+// async function getVersion(): Promise<string> {
+//   const filePath = `src-tauri/tauri.conf.json`
+//   const contents = await readFile(filePath, 'utf-8')
+//   const json = JSON.parse(contents)
+//   return json.package.version;
+// }
