@@ -27,8 +27,8 @@ async function run() {
       const previousVersions = await getPreviousReleaseVersions()
       console.log(`Previous versions: ${previousVersions}`);
 
-      if (previousVersions.includes(newVersion)) {
-        setFailed(`Error: version ${newVersion} has been released previously`);
+      if (previousVersions.includes(`v${newVersion}`)) {
+        setFailed(`Error: version v${newVersion} has been released previously`);
         return
       }
 
