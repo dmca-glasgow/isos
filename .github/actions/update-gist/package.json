@@ -1,7 +1,7 @@
 {
-  "name": "version-check",
+  "name": "update-gist",
   "version": "0.0.1",
-  "description": "A GitHub action that checks if the version in src-tauri/tauri.conf.json has changed",
+  "description": "A GitHub action that updates a gist with the tauri latest.json build artifact",
   "main": "lib/index.js",
   "scripts": {
     "build": "ncc build src/index.ts --minify --out lib"

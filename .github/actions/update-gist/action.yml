@@ -2,7 +2,7 @@ name: 'Version check'
 branding:
   icon: package
   color: green
-description: 'Checks if the version in src-tauri/tauri.conf.json has changed'
+description: 'Updates a gist with the tauri latest.json build artifact'
 inputs:
   token:
     description: 'GitHub token'

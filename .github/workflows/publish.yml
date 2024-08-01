@@ -66,3 +66,18 @@ jobs:
   #         releaseDraft: true
   #         prerelease: false
   #         args: ${{ matrix.args }}
+
+  update-gist:
+    needs: build-tauri-release
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: latest.json
+          path: gist
+      - name: Display structure of downloaded files
+        run: ls -R gist
+      - uses: ./.github/actions/update-gist
+        env:
+          GH_TOKEN: ${{ github.token }}
