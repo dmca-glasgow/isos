@@ -8,36 +8,66 @@ run();
 
 const gistId = '12a09637fb047aa519cc2ea5fd662a8c'
 
+const workingDir = 'workspace'
+
+const execOptions = {
+  cwd: workingDir,
+  // silent: true
+}
+
 async function run() {
   try {
-    await exec('ls', ['-R', 'src-tauri/target/release'])
+    await mkdirP(workingDir);
 
-    // Download the updater json file
-    // gh release download app-v0.0.2 --pattern 'latest.json' --output -
+    // const version = await getVersion();
+    const version = '0.0.15'
 
-    // Publish a release that was previously a draft
-    // gh release edit app-v0.0.2 --draft=false
+    // Download the release json file
+    await exec('gh', [
+      'release',
+      'download',
+      `v${version}`,
+      '--pattern',
+      "'latest.json'"
+    ], execOptions)
 
-    // overwriting file
-    // gh gist edit gist-id -f gist-filename local-filename
+    console.log('json:', await readFile(`${workingDir}/latest.json`, 'utf-8'))
+
+    // Delete the json file from the release
+    await exec('gh', [
+      'release',
+      'delete-asset',
+      `v${version}`,
+      "'latest.json'",
+      '--yes'
+    ])
+
+    // Publish the release that was previously a draft
+    await exec('gh', [
+      'release',
+      'edit',
+      `v${version}`,
+      "--draft=false"
+    ])
+
+    // Overwrite updater gist file
+    await exec('gh', [
+      'gist',
+      'edit',
+      gistId,
+      '-f',
+      'isos-update.json',
+      'latest.json'
+    ], execOptions)
 
   } catch (error) {
     setFailed(error as Error);
   }
 }
 
-async function getPreviousReleaseVersions() {
-  let output = ''
-
-  await exec('gh', ['release', 'list', '--json', 'name'], {
-    listeners: {
-      stdout: (data) => {
-        output += data.toString()
-      }
-    }
-  });
-
-  const json = JSON.parse(output) as Array<{name: string}>
-
-  return json.map(o => o.name)
+async function getVersion(): Promise<string> {
+  const filePath = `src-tauri/tauri.conf.json`
+  const contents = await readFile(filePath, 'utf-8')
+  const json = JSON.parse(contents)
+  return json.package.version;
 }
