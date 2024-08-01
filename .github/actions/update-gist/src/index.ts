@@ -36,13 +36,13 @@ async function run() {
     console.log('json:', await readFile(`${workingDir}/latest.json`, 'utf-8'))
 
     // Delete the json file from the release
-    await exec('gh', [
-      'release',
-      'delete-asset',
-      `v${version}`,
-      "'latest.json'",
-      '--yes'
-    ])
+    // await exec('gh', [
+    //   'release',
+    //   'delete-asset',
+    //   `v${version}`,
+    //   'latest.json',
+    //   '--yes'
+    // ])
 
     // Publish the release that was previously a draft
     await exec('gh', [
