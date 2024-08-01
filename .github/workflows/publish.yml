@@ -69,7 +69,7 @@ jobs:
   #         args: ${{ matrix.args }}
 
   update-gist:
-    needs: build-tauri-release
+    # needs: build-tauri-release
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
