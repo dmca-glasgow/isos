@@ -52,7 +52,15 @@ async function run() {
       "--draft=false"
     ])
 
-    // Overwrite updater gist file
+    // Get permission to edit the gist file
+    await exec('gh', [
+      'auth',
+      'login',
+      '--with-token',
+      String(process.env.ACCESS_TOKEN)
+    ], execOptions)
+
+    // Edit updater gist file
     await exec('gh', [
       'gist',
       'edit',
