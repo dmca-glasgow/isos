@@ -1,10 +1,11 @@
 import { setOutput, setFailed } from '@actions/core';
-import { context } from '@actions/github';
+import { context, getOctokit } from '@actions/github';
 import { exec } from '@actions/exec';
 import { mkdirP } from '@actions/io';
 import { readFile } from 'fs/promises';
 
 const gistId = '12a09637fb047aa519cc2ea5fd662a8c'
+const gistFileName = 'isos-update.json'
 
 const workingDir = 'workspace'
 
@@ -53,22 +54,35 @@ async function run() {
     ])
 
     // Get permission to edit the gist file
-    await exec('gh', [
-      'auth',
-      'login',
-      '--with-token',
-      String(process.env.ACCESS_TOKEN)
-    ], execOptions)
+    // await exec('gh', [
+    //   'auth',
+    //   'login',
+    //   '--with-token',
+    //   String(process.env.ACCESS_TOKEN)
+    // ], execOptions)
 
     // Edit updater gist file
-    await exec('gh', [
-      'gist',
-      'edit',
-      gistId,
-      '-f',
-      'isos-update.json',
-      'latest.json'
-    ], execOptions)
+    // await exec('gh', [
+    //   'gist',
+    //   'edit',
+    //   gistId,
+    //   '-f',
+    //   'isos-update.json',
+    //   'latest.json'
+    // ], execOptions)
+
+    // Get permission to edit the gist file
+    const octokit = getOctokit(String(process.env.ACCESS_TOKEN))
+
+    // Edit updater gist file
+    await octokit.rest.gists.update({
+      gist_id: gistId,
+      files: {
+        [gistFileName]: {
+          content: await readFile(`${workingDir}/latest.json`, 'utf-8')
+        }
+      }
+    })
 
   } catch (error) {
     setFailed(error as Error);
