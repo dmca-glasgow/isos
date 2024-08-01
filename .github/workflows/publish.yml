@@ -29,12 +29,12 @@ jobs:
         include:
           - platform: 'macos-latest'
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-20.04'
-            args: ''
-          - platform: 'windows-latest'
-            args: ''
+          # - platform: 'macos-latest'
+          #   args: '--target x86_64-apple-darwin'
+          # - platform: 'ubuntu-20.04'
+          #   args: ''
+          # - platform: 'windows-latest'
+          #   args: ''
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -72,11 +72,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v4
-      - uses: actions/download-artifact@v4
-        with:
-          path: gist
-      - name: Display structure of downloaded files
-        run: ls -R gist
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     path: gist
+      # - name: Display structure of downloaded files
+      #   run: ls -R gist
       - uses: ./.github/actions/update-gist
         env:
           GH_TOKEN: ${{ github.token }}

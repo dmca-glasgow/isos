@@ -10,7 +10,7 @@ const gistId = '12a09637fb047aa519cc2ea5fd662a8c'
 
 async function run() {
   try {
-    await exec('ls', ['-la', './gist'])
+    await exec('ls', ['-R', 'src-tauri/target/release'])
 
     // Download the updater json file
     // gh release download app-v0.0.2 --pattern 'latest.json' --output -
