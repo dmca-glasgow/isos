@@ -12,6 +12,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "local-build": "./scripts/local-build/local-build.sh",
     "test": "vitest",
     "e2e": "playwright test",
     "prettier": "prettier"

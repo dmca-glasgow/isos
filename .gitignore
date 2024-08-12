@@ -13,3 +13,5 @@ src-tauri/binaries/*
 
 playwright-report
 test-results
+
+scripts/local-build
