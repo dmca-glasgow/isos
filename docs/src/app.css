@@ -1,0 +1,10 @@
+#app {
+  width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+ul li {
+  text-align: left;
+}
