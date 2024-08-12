@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "isos",
-    "version": "0.0.19"
+    "version": "0.0.20"
   },
   "tauri": {
     "cli": {
@@ -51,7 +51,7 @@
     },
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["appimage", "nsis", "app", "updater"],
       "identifier": "com.isos.dev",
       "icon": [
         "icons/32x32.png",
