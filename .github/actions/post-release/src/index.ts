@@ -44,12 +44,7 @@ async function run() {
     );
     const assets = releaseAssets.data as Asset[];
 
-    // get contents of latest.json
-    const latestJson = assets.find(
-      (o) => o.name === 'latest.json',
-    ) as Asset;
-    const res = await fetch(latestJson.browser_download_url);
-    const latestJsonContent = (await res.json()) as VersionContent;
+    const latestJsonContent = await getLatestJson(assets);
 
     const platformFiles = Object.entries(latestJsonContent.platforms).map(
       ([platform, o]) => ({
@@ -118,6 +113,29 @@ async function run() {
       },
     });
 
+    async function getVersion(): Promise<string> {
+      const filePath = `src-tauri/tauri.conf.json`;
+      const contents = await readFile(filePath, 'utf-8');
+      const json = JSON.parse(contents);
+      return json.package.version;
+    }
+
+    async function getLatestJson(assets: Asset[]) {
+      const latestAsset = assets.find(
+        (o) => o.name === 'latest.json',
+      ) as Asset;
+      const res = await octokit.request(
+        `GET /repos/${owner}/${repo}/releases/assets/${latestAsset.id}`,
+        {
+          headers: {
+            Accept: 'application/octet-stream',
+          },
+        },
+      );
+      const contents = new TextDecoder('utf-8').decode(res.data);
+      return JSON.parse(contents) as VersionContent;
+    }
+
     async function updateAsset(
       platform: string,
       name: string,
@@ -151,11 +169,4 @@ async function run() {
   } catch (error) {
     setFailed(error as Error);
   }
-}
-
-async function getVersion(): Promise<string> {
-  const filePath = `src-tauri/tauri.conf.json`;
-  const contents = await readFile(filePath, 'utf-8');
-  const json = JSON.parse(contents);
-  return json.package.version;
 }
