@@ -76,7 +76,7 @@ jobs:
           prerelease: false
           args: ${{ matrix.args }}
 
-  update-gist:
+  post-release:
     needs: build-tauri-release
     runs-on: ubuntu-20.04
     steps:
@@ -84,7 +84,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - uses: ./.github/actions/update-gist
+      - uses: ./.github/actions/post-release
         env:
           GH_TOKEN: ${{ github.token }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
