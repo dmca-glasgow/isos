@@ -1,7 +1,7 @@
 {
-  "name": "update-gist",
+  "name": "post-release",
   "version": "0.0.1",
-  "description": "A GitHub action that updates a gist with the tauri latest.json build artifact",
+  "description": "A GitHub action that refines the tauri release and updates a gist with the tauri latest.json build artifact",
   "main": "lib/index.js",
   "scripts": {
     "build": "ncc build src/index.ts --minify --out lib"
@@ -13,8 +13,6 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@actions/exec": "^1.1.1",
-    "@actions/github": "^6.0.0",
-    "@actions/io": "^1.1.3"
+    "@actions/github": "^6.0.0"
   }
 }

@@ -1,8 +1,8 @@
-name: 'Version check'
+name: 'Post release'
 branding:
   icon: package
   color: green
-description: 'Updates a gist with the tauri latest.json build artifact'
+description: 'A GitHub action that refines the tauri release and updates a gist with the tauri latest.json build artifact'
 inputs:
   token:
     description: 'GitHub token'
