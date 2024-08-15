@@ -36,7 +36,7 @@ async function run() {
     const releaseId = Number(process.env.RELEASE_ID);
 
     const octokit = getOctokit(token);
-    // const version = await getVersion();
+    const version = await getVersion();
 
     const release = await octokit.request(
       `GET /repos/${owner}/${repo}/releases/${releaseId}`,
@@ -47,9 +47,42 @@ async function run() {
     );
     const assets = releaseAssets.data as Asset[];
 
-    const latestJsonContent = await getLatestJson(assets);
+    console.log('removing latest.json...');
+    const latestJsonAsset = assets.find(
+      (o) => o.name === 'latest.json',
+    ) as Asset;
+    await octokit.rest.repos.deleteReleaseAsset({
+      owner,
+      repo,
+      asset_id: latestJsonAsset.id,
+    });
 
-    latestJsonContent.notes = String(release.data.body);
+    console.log('removing .sig assets...');
+    await Promise.all(
+      assets
+        .filter((asset) => asset.name.endsWith('.sig'))
+        .map((asset) =>
+          octokit.rest.repos.deleteReleaseAsset({
+            owner,
+            repo,
+            asset_id: asset.id,
+          }),
+        ),
+    );
+
+    console.log('adding version to macOS assets...');
+    await Promise.all(
+      assets
+        .filter((asset) => asset.name.includes('.app'))
+        .map((asset) =>
+          octokit.rest.repos.updateReleaseAsset({
+            owner,
+            repo,
+            asset_id: asset.id,
+            name: `${asset.name.slice(0, 4)}_${version}_${asset.name.slice(5)}`,
+          }),
+        ),
+    );
 
     // const platformFiles = Object.entries(latestJsonContent.platforms).map(
     //   ([platform, o]) => ({
@@ -110,6 +143,9 @@ async function run() {
     });
 
     // Edit updater gist file
+    const latestJsonContent = await getAssetTextContent(latestJsonAsset);
+    latestJsonContent.notes = String(release.data.body);
+
     await octokit.rest.gists.update({
       gist_id: gistId,
       files: {
@@ -119,20 +155,16 @@ async function run() {
       },
     });
 
-    // async function getVersion(): Promise<string> {
-    //   const filePath = `src-tauri/tauri.conf.json`;
-    //   const contents = await readFile(filePath, 'utf-8');
-    //   const json = JSON.parse(contents);
-    //   return json.package.version;
-    // }
+    async function getVersion(): Promise<string> {
+      const filePath = `src-tauri/tauri.conf.json`;
+      const contents = await readFile(filePath, 'utf-8');
+      const json = JSON.parse(contents);
+      return json.package.version;
+    }
 
-    async function getLatestJson(assets: Asset[]) {
-      const latestAsset = assets.find(
-        (o) => o.name === 'latest.json',
-      ) as Asset;
-
+    async function getAssetTextContent(asset: Asset) {
       const res = await octokit.request(
-        `GET /repos/${owner}/${repo}/releases/assets/${latestAsset.id}`,
+        `GET /repos/${owner}/${repo}/releases/assets/${asset.id}`,
         {
           headers: {
             Accept: 'application/octet-stream',

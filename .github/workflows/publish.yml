@@ -41,7 +41,6 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v${{ needs.version-check.outputs.version }}`,
               name: `ISOS v${{ needs.version-check.outputs.version }}`,
-              body: 'Take a look at the assets to download and install this app.',
               draft: true,
               prerelease: false,
               generate_release_notes: true

@@ -5,7 +5,7 @@ import './app.css';
 // https://github.com/dmca-glasgow/isos/releases/download/v0.0.17/isos_0.0.17_x64-setup.nsis.zip
 // https://github.com/dmca-glasgow/isos/releases/download/v0.0.17/isos_0.0.17_amd64.AppImage.tar.gz
 
-const version = import.meta.env.VITE_ISOS_VERSION;
+const version = window.__ENV__.VITE_ISOS_VERSION;
 
 export function App() {
   return (
@@ -47,9 +47,9 @@ type LinkProps = {
 };
 
 function DownloadLink({ label, fileName }: LinkProps) {
-  return <a href={createHref(fileName)}>{label}</a>;
+  return <a href={createHref(fileName, version)}>{label}</a>;
 }
 
-function createHref(fileName: string) {
+function createHref(fileName: string, version: string) {
   return `https://github.com/dmca-glasgow/isos/releases/download/v${version}/${fileName}`;
 }
