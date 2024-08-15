@@ -3,7 +3,6 @@ import { getOctokit } from '@actions/github';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-// const workingDir = 'workspace';
 const owner = 'dmca-glasgow';
 const repo = 'isos';
 const gistId = '12a09637fb047aa519cc2ea5fd662a8c';
@@ -34,7 +33,7 @@ run();
 async function run() {
   try {
     const token = String(process.env.ACCESS_TOKEN);
-    const releaseId = String(process.env.RELEASE_ID);
+    const releaseId = Number(process.env.RELEASE_ID);
 
     const octokit = getOctokit(token);
     const version = await getVersion();
@@ -60,9 +59,11 @@ async function run() {
     console.log('removing unwanted assets...');
     await Promise.all(
       assetsToRemove.map((asset) =>
-        octokit.request(
-          `DELETE /repos/${owner}/${repo}/releases/assets/${asset.id}`,
-        ),
+        octokit.rest.repos.deleteReleaseAsset({
+          owner,
+          repo,
+          asset_id: asset.id,
+        }),
       ),
     );
 
@@ -95,20 +96,19 @@ async function run() {
     );
 
     // Publish the release that was previously a draft
-    await octokit.request(
-      `PATCH /repos/${owner}/${repo}/releases/${releaseId}`,
-      {
-        draft: false,
-        // body: 'TODO',
-      },
-    );
+    await octokit.rest.repos.updateRelease({
+      owner,
+      repo,
+      release_id: releaseId,
+      draft: false,
+    });
 
     // Edit updater gist file
     await octokit.rest.gists.update({
       gist_id: gistId,
       files: {
         [gistFileName]: {
-          content: JSON.stringify(latestJsonContent),
+          content: JSON.stringify(latestJsonContent, null, 2),
         },
       },
     });
@@ -124,6 +124,7 @@ async function run() {
       const latestAsset = assets.find(
         (o) => o.name === 'latest.json',
       ) as Asset;
+
       const res = await octokit.request(
         `GET /repos/${owner}/${repo}/releases/assets/${latestAsset.id}`,
         {
@@ -146,13 +147,13 @@ async function run() {
       const newUrl = `${path.parse(url).dir}/${name}`;
       latestJsonContent.platforms[platform].url = newUrl;
 
-      await octokit.request(
-        `PATCH /repos/${owner}/${repo}/releases/assets/${asset.id}`,
-        {
-          name,
-          label,
-        },
-      );
+      await octokit.rest.repos.updateReleaseAsset({
+        owner,
+        repo,
+        asset_id: asset.id,
+        name,
+        label,
+      });
     }
 
     function getAssetFromPlatform(platform: string) {

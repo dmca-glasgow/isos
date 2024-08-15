@@ -9,6 +9,7 @@ jobs:
   version-check:
     runs-on: ubuntu-20.04
     outputs:
+      version: ${{ steps.check-for-version-change.outputs.version}}
       has-version-change: ${{ steps.check-for-version-change.outputs.has-version-change }}
     steps:
       - uses: actions/checkout@v4
@@ -20,13 +21,37 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-  build-tauri-release:
+  create-release:
     needs: version-check
     if: needs.version-check.outputs.has-version-change == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      release-id: ${{ steps.create-release.outputs.result }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - id: create-release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${{ needs.version-check.outputs.version }}`,
+              name: `ISOS v${{ needs.version-check.outputs.version }}`,
+              body: 'Take a look at the assets to download and install this app.',
+              draft: true,
+              prerelease: false,
+              generate_release_notes: true
+            })
+            return data.id
+
+  build-tauri:
+    needs: create-release
     permissions:
       contents: write
-    outputs:
-      release-id: ${{ steps.build-tauri-app.outputs.releaseId }}
     strategy:
       fail-fast: false
       matrix:
@@ -50,11 +75,10 @@ jobs:
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04' # This must match the platform value defined above.
+        if: matrix.platform == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
       - name: install frontend dependencies
         run: npm ci
       - uses: tauri-apps/tauri-action@v0
@@ -69,15 +93,11 @@ jobs:
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          prerelease: false
+          releaseId: ${{ needs.create-release.outputs.release-id }}
           args: ${{ matrix.args }}
 
   post-release:
-    needs: build-tauri-release
+    needs: [create-release, build-tauri]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -88,4 +108,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          RELEASE_ID: ${{ needs.build-tauri-release.outputs.release-id }}
+          RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
