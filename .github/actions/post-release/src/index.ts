@@ -36,7 +36,11 @@ async function run() {
     const releaseId = Number(process.env.RELEASE_ID);
 
     const octokit = getOctokit(token);
-    const version = await getVersion();
+    // const version = await getVersion();
+
+    const release = await octokit.request(
+      `GET /repos/${owner}/${repo}/releases/${releaseId}`,
+    );
 
     const releaseAssets = await octokit.request(
       `GET /repos/${owner}/${repo}/releases/${releaseId}/assets`,
@@ -45,55 +49,57 @@ async function run() {
 
     const latestJsonContent = await getLatestJson(assets);
 
-    const platformFiles = Object.entries(latestJsonContent.platforms).map(
-      ([platform, o]) => ({
-        platform,
-        name: path.parse(o.url).base,
-      }),
-    );
+    latestJsonContent.notes = String(release.data.body);
 
-    const assetsToRemove = assets.filter(
-      (o) => !platformFiles.find((pf) => pf.name === o.name),
-    );
+    // const platformFiles = Object.entries(latestJsonContent.platforms).map(
+    //   ([platform, o]) => ({
+    //     platform,
+    //     name: path.parse(o.url).base,
+    //   }),
+    // );
 
-    console.log('removing unwanted assets...');
-    await Promise.all(
-      assetsToRemove.map((asset) =>
-        octokit.rest.repos.deleteReleaseAsset({
-          owner,
-          repo,
-          asset_id: asset.id,
-        }),
-      ),
-    );
+    // const assetsToRemove = assets.filter(
+    //   (o) => !platformFiles.find((pf) => pf.name === o.name),
+    // );
 
-    console.log('renaming Windows asset...');
-    await updateAsset(
-      'windows-x86_64',
-      `isos-windows-${version}-x64-setup.nsis.zip`,
-      'ISOS for Windows',
-    );
+    // console.log('removing unwanted assets...');
+    // await Promise.all(
+    //   assetsToRemove.map((asset) =>
+    //     octokit.rest.repos.deleteReleaseAsset({
+    //       owner,
+    //       repo,
+    //       asset_id: asset.id,
+    //     }),
+    //   ),
+    // );
 
-    console.log('renaming Linux asset...');
-    await updateAsset(
-      'linux-x86_64',
-      `isos-linux-${version}-amd64.AppImage.tar.gz`,
-      'ISOS for Linux (cross-distribution AppImage)',
-    );
+    // console.log('renaming Windows asset...');
+    // await updateAsset(
+    //   'windows-x86_64',
+    //   `isos-windows-${version}-x64-setup.nsis.zip`,
+    //   'ISOS for Windows',
+    // );
 
-    console.log('renaming Intel Mac asset...');
-    await updateAsset(
-      'darwin-x86_64',
-      `isos-mac-${version}-x64.app.tar.gz`,
-      'ISOS for macOS (Intel)',
-    );
+    // console.log('renaming Linux asset...');
+    // await updateAsset(
+    //   'linux-x86_64',
+    //   `isos-linux-${version}-amd64.AppImage.tar.gz`,
+    //   'ISOS for Linux (cross-distribution AppImage)',
+    // );
 
-    console.log('renaming Apple Silicon Mac asset...');
-    await updateAsset(
-      'darwin-aarch64',
-      `isos-mac-${version}-aarch64.app.tar.gz`,
-      'ISOS for macOS (Apple Silicon)',
-    );
+    // console.log('renaming Intel Mac asset...');
+    // await updateAsset(
+    //   'darwin-x86_64',
+    //   `isos-mac-${version}-x64.app.tar.gz`,
+    //   'ISOS for macOS (Intel)',
+    // );
+
+    // console.log('renaming Apple Silicon Mac asset...');
+    // await updateAsset(
+    //   'darwin-aarch64',
+    //   `isos-mac-${version}-aarch64.app.tar.gz`,
+    //   'ISOS for macOS (Apple Silicon)',
+    // );
 
     // Publish the release that was previously a draft
     await octokit.rest.repos.updateRelease({
@@ -113,12 +119,12 @@ async function run() {
       },
     });
 
-    async function getVersion(): Promise<string> {
-      const filePath = `src-tauri/tauri.conf.json`;
-      const contents = await readFile(filePath, 'utf-8');
-      const json = JSON.parse(contents);
-      return json.package.version;
-    }
+    // async function getVersion(): Promise<string> {
+    //   const filePath = `src-tauri/tauri.conf.json`;
+    //   const contents = await readFile(filePath, 'utf-8');
+    //   const json = JSON.parse(contents);
+    //   return json.package.version;
+    // }
 
     async function getLatestJson(assets: Asset[]) {
       const latestAsset = assets.find(
@@ -137,36 +143,36 @@ async function run() {
       return JSON.parse(contents) as VersionContent;
     }
 
-    async function updateAsset(
-      platform: string,
-      name: string,
-      label: string,
-    ) {
-      const asset = getAssetFromPlatform(platform);
-      const url = latestJsonContent.platforms[platform].url;
-      const newUrl = `${path.parse(url).dir}/${name}`;
-      latestJsonContent.platforms[platform].url = newUrl;
+    // async function updateAsset(
+    //   platform: string,
+    //   name: string,
+    //   label: string,
+    // ) {
+    //   const asset = getAssetFromPlatform(platform);
+    //   const url = latestJsonContent.platforms[platform].url;
+    //   const newUrl = `${path.parse(url).dir}/${name}`;
+    //   latestJsonContent.platforms[platform].url = newUrl;
 
-      await octokit.rest.repos.updateReleaseAsset({
-        owner,
-        repo,
-        asset_id: asset.id,
-        name,
-        label,
-      });
-    }
+    //   await octokit.rest.repos.updateReleaseAsset({
+    //     owner,
+    //     repo,
+    //     asset_id: asset.id,
+    //     name,
+    //     label,
+    //   });
+    // }
 
-    function getAssetFromPlatform(platform: string) {
-      const windows = platformFiles.find((o) => o.platform === platform);
-      if (!windows) {
-        throw new Error(`no platform found for: ${platform}`);
-      }
-      const asset = assets.find((o) => o.name === windows.name);
-      if (!asset) {
-        throw new Error(`no asset found for platform: ${platform}`);
-      }
-      return asset;
-    }
+    // function getAssetFromPlatform(platform: string) {
+    //   const windows = platformFiles.find((o) => o.platform === platform);
+    //   if (!windows) {
+    //     throw new Error(`no platform found for: ${platform}`);
+    //   }
+    //   const asset = assets.find((o) => o.name === windows.name);
+    //   if (!asset) {
+    //     throw new Error(`no asset found for platform: ${platform}`);
+    //   }
+    //   return asset;
+    // }
   } catch (error) {
     setFailed(error as Error);
   }
