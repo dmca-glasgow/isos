@@ -61,10 +61,14 @@ async function run() {
         ),
     );
 
-    console.log('removing latest.json...');
     const latestJsonAsset = assets.find(
       (o) => o.name === 'latest.json',
     ) as Asset;
+
+    console.log('getting latest.json contents...');
+    const latestJsonContent = await getAssetTextContent(latestJsonAsset);
+
+    console.log('removing latest.json asset...');
     await octokit.rest.repos.deleteReleaseAsset({
       owner,
       repo,
@@ -134,7 +138,7 @@ async function run() {
     //   'ISOS for macOS (Apple Silicon)',
     // );
 
-    // Publish the release that was previously a draft
+    console.log('publishing release...');
     await octokit.rest.repos.updateRelease({
       owner,
       repo,
@@ -142,10 +146,8 @@ async function run() {
       draft: false,
     });
 
-    // Edit updater gist file
-    const latestJsonContent = await getAssetTextContent(latestJsonAsset);
+    console.log('uploading latest.json as gist for updater...');
     latestJsonContent.notes = String(release.data.body);
-
     await octokit.rest.gists.update({
       gist_id: gistId,
       files: {
