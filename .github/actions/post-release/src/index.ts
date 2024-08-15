@@ -47,6 +47,20 @@ async function run() {
     );
     const assets = releaseAssets.data as Asset[];
 
+    console.log('adding version to macOS assets...');
+    await Promise.all(
+      assets
+        .filter((asset) => asset.name.includes('.app'))
+        .map((asset) =>
+          octokit.rest.repos.updateReleaseAsset({
+            owner,
+            repo,
+            asset_id: asset.id,
+            name: `${asset.name.slice(0, 4)}_${version}_${asset.name.slice(5)}`,
+          }),
+        ),
+    );
+
     console.log('removing latest.json...');
     const latestJsonAsset = assets.find(
       (o) => o.name === 'latest.json',
@@ -66,20 +80,6 @@ async function run() {
             owner,
             repo,
             asset_id: asset.id,
-          }),
-        ),
-    );
-
-    console.log('adding version to macOS assets...');
-    await Promise.all(
-      assets
-        .filter((asset) => asset.name.includes('.app'))
-        .map((asset) =>
-          octokit.rest.repos.updateReleaseAsset({
-            owner,
-            repo,
-            asset_id: asset.id,
-            name: `${asset.name.slice(0, 4)}_${version}_${asset.name.slice(5)}`,
           }),
         ),
     );
