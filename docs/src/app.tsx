@@ -1,11 +1,16 @@
 import './app.css';
 
-// https://github.com/dmca-glasgow/isos/releases/download/v0.0.17/isos_x64.app.tar.gz
-// https://github.com/dmca-glasgow/isos/releases/download/v0.0.17/isos_aarch64.app.tar.gz
-// https://github.com/dmca-glasgow/isos/releases/download/v0.0.17/isos_0.0.17_x64-setup.nsis.zip
-// https://github.com/dmca-glasgow/isos/releases/download/v0.0.17/isos_0.0.17_amd64.AppImage.tar.gz
-
 const version = window.__ENV__.VITE_ISOS_VERSION;
+
+const macArmInstallerName = `isos_installer_mac_${version}_aarch64.dmg`;
+const macIntelInstallerName = `isos_installer_mac_${version}_x64.dmg`;
+const windowsInstallerName = `isos_installer_win_${version}_x64-setup.exe`;
+const linuxInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
+
+const macArmInstallerLabel = `ISOS installer for Mac (Apple Silicon)`;
+const macIntelInstallerLabel = `ISOS installer for Mac (Intel)`;
+const windowsInstallerLabel = `ISOS installer for Windows`;
+const linuxInstallerLabel = `ISOS installer for Linux (cross-distribution AppImage)`;
 
 export function App() {
   return (
@@ -13,41 +18,28 @@ export function App() {
       <h1>ISOS downloads</h1>
       <ul>
         <li>
-          <DownloadLink
-            label="MacOS (Intel)"
-            fileName="isos_x64.app.tar.gz"
-          />
+          <a href={createHref(macArmInstallerName, version)}>
+            {macArmInstallerLabel}
+          </a>
         </li>
         <li>
-          <DownloadLink
-            label="MacOS (Apple Silicon)"
-            fileName="isos_aarch64.app.tar.gz"
-          />
+          <a href={createHref(macIntelInstallerName, version)}>
+            {macIntelInstallerLabel}
+          </a>
         </li>
         <li>
-          <DownloadLink
-            label="Windows"
-            fileName={`isos_${version}_x64-setup.nsis.zip`}
-          />
+          <a href={createHref(windowsInstallerName, version)}>
+            {windowsInstallerLabel}
+          </a>
         </li>
         <li>
-          <DownloadLink
-            label="Linux"
-            fileName={`isos_${version}_amd64.AppImage`}
-          />
+          <a href={createHref(linuxInstallerName, version)}>
+            {linuxInstallerLabel}
+          </a>
         </li>
       </ul>
     </>
   );
-}
-
-type LinkProps = {
-  label: string;
-  fileName: string;
-};
-
-function DownloadLink({ label, fileName }: LinkProps) {
-  return <a href={createHref(fileName, version)}>{label}</a>;
 }
 
 function createHref(fileName: string, version: string) {

@@ -127,7 +127,7 @@ jobs:
         with:
           node-version: lts/*
       - run: npm ci
-      - run: npm run build
+      - run: VITE_ISOS_VERSION=${{ needs.version-check.outputs.version }} npm run build -- --base /isos/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs/dist
