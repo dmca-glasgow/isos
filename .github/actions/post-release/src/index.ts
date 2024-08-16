@@ -38,35 +38,17 @@ async function run() {
     const octokit = getOctokit(token);
     const version = await getVersion();
 
-    const release = await octokit.request(
-      `GET /repos/${owner}/${repo}/releases/${releaseId}`,
-    );
-
     const releaseAssets = await octokit.request(
       `GET /repos/${owner}/${repo}/releases/${releaseId}/assets`,
     );
     const assets = releaseAssets.data as Asset[];
 
-    console.log('adding version to macOS assets...');
-    await Promise.all(
-      assets
-        .filter((asset) => asset.name.includes('.app'))
-        .map((asset) =>
-          octokit.rest.repos.updateReleaseAsset({
-            owner,
-            repo,
-            asset_id: asset.id,
-            name: `${asset.name.slice(0, 4)}_${version}_${asset.name.slice(5)}`,
-          }),
-        ),
-    );
+    // console.log(assets.map((o) => o.name));
 
-    const latestJsonAsset = assets.find(
-      (o) => o.name === 'latest.json',
-    ) as Asset;
+    const latestJsonAsset = getAsset(assets, 'latest.json');
 
     console.log('getting latest.json contents...');
-    const latestJsonContent = await getAssetTextContent(latestJsonAsset);
+    const updater = await getAssetTextContent(token, latestJsonAsset);
 
     console.log('removing latest.json asset...');
     await octokit.rest.repos.deleteReleaseAsset({
@@ -88,55 +70,93 @@ async function run() {
         ),
     );
 
-    // const platformFiles = Object.entries(latestJsonContent.platforms).map(
-    //   ([platform, o]) => ({
-    //     platform,
-    //     name: path.parse(o.url).base,
-    //   }),
+    console.log('renaming release assets...');
+    const macArmInstaller = getAsset(assets, 'aarch64.dmg');
+    const macArmUpdater = getAsset(assets, 'aarch64.app.tar.gz');
+    const macIntelInstaller = getAsset(assets, 'x64.dmg');
+    const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
+    const windowsInstaller = getAsset(assets, '-setup.exe');
+    const windowsUpdater = getAsset(assets, '-setup.nsis.zip');
+    const linuxInstaller = getAsset(assets, 'amd64.AppImage');
+    const linuxUpdater = getAsset(assets, 'amd64.AppImage.tar.gz');
+
+    const macArmInstallerName = `isos_installer_mac_${version}_aarch64.dmg`;
+    const macIntelInstallerName = `isos_installer_mac_${version}_x64.dmg`;
+    const windowsInstallerName = `isos_installer_win_${version}_x64-setup.exe`;
+    const linuxInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
+
+    const macArmInstallerLabel = `ISOS installer for Mac (Apple Silicon)`;
+    const macIntelInstallerLabel = `ISOS installer for Mac (Intel)`;
+    const windowsInstallerLabel = `ISOS installer for Windows`;
+    const linuxInstallerLabel = `ISOS installer for Linux (cross-distribution AppImage)`;
+
+    const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
+    const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
+    const windowsUpdaterName = `isos_updater_win_${version}_x64-setup.nsis.zip`;
+    const linuxUpdaterName = `isos_updater_nix_${version}_amd64.AppImage.tar.gz`;
+
+    renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
+    renameUpdaterAsset(updater, 'darwin-x86_64', macIntelUpdaterName);
+    renameUpdaterAsset(updater, 'windows-x86_64', windowsUpdaterName);
+    renameUpdaterAsset(updater, 'linux-x86_64', linuxUpdaterName);
+
+    // console.log('updater', updater);
+
+    const newAssets = [
+      {
+        id: macArmInstaller.id,
+        name: macArmInstallerName,
+        label: macArmInstallerLabel,
+      },
+      {
+        id: macArmUpdater.id,
+        name: macArmUpdaterName,
+      },
+      {
+        id: macIntelInstaller.id,
+        name: macIntelInstallerName,
+        label: macIntelInstallerLabel,
+      },
+      {
+        id: macIntelUpdater.id,
+        name: macIntelUpdaterName,
+      },
+      {
+        id: windowsInstaller.id,
+        name: windowsInstallerName,
+        label: windowsInstallerLabel,
+      },
+      {
+        id: windowsUpdater.id,
+        name: windowsUpdaterName,
+      },
+      {
+        id: linuxInstaller.id,
+        name: linuxInstallerName,
+        label: linuxInstallerLabel,
+      },
+      {
+        id: linuxUpdater.id,
+        name: linuxUpdaterName,
+      },
+    ];
+
+    // console.log(
+    //   newAssets
+    //     .sort((a, b) => a.name.localeCompare(b.name))
+    //     .map((o) => o.label || o.name),
     // );
 
-    // const assetsToRemove = assets.filter(
-    //   (o) => !platformFiles.find((pf) => pf.name === o.name),
-    // );
-
-    // console.log('removing unwanted assets...');
-    // await Promise.all(
-    //   assetsToRemove.map((asset) =>
-    //     octokit.rest.repos.deleteReleaseAsset({
-    //       owner,
-    //       repo,
-    //       asset_id: asset.id,
-    //     }),
-    //   ),
-    // );
-
-    // console.log('renaming Windows asset...');
-    // await updateAsset(
-    //   'windows-x86_64',
-    //   `isos-windows-${version}-x64-setup.nsis.zip`,
-    //   'ISOS for Windows',
-    // );
-
-    // console.log('renaming Linux asset...');
-    // await updateAsset(
-    //   'linux-x86_64',
-    //   `isos-linux-${version}-amd64.AppImage.tar.gz`,
-    //   'ISOS for Linux (cross-distribution AppImage)',
-    // );
-
-    // console.log('renaming Intel Mac asset...');
-    // await updateAsset(
-    //   'darwin-x86_64',
-    //   `isos-mac-${version}-x64.app.tar.gz`,
-    //   'ISOS for macOS (Intel)',
-    // );
-
-    // console.log('renaming Apple Silicon Mac asset...');
-    // await updateAsset(
-    //   'darwin-aarch64',
-    //   `isos-mac-${version}-aarch64.app.tar.gz`,
-    //   'ISOS for macOS (Apple Silicon)',
-    // );
+    await Promise.all(
+      newAssets.map(({ id, ...toUpdate }) =>
+        octokit.rest.repos.updateReleaseAsset({
+          owner,
+          repo,
+          asset_id: id,
+          ...toUpdate,
+        }),
+      ),
+    );
 
     console.log('publishing release...');
     await octokit.rest.repos.updateRelease({
@@ -146,68 +166,59 @@ async function run() {
       draft: false,
     });
 
-    console.log('uploading latest.json as gist for updater...');
-    latestJsonContent.notes = String(release.data.body);
+    console.log('uploading latest.json as gist...');
+    const release = await octokit.request(
+      `GET /repos/${owner}/${repo}/releases/${releaseId}`,
+    );
+    updater.notes = String(release.data.body);
     await octokit.rest.gists.update({
       gist_id: gistId,
       files: {
         [gistFileName]: {
-          content: JSON.stringify(latestJsonContent, null, 2),
+          content: JSON.stringify(updater, null, 2),
         },
       },
     });
-
-    async function getVersion(): Promise<string> {
-      const filePath = `src-tauri/tauri.conf.json`;
-      const contents = await readFile(filePath, 'utf-8');
-      const json = JSON.parse(contents);
-      return json.package.version;
-    }
-
-    async function getAssetTextContent(asset: Asset) {
-      const res = await octokit.request(
-        `GET /repos/${owner}/${repo}/releases/assets/${asset.id}`,
-        {
-          headers: {
-            Accept: 'application/octet-stream',
-          },
-        },
-      );
-      const contents = new TextDecoder('utf-8').decode(res.data);
-      return JSON.parse(contents) as VersionContent;
-    }
-
-    // async function updateAsset(
-    //   platform: string,
-    //   name: string,
-    //   label: string,
-    // ) {
-    //   const asset = getAssetFromPlatform(platform);
-    //   const url = latestJsonContent.platforms[platform].url;
-    //   const newUrl = `${path.parse(url).dir}/${name}`;
-    //   latestJsonContent.platforms[platform].url = newUrl;
-
-    //   await octokit.rest.repos.updateReleaseAsset({
-    //     owner,
-    //     repo,
-    //     asset_id: asset.id,
-    //     name,
-    //     label,
-    //   });
-    // }
-
-    // function getAssetFromPlatform(platform: string) {
-    //   const windows = platformFiles.find((o) => o.platform === platform);
-    //   if (!windows) {
-    //     throw new Error(`no platform found for: ${platform}`);
-    //   }
-    //   const asset = assets.find((o) => o.name === windows.name);
-    //   if (!asset) {
-    //     throw new Error(`no asset found for platform: ${platform}`);
-    //   }
-    //   return asset;
-    // }
   } catch (error) {
     setFailed(error as Error);
   }
+}
+
+async function getVersion(): Promise<string> {
+  const filePath = `src-tauri/tauri.conf.json`;
+  const contents = await readFile(filePath, 'utf-8');
+  const json = JSON.parse(contents);
+  return json.package.version;
+}
+
+async function getAssetTextContent(token: string, asset: Asset) {
+  const octokit = getOctokit(token);
+  const res = await octokit.request(
+    `GET /repos/${owner}/${repo}/releases/assets/${asset.id}`,
+    {
+      headers: {
+        Accept: 'application/octet-stream',
+      },
+    },
+  );
+  const contents = new TextDecoder('utf-8').decode(res.data);
+  return JSON.parse(contents) as VersionContent;
+}
+
+function getAsset(assets: Asset[], endsWith: string) {
+  const result = assets.find((o) => o.name.endsWith(endsWith));
+  if (!result) {
+    throw new Error(`No asset ends with: ${endsWith}`);
+  }
+  return result;
+}
+
+function renameUpdaterAsset(
+  updater: VersionContent,
+  platform: string,
+  name: string,
+) {
+  const oldUrl = updater.platforms[platform].url;
+  const newUrl = `${path.parse(oldUrl).dir}/${name}`;
+  updater.platforms[platform].url = newUrl;
 }
