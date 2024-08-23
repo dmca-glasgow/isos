@@ -12,7 +12,9 @@
     "preact": "^10.22.1"
   },
   "devDependencies": {
+    "@mdx-js/rollup": "^3.0.1",
     "@preact/preset-vite": "^2.8.3",
+    "remark-gfm": "^4.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
   }
