@@ -1,6 +1,7 @@
 // import { MathJax3Config, MathJaxContext } from 'better-react-mathjax';
 import { ComponentChildren } from 'preact';
 
+import { ErrorProvider } from './error-provider';
 import { LoadingProvider } from './loading-provider';
 import { ViewOptionsProvider } from './view-options-provider';
 
@@ -25,9 +26,11 @@ export function Providers({ children }: Props) {
   return (
     <ViewOptionsProvider>
       <LoadingProvider>
-        {/* <MathJaxContext config={mathjaxConfig}> */}
-        {children}
-        {/* </MathJaxContext> */}
+        <ErrorProvider>
+          {/* <MathJaxContext config={mathjaxConfig}> */}
+          {children}
+          {/* </MathJaxContext> */}
+        </ErrorProvider>
       </LoadingProvider>
     </ViewOptionsProvider>
   );

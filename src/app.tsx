@@ -6,7 +6,7 @@ import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 
 import { createRuntimeHtml } from '@isos/export';
 import { createContext, inputToMarkdown } from '@isos/processor';
-import { LoadingContext, Runtime } from '@isos/runtime';
+import { ErrorContext, LoadingContext, Runtime } from '@isos/runtime';
 import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Header } from './header';
@@ -18,6 +18,7 @@ let destroyWatcher = () => {};
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', '');
   const { loading, setLoading } = useContext(LoadingContext);
+  const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
 
   // on load
@@ -28,12 +29,19 @@ export function App() {
   }, []);
 
   async function handleProcessFile(newFilePath: string) {
-    setLoading(true);
     setFilePath(newFilePath);
     const ctx = await createContext(newFilePath);
-    const newMarkdown = await inputToMarkdown(ctx);
-    setMarkdown(newMarkdown);
-    setLoading(false);
+
+    try {
+      setLoading(true);
+      const newMarkdown = await inputToMarkdown(ctx);
+      setMarkdown(newMarkdown);
+      setError('');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
 
     // destroy previous watcher by calling it
     // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
@@ -58,10 +66,10 @@ export function App() {
     };
     const bundle = {
       css: await readTextFile(
-        await resolveResource('resources/index.css')
+        await resolveResource('resources/index.css'),
       ),
       js: await readTextFile(
-        await resolveResource('resources/runtime.js')
+        await resolveResource('resources/runtime.js'),
       ),
     };
     const html = await createRuntimeHtml(markdown, frontmatter, bundle);
