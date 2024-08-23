@@ -110,7 +110,8 @@ jobs:
           RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
 
   publish-docs:
-    # needs: version-check
+    needs: version-check
+    if: needs.version-check.outputs.has-version-change == 'true'
     runs-on: ubuntu-20.04
     permissions:
       pages: write
