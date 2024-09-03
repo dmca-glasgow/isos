@@ -1,4 +1,4 @@
-import { save } from '@tauri-apps/api/dialog';
+import { save } from '@tauri-apps/plugin-dialog';
 import { Button } from '../styles';
 import { parseFilePath } from '@isos/processor';
 

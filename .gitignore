@@ -8,6 +8,8 @@ dist
 dist-ssr
 *.local
 
+.vscode/*
+
 src-tauri/binaries/*
 !src-tauri/binaries/.gitkeep
 

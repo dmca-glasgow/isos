@@ -1,5 +1,5 @@
 import { Button } from '../styles';
-import { open } from '@tauri-apps/api/dialog';
+import { open } from '@tauri-apps/plugin-dialog';
 
 import {
   supportedLaTeXExtensions,
@@ -12,8 +12,11 @@ type Props = {
 
 export function OpenFileButton({ onChange }: Props) {
   async function handleOpenFile() {
+    console.log('hey!');
+
     const selected = await open({
       multiple: false,
+      directory: false,
       filters: [
         {
           name: 'LaTeX',
@@ -25,10 +28,6 @@ export function OpenFileButton({ onChange }: Props) {
         },
       ],
     });
-
-    if (Array.isArray(selected)) {
-      throw new Error('open file: multiple files are not supported');
-    }
 
     // user clicked Cancel in open file dialog
     if (selected === null) {

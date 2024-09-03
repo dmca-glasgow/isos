@@ -1,44 +1,14 @@
 {
+  "productName": "isos",
+  "version": "0.0.34",
+  "identifier": "com.isos.app",
   "build": {
     "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "frontendDist": "../dist"
   },
-  "package": {
-    "productName": "isos",
-    "version": "0.0.34"
-  },
-  "tauri": {
-    "cli": {
-      "description": "Hello Dave",
-      "subcommands": {
-        "run": {
-          "description": "Run!!!",
-          "args": [
-            {
-              "name": "file-path",
-              "description": "The file path"
-            }
-          ]
-        }
-      }
-    },
-    "allowlist": {
-      "all": false,
-      "dialog": {
-        "open": true,
-        "save": true
-      },
-      "path": {
-        "all": true
-      },
-      "fs": {
-        "writeFile": true,
-        "readFile": true,
-        "scope": ["*/**"]
-      }
-    },
+  "app": {
     "windows": [
       {
         "title": "isos",
@@ -48,30 +18,17 @@
     ],
     "security": {
       "csp": null
-    },
-    "bundle": {
-      "active": true,
-      "targets": ["appimage", "nsis", "dmg", "updater"],
-      "identifier": "com.isos.dev",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "resources": ["resources/*"]
-    },
-    "updater": {
-      "active": true,
-      "endpoints": [
-        "https://gist.githubusercontent.com/dmca-glasgow/12a09637fb047aa519cc2ea5fd662a8c/raw"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhGMzRCOUY4NDdGQURGNjkKUldScDMvcEgrTGswaitJY3VpcCtDM2l4eFk3dFFETGxoLzBNWFlzam8vdGhQdm5tV1JqUUhRQ1QK",
-      "windows": {
-        "installMode": "passive"
-      }
     }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   }
 }

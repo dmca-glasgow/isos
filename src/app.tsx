@@ -1,8 +1,12 @@
 import { styled } from '@linaria/react';
-import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 import { resolveResource } from '@tauri-apps/api/path';
+import {
+  readTextFile,
+  watch,
+  watchImmediate,
+  writeTextFile,
+} from '@tauri-apps/plugin-fs';
 import { useContext, useEffect, useState } from 'preact/hooks';
-import { watchImmediate } from 'tauri-plugin-fs-watch-api';
 
 import { createRuntimeHtml } from '@isos/export';
 import { createContext, inputToMarkdown } from '@isos/processor';
@@ -47,7 +51,7 @@ export function App() {
     // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
     destroyWatcher();
 
-    destroyWatcher = await watchImmediate(newFilePath, async (event) => {
+    destroyWatcher = await watchImmediate(newFilePath, (event) => {
       const type = event.type as Record<string, any>;
 
       if (type.create?.kind === 'file') {

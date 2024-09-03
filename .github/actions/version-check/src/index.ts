@@ -53,7 +53,7 @@ async function getVersion(): Promise<string> {
   const filePath = `${workingDir}/src-tauri/tauri.conf.json`;
   const contents = await readFile(filePath, 'utf-8');
   const json = JSON.parse(contents);
-  return json.package.version;
+  return json.version;
 }
 
 async function getPreviousReleaseVersions() {
