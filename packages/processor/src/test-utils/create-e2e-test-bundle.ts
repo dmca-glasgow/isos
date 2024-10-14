@@ -14,6 +14,7 @@ export async function createE2eTestBundle(markdown: string) {
   const bundle = {
     css: await readFile(path.resolve(`${resources}/runtime.css`), 'utf-8'),
     js: await readFile(path.resolve(`${resources}/runtime.js`), 'utf-8'),
+    font: 'termes',
   };
   return createRuntimeHtml(md, frontmatter, bundle);
 }

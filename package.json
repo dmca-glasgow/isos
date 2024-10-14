@@ -15,7 +15,8 @@
     "local-build": "./scripts/local-build/local-build.sh",
     "test": "vitest",
     "e2e": "playwright test",
-    "prettier": "prettier"
+    "prettier": "prettier",
+    "test-bundle": "npm -w @isos/runtime run build && npm -w @isos/export run bundle"
   },
   "dependencies": {
     "@isos/processor": "0.0.1",
@@ -26,10 +27,11 @@
     "@tauri-apps/plugin-shell": ">=2.0.0-rc.0",
     "@tauri-apps/plugin-window-state": "^2.0.0-rc",
     "classnames": "^2.5.1",
+    "mathjax-fira-font": "^4.0.0-beta.7",
+    "mathjax-full": "^4.0.0-beta.7",
     "preact": "^10.23.2",
     "rehype-document": "^7.0.3",
     "rehype-format": "^5.0.0",
-    "rehype-mathjax": "^6.0.0",
     "rehype-stringify": "^10.0.0",
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",

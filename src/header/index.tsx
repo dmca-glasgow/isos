@@ -46,14 +46,12 @@ const Wrapper = styled.header`
 
   color: #fff;
   background: #000;
-  /* background: #003865; */
-  font-weight: 500;
+  font-size: 13px;
 `;
 
 const FilePath = styled.span`
   flex: 1;
   padding: 0 1rem 0.1rem;
-  font-size: 0.6rem;
 `;
 
 const FileStatus = styled.span`

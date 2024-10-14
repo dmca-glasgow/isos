@@ -1,8 +1,8 @@
 import { Options } from '../options';
+import { ProcessorOptions } from '@mdx-js/mdx';
 import { ElementContent } from 'hast';
 import { PhrasingContent, Root } from 'mdast';
 // import { createSvg } from '../utils/icons';
-// import autolinkHeadings from 'rehype-autolink-headings';
 import mathjaxBrowser from 'rehype-mathjax/browser';
 // import mathjaxChtml from 'rehype-mathjax/chtml';
 import mathjaxSvg from 'rehype-mathjax/svg';
@@ -13,6 +13,12 @@ import { PluggableList, unified } from 'unified';
 // import { visit } from 'unist-util-visit';
 import { Context } from '../context';
 import { createWrapper } from './wrapper';
+
+export const processorOptions: ProcessorOptions = {
+  outputFormat: 'function-body',
+  elementAttributeNameCase: 'html',
+  providerImportSource: '@mdx-js/preact',
+};
 
 const mathjaxOptions = {
   // chtml: {
@@ -32,42 +38,8 @@ const mathjaxOptions = {
   },
 };
 
-function createRehypeFragmentPlugins(
-  _ctx: Context,
-  options: Partial<Options> = {}
-) {
-  const plugins: PluggableList = [];
-
-  if (options.mathsAsTex) {
-    plugins.push([mathjaxBrowser, mathjaxOptions]);
-  } else {
-    plugins.push([mathjaxSvg, mathjaxOptions]);
-  }
-
-  return plugins;
-}
-
 export function createRehypePlugins(ctx: Context, options: Options) {
   const plugins = createRehypeFragmentPlugins(ctx, options);
-
-  // plugins.push(
-  //   () => (tree) => {
-  //     console.dir(tree, { depth: null });
-  //   },
-
-  //   rehypeRaw,
-  //   rehypeSlug,
-  //   [
-  //     autolinkHeadings,
-  //     // {
-  //     //   content: createSvg('link-icon') as any,
-  //     //   properties: { className: 'link' },
-  //     // },
-  //   ],
-  //   () => (tree) => {
-  //     console.log(JSON.stringify(tree, null, 2));
-  //   },
-  // );
 
   if (!options.noWrapper) {
     plugins.push([createWrapper, ctx]);
@@ -78,10 +50,10 @@ export function createRehypePlugins(ctx: Context, options: Options) {
 export async function toHast(
   children: PhrasingContent[],
   ctx: Context,
-  options?: Partial<Options>
+  options?: Partial<Options>,
 ) {
   const processor = unified().use(
-    createRehypeFragmentPlugins(ctx, options)
+    createRehypeFragmentPlugins(ctx, options),
   );
 
   const root: Root = {
@@ -90,4 +62,28 @@ export async function toHast(
   };
   const hast = (await processor.run(root)) as Root;
   return hast.children as ElementContent[];
+}
+
+function createRehypeFragmentPlugins(
+  _ctx: Context,
+  options: Partial<Options> = {},
+) {
+  const plugins: PluggableList = [
+    // TODO:
+    // [
+    // autolinkHeadings,
+    // {
+    //   content: createSvg('link-icon') as any,
+    //   properties: { className: 'link' },
+    // },
+    // ],
+  ];
+
+  if (options.mathsAsTex) {
+    plugins.push([mathjaxBrowser, mathjaxOptions]);
+  } else {
+    plugins.push([mathjaxSvg, mathjaxOptions]);
+  }
+
+  return plugins;
 }

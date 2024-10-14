@@ -1,69 +1,45 @@
-html {
-  background: var(--bg);
-}
+$sidebarWidth: 18rem;
 
-body {
-  color: var(--textColor);
-}
-
-#root {
+nav {
+  position: fixed;
+  top: 0;
+  width: $sidebarWidth;
+  height: 100%;
+  margin-left: -$sidebarWidth;
+  transition: margin-left 0.2s;
+  background: var(--boxoutBg);
+  overflow-y: scroll;
   overflow-x: hidden;
 }
 
-main {
-  flex: 1;
-  position: relative;
+article {
+  padding-left: 0;
+  transition: padding-left 0.2s;
+}
+
+html.sidebar-open {
+  nav {
+    margin-left: 0;
+  }
+  article {
+    padding-left: $sidebarWidth;
+  }
+}
+
+@media (max-width: 1000px) {
+  html.sidebar-open {
+    article {
+      padding-left: 0;
+    }
+  }
 }
 
 .hamburger {
-  position: absolute;
-  left: 2rem;
-
-  aside > & {
-    left: auto;
-    right: 1rem;
-  }
-}
-
-aside {
   position: fixed;
-  top: 0;
-  height: 100%;
-  width: 18rem;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background: var(--boxoutBg);
-  margin-left: -18rem;
-  transition: margin-left 0.2s;
+  top: 1.5rem;
+  left: 1.5rem;
 
-  scrollbar-color: var(--boxoutHighlightColor) var(--boxoutBg);
-  &::-webkit-scrollbar-track {
-    background: var(--boxoutBg);
+  nav & {
+    position: static;
   }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--boxoutBg);
-    border-color: var(--boxoutBg);
-    transition: background-color 0.2s;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--boxoutHighlightColor);
-    }
-  }
-
-  html.sidebar-open & {
-    margin-left: 0;
-  }
-
-  #toc {
-    padding-top: 2rem;
-  }
-}
-
-.center {
-  text-align: center;
-}
-
-article img {
-  max-width: 100%;
 }

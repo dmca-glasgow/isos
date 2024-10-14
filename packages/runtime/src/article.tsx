@@ -1,5 +1,4 @@
 import { run } from '@mdx-js/mdx';
-// import { MathJax } from 'better-react-mathjax';
 import { MDXModule } from 'mdx/types';
 import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
@@ -17,14 +16,36 @@ export function Article({ jsString }: Props) {
   useEffect(() => {
     (async () => {
       setMDX(await run(jsString, runOptions));
+
+      // window.MathJax = {
+      //   tex: {
+      //     inlineMath: [
+      //       ['$', '$'],
+      //       ['\\(', '\\)'],
+      //     ],
+      //   },
+      //   startup: {
+      //     ready() {
+      //       window.MathJax.startup.defaultReady();
+      //       const article = document.querySelector('article');
+      //       window.MathJax.typesetPromise([article]);
+      //     },
+      //   },
+      //   chtml: {
+      //     scale: 1.1,
+      //   },
+      //   // svg: {
+      //   //   scale: 1.1,
+      //   // },
+      // };
     })();
   }, [jsString]);
 
   return (
-    <article>
+    <>
       {/* <MathJax> */}
       <MDXContent />
       {/* </MathJax> */}
-    </article>
+    </>
   );
 }

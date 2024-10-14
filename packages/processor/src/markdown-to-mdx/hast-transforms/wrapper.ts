@@ -1,22 +1,20 @@
-import { ElementContent, Root } from 'hast';
+import { ElementContent, Properties, Root } from 'hast';
 
 import { Context } from '../context';
 
 export function createWrapper(ctx: Context) {
   return (tree: Root) => {
-    const className = ['wrapper'];
+    const properties: Properties = {};
 
     if (ctx.hasSidenotes) {
-      className.push('has-sidenotes');
+      properties.className = 'has-sidenotes';
     }
 
     tree.children = [
       {
         type: 'element',
-        tagName: 'div',
-        properties: {
-          className,
-        },
+        tagName: 'article',
+        properties,
         children: tree.children as ElementContent[],
       },
     ];

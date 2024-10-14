@@ -54,8 +54,10 @@ test('heading references', async () => {
   const html = await testProcessor.md(markdown);
 
   const expectedHtml = unindentStringAndTrim(`
-    <h2 id="cmd35"><span class="count">1.</span> Hello</h2>
-    <p>Definition <a href="#cmd35" class="ref">1</a> is automatically satisfied.</p>
+    <section id="cmd35">
+      <h2><span class="count">1.</span> Hello</h2>
+      <p>Definition <a href="#cmd35" class="ref">1</a> is automatically satisfied.</p>
+    </section>
   `);
 
   expect(html).toBe(expectedHtml);
