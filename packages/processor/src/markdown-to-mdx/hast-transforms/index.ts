@@ -3,39 +3,19 @@ import { ProcessorOptions } from '@mdx-js/mdx';
 import { ElementContent } from 'hast';
 import { PhrasingContent, Root } from 'mdast';
 // import { createSvg } from '../utils/icons';
-import mathjaxBrowser from 'rehype-mathjax/browser';
-// import mathjaxChtml from 'rehype-mathjax/chtml';
-import mathjaxSvg from 'rehype-mathjax/svg';
 // import rehypeRaw from 'rehype-raw';
 // import rehypeSlug from 'rehype-slug';
 import { PluggableList, unified } from 'unified';
 
 // import { visit } from 'unist-util-visit';
 import { Context } from '../context';
+// import { mathjax } from './mathjax';
 import { createWrapper } from './wrapper';
 
 export const processorOptions: ProcessorOptions = {
   outputFormat: 'function-body',
   elementAttributeNameCase: 'html',
   providerImportSource: '@mdx-js/preact',
-};
-
-const mathjaxOptions = {
-  // chtml: {
-  //   // minScale: 0.8,
-  //   fontURL:
-  //     'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2',
-  // },
-  tex: {
-    inlineMath: [
-      ['$', '$'],
-      // ['\\(', '\\)'],
-    ],
-    displayMath: [
-      ['$$', '$$'],
-      // [`\\[`, `\\]`],
-    ],
-  },
 };
 
 export function createRehypePlugins(ctx: Context, options: Options) {
@@ -67,8 +47,9 @@ export async function toHast(
 function createRehypeFragmentPlugins(
   _ctx: Context,
   options: Partial<Options> = {},
-) {
-  const plugins: PluggableList = [
+): PluggableList {
+  return [
+    // mathjax(options),
     // TODO:
     // [
     // autolinkHeadings,
@@ -78,12 +59,4 @@ function createRehypeFragmentPlugins(
     // },
     // ],
   ];
-
-  if (options.mathsAsTex) {
-    plugins.push([mathjaxBrowser, mathjaxOptions]);
-  } else {
-    plugins.push([mathjaxSvg, mathjaxOptions]);
-  }
-
-  return plugins;
 }

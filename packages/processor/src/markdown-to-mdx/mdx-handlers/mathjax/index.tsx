@@ -1,63 +1,36 @@
 import type { LiteDocument } from 'mathjax-full/js/adaptors/lite/Document.js';
-import type { LiteNode } from 'mathjax-full/js/adaptors/lite/Element.js';
+import type {
+  LiteElement, // LiteNode,
+} from 'mathjax-full/js/adaptors/lite/Element.js';
 import type { LiteText } from 'mathjax-full/js/adaptors/lite/Text.js';
 import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js';
-// import { STATE } from 'mathjax-full/js/core/MathItem.js';
-// import { MmlNode } from 'mathjax-full/js/core/MmlTree/MmlNode.js';
-// import { SerializedMmlVisitor } from 'mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js';
-import { HTMLDocument } from 'mathjax-full/js/handlers/html/HTMLDocument.js';
+// import { HTMLDocument } from 'mathjax-full/js/handlers/html/HTMLDocument.js';
+import type { MathDocument } from 'mathjax-full/js/core/MathDocument.js';
+import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js';
 import { TeX } from 'mathjax-full/js/input/tex.js';
+import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js';
+import { mathjax } from 'mathjax-full/js/mathjax.js';
 import { SVG } from 'mathjax-full/js/output/svg.js';
 
 import { render } from './litedom';
 
-export type Document = HTMLDocument<LiteNode, LiteText, LiteDocument>;
+// export type Document = HTMLDocument<LiteNode, LiteText, LiteDocument>;
+export type Document = MathDocument<LiteElement, LiteText, LiteDocument>;
 
 let cache: Document | null = null;
+
+RegisterHTMLHandler(liteAdaptor());
 
 function getConverter(): Document {
   if (cache !== null) {
     return cache;
   }
-
-  const document = new HTMLDocument('', liteAdaptor(), {
-    mathjax: {
-      asyncLoad: async (name: string) => import(`${name}.js`),
-    },
-    InputJax: new TeX({
-      packages: ['base'],
-      // tags: 'ams',
-      // Allow single $ delimiters
-      inlineMath: [
-        ['$', '$'],
-        ['\\(', '\\)'],
-      ],
-      displayMath: [
-        ['$$', '$$'],
-        [`\\[`, `\\]`],
-      ],
-    }),
-    OutputJax: new SVG({
-      // font: 'mathjax-fira',
-    }),
+  const document = mathjax.document('', {
+    InputJax: new TeX({ packages: AllPackages }),
+    OutputJax: new SVG({ fontCache: 'local' }),
   });
-  // const visitor = new SerializedMmlVisitor();
-  // const toMathML = (node: MmlNode) => visitor.visitTree(node);
-
-  // const converter = {
-  //   convert(expr: string) {
-  //     const node = document.convert(expr);
-  //     return node;
-  //   },
-  // };
-
   cache = document;
   return document;
-}
-
-export interface MathjaxProps {
-  expr: string;
-  document?: Document;
 }
 
 type Props = {
@@ -65,12 +38,8 @@ type Props = {
 };
 
 export function MathJax({ expr }: Props) {
-  // console.log('hey!');
   const converter = getConverter();
-  // console.log(converter);
-  const node = converter.convert(expr);
-  // console.log(node);
-  // return null;
+  const node = converter.convert(expr) as LiteElement;
   const children = render(node.children);
   return <>{children}</>;
 }

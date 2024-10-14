@@ -15,7 +15,7 @@
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "hast-util-from-dom": "^5.0.0",
-    "mathjax-full": "^4.0.0-beta.6",
+    "mathjax-full": "^3.2.2",
     "mdast-util-toc": "^7.1.0",
     "mime": "^4.0.3",
     "pathe": "^1.1.2",
