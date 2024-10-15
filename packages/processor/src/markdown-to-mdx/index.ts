@@ -12,6 +12,10 @@ export {
   TocHighlightContext,
 } from './mdx-handlers/toc-highlight/toc-highlight-provider';
 
+export type { FontName } from './mdx-handlers/mathjax';
+
+export { MathsProvider, MathsContext } from './mdx-handlers/mathjax';
+
 export { sidebarRunOptions } from './sidebar';
 
 export const runOptions: RunOptions = {

@@ -19,3 +19,7 @@ export {
   TocHighlightProvider,
   TocHighlightContext,
 } from './markdown-to-mdx';
+
+export type { FontName } from './markdown-to-mdx';
+
+export { MathsProvider, MathsContext } from './markdown-to-mdx';

@@ -1,7 +1,7 @@
 // import { MathJax3Config, MathJaxContext } from 'better-react-mathjax';
 import { ComponentChildren } from 'preact';
 
-import { TocHighlightProvider } from '@isos/processor';
+import { MathsProvider, TocHighlightProvider } from '@isos/processor';
 
 import { ErrorProvider } from './error-provider';
 import { LoadingProvider } from './loading-provider';
@@ -28,9 +28,11 @@ export function Providers({ children }: Props) {
     <TocHighlightProvider>
       <LoadingProvider>
         <ErrorProvider>
-          {/* <MathJaxContext config={mathjaxConfig}> */}
-          {children}
-          {/* </MathJaxContext> */}
+          <MathsProvider>
+            {/* <MathJaxContext config={mathjaxConfig}> */}
+            {children}
+            {/* </MathJaxContext> */}
+          </MathsProvider>
         </ErrorProvider>
       </LoadingProvider>
     </TocHighlightProvider>

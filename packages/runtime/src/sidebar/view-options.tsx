@@ -2,13 +2,17 @@ import { themes } from '../constants/themes';
 import { styled } from '@linaria/react';
 import { useContext } from 'preact/hooks';
 
+import { MathsContext } from '@isos/processor';
+
 import * as readability from '../constants/readability';
 import { ViewOptionsContext } from '../providers/view-options-provider';
+import { Checkbox } from './checkbox';
 import { RangeInput } from './range-input';
 import { Theme } from './theme';
 
 export function ViewOptions() {
   const ctx = useContext(ViewOptionsContext);
+  const maths = useContext(MathsContext);
   return (
     <form>
       <Fieldset>
@@ -50,6 +54,16 @@ export function ViewOptions() {
           {...readability.lineWidth}
           value={ctx.lineWidth}
           onChange={ctx.setLineWidth}
+        />
+      </Fieldset>
+      <Fieldset>
+        <Legend>Maths</Legend>
+        <Checkbox
+          label="Sans-serif font"
+          value={maths.fontName === 'fira'}
+          onChange={(sansSerif) =>
+            maths.setFontName(sansSerif ? 'fira' : 'termes')
+          }
         />
       </Fieldset>
     </form>

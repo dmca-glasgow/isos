@@ -6,7 +6,7 @@ import { TocHighlightContext } from './toc-highlight-provider';
 
 export function Section(props: JSX.HTMLAttributes<HTMLElement>) {
   const [ref, inView, entry] = useObserver({
-    rootMargin: '-50% 0 -50% 0',
+    rootMargin: '-50% 0% -50% 0%',
     threshold: 0,
   });
   const { setActiveSection } = useContext(TocHighlightContext);
