@@ -18,14 +18,14 @@ import { FileType } from './utils/parse-file-path';
 
 export async function inputToMarkdown(
   ctx: Context,
-  options: Partial<Options> = {}
+  options: Partial<Options> = {},
 ) {
   const mdast = await getMdast(ctx);
   const processor = createRemarkProcessor(
     createMdastTransforms(ctx, {
       ...defaultOptions,
       ...options,
-    })
+    }),
   );
   const precompiled = await processor.run(mdast);
   const markdown = processor.stringify(precompiled as MDastRoot).trim();

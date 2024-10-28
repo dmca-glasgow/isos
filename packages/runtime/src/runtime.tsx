@@ -1,12 +1,17 @@
 import { styled } from '@linaria/react';
-import { useContext, useEffect, useState } from 'preact/hooks';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'preact/hooks';
 
 import { markdownToJs } from '@isos/processor';
 
 import { Article } from './article';
 import { Hamburger } from './components/hamburger';
 import { ErrorContext } from './providers/error-provider';
-import { Sidebar, setShowSidebar } from './sidebar';
+import { Sidebar } from './sidebar';
 
 import './styles/index.scss';
 
@@ -14,10 +19,27 @@ type Props = {
   markdown: string;
 };
 
+if (typeof window !== undefined) {
+  const showSideBar = localStorage.getItem('show-sidebar');
+  if (String(showSideBar) === 'true') {
+    document.documentElement.classList.add('sidebar-open');
+  }
+}
+
 export function Runtime({ markdown }: Props) {
   const [toc, setToc] = useState('');
   const [article, setArticle] = useState('');
   const { error, setError } = useContext(ErrorContext);
+
+  const setShowSidebar = useCallback((open: boolean) => {
+    if (open) {
+      document.documentElement.classList.add('sidebar-open');
+      localStorage.setItem('show-sidebar', 'true');
+    } else {
+      document.documentElement.classList.remove('sidebar-open');
+      localStorage.setItem('show-sidebar', 'false');
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -33,28 +55,21 @@ export function Runtime({ markdown }: Props) {
   }, [markdown]);
 
   return (
-    <Wrapper className="runtime">
+    <main>
       {error && (
         <Error className="error">
           <ErrorLabel>Error:</ErrorLabel> {error}
         </Error>
       )}
-      <main>
-        <Article jsString={article} />
-      </main>
+      <Article jsString={article} />
       <Hamburger
         className="hamburger"
         onClick={() => setShowSidebar(true)}
       />
-      <Sidebar jsString={toc} />
-    </Wrapper>
+      <Sidebar jsString={toc} setShowSidebar={setShowSidebar} />
+    </main>
   );
 }
-
-const Wrapper = styled.div`
-  /* overflow: auto; */
-  position: relative;
-`;
 
 const Error = styled.div`
   position: absolute;

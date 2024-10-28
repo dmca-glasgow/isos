@@ -6,6 +6,14 @@ export type Readability = {
   increment: number;
 };
 
+export const contrast: Readability = {
+  label: 'Contrast',
+  defaultValue: 0,
+  min: -1,
+  max: 1,
+  increment: 0.1,
+};
+
 export const fontSize: Readability = {
   label: 'Font-size',
   defaultValue: 1,
@@ -16,7 +24,7 @@ export const fontSize: Readability = {
 
 export const lineSpacing: Readability = {
   label: 'Line spacing',
-  defaultValue: 1,
+  defaultValue: 1.1,
   min: 0.6,
   max: 2,
   increment: 0.1,

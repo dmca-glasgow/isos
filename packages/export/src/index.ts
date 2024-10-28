@@ -6,12 +6,13 @@ type FrontMatter = {
 type RuntimeBundle = {
   css: string;
   js: string;
+  font: string;
 };
 
 export async function createRuntimeHtml(
   markdown: string,
   frontmatter: FrontMatter,
-  bundle: RuntimeBundle
+  bundle: RuntimeBundle,
 ) {
   return `
 

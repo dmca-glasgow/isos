@@ -75,29 +75,63 @@ test('headings with counters and attributes', async () => {
 
   const expected = unindentStringAndTrim(`
     <h1 id="alfa">Alfa</h1>
-    <h2 id="bravo-hi"><span class="count">1.</span> Bravo <strong>hi</strong></h2>
-    <h3 id="hi"><span class="count">1.1.</span> Charlie</h3>
-    <h4 id="delta-hi"><span class="count">1.1.1.</span> <strong>Delta</strong> hi</h4>
-    <h5 id="echo">Echo</h5>
-    <h6 id="foxtrot">Foxtrot</h6>
-    <h5 id="golf">Golf</h5>
-    <h6 id="hotel">Hotel</h6>
-    <h2 id="india">India</h2>
-    <h2 id="juliett"><span class="count">2.</span> Juliett</h2>
-    <h3 id="kilo"><strong>Kilo</strong></h3>
-    <h2 id="lima"><span class="count">3.</span> Lima</h2>
-    <h3 id="mike"><span class="count">3.1.</span> Mike</h3>
-    <h4 id="november"><span class="count">3.1.1.</span> November</h4>
-    <h3 id="oscar"><span class="count">3.2.</span> Oscar</h3>
-    <h4 id="papa"><span class="count">3.2.1.</span> Papa</h4>
-    <h4 id="quebec-hi">Quebec <strong>hi</strong></h4>
-    <h4 id="romeo"><span class="count">3.2.2.</span> Romeo</h4>
+    <section id="bravo-hi">
+      <h2><span class="count">1.</span> Bravo <strong>hi</strong></h2>
+      <section id="hi">
+        <h3><span class="count">1.1.</span> Charlie</h3>
+        <section id="delta-hi">
+          <h4><span class="count">1.1.1.</span> <strong>Delta</strong> hi</h4>
+          <section id="echo">
+            <h5>Echo</h5>
+            <section id="foxtrot">
+              <h6>Foxtrot</h6>
+            </section>
+          </section>
+          <section id="golf">
+            <h5>Golf</h5>
+            <section id="hotel">
+              <h6>Hotel</h6>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section id="india">
+      <h2>India</h2>
+    </section>
+    <section id="juliett">
+      <h2><span class="count">2.</span> Juliett</h2>
+      <section id="kilo">
+        <h3><strong>Kilo</strong></h3>
+      </section>
+    </section>
+    <section id="lima">
+      <h2><span class="count">3.</span> Lima</h2>
+      <section id="mike">
+        <h3><span class="count">3.1.</span> Mike</h3>
+        <section id="november">
+          <h4><span class="count">3.1.1.</span> November</h4>
+        </section>
+      </section>
+      <section id="oscar">
+        <h3><span class="count">3.2.</span> Oscar</h3>
+        <section id="papa">
+          <h4><span class="count">3.2.1.</span> Papa</h4>
+        </section>
+        <section id="quebec-hi">
+          <h4>Quebec <strong>hi</strong></h4>
+        </section>
+        <section id="romeo">
+          <h4><span class="count">3.2.2.</span> Romeo</h4>
+        </section>
+      </section>
+    </section>
   `);
 
   expect(html).toBe(expected);
 });
 
-test('headings on environments', async () => {
+test.only('headings on environments', async () => {
   const latex = `
     \\documentclass{amsproc}
 
@@ -331,67 +365,75 @@ test('headings on environments', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <h2 id="part-i-differentiation">PART I. DIFFERENTIATION</h2>
-    <h2 id="limits"><span class="count">1.</span> Limits</h2>
-    <div id="lemma-11" class="boxout lemma">
-      <p><span class="type">Lemma <span class="count">1.1.</span></span></p>
-    </div>
-    <div id="example-12" class="boxout example">
-      <p><span class="type">Example <span class="count">1.2.</span></span> Test</p>
-    </div>
-    <div id="definition-13" class="boxout definition">
-      <p><span class="type">Definition <span class="count">1.3.</span></span> Test</p>
-    </div>
-    <div id="proposition-14" class="boxout proposition">
-      <p><span class="type">Proposition <span class="count">1.4.</span></span> Test</p>
-    </div>
-    <h2 id="cms1"><span class="count">2.</span> Introduction to differentiation</h2>
-    <div id="cmd11" class="boxout definition">
-      <p><span class="type">Definition <span class="count">2.1.</span></span> Test</p>
-    </div>
-    <div id="lemma-22" class="boxout lemma">
-      <p><span class="type">Lemma <span class="count">2.2.</span></span> Test</p>
-    </div>
-    <div id="example-23" class="boxout example">
-      <p><span class="type">Example <span class="count">2.3.</span></span> Test</p>
-    </div>
-    <div id="solution-1" class="boxout solution">
-      <p><span class="type">Solution.</span> Test</p><span class="proof-box">◻</span>
-    </div>
-    <div id="cme13" class="boxout example">
-      <p><span class="type">Example <span class="count">2.4.</span></span> Test</p>
-    </div>
-    <div id="solution-2" class="boxout solution">
-      <p><span class="type">Solution.</span> Test</p><span class="proof-box">◻</span>
-    </div>
-    <div id="cme14" class="boxout example">
-      <p><span class="type">Example <span class="count">2.5.</span></span> Test</p>
-    </div>
-    <div id="solution-3" class="boxout solution">
-      <p><span class="type">Solution.</span> Test</p><span class="proof-box">◻</span>
-    </div>
-    <div id="cmd15" class="boxout definition">
-      <p><span class="type">Definition <span class="count">2.6.</span></span> Test</p>
-    </div>
-    <div id="cmd16" class="boxout definition">
-      <p><span class="type">Definition <span class="count">2.7.</span></span> Test</p>
-    </div>
-    <div id="cme17" class="boxout example">
-      <p><span class="type">Example <span class="count">2.8.</span></span> Test</p>
-    </div>
-    <div id="cmd18" class="boxout definition">
-      <p><span class="type">Definition <span class="count">2.9.</span></span> Test</p>
-    </div>
-    <h2 id="cms2"><span class="count">3.</span> Power series</h2>
-    <div id="power" class="boxout theorem">
-      <p><span class="type">Theorem <span class="count">3.1.</span></span> Test</p>
-    </div>
-    <div id="cmt22" class="boxout theorem">
-      <p><span class="type">Theorem <span class="count">3.2.</span></span> Test</p>
-    </div>
-    <div id="cme21" class="boxout example">
-      <p><span class="type">Example <span class="count">3.3.</span></span> Test</p>
-    </div>
+    <section id="part-i-differentiation">
+      <h2>PART I. DIFFERENTIATION</h2>
+    </section>
+    <section id="limits">
+      <h2><span class="count">1.</span> Limits</h2>
+      <div id="lemma-11" class="boxout lemma">
+        <p><span class="type">Lemma <span class="count">1.1.</span></span></p>
+      </div>
+      <div id="example-12" class="boxout example">
+        <p><span class="type">Example <span class="count">1.2.</span></span> Test</p>
+      </div>
+      <div id="definition-13" class="boxout definition">
+        <p><span class="type">Definition <span class="count">1.3.</span></span> Test</p>
+      </div>
+      <div id="proposition-14" class="boxout proposition">
+        <p><span class="type">Proposition <span class="count">1.4.</span></span> Test</p>
+      </div>
+    </section>
+    <section id="cms1">
+      <h2><span class="count">2.</span> Introduction to differentiation</h2>
+      <div id="cmd11" class="boxout definition">
+        <p><span class="type">Definition <span class="count">2.1.</span></span> Test</p>
+      </div>
+      <div id="lemma-22" class="boxout lemma">
+        <p><span class="type">Lemma <span class="count">2.2.</span></span> Test</p>
+      </div>
+      <div id="example-23" class="boxout example">
+        <p><span class="type">Example <span class="count">2.3.</span></span> Test</p>
+      </div>
+      <div id="solution-1" class="boxout solution">
+        <p><span class="type">Solution.</span> Test<span class="proof-box">◻</span></p>
+      </div>
+      <div id="cme13" class="boxout example">
+        <p><span class="type">Example <span class="count">2.4.</span></span> Test</p>
+      </div>
+      <div id="solution-2" class="boxout solution">
+        <p><span class="type">Solution.</span> Test<span class="proof-box">◻</span></p>
+      </div>
+      <div id="cme14" class="boxout example">
+        <p><span class="type">Example <span class="count">2.5.</span></span> Test</p>
+      </div>
+      <div id="solution-3" class="boxout solution">
+        <p><span class="type">Solution.</span> Test<span class="proof-box">◻</span></p>
+      </div>
+      <div id="cmd15" class="boxout definition">
+        <p><span class="type">Definition <span class="count">2.6.</span></span> Test</p>
+      </div>
+      <div id="cmd16" class="boxout definition">
+        <p><span class="type">Definition <span class="count">2.7.</span></span> Test</p>
+      </div>
+      <div id="cme17" class="boxout example">
+        <p><span class="type">Example <span class="count">2.8.</span></span> Test</p>
+      </div>
+      <div id="cmd18" class="boxout definition">
+        <p><span class="type">Definition <span class="count">2.9.</span></span> Test</p>
+      </div>
+    </section>
+    <section id="cms2">
+      <h2><span class="count">3.</span> Power series</h2>
+      <div id="power" class="boxout theorem">
+        <p><span class="type">Theorem <span class="count">3.1.</span></span> Test</p>
+      </div>
+      <div id="cmt22" class="boxout theorem">
+        <p><span class="type">Theorem <span class="count">3.2.</span></span> Test</p>
+      </div>
+      <div id="cme21" class="boxout example">
+        <p><span class="type">Example <span class="count">3.3.</span></span> Test</p>
+      </div>
+    </section>
   `);
 
   expect(html).toBe(expectedHtml);

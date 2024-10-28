@@ -15,8 +15,11 @@ export function createHeadingCounter(): HeadingCounter {
       return count[depth - 1];
     },
     getCounts(depth: number) {
-      // TODO: `2` relates to headingDepth - (subsection - 1)
-      return count.slice(2, depth);
+      const counts = count.slice(1, depth);
+
+      // remove zero counts at the left side of the count
+      const idx = counts.findIndex((n) => n !== 0);
+      return idx > 0 ? counts.slice(idx) : counts;
     },
     increment(depth: number) {
       ++count[depth - 1];
@@ -48,7 +51,7 @@ const headingDepths: Record<string, number> = {
   subparagraph: 6,
 };
 
-// TODO: return TheoremCounter instead of erroring
+// TODO: return TheoremCounter instead of error?
 export function getHeadingDepth(theorems: Theorems, name: string): number {
   // console.log(theorems, name);
   const environment = theorems[name];
@@ -65,11 +68,14 @@ export function getHeadingDepth(theorems: Theorems, name: string): number {
       return findParentHeading(environment.referenceCounter);
     }
     throw new Error(
-      `thereom parent \`numberWithin\` not found for: ${name}`
+      `thereom parent \`numberWithin\` not found for: ${name}`,
     );
   }
 
   const parentHeading = findParentHeading(name);
+
+  // console.log(parentHeading, theorems);
+
   const parentDepth = headingDepths[parentHeading];
   if (parentDepth === undefined) {
     throw new Error(`thereom \`numberWithin\` not found: ${name}`);

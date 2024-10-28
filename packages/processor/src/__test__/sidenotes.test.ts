@@ -61,7 +61,9 @@ test.only('sidenote parsing bug 2', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <p>a</p>
-    <h2 id="title" class="fancy">Title<span class="sidenote"><label tabindex="0" title="Maths" aria-describedby="sidenote-1"><sup>1</sup></label><small id="sidenote-1"><span class="sidenote-parenthesis">(sidenote: </span><sup>1</sup> Maths<span class="sidenote-parenthesis">)</span></small></span></h2>
+    <section id="title">
+      <h2 class="fancy">Title<span class="sidenote"><label tabindex="0" title="Maths" aria-describedby="sidenote-1"><sup>1</sup></label><small id="sidenote-1"><span class="sidenote-parenthesis">(sidenote: </span><sup>1</sup> Maths<span class="sidenote-parenthesis">)</span></small></span></h2>
+    </section>
   `);
 
   expect(html).toBe(expectedHtml);

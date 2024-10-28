@@ -8,12 +8,14 @@ import * as readability from '../constants/readability';
 
 type ViewOptions = {
   theme: string;
+  contrast: number;
   fontSize: number;
   lineSpacing: number;
   letterSpacing: number;
   lineWidth: number;
 
   setTheme: (themeValue: Theme['value']) => unknown;
+  setContrast: (contrast: number) => unknown;
   setFontSize: (fontSize: number) => unknown;
   setLineSpacing: (lineSpacing: number) => unknown;
   setLetterSpacing: (letterSpacing: number) => unknown;
@@ -22,12 +24,14 @@ type ViewOptions = {
 
 export const ViewOptionsContext = createContext<ViewOptions>({
   theme: themes[0].value,
+  contrast: readability.contrast.defaultValue,
   fontSize: readability.fontSize.defaultValue,
   lineSpacing: readability.lineSpacing.defaultValue,
   letterSpacing: readability.letterSpacing.defaultValue,
   lineWidth: readability.lineWidth.defaultValue,
 
   setTheme: () => {},
+  setContrast: () => {},
   setFontSize: () => {},
   setLineSpacing: () => {},
   setLetterSpacing: () => {},
@@ -40,6 +44,7 @@ export function ViewOptionsProvider({
   children: ComponentChildren;
 }) {
   const [theme, setTheme] = useLocalStorage('theme', themes[0].value);
+  const [contrast, setContrast] = useLocalStorage('contrast', '0');
   const [fontSize, setFontSize] = useLocalStorage('font-size', '1');
   const [lineSp, setLineSp] = useLocalStorage('line-spacing', '1');
   const [letterSp, setLetterSp] = useLocalStorage('letter-spacing', '0');
@@ -49,26 +54,31 @@ export function ViewOptionsProvider({
   useEffect(() => {
     document.documentElement.classList.add(`theme-${theme}`);
     document.documentElement.style.setProperty(
+      '--contrast',
+      String(contrast),
+    );
+    document.documentElement.style.setProperty(
       '--fontSize',
-      String(fontSize)
+      String(fontSize),
     );
     document.documentElement.style.setProperty(
       '--lineSpacing',
-      String(lineSp)
+      String(lineSp),
     );
     document.documentElement.style.setProperty(
       '--letterSpacing',
-      String(letterSp)
+      String(letterSp),
     );
     document.documentElement.style.setProperty(
       '--lineWidth',
-      String(lineWidth)
+      String(lineWidth),
     );
   }, []);
 
   const context = useMemo((): ViewOptions => {
     return {
       theme,
+      contrast: Number(contrast),
       fontSize: Number(fontSize),
       lineSpacing: Number(lineSp),
       letterSpacing: Number(letterSp),
@@ -77,9 +87,14 @@ export function ViewOptionsProvider({
       setTheme(newTheme: string) {
         document.documentElement.classList.replace(
           `theme-${theme}`,
-          `theme-${newTheme}`
+          `theme-${newTheme}`,
         );
         setTheme(newTheme);
+      },
+      setContrast(newContrast: number) {
+        const str = String(newContrast);
+        document.documentElement.style.setProperty('--contrast', str);
+        setContrast(str);
       },
       setFontSize(newFontSize: number) {
         const str = String(newFontSize);
@@ -102,7 +117,7 @@ export function ViewOptionsProvider({
         setLineWidth(str);
       },
     };
-  }, [theme, fontSize, lineSp, letterSp, lineWidth]);
+  }, [theme, contrast, fontSize, lineSp, letterSp, lineWidth]);
 
   return (
     <ViewOptionsContext.Provider value={context}>

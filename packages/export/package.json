@@ -8,5 +8,11 @@
   ],
   "exports": [
     "./src/index.ts"
-  ]
+  ],
+  "scripts": {
+    "bundle": "NODE_ENV=test vite-node src/create-test-bundle.ts"
+  },
+  "devDependencies": {
+    "vite-node": "^2.0.5"
+  }
 }

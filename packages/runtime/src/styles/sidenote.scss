@@ -1,4 +1,4 @@
-article > .wrapper.has-sidenotes {
+article.has-sidenotes {
   width: calc(50% * var(--lineWidth, 1));
   padding-right: 22vw;
 }

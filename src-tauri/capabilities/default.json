@@ -8,6 +8,9 @@
     "shell:allow-open",
     "dialog:default",
     "fs:default",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file",
+    "fs:allow-resource-read-recursive",
     {
       "identifier": "fs:read-files",
       "allow": [{ "path": "**/*" }]

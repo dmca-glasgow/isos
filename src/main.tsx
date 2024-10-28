@@ -1,13 +1,12 @@
 import { render } from 'preact';
-import { App } from './app';
-import { Providers } from '@isos/runtime';
-// import { cli } from './cli';
 
-// cli();
+import { Providers } from '@isos/runtime';
+
+import { App } from './app';
 
 render(
   <Providers>
     <App />
   </Providers>,
-  document.getElementById('root')!
+  document.getElementById('root')!,
 );

@@ -2,7 +2,6 @@ import { styled } from '@linaria/react';
 import { resolveResource } from '@tauri-apps/api/path';
 import {
   readTextFile,
-  watch,
   watchImmediate,
   writeTextFile,
 } from '@tauri-apps/plugin-fs';
@@ -70,11 +69,12 @@ export function App() {
     };
     const bundle = {
       css: await readTextFile(
-        await resolveResource('resources/index.css'),
+        await resolveResource('resources/runtime/index.css'),
       ),
       js: await readTextFile(
-        await resolveResource('resources/runtime.js'),
+        await resolveResource('resources/runtime/runtime.js'),
       ),
+      font: 'termes',
     };
     const html = await createRuntimeHtml(markdown, frontmatter, bundle);
     await writeTextFile(saveFilePath, html);

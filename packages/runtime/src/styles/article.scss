@@ -1,20 +1,8 @@
 article {
-  & > .wrapper {
-    position: relative;
+  padding: 2em 0 5em;
+  margin: 0 auto;
 
-    padding: 2em 0 5em;
-    margin: 0 auto;
-    width: calc(60% * var(--lineWidth, 1));
-    font-size: calc(1rem * var(--fontSize, 1));
-    line-height: calc(1.5 * var(--lineSpacing, 1));
-    letter-spacing: calc(1em * var(--letterSpacing, 0));
-  }
-}
-
-@media (max-width: 1000px) {
-  article {
-    & > .wrapper {
-      width: calc(85% * var(--lineWidth, 1));
-    }
+  img {
+    max-width: 100%;
   }
 }

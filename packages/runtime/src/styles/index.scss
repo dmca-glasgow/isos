@@ -1,17 +1,47 @@
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  font-size: 22px;
-  font-weight: 400;
-  line-height: 1.75;
+  // https://modernfontstacks.com: Geometric Humanist
+  font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
+  font-size: clamp(1.5vw, 18px, 26px);
+}
 
-  color: #222;
+body {
+  margin: 0;
+  color: var(--textColor);
+  background: var(--bg);
+}
 
-  // font-synthesis: none;
-  // text-rendering: optimizeLegibility;
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
-  // -webkit-text-size-adjust: 100%;
+main {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  $fontSize: 1rem;
+  $lineHeight: 1.7;
+  $letterSpacing: 1em;
+
+  font-size: $fontSize;
+  line-height: $lineHeight;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  shape-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  article {
+    width: calc(60vw * var(--lineWidth, 1));
+    font-size: calc($fontSize * var(--fontSize, 1));
+    line-height: calc($lineHeight * var(--lineSpacing, 1));
+    letter-spacing: calc($letterSpacing * var(--letterSpacing, 0));
+  }
+
+  @media (max-width: 1000px) {
+    article {
+      width: calc(85vw * var(--lineWidth, 1));
+    }
+  }
 }
 
 @import './variables.scss';
@@ -20,7 +50,9 @@
 @import './sidebar.scss';
 @import './sidenote.scss';
 @import './scrollbars.scss';
+@import './range-input.scss';
 
 // @import './odl/index.scss';
-@import './latex/index.scss';
+// @import './latex/index.scss';
 // @import './uofg-lecture/index.scss';
+@import './nouveaux/index.scss';
