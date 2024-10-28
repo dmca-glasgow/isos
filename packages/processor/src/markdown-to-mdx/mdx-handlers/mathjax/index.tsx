@@ -46,7 +46,9 @@ const FiraFont = new MathJaxFiraFont();
 const fontPreloads = ['double-struck'];
 
 fontPreloads.forEach((name) => {
+  // @ts-expect-error
   MathJaxTermesFont.dynamicFiles[name].setup(TermesFont);
+  // @ts-expect-error
   MathJaxFiraFont.dynamicFiles[name].setup(FiraFont);
 });
 

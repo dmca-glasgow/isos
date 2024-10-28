@@ -4,9 +4,6 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
-// const mathjaxPath =
-//   '../../node_modules/mathjax-fira-font/tex-mml-chtml-mathjax-fira.js';
-
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [
