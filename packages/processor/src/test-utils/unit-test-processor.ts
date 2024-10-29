@@ -1,4 +1,9 @@
-import { FileType, inputToMarkdown, markdownToJs, runOptions } from '..';
+import {
+  FileType,
+  createRunOptions,
+  inputToMarkdown,
+  markdownToJs,
+} from '..';
 import { run } from '@mdx-js/mdx';
 import { resolve } from 'pathe';
 import { createElement } from 'preact';
@@ -27,11 +32,12 @@ async function markdownToHtml(md: string) {
   const prepared = unindentStringAndTrim(md);
   const ctx = createTestContext(FileType.markdown, prepared);
   const markdown = await inputToMarkdown(ctx);
-  const { article } = await markdownToJs(markdown, {
+  const options = {
     mathsAsTex: true,
     noWrapper: true,
-  });
-  const component = await run(article, runOptions);
+  };
+  const { article } = await markdownToJs(markdown, options);
+  const component = await run(article, createRunOptions(options));
   // @ts-expect-error
   const element = createElement(component.default);
   return formatHtml(renderToString(element));

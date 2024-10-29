@@ -1,12 +1,13 @@
+import { Options } from '../options';
 import { MDXComponents } from 'mdx/types';
 
 import { MathJax } from './math';
 import { Task } from './task/Task';
 import { Section } from './toc-highlight/section';
 
-export function useMDXComponents(): MDXComponents {
+export function createMDXComponents(options: Partial<Options>) {
   // const ctx = {}
-  return {
+  return (): MDXComponents => ({
     div(props) {
       if (props.class?.includes('task')) {
         return <Task {...props} />;
@@ -18,10 +19,13 @@ export function useMDXComponents(): MDXComponents {
     // TODO: remove sectionize and use the titles
     section: Section,
     code(props) {
-      if (props.class?.includes('language-math')) {
+      if (
+        props.class?.includes('language-math') &&
+        options.mathsAsTex === false
+      ) {
         return <MathJax expr={props.children} />;
       }
       return <code {...props} />;
     },
-  };
+  });
 }

@@ -9,7 +9,7 @@ export { inputToMarkdown } from './latex-to-markdown';
 
 export {
   markdownToJs,
-  runOptions,
+  createRunOptions,
   sidebarRunOptions,
 } from './markdown-to-mdx';
 

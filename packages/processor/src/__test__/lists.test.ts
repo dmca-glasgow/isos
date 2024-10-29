@@ -103,7 +103,7 @@ test('parsing bug3', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="lemma-1" class="boxout lemma">
-      <p><span class="type">Lemma <span class="count">1.</span></span> If $f: U$ then</p>
+      <p><span class="type">Lemma <span class="count">1.</span></span> If <code class="language-math math-inline">f: U</code> then</p>
       <ul>
         <li>
           <p>(Additivity) Alpha</p>

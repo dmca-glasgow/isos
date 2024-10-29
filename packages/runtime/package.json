@@ -28,6 +28,7 @@
     "@babel/preset-typescript": "^7.24.1",
     "@linaria/core": "^6.1.0",
     "@linaria/react": "^6.1.0",
+    "@types/prismjs": "^1.26.5",
     "@wyw-in-js/babel-preset": "^0.5.1",
     "@wyw-in-js/vite": "^0.5.1",
     "vite-plugin-prismjs": "^0.0.11"

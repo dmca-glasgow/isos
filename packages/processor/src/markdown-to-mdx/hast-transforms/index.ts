@@ -26,7 +26,7 @@ export function createRehypePlugins(ctx: Context, options: Options) {
 export async function toHast(
   children: PhrasingContent[],
   ctx: Context,
-  options?: Partial<Options>,
+  options: Partial<Options> = {},
 ) {
   const processor = unified().use(
     createRehypeFragmentPlugins(ctx, options),
@@ -42,7 +42,7 @@ export async function toHast(
 
 function createRehypeFragmentPlugins(
   _ctx: Context,
-  options: Partial<Options> = {},
+  _options: Partial<Options> = {},
 ): PluggableList {
   return [
     // TODO:

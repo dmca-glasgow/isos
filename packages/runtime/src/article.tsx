@@ -3,7 +3,7 @@ import { MDXModule } from 'mdx/types';
 import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
-import { runOptions } from '@isos/processor';
+import { createRunOptions } from '@isos/processor';
 
 type Props = {
   jsString: string;
@@ -15,7 +15,7 @@ export function Article({ jsString }: Props) {
 
   useEffect(() => {
     (async () => {
-      setMDX(await run(jsString, runOptions));
+      setMDX(await run(jsString, createRunOptions()));
 
       // window.MathJax = {
       //   tex: {

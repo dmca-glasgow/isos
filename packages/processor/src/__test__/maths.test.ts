@@ -48,10 +48,11 @@ test('parsing bug', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="example-1" class="boxout example">
-      <p><span class="type">Example <span class="count">1.</span></span> If $n$ is a natural number, then</p>$$\\dfrac{d}{dz}z^{n} = nz^{n-1}.$$<p>and bla bla bla.</p>
+      <p><span class="type">Example <span class="count">1.</span></span> If <code class="language-math math-inline">n</code> is a natural number, then</p><pre><code class="language-math math-display">\\dfrac{d}{dz}z^{n} = nz^{n-1}.</code></pre>
+      <p>and bla bla bla.</p>
     </div>
-    <p>If $n$ is a natural number, then</p>
-    $$\\dfrac{d}{dz}z^{n} = nz^{n-1}.$$
+    <p>If <code class="language-math math-inline">n</code> is a natural number, then</p>
+    <pre><code class="language-math math-display">\\dfrac{d}{dz}z^{n} = nz^{n-1}.</code></pre>
     <p>and bla bla bla.</p>
   `);
 
@@ -105,10 +106,11 @@ test('parsing bug2', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="example-1" class="boxout example">
-      <p><span class="type">Example <span class="count">1.</span></span> If $n$ is a natural number, then</p>$$\\begin{align*}\\dfrac{d}{dz}z^{n} = nz^{n-1}.\\end{align*}$$<p>and bla bla bla.</p>
+      <p><span class="type">Example <span class="count">1.</span></span> If <code class="language-math math-inline">n</code> is a natural number, then</p><pre><code class="language-math math-display">\\begin{align*}\\dfrac{d}{dz}z^{n} = nz^{n-1}.\\end{align*}</code></pre>
+      <p>and bla bla bla.</p>
     </div>
-    <p>If $n$ is a natural number, then</p>
-    $$\\begin{align*}\\dfrac{d}{dz}z^{n} = nz^{n-1}.\\end{align*}$$
+    <p>If <code class="language-math math-inline">n</code> is a natural number, then</p>
+    <pre><code class="language-math math-display">\\begin{align*}\\dfrac{d}{dz}z^{n} = nz^{n-1}.\\end{align*}</code></pre>
     <p>and bla bla bla.</p>
   `);
 
@@ -186,7 +188,12 @@ test('parsing bug3', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="solution-1" class="boxout solution">
-      <p><span class="type">Solution.</span> We treat the equation</p>$$\\tfrac{1}{2}(e^{iz}+ e^{-iz}) = 10$$<p>as a quadratic equation in $e^{iz}$. After rearrangement it becomes</p>$$(e^{iz})^{2}-20 e^{iz}+ 1 = 0.$$<p>The solutions are</p>$$e^{iz}= \\dfrac{20\\pm\\sqrt{396}}{2}= 10\\pm\\sqrt{99},$$<p>so that</p>$$iz = \\log(10\\pm\\sqrt{99}) + 2k\\pi i,$$<p>that is,</p>$$z = -i\\log(10\\pm\\sqrt{99}) + 2k\\pi,$$<p>where $k$ is an arbitrary integer.<span class="proof-box">◻</span></p>
+      <p><span class="type">Solution.</span> We treat the equation</p><pre><code class="language-math math-display">\\tfrac{1}{2}(e^{iz}+ e^{-iz}) = 10</code></pre>
+      <p>as a quadratic equation in <code class="language-math math-inline">e^{iz}</code>. After rearrangement it becomes</p><pre><code class="language-math math-display">(e^{iz})^{2}-20 e^{iz}+ 1 = 0.</code></pre>
+      <p>The solutions are</p><pre><code class="language-math math-display">e^{iz}= \\dfrac{20\\pm\\sqrt{396}}{2}= 10\\pm\\sqrt{99},</code></pre>
+      <p>so that</p><pre><code class="language-math math-display">iz = \\log(10\\pm\\sqrt{99}) + 2k\\pi i,</code></pre>
+      <p>that is,</p><pre><code class="language-math math-display">z = -i\\log(10\\pm\\sqrt{99}) + 2k\\pi,</code></pre>
+      <p>where <code class="language-math math-inline">k</code> is an arbitrary integer.<span class="proof-box">◻</span></p>
     </div>
   `);
 
@@ -214,7 +221,7 @@ test('parsing bug4', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="framed">
-      <p>The $A$.</p>
+      <p>The <code class="language-math math-inline">A</code>.</p>
     </div>
   `);
 
