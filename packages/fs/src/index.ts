@@ -15,3 +15,33 @@ export async function readTextFile(filePath: string): Promise<string> {
     return (await import('@tauri-apps/plugin-fs')).readTextFile(filePath);
   }
 }
+
+export async function writeTextFile(filePath: string, contents: string) {
+  if (process.env.NODE_ENV === 'test') {
+    return (await import('fs/promises')).writeFile(
+      filePath,
+      contents,
+      'utf-8',
+    );
+  } else {
+    return (await import('@tauri-apps/plugin-fs')).writeTextFile(
+      filePath,
+      contents,
+    );
+  }
+}
+
+export async function watchImmediate(
+  filePath: string,
+  callback: () => unknown,
+) {
+  if (process.env.NODE_ENV === 'test') {
+    // no need for this functionality outside Tauri app
+    return null;
+  } else {
+    return (await import('@tauri-apps/plugin-fs')).watchImmediate(
+      filePath,
+      callback,
+    );
+  }
+}

@@ -1,13 +1,9 @@
 import { styled } from '@linaria/react';
 import { resolveResource } from '@tauri-apps/api/path';
-import {
-  readTextFile,
-  watchImmediate,
-  writeTextFile,
-} from '@tauri-apps/plugin-fs';
 import { useContext, useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
+import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
 import { createContext, inputToMarkdown } from '@isos/processor';
 import { ErrorContext, LoadingContext, Runtime } from '@isos/runtime';
 import { useLocalStorage } from '@isos/use-local-storage';
