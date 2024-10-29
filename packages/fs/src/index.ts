@@ -33,11 +33,11 @@ export async function writeTextFile(filePath: string, contents: string) {
 
 export async function watchImmediate(
   filePath: string,
-  callback: () => unknown,
+  callback: (event: any) => unknown,
 ) {
   if (process.env.NODE_ENV === 'test') {
     // no need for this functionality outside Tauri app
-    return null;
+    return () => {};
   } else {
     return (await import('@tauri-apps/plugin-fs')).watchImmediate(
       filePath,
