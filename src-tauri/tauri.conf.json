@@ -1,6 +1,6 @@
 {
   "productName": "isos",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "identifier": "com.isos.app",
   "build": {
     "beforeDevCommand": "npm run dev",

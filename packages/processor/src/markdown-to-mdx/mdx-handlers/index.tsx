@@ -1,6 +1,6 @@
 import { MDXComponents } from 'mdx/types';
 
-import { MathJax } from './mathjax';
+import { MathJax } from './math';
 import { Task } from './task/Task';
 import { Section } from './toc-highlight/section';
 
@@ -18,10 +18,7 @@ export function useMDXComponents(): MDXComponents {
     // TODO: remove sectionize and use the titles
     section: Section,
     code(props) {
-      if (
-        props.class?.includes('math-inline') ||
-        props.class?.includes('math-display')
-      ) {
+      if (props.class?.includes('language-math')) {
         return <MathJax expr={props.children} />;
       }
       return <code {...props} />;

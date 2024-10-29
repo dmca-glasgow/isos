@@ -28,6 +28,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: middle;
+  padding-bottom: 0.5em;
 
   label {
     font-size: 0.9em;

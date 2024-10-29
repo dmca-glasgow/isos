@@ -2,6 +2,7 @@
 import preact from '@preact/preset-vite';
 import linaria from '@wyw-in-js/vite';
 import { defineConfig } from 'vite';
+import prismjs from 'vite-plugin-prismjs';
 import svgr from 'vite-plugin-svgr';
 import { configDefaults } from 'vitest/config';
 
@@ -22,6 +23,9 @@ export default defineConfig(async () => ({
     }),
     preact({
       prefreshEnabled: false,
+    }),
+    prismjs({
+      languages: ['latex'],
     }),
   ],
   // 1. prevent vite from obscuring rust errors

@@ -18,12 +18,8 @@ import { mathjax } from 'mathjax-full/js/mathjax.js';
 import { SVG } from 'mathjax-full/js/output/svg.js';
 import { MathJaxTermesFont } from 'mathjax-termes-font/js/svg.js';
 import 'mathjax-termes-font/js/svg/dynamic/double-struck.js';
-import { useContext } from 'preact/hooks';
 
 import { render } from './litedom';
-import { MathsContext } from './maths-provider';
-
-export { MathsContext, MathsProvider } from './maths-provider';
 
 type Document = MathDocument<LiteNode, LiteText, LiteDocument>;
 
@@ -61,23 +57,9 @@ const output: Output = {
   }),
 };
 
-export type Options = {
-  fontName: FontName;
-};
-
-export function getMathjaxHtml(tex: string, options: Options) {
-  doc.outputJax = output[options.fontName];
+export function getMathJax(expr: string, fontName: FontName) {
+  doc.outputJax = output[fontName];
   doc.outputJax.setAdaptor(doc.adaptor);
-  return doc.convert(tex) as LiteElement;
-}
-
-type Props = {
-  expr: string;
-};
-
-export function MathJax({ expr }: Props) {
-  const ctx = useContext(MathsContext);
-  const node = getMathjaxHtml(expr, ctx);
-  const children = render(node.children);
-  return <>{children}</>;
+  const node = doc.convert(expr) as LiteElement;
+  return render(node.children);
 }

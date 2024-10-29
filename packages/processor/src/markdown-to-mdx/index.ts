@@ -12,9 +12,9 @@ export {
   TocHighlightContext,
 } from './mdx-handlers/toc-highlight/toc-highlight-provider';
 
-export type { FontName } from './mdx-handlers/mathjax';
+export type { FontName } from './mdx-handlers/math';
 
-export { MathsProvider, MathsContext } from './mdx-handlers/mathjax';
+export { MathsProvider, MathsContext } from './mdx-handlers/math';
 
 export { sidebarRunOptions } from './sidebar';
 

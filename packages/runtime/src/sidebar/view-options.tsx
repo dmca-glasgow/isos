@@ -65,6 +65,11 @@ export function ViewOptions() {
             maths.setFontName(sansSerif ? 'fira' : 'termes')
           }
         />
+        <Checkbox
+          label="Maths as LaTeX"
+          value={maths.mathsAsTex}
+          onChange={(mathsAsTex) => maths.setMathsAsTex(mathsAsTex)}
+        />
       </Fieldset>
     </form>
   );

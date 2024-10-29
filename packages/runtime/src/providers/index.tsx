@@ -10,29 +10,12 @@ type Props = {
   children: ComponentChildren;
 };
 
-// const mathjaxConfig: MathJax3Config = {
-//   tex: {
-//     inlineMath: [
-//       ['$', '$'],
-//       // ['\\(', '\\)'],
-//     ],
-//     displayMath: [
-//       ['$$', '$$'],
-//       // [`\\[`, `\\]`],
-//     ],
-//   },
-// };
-
 export function Providers({ children }: Props) {
   return (
     <TocHighlightProvider>
       <LoadingProvider>
         <ErrorProvider>
-          <MathsProvider>
-            {/* <MathJaxContext config={mathjaxConfig}> */}
-            {children}
-            {/* </MathJaxContext> */}
-          </MathsProvider>
+          <MathsProvider>{children}</MathsProvider>
         </ErrorProvider>
       </LoadingProvider>
     </TocHighlightProvider>

@@ -1,8 +1,10 @@
 import preact from '@preact/preset-vite';
 import linaria from '@wyw-in-js/vite';
-import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+import prismjs from 'vite-plugin-prismjs';
 import svgr from 'vite-plugin-svgr';
+
+// import { fileURLToPath } from 'node:url';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -15,6 +17,9 @@ export default defineConfig(async () => ({
     }),
     preact({
       prefreshEnabled: false,
+    }),
+    prismjs({
+      languages: ['latex'],
     }),
     // {
     //   name: 'inject',

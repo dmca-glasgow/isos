@@ -3,13 +3,9 @@ import { ProcessorOptions } from '@mdx-js/mdx';
 import { ElementContent } from 'hast';
 import { PhrasingContent, Root } from 'mdast';
 // import { createSvg } from '../utils/icons';
-// import rehypeRaw from 'rehype-raw';
-// import rehypeSlug from 'rehype-slug';
 import { PluggableList, unified } from 'unified';
 
-// import { visit } from 'unist-util-visit';
 import { Context } from '../context';
-// import { mathjax } from './mathjax';
 import { createWrapper } from './wrapper';
 
 export const processorOptions: ProcessorOptions = {
@@ -49,7 +45,6 @@ function createRehypeFragmentPlugins(
   options: Partial<Options> = {},
 ): PluggableList {
   return [
-    // mathjax(options),
     // TODO:
     // [
     // autolinkHeadings,
