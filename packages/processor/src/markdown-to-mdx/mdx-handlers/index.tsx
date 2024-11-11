@@ -21,7 +21,7 @@ export function createMDXComponents(options: Partial<Options>) {
     code(props) {
       if (
         props.class?.includes('language-math') &&
-        options.mathsAsTex === false
+        options.mathsAsTex !== true
       ) {
         return <MathJax expr={props.children} />;
       }

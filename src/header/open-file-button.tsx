@@ -7,13 +7,11 @@ import {
 } from '@isos/processor';
 
 type Props = {
-  onChange: (filePath: string) => unknown;
+  onChange: (filePath: string | null) => unknown;
 };
 
 export function OpenFileButton({ onChange }: Props) {
   async function handleOpenFile() {
-    console.log('hey!');
-
     const selected = await open({
       multiple: false,
       directory: false,
@@ -28,14 +26,7 @@ export function OpenFileButton({ onChange }: Props) {
         },
       ],
     });
-
-    // user clicked Cancel in open file dialog
-    if (selected === null) {
-      return;
-    }
-
     onChange(selected);
   }
-
   return <Button onClick={handleOpenFile}>Open File</Button>;
 }

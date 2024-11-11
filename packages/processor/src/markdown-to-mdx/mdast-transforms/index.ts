@@ -10,7 +10,7 @@ import { Context } from '../context';
 import { createTableOfContents } from '../sidebar';
 import { center } from './center';
 import { extractFrontmatter } from './extract-frontmatter';
-// import { fancyTitle } from './fancy-title';
+import { fancyTitle } from './fancy-title';
 import { sectionize } from './sectionize';
 import { underline } from './underline';
 
@@ -22,7 +22,7 @@ export async function markdownToMdast(
   const stage1 = createRemarkProcessor([
     [extractFrontmatter, ctx],
     [headings, ctx],
-    // fancyTitle,
+    fancyTitle,
     [references, ctx],
     [boxouts, ctx],
     [sidenotes, ctx],

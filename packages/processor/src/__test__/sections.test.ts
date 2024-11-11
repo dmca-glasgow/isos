@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
-test.skip('fancy section heading', async () => {
+test('fancy section heading', async () => {
   const markdown = await testProcessor.latex(`
     \\fancysection{Chapter overview}
   `);

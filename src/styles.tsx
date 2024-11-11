@@ -9,6 +9,6 @@ export const Button = styled.button`
   transition: 0.2s background;
 
   &:hover {
-    background: #f50;
+    box-shadow: inset 0 0 0 2px #fff3;
   }
 `;

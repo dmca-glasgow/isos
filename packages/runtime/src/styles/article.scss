@@ -1,8 +1,36 @@
 article {
+  $fontSize: 1rem;
+  $lineHeight: 1.7;
+  $letterSpacing: 1em;
+
   padding: 2em 0 5em;
+  // max-width: 1000px;
   margin: 0 auto;
+
+  width: calc(60vw * var(--lineWidth, 1));
+  font-size: calc($fontSize * var(--fontSize, 1));
+  line-height: calc($lineHeight * var(--lineSpacing, 1));
+  letter-spacing: calc($letterSpacing * var(--letterSpacing, 0));
 
   img {
     max-width: 100%;
+  }
+
+  &.has-sidenotes {
+    $sidenoteWidth: 20vw;
+    $sidenoteGap: 4vw;
+    padding-right: $sidenoteWidth + $sidenoteGap;
+    .sidenote {
+      small {
+        width: $sidenoteWidth;
+        margin-right: -$sidenoteWidth - $sidenoteGap;
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  article {
+    width: calc(85vw * var(--lineWidth, 1));
   }
 }

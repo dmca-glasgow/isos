@@ -1,4 +1,5 @@
-:root {
+:root,
+.sidenote {
   // https://modernfontstacks.com: Geometric Humanist
   font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
     sans-serif;
@@ -15,33 +16,12 @@ main {
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
-
-  $fontSize: 1rem;
-  $lineHeight: 1.7;
-  $letterSpacing: 1em;
-
-  font-size: $fontSize;
-  line-height: $lineHeight;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   shape-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-
-  article {
-    width: calc(60vw * var(--lineWidth, 1));
-    font-size: calc($fontSize * var(--fontSize, 1));
-    line-height: calc($lineHeight * var(--lineSpacing, 1));
-    letter-spacing: calc($letterSpacing * var(--letterSpacing, 0));
-  }
-
-  @media (max-width: 1000px) {
-    article {
-      width: calc(85vw * var(--lineWidth, 1));
-    }
-  }
 }
 
 @import './variables.scss';

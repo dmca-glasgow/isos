@@ -1,19 +1,40 @@
-article.has-sidenotes {
-  width: calc(50% * var(--lineWidth, 1));
-  padding-right: 22vw;
-}
-
 .sidenote {
   display: inline;
+
+  sup {
+    display: inline-block;
+    padding: 0 0.3em;
+    min-width: 1.5em;
+    min-height: 1.5em;
+    line-height: 1.5em;
+    text-align: center;
+    background: white;
+    border-radius: 0.75em;
+    box-shadow: 0 2px 3px #0005;
+    font-weight: bold;
+  }
+
+  label > sup {
+    font-size: inherit;
+    line-height: inherit;
+    position: relative;
+    bottom: 0.1em;
+    transform: scale(0.7);
+  }
+
   small {
     float: right;
     clear: both;
-    width: 20vw;
     margin-top: 0.1em;
-    margin-right: calc(-20vw - 2rem);
     margin-bottom: 1em;
+    font-size: 0.8rem;
+    font-weight: normal;
     line-height: 1.25;
     text-indent: 0;
+
+    sup {
+      line-height: 1.6em;
+    }
 
     .sidenote-parenthesis {
       position: absolute;

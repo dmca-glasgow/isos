@@ -1,20 +1,26 @@
 import { run } from '@mdx-js/mdx';
 import { MDXModule } from 'mdx/types';
-import { useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
 import { createRunOptions } from '@isos/processor';
 
 type Props = {
   jsString: string;
+  onRendered: () => unknown;
 };
 
-export function Article({ jsString }: Props) {
+export function Article({ jsString, onRendered }: Props) {
+  // const [js, setJs] = useState('');
   const [MDX, setMDX] = useState<MDXModule | null>(null);
   const MDXContent = MDX ? MDX.default : Fragment;
 
   useEffect(() => {
+    // if (jsString === js) {
+    //   return;
+    // }
     (async () => {
+      // setJs(jsString);
       setMDX(await run(jsString, createRunOptions()));
 
       // window.MathJax = {
@@ -41,11 +47,11 @@ export function Article({ jsString }: Props) {
     })();
   }, [jsString]);
 
-  return (
-    <>
-      {/* <MathJax> */}
-      <MDXContent />
-      {/* </MathJax> */}
-    </>
-  );
+  const elemRef = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      onRendered();
+    }
+  }, []);
+
+  return <MDXContent ref={elemRef} />;
 }

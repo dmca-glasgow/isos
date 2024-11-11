@@ -1,3 +1,5 @@
+import { WatchEvent } from '@tauri-apps/plugin-fs';
+
 export async function readBinaryFile(
   filePath: string,
 ): Promise<Uint8Array> {
@@ -33,7 +35,7 @@ export async function writeTextFile(filePath: string, contents: string) {
 
 export async function watchImmediate(
   filePath: string,
-  callback: (event: any) => unknown,
+  callback: (event: WatchEvent) => unknown,
 ) {
   if (process.env.NODE_ENV === 'test') {
     // no need for this functionality outside Tauri app

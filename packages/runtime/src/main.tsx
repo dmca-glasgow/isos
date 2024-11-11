@@ -4,12 +4,12 @@ import { render } from 'preact';
 import { Runtime } from './runtime';
 
 // lift markdown from embedded textarea
-const textarea = document.getElementById('article') as HTMLTextAreaElement;
+const textarea = document.querySelector<HTMLTextAreaElement>('article');
 const markdown = (textarea?.value || '').trim();
 
 render(
   <Providers>
     <Runtime markdown={markdown} />
   </Providers>,
-  document.getElementById('root')!
+  document.getElementById('root')!,
 );

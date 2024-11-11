@@ -1,4 +1,3 @@
-// import { MathJax3Config, MathJaxContext } from 'better-react-mathjax';
 import { ComponentChildren } from 'preact';
 
 import { MathsProvider, TocHighlightProvider } from '@isos/processor';

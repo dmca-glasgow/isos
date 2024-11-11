@@ -1,4 +1,5 @@
 import { styled } from '@linaria/react';
+import classNames from 'classnames';
 import {
   useCallback,
   useContext,
@@ -17,6 +18,8 @@ import './styles/index.scss';
 
 type Props = {
   markdown: string;
+  show: boolean;
+  onRendered: () => unknown;
 };
 
 if (typeof window !== undefined) {
@@ -26,9 +29,14 @@ if (typeof window !== undefined) {
   }
 }
 
-export function Runtime({ markdown }: Props) {
-  const [toc, setToc] = useState('');
-  const [article, setArticle] = useState('');
+export function Runtime({ markdown, show, onRendered }: Props) {
+  if (markdown === '') {
+    return null;
+  }
+  const [js, setJs] = useState({
+    article: '',
+    tableOfContents: '',
+  });
   const { error, setError } = useContext(ErrorContext);
 
   const setShowSidebar = useCallback((open: boolean) => {
@@ -42,12 +50,14 @@ export function Runtime({ markdown }: Props) {
   }, []);
 
   useEffect(() => {
+    if (markdown === '') {
+      return;
+    }
     (async () => {
       try {
         const js = await markdownToJs(markdown);
         setError('');
-        setToc(js.tableOfContents);
-        setArticle(js.article);
+        setJs(js);
       } catch (err: any) {
         setError(err.message);
       }
@@ -55,21 +65,31 @@ export function Runtime({ markdown }: Props) {
   }, [markdown]);
 
   return (
-    <main>
+    <Wrapper className={classNames({ show })}>
       {error && (
         <Error className="error">
           <ErrorLabel>Error:</ErrorLabel> {error}
         </Error>
       )}
-      <Article jsString={article} />
+      <Article jsString={js.article} onRendered={onRendered} />
       <Hamburger
         className="hamburger"
         onClick={() => setShowSidebar(true)}
       />
-      <Sidebar jsString={toc} setShowSidebar={setShowSidebar} />
-    </main>
+      <Sidebar
+        jsString={js.tableOfContents}
+        setShowSidebar={setShowSidebar}
+      />
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.main`
+  visibility: hidden;
+  &.show {
+    visibility: visible;
+  }
+`;
 
 const Error = styled.div`
   position: absolute;

@@ -1,6 +1,7 @@
 import { useContext } from 'preact/hooks';
 
 import { toLaTeX } from './latex';
+import { render } from './litedom';
 import { getMathJax } from './mathjax';
 import { MathsContext } from './maths-provider';
 
@@ -25,6 +26,6 @@ export function MathJax({ expr }: Props) {
     );
   } else {
     const children = getMathJax(expr, ctx.fontName);
-    return <>{children}</>;
+    return <>{render(children)}</>;
   }
 }

@@ -1,5 +1,10 @@
 import { styled } from '@linaria/react';
 import { resolveResource } from '@tauri-apps/api/path';
+import {
+  WatchEventKind,
+  WatchEventKindCreate,
+  WatchEventKindModify,
+} from '@tauri-apps/plugin-fs';
 import { useContext, useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
@@ -19,44 +24,54 @@ export function App() {
   const { loading, setLoading } = useContext(LoadingContext);
   const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
+  const [show, setShow] = useState(false);
 
-  // on load
   useEffect(() => {
-    if (filePath !== '') {
-      handleProcessFile(filePath);
+    if (filePath === '') {
+      return;
     }
-  }, []);
+    (async () => {
+      await processMarkdown(filePath);
+      createFileWatcher(filePath);
+    })();
+  }, [filePath]);
 
-  async function handleProcessFile(newFilePath: string) {
-    setFilePath(newFilePath);
+  async function processMarkdown(newFilePath: string) {
     const ctx = await createContext(newFilePath);
-
     try {
-      setLoading(true);
       const newMarkdown = await inputToMarkdown(ctx);
       setMarkdown(newMarkdown);
       setError('');
     } catch (err: any) {
       setError(err.message);
-    } finally {
-      setLoading(false);
     }
+  }
 
+  async function createFileWatcher(newFilePath: string) {
     // destroy previous watcher by calling it
     // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
     destroyWatcher();
-
     destroyWatcher = await watchImmediate(newFilePath, (event) => {
-      const type = event.type as Record<string, any>;
-
-      if (type.create?.kind === 'file') {
-        handleProcessFile(newFilePath);
+      // can be of type 'any' or 'other'
+      if (typeof event.type === 'string') {
+        return;
       }
-
-      if (type.modify?.kind === 'data') {
-        handleProcessFile(newFilePath);
+      const type = event.type as Record<string, any>;
+      if (type.create?.kind === 'file' || type.modify?.kind === 'data') {
+        setLoading(true);
+        processMarkdown(newFilePath);
       }
     });
+  }
+
+  async function handleProcessFile(newFilePath: string | null) {
+    if (newFilePath === null || newFilePath === filePath) {
+      return;
+    }
+    setFilePath(newFilePath);
+    setLoading(true);
+    setShow(false);
+    createFileWatcher(newFilePath);
   }
 
   async function handleExportFile(saveFilePath: string) {
@@ -76,6 +91,13 @@ export function App() {
     await writeTextFile(saveFilePath, html);
   }
 
+  function handleRendered() {
+    setLoading(false);
+    setShow(true);
+  }
+
+  // console.log('markdown:', markdown.length);
+
   return (
     <StyledApp>
       <Header
@@ -84,7 +106,11 @@ export function App() {
         handleProcessFile={handleProcessFile}
         handleExportFile={handleExportFile}
       />
-      <Runtime markdown={markdown} />
+      <Runtime
+        markdown={markdown}
+        show={show}
+        onRendered={handleRendered}
+      />
     </StyledApp>
   );
 }
