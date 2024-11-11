@@ -1,0 +1,28 @@
+.pagedjs_page {
+  &:first-child {
+    .pagedjs_page_content > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      h1 {
+        font-size: 1.8em;
+        text-align: center;
+      }
+
+      p {
+        padding-left: 2em;
+        padding-right: 2em;
+      }
+    }
+  }
+}
+
+// page styling ------
+
+.pagedjs_page_content > div > *:first-child,
+.pagedjs_page_content > div > .boxout:first-child *:first-child,
+.pagedjs_page_content > div > .boxout:first-child .type {
+  margin-top: 0;
+}
