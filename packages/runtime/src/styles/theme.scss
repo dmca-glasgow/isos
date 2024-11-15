@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $blue: #003865;
 $cobalt: #0075b0;
 $skyblue: #005398;
@@ -17,8 +19,9 @@ $pumpkin: #ffb948;
 $sunshine: #ffdc36;
 $mocha: #aa8066;
 
-@function toRGB($color) {
-  @return red($color) + ', ' + green($color) + ', ' + blue($color);
+@function toRGB($c) {
+  @return color.channel($c, 'red') + ', ' + color.channel($c, 'green') +
+    ', ' + color.channel($c, 'blue');
 }
 
 // default theme (light)
@@ -59,14 +62,14 @@ html.theme-dark {
 html.theme-yellow-on-black {
   --bg: #111;
   --textColor: #ebd90e;
-  --fadedTextColor: #{darken(#ebd90e, 20%)};
+  --fadedTextColor: #{color.adjust(#ebd90e, $lightness: -20%)};
   --errorColor: #{$pillarbox};
   --linkColor: #{$rose};
   --primaryColor: #{toRGB(#ebd90e)};
   --highlightColor: #ebd90e;
   --boxoutBg: #222;
   --boxoutHighlightColor: #333;
-  --boxoutFadedTextColor: #{darken(#ebd90e, 20%)};
+  --boxoutFadedTextColor: #{color.adjust(#ebd90e, $lightness: -20%)};
   --taskBg: #{rgba($thistle, 0.1)};
   --taskFg: #{$thistle};
 }
@@ -74,14 +77,14 @@ html.theme-yellow-on-black {
 html.theme-black-on-yellow {
   --bg: #ebd90e;
   --textColor: #000;
-  --fadedTextColor: #{lighten(#000, 20%)};
+  --fadedTextColor: #{color.adjust(#000, $lightness: 20%)};
   --errorColor: #{$pillarbox};
   --linkColor: #{$thistle};
   --primaryColor: 0, 0, 0;
   --highlightColor: black;
-  --boxoutBg: #{darken(#ebd90e, 3%)};
-  --boxoutHighlightColor: #{darken(#ebd90e, 8%)};
-  --boxoutFadedTextColor: #{lighten(#000, 30%)};
+  --boxoutBg: #{color.adjust(#ebd90e, $lightness: -3%)};
+  --boxoutHighlightColor: #{color.adjust(#ebd90e, $lightness: -8%)};
+  --boxoutFadedTextColor: #{color.adjust(#000, $lightness: 30%)};
   --taskBg: #{rgba($burgundy, 0.2)};
   --taskFg: #{$burgundy};
 }
@@ -89,14 +92,14 @@ html.theme-black-on-yellow {
 html.theme-black-on-red {
   --bg: #de7777;
   --textColor: black;
-  --fadedTextColor: #{lighten(#000, 20%)};
+  --fadedTextColor: #{color.adjust(#000, $lightness: 20%)};
   --errorColor: #{$pillarbox};
   --linkColor: #{$pumpkin};
   --primaryColor: 0, 0, 0;
   --highlightColor: black;
-  --boxoutBg: #{darken(#de7777, 3%)};
-  --boxoutHighlightColor: #{darken(#de7777, 10%)};
-  --boxoutFadedTextColor: #{lighten(#000, 20%)};
+  --boxoutBg: #{color.adjust(#de7777, $lightness: -3%)};
+  --boxoutHighlightColor: #{color.adjust(#de7777, $lightness: -10%)};
+  --boxoutFadedTextColor: #{color.adjust(#000, $lightness: 20%)};
   --taskBg: #{rgba($blue, 0.1)};
   --taskFg: #{$blue};
 }
@@ -104,14 +107,14 @@ html.theme-black-on-red {
 html.theme-black-on-blue {
   --bg: #64a8e1;
   --textColor: black;
-  --fadedTextColor: #{lighten(#000, 20%)};
+  --fadedTextColor: #{color.adjust(#000, $lightness: 20%)};
   --errorColor: #{$pillarbox};
   --linkColor: #{$sunshine};
   --primaryColor: 0, 0, 0;
   --highlightColor: black;
-  --boxoutBg: #{darken(#64a8e1, 5%)};
-  --boxoutHighlightColor: #{darken(#64a8e1, 15%)};
-  --boxoutFadedTextColor: #{lighten(#000, 20%)};
+  --boxoutBg: #{color.adjust(#64a8e1, $lightness: -5%)};
+  --boxoutHighlightColor: #{color.adjust(#64a8e1, $lightness: -15%)};
+  --boxoutFadedTextColor: #{color.adjust(#000, $lightness: 20%)};
   --taskBg: #{rgba($thistle, 0.1)};
   --taskFg: #{$thistle};
 }

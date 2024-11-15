@@ -1,0 +1,19 @@
+// https://modernfontstacks.com
+
+@mixin global-size {
+  font-size: clamp(1.5vw, 18px, 26px);
+}
+
+@mixin geometric-humanist {
+  font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
+}
+
+@mixin antique {
+  font-family: Superclarendon, 'Bookman Old Style', 'URW Bookman',
+    'URW Bookman L', 'Georgia Pro', Georgia, serif;
+}
+
+@mixin monospace-slab {
+  font-family: 'Nimbus Mono PS', 'Courier New', monospace;
+}

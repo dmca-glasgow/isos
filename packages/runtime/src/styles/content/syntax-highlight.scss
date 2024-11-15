@@ -1,3 +1,5 @@
+@use '../fonts.scss' as fonts;
+
 pre:has(code.latex) {
   text-wrap-mode: wrap;
   margin-bottom: 1.5em;
@@ -8,7 +10,7 @@ pre code.latex {
 }
 
 code.latex {
-  font-family: 'Nimbus Mono PS', 'Courier New', monospace;
+  @include fonts.monospace-slab;
   font-weight: bold;
   font-size: 0.8em;
   font-style: normal;

@@ -1,30 +1,4 @@
-import { styled } from '@linaria/react';
-
-type Props = {
-  label: string;
-  value: boolean;
-  onChange: (value: boolean) => unknown;
-};
-
-export function Checkbox(props: Props) {
-  const name = props.label.toLowerCase();
-  return (
-    <Wrapper>
-      <label for={name}>{props.label}</label>
-      <input
-        type="checkbox"
-        id={name}
-        name={name}
-        checked={props.value}
-        onChange={(e) => {
-          props.onChange(e.currentTarget.checked);
-        }}
-      />
-    </Wrapper>
-  );
-}
-
-const Wrapper = styled.div`
+.checkbox {
   display: flex;
   justify-content: space-between;
   align-items: middle;
@@ -63,4 +37,4 @@ const Wrapper = styled.div`
       opacity: 1;
     }
   }
-`;
+}

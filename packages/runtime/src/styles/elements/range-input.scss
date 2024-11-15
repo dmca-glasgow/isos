@@ -38,7 +38,7 @@ $contrast: 5% !default;
 @mixin track {
   cursor: default;
   height: $track-height;
-  transition: all 0.2s ease;
+  // transition: all 0.2s ease;
   width: $track-width;
 }
 

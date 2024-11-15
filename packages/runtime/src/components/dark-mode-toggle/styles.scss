@@ -1,0 +1,83 @@
+#dark-theme-toggle {
+  $height: 2vw;
+  $spacing: 0.4vw;
+  $width: 4.5vw;
+
+  position: fixed;
+  top: 2vw;
+  right: 2vw;
+  // position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: $width;
+  height: $height;
+  border: $spacing solid var(--textColor);
+  background: var(--textColor);
+  border-radius: ($height + ($spacing * 2)) * 0.5;
+  overflow: hidden;
+
+  .sun,
+  .moon {
+    width: $height;
+    height: $height;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      display: block;
+      width: $height;
+      height: $height;
+      fill: var(--textColor);
+    }
+  }
+
+  .sun svg {
+    transform: scale(0.8);
+    fill: var(--textColor);
+  }
+
+  .moon svg {
+    transform: scale(0.7);
+  }
+
+  label,
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  input {
+    margin: 0;
+    visibility: hidden;
+  }
+
+  span {
+    display: none;
+  }
+
+  &:not(:has(input:checked)) {
+    .sun {
+      background: var(--bg);
+    }
+    .moon svg {
+      fill: white;
+    }
+  }
+
+  &:has(input:checked) {
+    .moon {
+      background: var(--bg);
+    }
+    .sun svg {
+      fill: white;
+    }
+  }
+}

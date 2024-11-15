@@ -8,6 +8,11 @@ html#editor {
     overflow: hidden;
   }
 
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+
   header,
   .error {
     font-family: system-ui, sans-serif;
@@ -15,23 +20,71 @@ html#editor {
     line-height: 1.75;
   }
 
-  header {
-    height: 60px;
-
-    button {
-      border: 0;
-      font-weight: 600;
-    }
-  }
-
   main {
-    & > .hamburger {
-      top: calc(1.5rem + 60px);
+    flex: 1;
+    overflow: auto;
+
+    & > .actions-top-left,
+    & > .actions-top-right {
+      top: calc(1.2rem + 60px);
     }
 
     nav {
       top: 60px;
       height: calc(100% - 60px);
+    }
+
+    #article-wrapper,
+    #print-view {
+      overflow: auto;
+    }
+  }
+}
+
+header {
+  height: 60px;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+
+  padding: 0.6rem;
+  box-sizing: border-box;
+
+  color: #fff;
+  background: #000;
+  font-size: 13px;
+
+  .file-path {
+    flex: 1;
+    padding: 0 1rem 0.1rem;
+  }
+
+  .file-status {
+    display: block;
+    color: #29e808;
+    line-height: 1;
+
+    &.watching {
+      color: #29e808;
+    }
+
+    &.loading {
+      color: #e88308;
+    }
+  }
+
+  button {
+    border: 0;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    border-radius: 0.4rem;
+    background: #fff2;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s background;
+
+    &:hover {
+      box-shadow: inset 0 0 0 2px #fff3;
     }
   }
 }

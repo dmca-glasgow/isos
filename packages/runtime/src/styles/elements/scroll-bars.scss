@@ -1,15 +1,13 @@
 $scrollbarWidth: 15px;
 $scrollbarPadding: 5px;
 
-main,
-nav {
+@mixin slim {
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--textColor) var(--bg);
+
   &::-webkit-scrollbar {
     width: $scrollbarWidth;
-  }
-  & {
-    scrollbar-width: thin;
-    scroll-behavior: smooth;
-    scrollbar-color: var(--textColor) var(--bg);
   }
   &::-webkit-scrollbar-track {
     background: var(--bg);
@@ -22,8 +20,10 @@ nav {
   }
 }
 
-nav {
-  scrollbar-color: var(--boxoutHighlightColor) var(--boxoutBg);
+@mixin slim-discreet {
+  @include slim;
+  scrollbar-color: var(--boxoutBg) var(--boxoutBg);
+
   &::-webkit-scrollbar-track {
     background: var(--boxoutBg);
   }
@@ -32,7 +32,10 @@ nav {
     border-color: var(--boxoutBg);
     transition: background-color 0.2s;
   }
+
   &:hover {
+    scrollbar-color: var(--boxoutHighlightColor) var(--boxoutBg);
+
     &::-webkit-scrollbar-thumb {
       background-color: var(--boxoutHighlightColor);
     }

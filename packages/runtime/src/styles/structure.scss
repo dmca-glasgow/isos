@@ -1,13 +1,76 @@
+body {
+  margin: 0;
+}
+
+main {
+  width: 200vw;
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
+  visibility: hidden;
+
+  // TODO: invert to hide class
+  &.show {
+    visibility: visible;
+  }
+
+  html.print-view & {
+    margin-left: -100vw;
+  }
+
+  & > #article-wrapper,
+  & > #print-view {
+    flex: 0 0 auto;
+    display: block;
+    width: 100vw;
+    box-sizing: border-box;
+  }
+
+  & > .error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    .error-label {
+      font-weight: bold;
+    }
+  }
+}
+
+// print ------
+
+#print-view {
+  display: none;
+}
+
+@media print {
+  body:has(.pagedjs_pages) {
+    overflow: auto;
+
+    main {
+      display: block;
+      width: 100vw;
+      margin-left: 0;
+
+      & > :not(#print-view) {
+        display: none;
+      }
+    }
+  }
+}
+
+// sidebar ------
+
 $sidebarWidth: 18rem;
 
 nav {
   position: fixed;
   top: 0;
+  left: 0;
   width: $sidebarWidth;
   height: 100%;
   margin-left: -$sidebarWidth;
-  transition: margin-left 0.2s;
-  background: var(--boxoutBg);
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -15,6 +78,7 @@ nav {
 article {
   padding-left: 0;
   transition: padding-left 0.2s;
+  will-change: padding-left;
 }
 
 html.sidebar-open {
@@ -34,12 +98,37 @@ html.sidebar-open {
   }
 }
 
-.hamburger {
-  position: fixed;
-  top: 1.5rem;
-  left: 1.5rem;
+// article ------
 
-  nav & {
-    position: static;
+article {
+  padding-top: 2em;
+  padding-bottom: 5em;
+  margin: 0 auto;
+
+  width: calc(60vw * var(--lineWidth, 1));
+  font-size: calc(1rem * var(--fontSize, 1));
+  line-height: calc(1.7 * var(--lineSpacing, 1));
+  letter-spacing: calc(1em * var(--letterSpacing, 0));
+
+  img {
+    max-width: 100%;
+  }
+
+  &.has-sidenotes {
+    $sideNoteWidth: 20vw;
+    $sideNoteGap: 4vw;
+    padding-right: $sideNoteWidth + $sideNoteGap;
+    .sideNote {
+      small {
+        width: $sideNoteWidth;
+        margin-right: -$sideNoteWidth - $sideNoteGap;
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  article {
+    width: calc(85vw * var(--lineWidth, 1));
   }
 }

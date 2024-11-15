@@ -1,5 +1,5 @@
 import { save } from '@tauri-apps/plugin-dialog';
-import { Button } from '../styles';
+
 import { parseFilePath } from '@isos/processor';
 
 type Props = {
@@ -28,5 +28,5 @@ export function SaveFileButton({ filePath, onSave }: Props) {
     onSave(saveFilePath);
   }
 
-  return <Button onClick={handleSave}>Save HTML</Button>;
+  return <button onClick={handleSave}>Save HTML</button>;
 }

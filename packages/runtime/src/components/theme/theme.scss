@@ -1,28 +1,4 @@
-import { Theme as ThemeType } from '../constants/themes';
-import { styled } from '@linaria/react';
-
-type Props = {
-  theme: ThemeType;
-  activeTheme: string;
-  setTheme: (themeValue: ThemeType['value']) => unknown;
-};
-
-export function Theme({ theme, activeTheme, setTheme }: Props) {
-  return (
-    <ThemeItem key={theme.value} className={theme.value}>
-      <input
-        type="radio"
-        name="theme"
-        value={theme.value}
-        checked={activeTheme === theme.value}
-        onChange={() => setTheme(theme.value)}
-      />
-      {theme.label}
-    </ThemeItem>
-  );
-}
-
-const ThemeItem = styled.label`
+label.theme {
   font-size: 0.7em;
   font-weight: 700;
   list-style: none;
@@ -73,4 +49,4 @@ const ThemeItem = styled.label`
     background: #64a8e1;
     color: black;
   }
-`;
+}

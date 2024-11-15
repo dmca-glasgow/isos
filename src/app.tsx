@@ -1,10 +1,4 @@
-import { styled } from '@linaria/react';
 import { resolveResource } from '@tauri-apps/api/path';
-import {
-  WatchEventKind,
-  WatchEventKindCreate,
-  WatchEventKindModify,
-} from '@tauri-apps/plugin-fs';
 import { useContext, useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
@@ -96,10 +90,8 @@ export function App() {
     setShow(true);
   }
 
-  // console.log('markdown:', markdown.length);
-
   return (
-    <StyledApp>
+    <>
       <Header
         filePath={filePath}
         loading={loading}
@@ -111,13 +103,6 @@ export function App() {
         show={show}
         onRendered={handleRendered}
       />
-    </StyledApp>
+    </>
   );
 }
-
-const StyledApp = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-`;

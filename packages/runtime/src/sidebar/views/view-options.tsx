@@ -1,28 +1,27 @@
-import { themes } from '../constants/themes';
-import { styled } from '@linaria/react';
+import { themes } from '../../constants/themes';
 import { useContext } from 'preact/hooks';
 
 import { MathsContext } from '@isos/processor';
 
-import * as readability from '../constants/readability';
-import { ViewOptionsContext } from '../providers/view-options-provider';
-import { Checkbox } from './checkbox';
-import { RangeInput } from './range-input';
-import { Theme } from './theme';
+import { Checkbox } from '../../components/checkbox/checkbox';
+import { RangeInput } from '../../components/range-input/range-input';
+import { Theme } from '../../components/theme/theme';
+import * as readability from '../../constants/readability';
+import { ViewOptionsContext } from '../../providers/view-options-provider';
 
 export function ViewOptions() {
   const ctx = useContext(ViewOptionsContext);
   const maths = useContext(MathsContext);
   return (
     <form>
-      <Fieldset>
-        <Legend>Theme</Legend>
+      <fieldset>
+        <legend>Theme</legend>
         <RangeInput
           {...readability.contrast}
           value={ctx.contrast}
           onChange={ctx.setContrast}
         />
-        <Grid>
+        <div className="grid">
           {themes.map((theme) => (
             <Theme
               key={theme.value}
@@ -31,10 +30,10 @@ export function ViewOptions() {
               setTheme={ctx.setTheme}
             />
           ))}
-        </Grid>
-      </Fieldset>
-      <Fieldset>
-        <Legend>Readability</Legend>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Readability</legend>
         <RangeInput
           {...readability.fontSize}
           value={ctx.fontSize}
@@ -55,9 +54,9 @@ export function ViewOptions() {
           value={ctx.lineWidth}
           onChange={ctx.setLineWidth}
         />
-      </Fieldset>
-      <Fieldset>
-        <Legend>Maths</Legend>
+      </fieldset>
+      <fieldset>
+        <legend>Maths</legend>
         <Checkbox
           label="Sans-serif font"
           value={maths.fontName === 'fira'}
@@ -70,26 +69,7 @@ export function ViewOptions() {
           value={maths.mathsAsTex}
           onChange={(mathsAsTex) => maths.setMathsAsTex(mathsAsTex)}
         />
-      </Fieldset>
+      </fieldset>
     </form>
   );
 }
-
-const Fieldset = styled.fieldset`
-  padding: 0 0.75em;
-  border: 0;
-  margin-bottom: 2em;
-`;
-
-const Legend = styled.legend`
-  padding: 0;
-  font-size: 1.3rem;
-  font-weight: 700;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6em;
-  padding-top: 0.8em;
-`;

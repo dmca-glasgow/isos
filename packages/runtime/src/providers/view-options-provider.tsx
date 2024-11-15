@@ -40,8 +40,10 @@ export const ViewOptionsContext = createContext<ViewOptions>({
 
 export function ViewOptionsProvider({
   children,
+  elem = document.documentElement,
 }: {
   children: ComponentChildren;
+  elem?: HTMLElement;
 }) {
   const [theme, setTheme] = useLocalStorage('theme', themes[0].value);
   const [contrast, setContrast] = useLocalStorage('contrast', '0');
@@ -52,27 +54,12 @@ export function ViewOptionsProvider({
 
   // on load
   useEffect(() => {
-    document.documentElement.classList.add(`theme-${theme}`);
-    document.documentElement.style.setProperty(
-      '--contrast',
-      String(contrast),
-    );
-    document.documentElement.style.setProperty(
-      '--fontSize',
-      String(fontSize),
-    );
-    document.documentElement.style.setProperty(
-      '--lineSpacing',
-      String(lineSp),
-    );
-    document.documentElement.style.setProperty(
-      '--letterSpacing',
-      String(letterSp),
-    );
-    document.documentElement.style.setProperty(
-      '--lineWidth',
-      String(lineWidth),
-    );
+    elem.classList.add(`theme-${theme}`);
+    elem.style.setProperty('--contrast', String(contrast));
+    elem.style.setProperty('--fontSize', String(fontSize));
+    elem.style.setProperty('--lineSpacing', String(lineSp));
+    elem.style.setProperty('--letterSpacing', String(letterSp));
+    elem.style.setProperty('--lineWidth', String(lineWidth));
   }, []);
 
   const context = useMemo((): ViewOptions => {
@@ -85,35 +72,32 @@ export function ViewOptionsProvider({
       lineWidth: Number(lineWidth),
 
       setTheme(newTheme: string) {
-        document.documentElement.classList.replace(
-          `theme-${theme}`,
-          `theme-${newTheme}`,
-        );
+        elem.classList.replace(`theme-${theme}`, `theme-${newTheme}`);
         setTheme(newTheme);
       },
       setContrast(newContrast: number) {
         const str = String(newContrast);
-        document.documentElement.style.setProperty('--contrast', str);
+        elem.style.setProperty('--contrast', str);
         setContrast(str);
       },
       setFontSize(newFontSize: number) {
         const str = String(newFontSize);
-        document.documentElement.style.setProperty('--fontSize', str);
+        elem.style.setProperty('--fontSize', str);
         setFontSize(str);
       },
       setLineSpacing(newLineSpacing: number) {
         const str = String(newLineSpacing);
-        document.documentElement.style.setProperty('--lineSpacing', str);
+        elem.style.setProperty('--lineSpacing', str);
         setLineSp(str);
       },
       setLetterSpacing(newLetterSpacing: number) {
         const str = String(newLetterSpacing);
-        document.documentElement.style.setProperty('--letterSpacing', str);
+        elem.style.setProperty('--letterSpacing', str);
         setLetterSp(str);
       },
       setLineWidth(newLineWidth: number) {
         const str = String(newLineWidth);
-        document.documentElement.style.setProperty('--lineWidth', str);
+        elem.style.setProperty('--lineWidth', str);
         setLineWidth(str);
       },
     };

@@ -1,4 +1,3 @@
-import { styled } from '@linaria/react';
 import classNames from 'classnames';
 import {
   useCallback,
@@ -9,17 +8,20 @@ import {
 
 import { markdownToJs } from '@isos/processor';
 
-import { Article } from './article';
-import { Hamburger } from './components/hamburger';
+import HamburgerSvg from './assets/hamburger.svg';
+import { DarkModeToggle } from './components/dark-mode-toggle';
 import { ErrorContext } from './providers/error-provider';
+import { ViewOptionsProvider } from './providers/view-options-provider';
+// import { ViewContext, Views } from './providers/view-provider';
 import { Sidebar } from './sidebar';
+import { ViewSwitcher } from './view-switcher';
 
 import './styles/index.scss';
 
 type Props = {
   markdown: string;
-  show: boolean;
-  onRendered: () => unknown;
+  show?: boolean;
+  onRendered?: () => unknown;
 };
 
 if (typeof window !== undefined) {
@@ -38,6 +40,7 @@ export function Runtime({ markdown, show, onRendered }: Props) {
     tableOfContents: '',
   });
   const { error, setError } = useContext(ErrorContext);
+  // const { view } = useContext(ViewContext);
 
   const setShowSidebar = useCallback((open: boolean) => {
     if (open) {
@@ -65,44 +68,29 @@ export function Runtime({ markdown, show, onRendered }: Props) {
   }, [markdown]);
 
   return (
-    <Wrapper className={classNames({ show })}>
+    <main className={classNames({ show })}>
       {error && (
-        <Error className="error">
-          <ErrorLabel>Error:</ErrorLabel> {error}
-        </Error>
+        <div className="error">
+          <span className="error-label">Error:</span> {error}
+        </div>
       )}
-      <Article jsString={js.article} onRendered={onRendered} />
-      <Hamburger
-        className="hamburger"
-        onClick={() => setShowSidebar(true)}
-      />
-      <Sidebar
-        jsString={js.tableOfContents}
-        setShowSidebar={setShowSidebar}
-      />
-    </Wrapper>
+      <ViewSwitcher jsString={js.article} onHtmlRendered={onRendered} />
+
+      <ViewOptionsProvider>
+        <div className="actions-top-left">
+          <HamburgerSvg
+            className="hamburger"
+            onClick={() => setShowSidebar(true)}
+          />
+        </div>
+        <div className="actions-top-right">
+          <DarkModeToggle />
+        </div>
+        <Sidebar
+          jsString={js.tableOfContents}
+          setShowSidebar={setShowSidebar}
+        />
+      </ViewOptionsProvider>
+    </main>
   );
 }
-
-const Wrapper = styled.main`
-  visibility: hidden;
-  &.show {
-    visibility: visible;
-  }
-`;
-
-const Error = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  box-sizing: border-box;
-  background: #b41b1b;
-  color: white;
-  padding: 0 0.6rem;
-  font-size: 0.6rem;
-`;
-
-const ErrorLabel = styled.span`
-  font-weight: bold;
-`;

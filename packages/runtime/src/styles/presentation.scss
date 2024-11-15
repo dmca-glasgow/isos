@@ -1,3 +1,52 @@
+@use './fonts.scss' as fonts;
+@use './elements/scroll-bars.scss' as scroll-bars;
+
+:root {
+  @include fonts.geometric-humanist;
+  @include fonts.global-size;
+  @include scroll-bars.slim;
+}
+
+#root {
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--textColor);
+  background: var(--bg);
+}
+
+main {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  shape-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  & > .error {
+    font-size: 0.6rem;
+    color: white;
+    background: #b41b1b;
+    padding: 0 0.6rem;
+    box-sizing: border-box;
+  }
+
+  #article-wrapper,
+  #print-view {
+    @include scroll-bars.slim;
+  }
+}
+
+nav {
+  @include scroll-bars.slim-discreet;
+  background: var(--boxoutBg);
+  transition: margin-left 0.2s;
+  will-change: margin-left;
+}
+
+// print ------
+
 #print-view {
   font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
     sans-serif;

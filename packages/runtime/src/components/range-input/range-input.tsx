@@ -1,7 +1,8 @@
-import { styled } from '@linaria/react';
 import classNames from 'classnames';
 
-import { Readability } from '../constants/readability';
+import { Readability } from '../../constants/readability';
+
+import './range-input.scss';
 
 type Props = Readability & {
   value: number;
@@ -11,7 +12,7 @@ type Props = Readability & {
 export function RangeInput(props: Props) {
   const name = props.label.toLowerCase();
   return (
-    <Wrapper>
+    <div className="range-input">
       <label for={name}>{props.label}</label>
       <input
         type="range"
@@ -36,44 +37,6 @@ export function RangeInput(props: Props) {
         }}>
         Reset
       </button>
-    </Wrapper>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 0.2em 0;
-
-  label {
-    font-size: 0.9em;
-    width: 45%;
-    flex: 0 0 auto;
-  }
-
-  input[type='range'] {
-    flex: 1;
-  }
-
-  button {
-    flex: 0 0 auto;
-    margin-left: 1em;
-    width: 18%;
-
-    border-radius: 0.4em;
-    font-weight: 800;
-
-    border: 0;
-    box-shadow: inset 0 0 0 2px var(--errorColor);
-    background: var(--errorColor);
-    color: white;
-    cursor: pointer;
-
-    &.disabled {
-      box-shadow: inset 0 0 0 2px rgba(var(--primaryColor), 0.1);
-      background: transparent;
-      color: var(--textColor);
-      font-weight: 400;
-    }
-  }
-`;

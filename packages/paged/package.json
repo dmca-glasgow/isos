@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": [
+    "./src/index.ts"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

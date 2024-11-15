@@ -1,4 +1,3 @@
-import { Button } from '../styles';
 import { open } from '@tauri-apps/plugin-dialog';
 
 import {
@@ -28,5 +27,5 @@ export function OpenFileButton({ onChange }: Props) {
     });
     onChange(selected);
   }
-  return <Button onClick={handleOpenFile}>Open File</Button>;
+  return <button onClick={handleOpenFile}>Open File</button>;
 }

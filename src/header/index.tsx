@@ -1,5 +1,3 @@
-import { styled } from '@linaria/react';
-
 import { OpenFileButton } from './open-file-button';
 import { SaveFileButton } from './save-file-button';
 
@@ -17,53 +15,25 @@ export function Header({
   handleExportFile,
 }: Props) {
   return (
-    <Wrapper>
+    <header>
       <OpenFileButton onChange={handleProcessFile} />
       {filePath !== '' && (
         <>
-          <FilePath>
+          <span className="file-path">
             {filePath}
             {loading ? (
-              <Loading>Loading changes...</Loading>
+              <span className="file-status loading">
+                Loading changes...
+              </span>
             ) : (
-              <Watching>Watching for changes</Watching>
+              <span className="file-status watching">
+                Watching for changes
+              </span>
             )}
-          </FilePath>
+          </span>
           <SaveFileButton filePath={filePath} onSave={handleExportFile} />
         </>
       )}
-    </Wrapper>
+    </header>
   );
 }
-
-const Wrapper = styled.header`
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-
-  padding: 0.6rem;
-  box-sizing: border-box;
-
-  color: #fff;
-  background: #000;
-  font-size: 13px;
-`;
-
-const FilePath = styled.span`
-  flex: 1;
-  padding: 0 1rem 0.1rem;
-`;
-
-const FileStatus = styled.span`
-  display: block;
-  color: #29e808;
-  line-height: 1;
-`;
-
-const Watching = styled(FileStatus)`
-  color: #29e808;
-`;
-
-const Loading = styled(FileStatus)`
-  color: #e88308;
-`;

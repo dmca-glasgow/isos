@@ -1,6 +1,5 @@
 /// <reference types="vitest" />
 import preact from '@preact/preset-vite';
-import linaria from '@wyw-in-js/vite';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
 import svgr from 'vite-plugin-svgr';
@@ -13,15 +12,6 @@ export default defineConfig(async () => ({
   plugins: [
     svgr({
       include: '**/assets/*.svg',
-    }),
-    linaria({
-      include: ['**/*.tsx'],
-
-      // https://github.com/callstack/linaria/issues/1379#issuecomment-2020805137
-      overrideContext: (context) => ({
-        ...context,
-        $RefreshSig$: () => () => () => {},
-      }),
     }),
     preact({
       prefreshEnabled: false,
@@ -50,6 +40,11 @@ export default defineConfig(async () => ({
   devSourcemap: true,
   css: {
     devSourcemap: true,
+    preprocessorOptions: {
+      scss: {
+        api: 'modern',
+      },
+    },
   },
   build: {
     sourcemap: true,

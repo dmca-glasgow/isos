@@ -1,4 +1,8 @@
+@use '../fonts.scss' as fonts;
+
 .sidenote {
+  @include fonts.geometric-humanist;
+  @include fonts.global-size;
   display: inline;
 
   sup {

@@ -1,50 +1,30 @@
-nav {
-  $borderSize: 4px;
+@use '../styles/theme.scss' as theme;
+@use '../styles/fonts.scss' as fonts;
 
-  // font-size: 0.9rem;
-  padding: 1em 0.75em 5em;
+nav {
   box-sizing: border-box;
 
-  .actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.4em 0.75em 2em;
-
-    button.view-options-btn {
-      display: inline-block;
-      border: 0;
-      padding: 0.4em 1.2em 0.5em;
-      font-size: 0.7rem;
-      border-radius: 1rem;
-      background: transparent;
-      box-shadow: 0 0 0 2px var(--bg);
-      cursor: pointer;
-
-      svg {
-        display: inline-block;
-        width: 1em;
-        height: 1em;
-        margin: 0 0 -0.15em 0.6em;
-
-        path {
-          shape-rendering: geometricPrecision;
-        }
-      }
-    }
+  .view {
+    padding-top: 4.5em;
   }
 
   ol {
+    $borderSize: 4px;
     margin: 0;
-    padding: 0 0.25em;
+    padding: 0 1em 2em;
 
     li {
       position: relative;
       list-style: none;
-      padding: 0.2em 0.5em;
-      // line-height: 1.4;
+      line-height: 1.4;
+
+      a {
+        display: block;
+        padding: 0.35em 0.5em;
+      }
 
       &.depth-2 {
+        @include fonts.antique;
         margin-top: 1em;
 
         &:first-child {
@@ -97,11 +77,11 @@ nav {
         }
 
         &:not(&.active ~ li) > a > .count {
-          color: $leaf;
+          color: theme.$leaf;
         }
 
         &.active > a > .count {
-          color: $rust !important;
+          color: theme.$rust !important;
         }
       }
 
@@ -138,6 +118,25 @@ nav {
       a {
         text-decoration: none;
       }
+    }
+  }
+
+  form {
+    fieldset {
+      padding: 0 0.75em;
+      border: 0;
+      margin-bottom: 2em;
+    }
+    legend {
+      padding: 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6em;
+      padding-top: 0.8em;
     }
   }
 }
