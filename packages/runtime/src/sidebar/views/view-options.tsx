@@ -1,4 +1,5 @@
 import { themes } from '../../constants/themes';
+import classNames from 'classnames';
 import { useContext } from 'preact/hooks';
 
 import { MathsContext } from '@isos/processor';
@@ -9,11 +10,15 @@ import { Theme } from '../../components/theme/theme';
 import * as readability from '../../constants/readability';
 import { ViewOptionsContext } from '../../providers/view-options-provider';
 
-export function ViewOptions() {
+type Props = {
+  show: boolean;
+};
+
+export function ViewOptions({ show }: Props) {
   const ctx = useContext(ViewOptionsContext);
   const maths = useContext(MathsContext);
   return (
-    <form>
+    <form className={classNames({ show })}>
       <fieldset>
         <legend>Theme</legend>
         <RangeInput

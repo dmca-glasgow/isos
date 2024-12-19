@@ -6,4 +6,5 @@
 @include meta.load-css('./structure.scss');
 @include meta.load-css('./presentation.scss');
 @include meta.load-css('./ui.scss');
+@include meta.load-css('./pages.scss');
 @include meta.load-css('./content/index.scss');

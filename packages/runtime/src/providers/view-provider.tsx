@@ -1,48 +1,72 @@
-// import { ComponentChildren, createContext } from 'preact';
-// import { useEffect, useMemo } from 'preact/hooks';
+import { ComponentChildren, createContext } from 'preact';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 
-// import { useLocalStorage } from '@isos/use-local-storage';
+import { useLocalStorage } from '@isos/use-local-storage';
 
-// export enum Views {
-//   web = 'web',
-//   print = 'print',
-// }
+type View = {
+  // showPages: boolean;
+  loading: boolean;
+  double: boolean;
+  setShowPages: (showPages: boolean) => unknown;
+  setLoading: (loading: boolean) => unknown;
+  setDouble: (double: boolean) => unknown;
+  setScale: (scale: number) => unknown;
+};
 
-// type View = {
-//   view: Views;
-//   setView: (view: Views) => unknown;
-// };
+export const ViewContext = createContext<View>({
+  // showPages: false,
+  loading: true,
+  double: false,
+  setShowPages: () => {},
+  setLoading: () => {},
+  setDouble: () => {},
+  setScale: () => {},
+});
 
-// export const ViewContext = createContext<View>({
-//   view: Views.web,
-//   setView: () => {},
-// });
+export function ViewProvider({
+  children,
+  element = document.documentElement,
+}: {
+  children: ComponentChildren;
+  element?: HTMLElement;
+}) {
+  const [showPages, setShowPages] = useLocalStorage('show-pages', 'false');
+  const [loading, setLoading] = useState(true);
+  const [double, setDouble] = useState(false);
 
-// export function ViewProvider({
-//   children,
-//   elem = document.documentElement,
-// }: {
-//   children: ComponentChildren;
-//   elem?: HTMLElement;
-// }) {
-//   const [view, setView] = useLocalStorage('view', Views.web);
+  // on load
+  useEffect(() => {
+    if (showPages === 'true') {
+      element.classList.add('view-pages');
+    } else {
+      element.classList.remove('view-pages');
+    }
+    element.style.setProperty('--pages-scale', String(1));
+  }, []);
 
-//   useEffect(() => {
-//     elem.classList.add(`view-${view}`);
-//   }, []);
+  const context = useMemo((): View => {
+    return {
+      // showPages: showPages === 'true',
+      loading,
+      double,
+      setShowPages(showPages: boolean) {
+        setShowPages(String(showPages));
+        if (showPages) {
+          element.classList.add('view-pages');
+        } else {
+          element.classList.remove('view-pages');
+        }
+      },
+      setLoading,
+      setDouble,
+      setScale(newScale: number) {
+        const clamped = Math.min(newScale, 1);
+        element.style.setProperty('--pages-scale', String(clamped));
+      },
+    };
+  }, [showPages, loading, double]);
 
-//   const context = useMemo((): View => {
-//     return {
-//       view: view as Views,
-//       setView(newView) {
-//         // console.log('hey!');
-//         elem.classList.replace(`view-${view}`, `view-${newView}`);
-//         setView(newView);
-//       },
-//     };
-//   }, [view]);
-
-//   return (
-//     <ViewContext.Provider value={context}>{children}</ViewContext.Provider>
-//   );
-// }
+  return (
+    <ViewContext.Provider value={context}>{children}</ViewContext.Provider>
+  );
+}

@@ -6,6 +6,15 @@ nav {
 
   .view {
     padding-top: 4.5em;
+
+    & > * {
+      &.show {
+        display: block;
+      }
+      &:not(.show) {
+        display: none;
+      }
+    }
   }
 
   ol {

@@ -11,9 +11,11 @@ export type { FontName } from './mathjax';
 
 type Props = {
   expr: string;
+  className: string;
 };
 
-export function MathJax({ expr }: Props) {
+export function MathJax({ expr, className }: Props) {
+  // console.log(className);
   const ctx = useContext(MathsContext);
   if (ctx.mathsAsTex) {
     return (
@@ -24,8 +26,17 @@ export function MathJax({ expr }: Props) {
         }}
       />
     );
-  } else {
-    const children = getMathJax(expr, ctx.fontName);
-    return <>{render(children)}</>;
   }
+
+  const children = getMathJax(expr, ctx.fontName);
+
+  if (className === 'math-inline') {
+    return <span className="maths">{render(children)}</span>;
+  }
+
+  if (className === 'math-display') {
+    return <div className="maths">{render(children)}</div>;
+  }
+
+  throw new Error(`[maths] className '${className}' is not supported`);
 }

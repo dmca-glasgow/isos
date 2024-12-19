@@ -1,12 +1,9 @@
 import { TableOfContents } from './views/table-of-contents';
 import { ViewOptions } from './views/view-options';
-
-import { useLocalStorage } from '@isos/use-local-storage';
+import { useState } from 'preact/hooks';
 
 import HamburgerSvg from '../assets/hamburger.svg';
-import { ViewOptionsProvider } from '../providers/view-options-provider';
 import { Menu, SidebarView } from './menu';
-import { Print } from './views/print';
 
 import './sidebar.scss';
 
@@ -16,20 +13,9 @@ type Props = {
 };
 
 export function Sidebar({ jsString, setShowSidebar }: Props) {
-  const [sidebarView, setSidebarView] = useLocalStorage(
-    'sidebar-view',
+  const [sidebarView, setSidebarView] = useState(
     SidebarView.tableOfContents,
   );
-
-  function handleSetSidebarView(view: SidebarView) {
-    setSidebarView(view);
-    if (view === SidebarView.print) {
-      document.documentElement.classList.add('print-view');
-    } else {
-      document.documentElement.classList.remove('print-view');
-    }
-  }
-
   return (
     <nav>
       <div className="actions-top-left">
@@ -39,7 +25,7 @@ export function Sidebar({ jsString, setShowSidebar }: Props) {
         />
         <Menu
           sidebarView={sidebarView as SidebarView}
-          setSidebarView={handleSetSidebarView}
+          setSidebarView={setSidebarView}
         />
       </div>
       <div class="view">
@@ -58,14 +44,13 @@ type ViewSwitcherProps = {
 };
 
 function ViewSwitcher({ view, jsString }: ViewSwitcherProps) {
-  switch (view) {
-    case SidebarView.tableOfContents:
-      return <TableOfContents jsString={jsString} />;
-    case SidebarView.viewOptions:
-      return <ViewOptions />;
-    case SidebarView.print:
-      return <Print />;
-    default:
-      return null;
-  }
+  return (
+    <>
+      <TableOfContents
+        show={view === SidebarView.tableOfContents}
+        jsString={jsString}
+      />
+      <ViewOptions show={view === SidebarView.viewOptions} />
+    </>
+  );
 }

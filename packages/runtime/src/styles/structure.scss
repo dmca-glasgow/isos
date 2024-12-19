@@ -14,7 +14,8 @@ main {
     visibility: visible;
   }
 
-  html.print-view & {
+  // &.showPages {
+  html.view-pages & {
     margin-left: -100vw;
   }
 
@@ -75,7 +76,8 @@ nav {
   overflow-x: hidden;
 }
 
-article {
+article,
+.pages {
   padding-left: 0;
   transition: padding-left 0.2s;
   will-change: padding-left;
@@ -85,14 +87,16 @@ html.sidebar-open {
   nav {
     margin-left: 0;
   }
-  article {
+  article,
+  .pages {
     padding-left: $sidebarWidth;
   }
 }
 
 @media (max-width: 1000px) {
   html.sidebar-open {
-    article {
+    article,
+    .pages {
       padding-left: 0;
     }
   }
@@ -100,13 +104,14 @@ html.sidebar-open {
 
 // article ------
 
-article {
+article,
+.pages {
   padding-top: 2em;
   padding-bottom: 5em;
   margin: 0 auto;
 
   width: calc(60vw * var(--lineWidth, 1));
-  font-size: calc(1rem * var(--fontSize, 1));
+  font-size: calc(1em * var(--fontSize, 1));
   line-height: calc(1.7 * var(--lineSpacing, 1));
   letter-spacing: calc(1em * var(--letterSpacing, 0));
 
@@ -128,7 +133,8 @@ article {
 }
 
 @media (max-width: 1000px) {
-  article {
+  article,
+  .pages {
     width: calc(85vw * var(--lineWidth, 1));
   }
 }

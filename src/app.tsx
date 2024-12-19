@@ -15,9 +15,9 @@ let destroyWatcher = () => {};
 
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', '');
-  const { loading, setLoading } = useContext(LoadingContext);
   const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
+  const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -45,6 +45,7 @@ export function App() {
     // destroy previous watcher by calling it
     // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
     destroyWatcher();
+
     destroyWatcher = await watchImmediate(newFilePath, (event) => {
       // can be of type 'any' or 'other'
       if (typeof event.type === 'string') {

@@ -6,14 +6,9 @@ import { PrintView } from './print-view';
 type Props = {
   jsString: string;
   onHtmlRendered?: () => unknown;
-  onPagesRendered?: () => unknown;
 };
 
-export function ViewSwitcher({
-  jsString,
-  onHtmlRendered,
-  onPagesRendered,
-}: Props) {
+export function ViewSwitcher({ jsString, onHtmlRendered }: Props) {
   const [htmlRendered, setHtmlRendered] = useState(false);
 
   useEffect(() => {
@@ -30,7 +25,7 @@ export function ViewSwitcher({
       <div id="article-wrapper">
         <Article jsString={jsString} onRendered={handleHtmlRendered} />
       </div>
-      {htmlRendered && <PrintView onRendered={onPagesRendered} />}
+      {htmlRendered && <PrintView />}
     </>
   );
 }

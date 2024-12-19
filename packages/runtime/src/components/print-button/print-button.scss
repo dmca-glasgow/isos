@@ -1,0 +1,117 @@
+#print-btn {
+  $d: 1.7em;
+
+  position: relative;
+  width: $d;
+  height: $d;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  background-color: white;
+  // transition: background-color 0.2s;
+
+  svg {
+    display: block;
+    width: $d;
+    height: $d;
+    transform: scale(0.6);
+    fill: var(--textColor);
+    // transition: fill 0.2s;
+  }
+
+  label,
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  input {
+    margin: 0;
+    visibility: hidden;
+  }
+
+  span {
+    display: none;
+  }
+
+  .spinner {
+    $height: 3em;
+    $stroke: 2px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: $height * 0.5;
+    height: $height * 0.5;
+    margin: auto;
+    opacity: 0;
+
+    border-radius: 50%;
+    display: inline-block;
+    border-top: $stroke solid;
+    // border-top-color: var(--textColor);
+    border-top-color: white; // may as well hide the spinner on web view
+    border-right: $stroke solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  &.loading .spinner {
+    opacity: 1;
+  }
+
+  &:has(input:checked) {
+    background-color: var(--textColor);
+    svg {
+      fill: var(--bg);
+    }
+    .spinner {
+      border-top-color: white;
+    }
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+#print-zoom {
+  input[type='range'] {
+    $thumb-border-width: 5px;
+    $track-border-width: 0;
+    $track-width: 6px;
+    $track-height: 100px;
+    $thumb-height: 18px;
+    $track-color: #0002;
+
+    display: block;
+    height: $track-height;
+    width: $track-width;
+    writing-mode: vertical-lr;
+    margin: 0 auto;
+
+    &::-webkit-slider-runnable-track {
+      background: $track-color;
+      width: $thumb-border-width;
+    }
+    &::-webkit-slider-thumb {
+      margin-left: ((-$track-border-width * 2 + $track-width) * 0.5) -
+        ($thumb-height * 0.5);
+    }
+  }
+}

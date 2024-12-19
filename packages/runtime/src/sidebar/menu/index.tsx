@@ -1,11 +1,10 @@
 // import './styles.scss';
-import { Gear, Print, TableOfContents } from '../../components/icons';
+import { Gear, TableOfContents } from '../../components/icons';
 import classNames from 'classnames';
 
 export enum SidebarView {
   tableOfContents = 'table-of-contents',
   viewOptions = 'view-options',
-  print = 'print',
 }
 
 type Props = {
@@ -29,13 +28,6 @@ export function Menu({ sidebarView, setSidebarView }: Props) {
         })}
         onClick={() => setSidebarView(SidebarView.viewOptions)}>
         <Gear />
-      </div>
-      <div
-        className={classNames('print', {
-          active: sidebarView === SidebarView.print,
-        })}
-        onClick={() => setSidebarView(SidebarView.print)}>
-        <Print />
       </div>
     </div>
   );

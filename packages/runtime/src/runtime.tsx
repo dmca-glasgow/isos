@@ -10,9 +10,9 @@ import { markdownToJs } from '@isos/processor';
 
 import HamburgerSvg from './assets/hamburger.svg';
 import { DarkModeToggle } from './components/dark-mode-toggle';
+import { PrintButton } from './components/print-button/print-button';
 import { ErrorContext } from './providers/error-provider';
-import { ViewOptionsProvider } from './providers/view-options-provider';
-// import { ViewContext, Views } from './providers/view-provider';
+import { ViewContext } from './providers/view-provider';
 import { Sidebar } from './sidebar';
 import { ViewSwitcher } from './view-switcher';
 
@@ -32,15 +32,12 @@ if (typeof window !== undefined) {
 }
 
 export function Runtime({ markdown, show, onRendered }: Props) {
-  if (markdown === '') {
-    return null;
-  }
   const [js, setJs] = useState({
     article: '',
     tableOfContents: '',
   });
   const { error, setError } = useContext(ErrorContext);
-  // const { view } = useContext(ViewContext);
+  // const { showPages } = useContext(ViewContext);
 
   const setShowSidebar = useCallback((open: boolean) => {
     if (open) {
@@ -58,14 +55,17 @@ export function Runtime({ markdown, show, onRendered }: Props) {
     }
     (async () => {
       try {
-        const js = await markdownToJs(markdown);
+        setJs(await markdownToJs(markdown));
         setError('');
-        setJs(js);
       } catch (err: any) {
         setError(err.message);
       }
     })();
   }, [markdown]);
+
+  if (markdown === '') {
+    return null;
+  }
 
   return (
     <main className={classNames({ show })}>
@@ -74,23 +74,23 @@ export function Runtime({ markdown, show, onRendered }: Props) {
           <span className="error-label">Error:</span> {error}
         </div>
       )}
+
       <ViewSwitcher jsString={js.article} onHtmlRendered={onRendered} />
 
-      <ViewOptionsProvider>
-        <div className="actions-top-left">
-          <HamburgerSvg
-            className="hamburger"
-            onClick={() => setShowSidebar(true)}
-          />
-        </div>
-        <div className="actions-top-right">
-          <DarkModeToggle />
-        </div>
-        <Sidebar
-          jsString={js.tableOfContents}
-          setShowSidebar={setShowSidebar}
+      <div className="actions-top-left">
+        <HamburgerSvg
+          className="hamburger"
+          onClick={() => setShowSidebar(true)}
         />
-      </ViewOptionsProvider>
+      </div>
+      <div className="actions-top-right">
+        <DarkModeToggle />
+        <PrintButton />
+      </div>
+      <Sidebar
+        jsString={js.tableOfContents}
+        setShowSidebar={setShowSidebar}
+      />
     </main>
   );
 }

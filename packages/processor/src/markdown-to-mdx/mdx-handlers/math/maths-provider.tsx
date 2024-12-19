@@ -14,8 +14,8 @@ type Maths = {
 
 export const MathsContext = createContext<Maths>({
   fontName: defaultFontName,
-  mathsAsTex: false,
   setFontName: () => {},
+  mathsAsTex: false,
   setMathsAsTex: () => {},
 });
 
@@ -30,8 +30,8 @@ export function MathsProvider({
   const context = useMemo((): Maths => {
     return {
       fontName,
-      mathsAsTex,
       setFontName,
+      mathsAsTex,
       setMathsAsTex,
     };
   }, [fontName, mathsAsTex]);

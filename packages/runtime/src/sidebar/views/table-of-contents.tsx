@@ -1,4 +1,5 @@
 import { run } from '@mdx-js/mdx';
+import classNames from 'classnames';
 import { MDXModule } from 'mdx/types';
 import { useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
@@ -6,10 +7,11 @@ import { Fragment } from 'preact/jsx-runtime';
 import { sidebarRunOptions } from '@isos/processor';
 
 type Props = {
+  show: boolean;
   jsString: string;
 };
 
-export function TableOfContents({ jsString }: Props) {
+export function TableOfContents({ show, jsString }: Props) {
   const [TOC, setTOC] = useState<MDXModule | null>(null);
   const TOCContent = TOC ? TOC.default : Fragment;
 
@@ -19,7 +21,11 @@ export function TableOfContents({ jsString }: Props) {
     })();
   }, [jsString]);
 
-  return <TOCContent />;
+  return (
+    <div className={classNames({ show })}>
+      <TOCContent />
+    </div>
+  );
 }
 
 // <ol>

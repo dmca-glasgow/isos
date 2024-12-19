@@ -3,12 +3,18 @@
     $gap: 1em;
     margin: 0 auto;
 
+    #pagedjs_render_area,
     .pagedjs_pages {
+      $width: calc(var(--pagedjs-width) + ($gap * 2));
       display: flex;
-      width: calc(var(--pagedjs-width) + ($gap * 2));
+      width: $width;
       flex: 0;
       flex-wrap: wrap;
-      margin: 0 auto;
+      margin-left: calc(((100% - $width) / 2));
+    }
+
+    .pagedjs_pages {
+      transform-origin: center 0;
     }
 
     .pagedjs_page {
@@ -19,17 +25,10 @@
     }
 
     &.double {
-      &.loading {
-        visibility: hidden;
-      }
-
-      &:not(.loading) {
-        width: calc(((var(--pagedjs-width) * 2) + ($gap * 2)) / 2);
-        .pagedjs_pages {
-          width: calc((var(--pagedjs-width) * 2) + ($gap * 2));
-          transform: scale(0.5);
-          transform-origin: 0 0;
-        }
+      .pagedjs_pages {
+        $width: calc((var(--pagedjs-width) * 2) + ($gap * 2));
+        width: $width;
+        margin-left: calc(((100% - $width) / 2));
       }
 
       .pagedjs_page {

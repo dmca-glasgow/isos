@@ -19,11 +19,13 @@ export function createMDXComponents(options: Partial<Options>) {
     // TODO: remove sectionize and use the titles
     section: Section,
     code(props) {
-      if (
-        props.class?.includes('language-math') &&
-        options.mathsAsTex !== true
-      ) {
-        return <MathJax expr={props.children} />;
+      if (props.class?.includes('language-math')) {
+        return (
+          <MathJax
+            expr={props.children}
+            className={props.class.replace('language-math', '').trim()}
+          />
+        );
       }
       return <code {...props} />;
     },
