@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useContext } from 'preact/hooks';
 
 // import { Readability } from '../../constants/readability';
-import { ViewContext } from '../../providers/view-provider';
+import { PrintViewContext } from '../../providers/print-view-provider';
 
 import './print-button.scss';
 
@@ -16,7 +16,8 @@ import './print-button.scss';
 // };
 
 export function PrintButton() {
-  const { showPages, setShowPages, loading } = useContext(ViewContext);
+  const { showPages, setShowPages, loading } =
+    useContext(PrintViewContext);
 
   function handleChange(e) {
     if (e.target instanceof HTMLInputElement) {

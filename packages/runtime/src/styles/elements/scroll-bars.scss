@@ -1,43 +1,31 @@
-$scrollbarWidth: 15px;
-$scrollbarPadding: 5px;
+$size: 12px;
+$border: 3px;
 
-@mixin slim {
-  scrollbar-width: thin;
-  scroll-behavior: smooth;
-  scrollbar-color: var(--textColor) var(--bg);
-
+@mixin slim($foreground-color: #999, $background-color: #333) {
+  // For Chrome & Safari
   &::-webkit-scrollbar {
-    width: $scrollbarWidth;
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--bg);
+    width: $size;
+    height: $size;
   }
   &::-webkit-scrollbar-thumb {
-    border-radius: $scrollbarWidth;
-    border: $scrollbarPadding solid;
-    background-color: var(--textColor);
-    border-color: var(--bg);
+    border-radius: $size * 0.5;
+    border: $border solid $background-color;
+    background: $foreground-color;
   }
+  &::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  // Standard version
+  scrollbar-color: $foreground-color $background-color;
 }
 
-@mixin slim-discreet {
-  @include slim;
-  scrollbar-color: var(--boxoutBg) var(--boxoutBg);
-
-  &::-webkit-scrollbar-track {
-    background: var(--boxoutBg);
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--boxoutBg);
-    border-color: var(--boxoutBg);
-    transition: background-color 0.2s;
-  }
-
+@mixin slim-on-hover($foreground-color: #999, $background-color: #333) {
+  @include slim($background-color, $background-color);
   &:hover {
-    scrollbar-color: var(--boxoutHighlightColor) var(--boxoutBg);
-
     &::-webkit-scrollbar-thumb {
-      background-color: var(--boxoutHighlightColor);
+      background: $foreground-color;
     }
+    scrollbar-color: $foreground-color $background-color;
   }
 }

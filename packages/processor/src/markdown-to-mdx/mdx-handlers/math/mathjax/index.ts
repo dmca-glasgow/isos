@@ -14,8 +14,9 @@ import { TeX } from 'mathjax-full/js/input/tex.js';
 import { mathjax } from 'mathjax-full/js/mathjax.js';
 import { SVG } from 'mathjax-full/js/output/svg.js';
 
-type Document = MathDocument<LiteNode, LiteText, LiteDocument>;
+import { render } from './litedom';
 
+type Document = MathDocument<LiteNode, LiteText, LiteDocument>;
 type Output = Record<string, OutputJax<LiteNode, LiteText, LiteDocument>>;
 
 export type FontName = keyof Output;
@@ -36,9 +37,21 @@ const output: Output = {
   }),
 };
 
-export function getMathJax(expr: string, fontName: FontName) {
+export function toMathJaxString(expr: string, fontName: FontName) {
   doc.outputJax = output[fontName];
   doc.outputJax.setAdaptor(doc.adaptor);
   const node = doc.convert(expr) as LiteElement;
-  return node.children;
+  if ((node.children || []).length === 0) {
+    console.log('[mathjax]: node has no children');
+    return '';
+  }
+  const svg = node.children[0] as LiteElement;
+  return adaptor.outerHTML(svg);
+}
+
+export function toMathJaxJSX(expr: string, fontName: FontName) {
+  doc.outputJax = output[fontName];
+  doc.outputJax.setAdaptor(doc.adaptor);
+  const node = doc.convert(expr) as LiteElement;
+  return render(node.children);
 }

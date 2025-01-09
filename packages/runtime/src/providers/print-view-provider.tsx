@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 
 import { useLocalStorage } from '@isos/use-local-storage';
 
-type View = {
-  // showPages: boolean;
+type PrintView = {
+  showPages: boolean;
   loading: boolean;
   double: boolean;
   setShowPages: (showPages: boolean) => unknown;
@@ -13,8 +13,8 @@ type View = {
   setScale: (scale: number) => unknown;
 };
 
-export const ViewContext = createContext<View>({
-  // showPages: false,
+export const PrintViewContext = createContext<PrintView>({
+  showPages: false,
   loading: true,
   double: false,
   setShowPages: () => {},
@@ -23,7 +23,7 @@ export const ViewContext = createContext<View>({
   setScale: () => {},
 });
 
-export function ViewProvider({
+export function PrintViewProvider({
   children,
   element = document.documentElement,
 }: {
@@ -44,9 +44,9 @@ export function ViewProvider({
     element.style.setProperty('--pages-scale', String(1));
   }, []);
 
-  const context = useMemo((): View => {
+  const context = useMemo((): PrintView => {
     return {
-      // showPages: showPages === 'true',
+      showPages: showPages === 'true',
       loading,
       double,
       setShowPages(showPages: boolean) {
@@ -63,10 +63,14 @@ export function ViewProvider({
         const clamped = Math.min(newScale, 1);
         element.style.setProperty('--pages-scale', String(clamped));
       },
+      destroy() {},
+      reload() {},
     };
   }, [showPages, loading, double]);
 
   return (
-    <ViewContext.Provider value={context}>{children}</ViewContext.Provider>
+    <PrintViewContext.Provider value={context}>
+      {children}
+    </PrintViewContext.Provider>
   );
 }

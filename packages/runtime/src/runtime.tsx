@@ -12,7 +12,7 @@ import HamburgerSvg from './assets/hamburger.svg';
 import { DarkModeToggle } from './components/dark-mode-toggle';
 import { PrintButton } from './components/print-button/print-button';
 import { ErrorContext } from './providers/error-provider';
-import { ViewContext } from './providers/view-provider';
+import { PrintViewContext } from './providers/print-view-provider';
 import { Sidebar } from './sidebar';
 import { ViewSwitcher } from './view-switcher';
 

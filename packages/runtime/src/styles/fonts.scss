@@ -1,7 +1,7 @@
 // https://modernfontstacks.com
 
 @mixin global-size {
-  font-size: clamp(1.5vw, 18px, 26px);
+  font-size: clamp(1vw, 18px, 26px);
 }
 
 @mixin geometric-humanist {

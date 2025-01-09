@@ -4,16 +4,15 @@
 :root {
   @include fonts.geometric-humanist;
   @include fonts.global-size;
-  @include scroll-bars.slim;
-}
-
-#root {
-  overflow-x: hidden;
 }
 
 body {
   color: var(--textColor);
   background: var(--bg);
+}
+
+#root {
+  overflow: hidden;
 }
 
 main {
@@ -34,12 +33,17 @@ main {
 
   #article-wrapper,
   #print-view {
-    @include scroll-bars.slim;
+    height: 100vh;
+    overflow: auto;
+    @include scroll-bars.slim(var(--textColor), var(--bg));
   }
 }
 
 nav {
-  @include scroll-bars.slim-discreet;
+  @include scroll-bars.slim-on-hover(
+    var(--boxoutHighlightColor),
+    var(--boxoutBg)
+  );
   background: var(--boxoutBg);
   transition: margin-left 0.2s;
   will-change: margin-left;

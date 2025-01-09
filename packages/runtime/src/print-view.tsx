@@ -3,11 +3,11 @@ import { useContext, useEffect } from 'preact/hooks';
 
 import { render } from '@isos/paged';
 
-import { ViewContext } from './providers/view-provider';
+import { PrintViewContext } from './providers/print-view-provider';
 
 export function PrintView() {
   const { double, setScale, setDouble, setLoading } =
-    useContext(ViewContext);
+    useContext(PrintViewContext);
 
   useEffect(() => {
     (async () => {

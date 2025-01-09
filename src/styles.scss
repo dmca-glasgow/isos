@@ -22,7 +22,7 @@ html#editor {
 
   main {
     flex: 1;
-    overflow: auto;
+    // overflow: auto;
 
     & > .actions-top-left,
     & > .actions-top-right {
@@ -76,8 +76,8 @@ header {
   button {
     border: 0;
     font-weight: 600;
-    padding: 0.7rem 1rem;
-    border-radius: 0.4rem;
+    padding: 1.2em 2.4em;
+    border-radius: 0.4em;
     background: #fff2;
     color: #fff;
     cursor: pointer;

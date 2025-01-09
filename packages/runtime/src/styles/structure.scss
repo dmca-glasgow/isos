@@ -5,8 +5,7 @@ body {
 main {
   width: 200vw;
   display: flex;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   visibility: hidden;
 
   // TODO: invert to hide class
@@ -50,8 +49,6 @@ main {
     overflow: auto;
 
     main {
-      display: block;
-      width: 100vw;
       margin-left: 0;
 
       & > :not(#print-view) {
@@ -104,8 +101,7 @@ html.sidebar-open {
 
 // article ------
 
-article,
-.pages {
+article {
   padding-top: 2em;
   padding-bottom: 5em;
   margin: 0 auto;

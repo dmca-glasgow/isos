@@ -1,10 +1,11 @@
 import { ComponentChildren } from 'preact';
 
-import { MathsProvider, TocHighlightProvider } from '@isos/processor';
+import { MathsProvider } from '@isos/processor';
 
-import { ErrorProvider } from './error-provider';
-import { ViewOptionsProvider } from './view-options-provider';
-import { ViewProvider } from './view-provider';
+// import { ErrorProvider } from './error-provider';
+import { PrintViewProvider } from './print-view-provider';
+
+// import { ViewOptionsProvider } from './view-options-provider';
 
 type Props = {
   children: ComponentChildren;
@@ -12,14 +13,14 @@ type Props = {
 
 export function Providers({ children }: Props) {
   return (
-    <TocHighlightProvider>
-      <ErrorProvider>
-        <ViewOptionsProvider>
-          <ViewProvider>
-            <MathsProvider>{children}</MathsProvider>
-          </ViewProvider>
-        </ViewOptionsProvider>
-      </ErrorProvider>
-    </TocHighlightProvider>
+    // <TocHighlightProvider>
+    <MathsProvider>
+      {/* <ErrorProvider> */}
+      {/* <ViewOptionsProvider> */}
+      <PrintViewProvider>{children}</PrintViewProvider>
+      {/* </ViewOptionsProvider> */}
+      {/* </ErrorProvider> */}
+    </MathsProvider>
+    // </TocHighlightProvider>
   );
 }

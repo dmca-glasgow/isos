@@ -1,18 +1,19 @@
 // import './styles.scss';
 import { Moon, Sun } from '../icons';
-import { useContext } from 'preact/hooks';
 
-import { ViewOptionsContext } from '../../providers/view-options-provider';
+// import { useContext } from 'preact/hooks';
+
+// import { ViewOptionsContext } from '../../providers/view-options-provider';
 
 export function DarkModeToggle() {
-  const { theme, setTheme } = useContext(ViewOptionsContext);
+  // const { theme, setTheme } = useContext(ViewOptionsContext);
 
   function handleChange(e) {
     if (e.target instanceof HTMLInputElement) {
       if (e.target.checked) {
-        setTheme('dark');
+        // setTheme('dark');
       } else {
-        setTheme('light');
+        // setTheme('light');
       }
     }
   }
@@ -29,7 +30,7 @@ export function DarkModeToggle() {
         <input
           type="checkbox"
           onChange={handleChange}
-          checked={theme === 'dark'}
+          // checked={theme === 'dark'}
         />
         <span>Enable dark mode</span>
       </label>

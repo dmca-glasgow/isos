@@ -1,10 +1,10 @@
 import { resolveResource } from '@tauri-apps/api/path';
-import { useContext, useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
 import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
 import { createContext, inputToMarkdown } from '@isos/processor';
-import { ErrorContext, LoadingContext, Runtime } from '@isos/runtime';
+import { Runtime } from '@isos/runtime';
 import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Header } from './header';
@@ -15,7 +15,7 @@ let destroyWatcher = () => {};
 
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', '');
-  const { setError } = useContext(ErrorContext);
+  // const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -35,9 +35,9 @@ export function App() {
     try {
       const newMarkdown = await inputToMarkdown(ctx);
       setMarkdown(newMarkdown);
-      setError('');
+      // setError('');
     } catch (err: any) {
-      setError(err.message);
+      // setError(err.message);
     }
   }
 
