@@ -44,8 +44,8 @@ export function PrintViewProvider({
     element.style.setProperty('--pages-scale', String(1));
   }, []);
 
-  const context = useMemo((): PrintView => {
-    return {
+  const context = useMemo(
+    (): PrintView => ({
       showPages: showPages === 'true',
       loading,
       double,
@@ -63,10 +63,9 @@ export function PrintViewProvider({
         const clamped = Math.min(newScale, 1);
         element.style.setProperty('--pages-scale', String(clamped));
       },
-      destroy() {},
-      reload() {},
-    };
-  }, [showPages, loading, double]);
+    }),
+    [showPages, loading, double],
+  );
 
   return (
     <PrintViewContext.Provider value={context}>

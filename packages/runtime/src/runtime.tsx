@@ -8,14 +8,15 @@ import {
 
 import { markdownToJs } from '@isos/processor';
 
+import { Article } from './article';
 import HamburgerSvg from './assets/hamburger.svg';
 import { DarkModeToggle } from './components/dark-mode-toggle';
 import { PrintButton } from './components/print-button/print-button';
 import { ErrorContext } from './providers/error-provider';
-import { PrintViewContext } from './providers/print-view-provider';
+// import { PrintViewContext } from './providers/print-view-provider';
 import { Sidebar } from './sidebar';
-import { ViewSwitcher } from './view-switcher';
 
+// import { ViewSwitcher } from './view-switcher';
 import './styles/index.scss';
 
 type Props = {
@@ -75,7 +76,9 @@ export function Runtime({ markdown, show, onRendered }: Props) {
         </div>
       )}
 
-      <ViewSwitcher jsString={js.article} onHtmlRendered={onRendered} />
+      <div id="article-wrapper">
+        <Article jsString={js.article} onRendered={onRendered} />
+      </div>
 
       <div className="actions-top-left">
         <HamburgerSvg

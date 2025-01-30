@@ -1,34 +1,49 @@
-import classNames from 'classnames';
-import { useContext, useEffect } from 'preact/hooks';
+// import classNames from 'classnames';
+// import { useContext, useEffect } from 'preact/hooks';
+import { useContext } from 'preact/hooks';
 
 import { render } from '@isos/paged';
 
 import { PrintViewContext } from './providers/print-view-provider';
 
-export function PrintView() {
-  const { double, setScale, setDouble, setLoading } =
-    useContext(PrintViewContext);
+// import { PrintViewContext } from './providers/print-view-provider';
 
-  useEffect(() => {
-    (async () => {
-      const app = document.querySelector<HTMLElement>('#root article');
-      const renderTo = document.querySelector(
-        '#print-view > .pages',
-      ) as HTMLElement;
-      const promise = render(app!, renderTo!);
-      handleResize(setScale, setDouble);
-      await promise;
-      setLoading(false);
-    })();
+// export function PrintView() {
+//   const { double, setScale, setDouble, setLoading } =
+//     useContext(PrintViewContext);
 
-    return () => {};
-  }, []);
+//   useEffect(() => {
+//     (async () => {
+//       const app = document.querySelector<HTMLElement>('#root article');
+//       const renderTo = document.querySelector(
+//         '#print-view > .pages',
+//       ) as HTMLElement;
+//       const promise = render(app!, renderTo!);
+//       handleResize(setScale, setDouble);
+//       await promise;
+//       setLoading(false);
+//     })();
 
-  return (
-    <div id="print-view" className={classNames({ double })}>
-      <div className="pages"></div>
-    </div>
+//     return () => {};
+//   }, []);
+
+//   return (
+//     <div id="print-view" className={classNames({ double })}>
+//       <div className="pages"></div>
+//     </div>
+//   );
+// }
+
+export async function onHtmlLoaded() {
+  const { setScale, setDouble, setLoading } = useContext(PrintViewContext);
+  const app = document.querySelector<HTMLElement>('#root article');
+  const renderTo = document.querySelector<HTMLElement>(
+    '#print-view > .pages',
   );
+  const promise = render(app!, renderTo!);
+  handleResize(setScale, setDouble);
+  await promise;
+  setLoading(false);
 }
 
 async function handleResize(
