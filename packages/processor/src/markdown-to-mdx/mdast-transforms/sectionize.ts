@@ -36,8 +36,6 @@ export function sectionize() {
 
         // steal id from title and give it to section
         const hProps = node.data?.hProperties || {};
-        // console.log(hProps);
-
         const { id, ...hProperties } = hProps;
         node.data = {
           ...(node.data || {}),

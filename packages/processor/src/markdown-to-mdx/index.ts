@@ -3,9 +3,11 @@ import { markdownToMdast } from './mdast-transforms';
 import { createMDXComponents } from './mdx-handlers';
 import { Options, defaultOptions } from './options';
 import { RunOptions, createProcessor } from '@mdx-js/mdx';
+import { Root } from 'mdast';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 
 import { createContext } from './context';
+import { createTableOfContents } from './sidebar';
 
 export {
   TocHighlightProvider,
@@ -34,7 +36,7 @@ export function createRunOptions(
   };
 }
 
-export async function markdownToJs(
+export async function markdownToArticle(
   markdown: string,
   _options: Partial<Options> = {},
 ) {
@@ -43,7 +45,8 @@ export async function markdownToJs(
     ...defaultOptions,
     ..._options,
   };
-  const { mdast, tableOfContents } = await markdownToMdast(markdown, ctx);
+  // const { mdast, tableOfContents } = await markdownToMdast(markdown, ctx, options);
+  const mdast = await markdownToMdast(markdown, ctx, options);
   // console.dir(mdast, { depth: null });
 
   const processor = createProcessor({
@@ -53,10 +56,21 @@ export async function markdownToJs(
 
   // @ts-expect-error: mdast is not of type Program
   const estree = await processor.run(mdast);
-  const article = processor.stringify(estree);
+  return processor.stringify(estree);
+}
 
-  return {
-    article,
-    tableOfContents,
+export async function markdownToTOC(
+  markdown: string,
+  _options: Partial<Options> = {},
+) {
+  const ctx = createContext();
+  const options = {
+    ...defaultOptions,
+    noSections: true,
+    ..._options,
   };
+  // const { mdast, tableOfContents } = await markdownToMdast(markdown, ctx, options);
+  const mdast = await markdownToMdast(markdown, ctx, options);
+  // console.dir(mdast, { depth: null });
+  return createTableOfContents(mdast as Root);
 }

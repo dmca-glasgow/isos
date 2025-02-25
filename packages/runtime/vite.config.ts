@@ -1,11 +1,12 @@
 import preact from '@preact/preset-vite';
+import wyw from '@wyw-in-js/vite';
 // import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
 import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig({
   plugins: [
     svgr({
       include: '**/*.svg',
@@ -16,6 +17,7 @@ export default defineConfig(async () => ({
     prismjs({
       languages: ['latex'],
     }),
+    wyw(),
     // {
     //   name: 'inject',
     //   transformIndexHtml() {
@@ -67,4 +69,4 @@ export default defineConfig(async () => ({
       },
     },
   },
-}));
+});

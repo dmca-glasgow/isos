@@ -1,99 +1,60 @@
-import classNames from 'classnames';
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'preact/hooks';
+import { styled } from '@linaria/react';
 
-import { markdownToJs } from '@isos/processor';
+import { Content } from './content';
+import { Template } from './template';
 
-import { Article } from './article';
-import HamburgerSvg from './assets/hamburger.svg';
-import { DarkModeToggle } from './components/dark-mode-toggle';
-import { PrintButton } from './components/print-button/print-button';
-import { ErrorContext } from './providers/error-provider';
-// import { PrintViewContext } from './providers/print-view-provider';
-import { Sidebar } from './sidebar';
-
-// import { ViewSwitcher } from './view-switcher';
-import './styles/index.scss';
+import './styles/global.scss';
 
 type Props = {
   markdown: string;
-  show?: boolean;
-  onRendered?: () => unknown;
 };
 
-if (typeof window !== undefined) {
-  const showSideBar = localStorage.getItem('show-sidebar');
-  if (String(showSideBar) === 'true') {
-    document.documentElement.classList.add('sidebar-open');
-  }
-}
-
-export function Runtime({ markdown, show, onRendered }: Props) {
-  const [js, setJs] = useState({
-    article: '',
-    tableOfContents: '',
-  });
-  const { error, setError } = useContext(ErrorContext);
-  // const { showPages } = useContext(ViewContext);
-
-  const setShowSidebar = useCallback((open: boolean) => {
-    if (open) {
-      document.documentElement.classList.add('sidebar-open');
-      localStorage.setItem('show-sidebar', 'true');
-    } else {
-      document.documentElement.classList.remove('sidebar-open');
-      localStorage.setItem('show-sidebar', 'false');
-    }
-  }, []);
-
-  useEffect(() => {
-    if (markdown === '') {
-      return;
-    }
-    (async () => {
-      try {
-        setJs(await markdownToJs(markdown));
-        setError('');
-      } catch (err: any) {
-        setError(err.message);
-      }
-    })();
-  }, [markdown]);
-
-  if (markdown === '') {
-    return null;
-  }
-
+export function Runtime({ markdown }: Props) {
   return (
-    <main className={classNames({ show })}>
-      {error && (
-        <div className="error">
-          <span className="error-label">Error:</span> {error}
-        </div>
-      )}
-
-      <div id="article-wrapper">
-        <Article jsString={js.article} onRendered={onRendered} />
-      </div>
-
-      <div className="actions-top-left">
-        <HamburgerSvg
-          className="hamburger"
-          onClick={() => setShowSidebar(true)}
-        />
-      </div>
-      <div className="actions-top-right">
-        <DarkModeToggle />
-        <PrintButton />
-      </div>
-      <Sidebar
-        jsString={js.tableOfContents}
-        setShowSidebar={setShowSidebar}
-      />
-    </main>
+    <Main>
+      <Content markdown={markdown} />
+      <Template markdown={markdown} />
+    </Main>
   );
 }
+
+const Main = styled.main`
+  // foreground
+  --textBlack: #111;
+  --textWhite: #eee;
+  --textYellow: #faedcb;
+  --textGreen: #c9e4de;
+  --textBlue: #c6def1;
+  --textPurple: #dbcdf0;
+  --textPink: #f2c6de;
+  --textOrange: #f7d9c4;
+
+  // background
+  --bgBlack: #111;
+  --bgWhite: #eee;
+  --bgYellow: #faf2de;
+  --bgGreen: #e8fef9;
+  --bgBlue: #d7e6f1;
+  --bgPurple: #f0e6ff;
+  --bgPink: #f7daea;
+  --bgOrange: #f7e4d7;
+
+  --sidebarBg: color-mix(in srgb, var(--textColor) 10%, var(--bg));
+  --errorColor: #d90000;
+  --transitionDuration: 0.15s;
+
+  width: 200vw;
+  min-height: 100vh;
+  display: flex;
+  overflow: hidden;
+
+  background-color: var(--bg);
+  color: var(--textColor);
+
+  filter: contrast(var(--contrast)) brightness(var(--brightness));
+  will-change: filter;
+
+  &.hide {
+    visibility: hidden;
+  }
+`;

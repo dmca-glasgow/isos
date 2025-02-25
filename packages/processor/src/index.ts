@@ -8,17 +8,15 @@ export {
 export { inputToMarkdown } from './latex-to-markdown';
 
 export {
-  markdownToJs,
+  markdownToArticle,
+  markdownToTOC,
   createRunOptions,
   sidebarRunOptions,
-} from './markdown-to-mdx';
-
-export { createContext } from './latex-to-markdown/context';
-
-export {
   TocHighlightProvider,
   TocHighlightContext,
 } from './markdown-to-mdx';
+
+export { createContext } from './latex-to-markdown/context';
 
 export type { FontName } from './markdown-to-mdx';
 

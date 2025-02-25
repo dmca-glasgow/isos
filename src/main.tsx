@@ -1,6 +1,5 @@
+import { Providers } from '../packages/runtime/src';
 import { render } from 'preact';
-
-import { Providers } from '@isos/runtime';
 
 import { App } from './app';
 

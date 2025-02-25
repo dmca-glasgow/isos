@@ -1,10 +1,10 @@
+import { Runtime } from '../packages/runtime/src';
 import { resolveResource } from '@tauri-apps/api/path';
 import { useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
 import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
 import { createContext, inputToMarkdown } from '@isos/processor';
-import { Runtime } from '@isos/runtime';
 import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Header } from './header';
