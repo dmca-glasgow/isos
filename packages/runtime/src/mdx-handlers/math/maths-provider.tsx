@@ -1,14 +1,14 @@
 import { ComponentChildren, createContext } from 'preact';
 import { useMemo, useState } from 'preact/hooks';
 
-import { FontName } from './mathjax';
+import { MathsFont } from './mathjax';
 
 const defaultFontName = 'termes';
 
 type Maths = {
-  fontName: FontName;
+  fontName: MathsFont;
   mathsAsTex: boolean;
-  setFontName: (fontName: FontName) => unknown;
+  setFontName: (fontName: MathsFont) => unknown;
   setMathsAsTex: (mathsAsTex: boolean) => unknown;
 };
 
@@ -24,7 +24,7 @@ export function MathsProvider({
 }: {
   children: ComponentChildren;
 }) {
-  const [fontName, setFontName] = useState(defaultFontName);
+  const [fontName, setFontName] = useState<MathsFont>(defaultFontName);
   const [mathsAsTex, setMathsAsTex] = useState(false);
 
   const context = useMemo((): Maths => {

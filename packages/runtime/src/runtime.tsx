@@ -7,12 +7,14 @@ import './styles/global.scss';
 
 type Props = {
   markdown: string;
+  onRendered?: () => unknown;
+  hide?: boolean;
 };
 
-export function Runtime({ markdown }: Props) {
+export function Runtime({ markdown, onRendered }: Props) {
   return (
     <Main>
-      <Content markdown={markdown} />
+      <Content markdown={markdown} onRendered={onRendered} />
       <Template markdown={markdown} />
     </Main>
   );
@@ -39,7 +41,7 @@ const Main = styled.main`
   --bgPink: #f7daea;
   --bgOrange: #f7e4d7;
 
-  --sidebarBg: color-mix(in srgb, var(--textColor) 10%, var(--bg));
+  --sidebarBg: color-mix(in srgb, var(--textColor) 6%, var(--bg));
   --errorColor: #d90000;
   --transitionDuration: 0.15s;
 

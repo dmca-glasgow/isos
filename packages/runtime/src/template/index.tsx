@@ -1,12 +1,12 @@
 import { actions, sidebarWidth } from '../constants';
-import { scrollbarOnHover } from '../mixins/scrollbars';
+import { scrollbarOnHover } from '../scrollbars';
 import { Hamburger } from './icons';
 import { TableOfContents } from './table-of-contents';
 import { ViewOptions } from './view-options';
 import { styled } from '@linaria/react';
 import { useContext } from 'preact/hooks';
 
-import { ViewOptionsContext, ViewOptionsProvider } from '../provider';
+import { ViewOptionsContext } from '../context';
 import { Menu } from './menu';
 
 type Props = {
@@ -17,17 +17,12 @@ export function Template({ markdown }: Props) {
   const { setShowSidebar } = useContext(ViewOptionsContext);
 
   return (
-    <ViewOptionsProvider>
+    <>
       <ActionsTopLeft>
-        <StyledHamburger
-          onClick={() => {
-            console.log('hey!');
-            setShowSidebar(true);
-          }}
-        />
+        <StyledHamburger onClick={() => setShowSidebar(true)} />
       </ActionsTopLeft>
 
-      <ActionsTopRight>{/* <DarkModeToggle /> */}</ActionsTopRight>
+      {/* <ActionsTopRight><DarkModeToggle /></ActionsTopRight> */}
 
       <Sidebar>
         <ActionsTopLeft>
@@ -39,7 +34,7 @@ export function Template({ markdown }: Props) {
           <ViewOptions />
         </View>
       </Sidebar>
-    </ViewOptionsProvider>
+    </>
   );
 }
 
@@ -58,12 +53,12 @@ const ActionsTopLeft = styled.div`
   }
 `;
 
-const ActionsTopRight = styled.div`
-  position: fixed;
-  top: ${actions.y};
-  right: ${actions.x};
-  height: ${actions.height};
-`;
+// const ActionsTopRight = styled.div`
+//   position: fixed;
+//   top: ${actions.y};
+//   right: ${actions.x};
+//   height: ${actions.height};
+// `;
 
 const StyledHamburger = styled(Hamburger)`
   display: block;

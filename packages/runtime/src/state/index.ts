@@ -5,6 +5,8 @@ import {
 } from './apply-side-effects';
 import { Signal, signal } from '@preact/signals';
 
+import { MathsFont } from '@isos/processor';
+
 import { cacheData, mergeCachedData } from './cache-data';
 import { prefersContrast, prefersDarkMode } from './match-media';
 
@@ -20,6 +22,8 @@ export type ViewOptions = {
   lineHeight: string;
   letterSpacing: string;
   lineWidth: string;
+  mathsFontName: MathsFont;
+  mathsAsTex: boolean;
 };
 
 export type AppState = {
@@ -35,6 +39,8 @@ export type AppState = {
   setLineHeight: (lineHeight: string) => unknown;
   setLineWidth: (lineWidth: string) => unknown;
   setLetterSpacing: (letterSpacing: string) => unknown;
+  setMathsFontName: (mathsFontName: string) => unknown;
+  setMathsAsTex: (mathsAsTex: boolean) => unknown;
 };
 
 export function createAppState(el = document.documentElement): AppState {
@@ -52,6 +58,8 @@ export function createAppState(el = document.documentElement): AppState {
     lineHeight: signal(constants.lineHeight.initial),
     letterSpacing: signal(constants.letterSpacing.initial),
     lineWidth: signal(constants.lineWidth.initial),
+    mathsFontName: signal('termes'),
+    mathsAsTex: signal(false),
   };
 
   const sideEffects = createSideEffects(el);
@@ -125,12 +133,21 @@ export function createAppState(el = document.documentElement): AppState {
       data.lineWidth.value = lineWidth;
       cacheData(data);
     },
+    setMathsFontName(mathsFontName: string) {
+      applySideEffect(sideEffects, 'mathsFontName', mathsFontName);
+      data.mathsFontName.value = mathsFontName;
+      cacheData(data);
+    },
+    setMathsAsTex(mathsAsTex: boolean) {
+      applySideEffect(sideEffects, 'mathsAsTex', mathsAsTex);
+      data.mathsAsTex.value = mathsAsTex;
+      cacheData(data);
+    },
   };
 }
 
-export type SideEffects = Record<
-  keyof ViewOptions,
-  (newValue: any) => void
+export type SideEffects = Partial<
+  Record<keyof ViewOptions, (newValue: any) => void>
 >;
 
 function createSideEffects(el: HTMLElement): SideEffects {

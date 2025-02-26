@@ -4,7 +4,7 @@ import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
 import { useContext } from 'preact/hooks';
 
-import { ViewOptionsContext } from '../../provider';
+import { ViewOptionsContext } from '../../context';
 import { Checkbox } from './checkbox';
 import { ColourSelect } from './colour-select';
 import { DarkModeToggle } from './dark-mode-toggle';
@@ -97,17 +97,15 @@ export function ViewOptions() {
         <Legend>Maths</Legend>
         <Checkbox
           label="Sans-serif font"
-          value={true /* maths.fontName === 'fira' */}
+          value={ctx.data.mathsFontName.value === 'fira'}
           onChange={(sansSerif) => {
-            // maths.setFontName(sansSerif ? 'fira' : 'termes')
+            ctx.setMathsFontName(sansSerif ? 'fira' : 'termes');
           }}
         />
         <Checkbox
           label="Maths as LaTeX"
-          value={false /* maths.mathsAsTex */}
-          onChange={(mathsAsTex) => {
-            // maths.setMathsAsTex(mathsAsTex)
-          }}
+          value={ctx.data.mathsAsTex.value as boolean}
+          onChange={ctx.setMathsAsTex}
         />
       </Fieldset>
     </ViewOptionsForm>

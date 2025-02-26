@@ -18,5 +18,7 @@ export function applySideEffect(
   value: string | boolean,
 ) {
   const sideEffectFn = sideEffects[key];
-  sideEffectFn(value);
+  if (sideEffectFn) {
+    sideEffectFn(value);
+  }
 }

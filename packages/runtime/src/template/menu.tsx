@@ -4,7 +4,7 @@ import { styled } from '@linaria/react';
 import classNames from 'classnames';
 import { useContext } from 'preact/hooks';
 
-import { ViewOptionsContext } from '../provider';
+import { ViewOptionsContext } from '../context';
 
 export function Menu() {
   const { data, setShowViewOptions } = useContext(ViewOptionsContext);

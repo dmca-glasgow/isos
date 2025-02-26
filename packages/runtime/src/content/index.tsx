@@ -6,16 +6,11 @@ import {
   mobileLineWidthBase,
   sidebarWidth,
 } from '../constants';
-import { scrollbar } from '../mixins/scrollbars';
+import { scrollbar } from '../scrollbars';
 import { styled } from '@linaria/react';
-import { run } from '@mdx-js/mdx';
-import { MDXModule } from 'mdx/types';
-import { useCallback, useEffect, useState } from 'preact/hooks';
-import { Fragment, JSX } from 'preact/jsx-runtime';
+import { useState } from 'preact/hooks';
 
-import { createRunOptions, markdownToArticle } from '@isos/processor';
-
-import { ViewOptionsProvider } from '../provider';
+import { RenderMDX } from './render-mdx';
 
 import './styles/index.scss';
 
@@ -26,42 +21,25 @@ type Props = {
 
 export function Content({ markdown, onRendered }: Props) {
   const [error, setError] = useState('');
-  const [MDX, setMDX] = useState<MDXModule | null>(null);
-  const MDXContent = MDX ? MDX.default : Fragment;
 
-  useEffect(() => {
-    if (markdown === '') {
-      return;
-    }
-    (async () => {
-      try {
-        const article = await markdownToArticle(markdown);
-        const mdx = await run(article, createRunOptions());
-        setMDX(mdx);
-        setError('');
-      } catch (err: any) {
-        setError(err);
-      }
-    })();
-  }, [markdown]);
-
-  const mdxRef = useCallback((instance: JSX.Element) => {
-    if (instance !== null) {
-      onRendered && onRendered();
-    }
-  }, []);
+  // function handleRendered() {
+  //   onRendered && onRendered();
+  //   console.log('hey!');
+  // }
 
   return (
-    <ViewOptionsProvider>
+    <ArticleWrapper>
       {error && (
         <Error>
           <span>Error:</span> {error}
         </Error>
       )}
-      <ArticleWrapper>
-        <MDXContent ref={mdxRef} />
-      </ArticleWrapper>
-    </ViewOptionsProvider>
+      <RenderMDX
+        markdown={markdown}
+        setError={setError}
+        onRendered={onRendered}
+      />
+    </ArticleWrapper>
   );
 }
 

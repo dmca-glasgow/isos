@@ -7,17 +7,8 @@ export {
 
 export { inputToMarkdown } from './latex-to-markdown';
 
-export {
-  markdownToArticle,
-  markdownToTOC,
-  createRunOptions,
-  sidebarRunOptions,
-  TocHighlightProvider,
-  TocHighlightContext,
-} from './markdown-to-mdx';
+export { markdownToArticle, markdownToTOC } from './markdown-to-mdx';
 
 export { createContext } from './latex-to-markdown/context';
 
-export type { FontName } from './markdown-to-mdx';
-
-export { MathsProvider, MathsContext } from './markdown-to-mdx';
+export type { Options as MarkdownToMDXOptions } from './markdown-to-mdx';

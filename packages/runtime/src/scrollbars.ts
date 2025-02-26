@@ -1,4 +1,4 @@
-import { scrollbarBorderSize, scrollbarSize } from '../constants';
+import { scrollbarBorderSize, scrollbarSize } from './constants';
 
 export function scrollbar(
   foregroundColor = 'var(--textColor)',
@@ -21,6 +21,7 @@ export function scrollbar(
 
     // Standard version
     scrollbarColor: `${foregroundColor} ${backgroundColor}`,
+    scrollBehavior: 'smooth',
   };
 }
 

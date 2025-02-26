@@ -1,4 +1,5 @@
-import { scrollbarSize } from '../constants';
+import { scrollbarSize } from '../../constants';
+import { sidebarRunOptions } from './sidebar-run-options';
 import { styled } from '@linaria/react';
 import { run } from '@mdx-js/mdx';
 // import classNames from 'classnames';
@@ -6,9 +7,9 @@ import { MDXModule } from 'mdx/types';
 import { useContext, useEffect, useState } from 'preact/hooks';
 import { Fragment } from 'preact/jsx-runtime';
 
-import { markdownToTOC, sidebarRunOptions } from '@isos/processor';
+import { markdownToTOC } from '@isos/processor';
 
-import { ViewOptionsContext } from '../provider';
+import { ViewOptionsContext } from '../../context';
 
 // import './table-of-contents.scss';
 

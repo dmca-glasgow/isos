@@ -18,7 +18,6 @@ export function App() {
   // const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
-  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (filePath === '') {
@@ -65,7 +64,6 @@ export function App() {
     }
     setFilePath(newFilePath);
     setLoading(true);
-    setShow(false);
     createFileWatcher(newFilePath);
   }
 
@@ -88,7 +86,6 @@ export function App() {
 
   function handleRendered() {
     setLoading(false);
-    setShow(true);
   }
 
   return (
@@ -101,7 +98,7 @@ export function App() {
       />
       <Runtime
         markdown={markdown}
-        show={show}
+        hide={loading}
         onRendered={handleRendered}
       />
     </>
