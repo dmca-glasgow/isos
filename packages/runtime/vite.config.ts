@@ -1,13 +1,17 @@
 import preact from '@preact/preset-vite';
+import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
 import wyw from '@wyw-in-js/vite';
 // import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    viteSingleFile(),
     svgr({
       include: '**/*.svg',
     }),
@@ -18,20 +22,22 @@ export default defineConfig({
       languages: ['latex'],
     }),
     wyw(),
-    // {
-    //   name: 'inject',
-    //   transformIndexHtml() {
-    //     return [
-    //       {
-    //         tag: 'script',
-    //         attrs: {
-    //           src: mathjaxPath,
-    //           async: true,
-    //         },
-    //       },
-    //     ];
-    //   },
-    // },
+
+    // For MathJax
+    {
+      ...alias({
+        entries: [
+          {
+            find: /mjs\/output\/svg\/DefaultFont.js$/,
+            replacement: 'components/mjs/output/svg/nofont.js',
+          },
+        ],
+      }),
+      enforce: 'pre',
+    },
+    commonjs({
+      include: ['node_modules/**'],
+    }),
   ],
   server: {
     port: 1421,
@@ -67,6 +73,10 @@ export default defineConfig({
         assetFileNames: `assets/[name].[ext]`,
         chunkFileNames: `assets/[name]-chunk.js`,
       },
+    },
+    // for MathJax
+    commonjsOptions: {
+      transformMixedEsModules: true,
     },
   },
 });

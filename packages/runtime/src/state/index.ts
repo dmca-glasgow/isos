@@ -1,12 +1,10 @@
+import { Signal, signal } from '@preact/signals';
+
 import * as constants from '../constants';
 import {
   applyAllSideEffects,
   applySideEffect,
 } from './apply-side-effects';
-import { Signal, signal } from '@preact/signals';
-
-import { MathsFont } from '@isos/processor';
-
 import { cacheData, mergeCachedData } from './cache-data';
 import { prefersContrast, prefersDarkMode } from './match-media';
 
@@ -196,6 +194,11 @@ function createSideEffects(el: HTMLElement): SideEffects {
     },
     lineWidth(newLineWidth: string) {
       el.style.setProperty('--lineWidth', newLineWidth);
+    },
+    mathsFontName(newMathsFontName: string) {
+      if (window.MathJax && window.MathJax.setFont) {
+        window.MathJax.setFont(newMathsFontName);
+      }
     },
   };
 }

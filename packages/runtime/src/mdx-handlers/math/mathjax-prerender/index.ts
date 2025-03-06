@@ -1,5 +1,3 @@
-import { FiraFont, TermesFont } from './fonts';
-import { packages } from './packages';
 import type { LiteDocument } from 'mathjax-full/js/adaptors/lite/Document.js';
 import {
   LiteElement,
@@ -14,12 +12,14 @@ import { TeX } from 'mathjax-full/js/input/tex.js';
 import { mathjax } from 'mathjax-full/js/mathjax.js';
 import { SVG } from 'mathjax-full/js/output/svg.js';
 
-import { render } from './litedom';
+import { MathsFont } from '../Math';
+import { FiraFont, TermesFont } from './fonts';
+// import { render } from './litedom';
+import { packages } from './packages';
 
 type Document = MathDocument<LiteNode, LiteText, LiteDocument>;
 type Output = OutputJax<LiteNode, LiteText, LiteDocument>;
 
-export type MathsFont = 'termes' | 'fira';
 type FontOutput = Record<MathsFont, Output>;
 
 const adaptor = liteAdaptor();
@@ -34,7 +34,7 @@ const output: FontOutput = {
   fira: new SVG({ fontData: FiraFont }),
 };
 
-export function toMathJaxString(expr: string, fontName: MathsFont) {
+export function toMathJaxSvgString(expr: string, fontName: MathsFont) {
   doc.outputJax = output[fontName];
   doc.outputJax.setAdaptor(doc.adaptor);
   const node = doc.convert(expr) as LiteElement;
@@ -46,9 +46,9 @@ export function toMathJaxString(expr: string, fontName: MathsFont) {
   return adaptor.outerHTML(svg);
 }
 
-export function toMathJaxJSX(expr: string, fontName: MathsFont) {
-  doc.outputJax = output[fontName];
-  doc.outputJax.setAdaptor(doc.adaptor);
-  const node = doc.convert(expr) as LiteElement;
-  return render(node.children);
-}
+// export function toMathJaxSvgJSX(expr: string, fontName: MathsFont) {
+//   doc.outputJax = output[fontName];
+//   doc.outputJax.setAdaptor(doc.adaptor);
+//   const node = doc.convert(expr) as LiteElement;
+//   return render(node.children);
+// }

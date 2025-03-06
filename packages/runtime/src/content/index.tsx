@@ -1,3 +1,6 @@
+import { styled } from '@linaria/react';
+import { useRef, useState } from 'preact/hooks';
+
 import {
   fontSize,
   letterSpacing,
@@ -7,9 +10,6 @@ import {
   sidebarWidth,
 } from '../constants';
 import { scrollbar } from '../scrollbars';
-import { styled } from '@linaria/react';
-import { useState } from 'preact/hooks';
-
 import { RenderMDX } from './render-mdx';
 
 import './styles/index.scss';
@@ -21,14 +21,10 @@ type Props = {
 
 export function Content({ markdown, onRendered }: Props) {
   const [error, setError] = useState('');
-
-  // function handleRendered() {
-  //   onRendered && onRendered();
-  //   console.log('hey!');
-  // }
+  const ref = useRef<HTMLElement>(null);
 
   return (
-    <ArticleWrapper>
+    <ArticleWrapper ref={ref}>
       {error && (
         <Error>
           <span>Error:</span> {error}

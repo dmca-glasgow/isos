@@ -1,4 +1,3 @@
-import { Code, Div } from './mdx-components';
 import { RunOptions, run } from '@mdx-js/mdx';
 import { MDXModule } from 'mdx/types';
 import { useCallback, useEffect, useState } from 'preact/hooks';
@@ -7,6 +6,7 @@ import { Fragment, JSX, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 import { markdownToArticle } from '@isos/processor';
 
 import { Section } from '../mdx-handlers/toc-highlight/section';
+import { Code, Div, Pre } from './mdx-components';
 
 const runOptions: RunOptions = {
   Fragment,
@@ -14,7 +14,7 @@ const runOptions: RunOptions = {
     return {
       div: Div,
       code: Code,
-      // TODO: remove sectionize and use the titles
+      pre: Pre,
       section: Section,
     };
   },
@@ -33,8 +33,8 @@ type Props = {
   onRendered?: () => unknown;
 };
 
-// MDXContent seems to need to be returned on it's own
-// to avoid multiple onRendered callbacks getting fired on each render
+// MDXContent needs to be returned on it's own for the
+// onRendered callback to behave consistently
 export function RenderMDX({ markdown, onRendered, setError }: Props) {
   const [MDX, setMDX] = useState<MDXModule | null>(null);
   const MDXContent = MDX ? MDX.default : Fragment;
@@ -57,7 +57,6 @@ export function RenderMDX({ markdown, onRendered, setError }: Props) {
 
   const mdxRef = useCallback((instance: JSX.Element) => {
     if (instance !== null) {
-      // TODO: custom event picked up by paged
       onRendered && onRendered();
     }
   }, []);

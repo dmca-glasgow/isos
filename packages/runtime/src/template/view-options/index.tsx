@@ -1,9 +1,9 @@
 // import { MathsContext } from '@isos/processor';
-import * as constants from '../../constants';
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
 import { useContext } from 'preact/hooks';
 
+import * as constants from '../../constants';
 import { ViewOptionsContext } from '../../context';
 import { Checkbox } from './checkbox';
 import { ColourSelect } from './colour-select';
@@ -28,6 +28,16 @@ export function ViewOptions() {
           value={ctx.data.theme as Signal<'light' | 'dark'>}
           onChange={ctx.setTheme}
         />
+        <RangeInput
+          {...constants.contrast}
+          value={ctx.data.contrast as Signal<string>}
+          onInput={ctx.setContrast}
+        />
+        <RangeInput
+          {...constants.brightness}
+          value={ctx.data.brightness as Signal<string>}
+          onInput={ctx.setBrightness}
+        />
         {ctx.data.theme.value === 'dark' ? (
           <ColourSelect
             name="textColor"
@@ -45,16 +55,6 @@ export function ViewOptions() {
             onChange={ctx.setBgColor}
           />
         )}
-        <RangeInput
-          {...constants.contrast}
-          value={ctx.data.contrast as Signal<string>}
-          onInput={ctx.setContrast}
-        />
-        <RangeInput
-          {...constants.brightness}
-          value={ctx.data.brightness as Signal<string>}
-          onInput={ctx.setBrightness}
-        />
       </Fieldset>
       <Fieldset>
         <Legend>Readability</Legend>

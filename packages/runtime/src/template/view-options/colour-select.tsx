@@ -40,7 +40,7 @@ const ColourSelectWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.3em 0 0.5em;
+  padding: 0.5em 0;
 `;
 
 const Label = styled.label`
