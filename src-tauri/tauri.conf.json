@@ -1,4 +1,5 @@
 {
+  "$schema": "https://schema.tauri.app/config/2",
   "productName": "isos",
   "version": "0.0.38",
   "identifier": "com.isos.app",

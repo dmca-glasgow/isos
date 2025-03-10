@@ -1,4 +1,4 @@
-import { WatchEvent } from '@tauri-apps/plugin-fs';
+import type { WatchEvent } from '@tauri-apps/plugin-fs';
 
 export async function readBinaryFile(
   filePath: string,

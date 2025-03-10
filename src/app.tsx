@@ -1,12 +1,12 @@
-import { Runtime } from '../packages/runtime/src';
 import { resolveResource } from '@tauri-apps/api/path';
-import { useEffect, useState } from 'preact/hooks';
+import { useContext, useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
 import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
 import { createContext, inputToMarkdown } from '@isos/processor';
 import { useLocalStorage } from '@isos/use-local-storage';
 
+import { Runtime } from '../packages/runtime/src';
 import { Header } from './header';
 
 import './styles.scss';
@@ -36,6 +36,7 @@ export function App() {
       setMarkdown(newMarkdown);
       // setError('');
     } catch (err: any) {
+      console.log(err);
       // setError(err.message);
     }
   }

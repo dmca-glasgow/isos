@@ -4,7 +4,7 @@ import { SaveFileButton } from './save-file-button';
 type Props = {
   filePath: string;
   loading: boolean;
-  handleProcessFile: (filePath: string) => unknown;
+  handleProcessFile: (filePath: string | null) => unknown;
   handleExportFile: (saveFilePath: string) => unknown;
 };
 

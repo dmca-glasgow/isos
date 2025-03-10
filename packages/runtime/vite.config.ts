@@ -55,19 +55,6 @@ export default defineConfig({
     assetsInlineLimit: 5 * 1000 * 1000,
     chunkSizeWarningLimit: 5 * 1000 * 1000,
     rollupOptions: {
-      // input: {
-      //   index: fileURLToPath(new URL('index.html', import.meta.url)),
-      //   // runtime: fileURLToPath(new URL('src/main.tsx', import.meta.url)),
-      //   // mathjax: fileURLToPath(new URL(mathjaxPath, import.meta.url)),
-      // },
-      // external: [
-      //   fileURLToPath(
-      //     new URL(
-      //       mathjaxPath,
-      //       import.meta.url,
-      //     ),
-      //   ),
-      // ],
       output: {
         entryFileNames: `assets/runtime.js`,
         assetFileNames: `assets/[name].[ext]`,

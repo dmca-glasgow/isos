@@ -1,14 +1,18 @@
 /// <reference types="vitest" />
 import preact from '@preact/preset-vite';
+import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
+import wyw from '@wyw-in-js/vite';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
 import svgr from 'vite-plugin-svgr';
 import { configDefaults } from 'vitest/config';
 
-// const host = process.env.TAURI_DEV_HOST;
+// @ts-expect-error process is a nodejs global
+const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig({
   plugins: [
     svgr({
       include: '**/assets/*.svg',
@@ -19,25 +23,40 @@ export default defineConfig(async () => ({
     prismjs({
       languages: ['latex'],
     }),
+    wyw(),
+
+    // For MathJax
+    {
+      ...alias({
+        entries: [
+          {
+            find: /mjs\/output\/svg\/DefaultFont.js$/,
+            replacement: 'components/mjs/output/svg/nofont.js',
+          },
+        ],
+      }),
+      enforce: 'pre',
+    },
+    commonjs({
+      include: ['node_modules/**'],
+    }),
   ],
-  // 1. prevent vite from obscuring rust errors
-  // clearScreen: false,
+  clearScreen: false,
   server: {
-    // host: host || false,
     port: 1420,
     strictPort: true,
+    host: host || false,
     watch: {
       ignored: ['**/src-tauri/**'],
     },
-    // hmr: host
-    //   ? {
-    //       protocol: 'ws',
-    //       host: host,
-    //       port: 1430,
-    //     }
-    //   : undefined,
+    hmr: host
+      ? {
+          protocol: 'ws',
+          host: host,
+          port: 1430,
+        }
+      : undefined,
   },
-  devSourcemap: true,
   css: {
     devSourcemap: true,
     preprocessorOptions: {
@@ -48,6 +67,10 @@ export default defineConfig(async () => ({
   },
   build: {
     sourcemap: true,
+    // for MathJax
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
   test: {
     exclude: [
@@ -56,4 +79,4 @@ export default defineConfig(async () => ({
       'packages/unified-latex-*/**',
     ],
   },
-}));
+});
