@@ -12,7 +12,7 @@ import { MathJaxFiraFont } from 'mathjax-fira-font/js/svg.js';
 import 'mathjax-fira-font/js/svg/dynamic/arrows.js';
 import 'mathjax-fira-font/js/svg/dynamic/double-struck.js';
 
-import { MathsFont } from '../Math';
+import { MathsFont } from '../Maths';
 
 type Output = OutputJax<HTMLElement, Text, Document>;
 
@@ -33,7 +33,7 @@ export const fonts: Partial<Fonts> = {
   }),
 };
 
-export const fontPackages = ['double-struck', 'arrows'];
+const fontPackages = ['double-struck', 'arrows'];
 
 fontPackages.forEach((fontPackage) => {
   // @ts-expect-error

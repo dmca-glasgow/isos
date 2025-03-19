@@ -1,13 +1,13 @@
-import { actions, sidebarWidth } from '../constants';
-import { scrollbarOnHover } from '../scrollbars';
-import { Hamburger } from './icons';
-import { TableOfContents } from './table-of-contents';
-import { ViewOptions } from './view-options';
 import { styled } from '@linaria/react';
 import { useContext } from 'preact/hooks';
 
-import { ViewOptionsContext } from '../context';
+import { actions, sidebarWidth } from '../constants';
+import { scrollbarOnHover } from '../scrollbars';
+import { Hamburger } from './icons';
 import { Menu } from './menu';
+import { TableOfContents } from './table-of-contents';
+import { ViewOptions } from './view-options';
+import { ViewOptionsContext } from './view-options/state';
 
 type Props = {
   markdown: string;
@@ -62,8 +62,8 @@ const ActionsTopLeft = styled.div`
 
 const StyledHamburger = styled(Hamburger)`
   display: block;
-  width: $actionsHeight;
-  height: $actionsHeight;
+  width: ${actions.height};
+  height: ${actions.height};
   fill: var(--textColor);
   cursor: pointer;
 

@@ -1,7 +1,9 @@
-import * as Ast from "@unified-latex/unified-latex-types";
-import { type FrozenProcessor, unified } from "unified";
-import { unifiedLatexFromString } from "./plugin-from-string";
-import type { PluginOptions } from "./plugin-from-string";
+import * as Ast from '@unified-latex/unified-latex-types';
+// @ts-expect-error
+import { type FrozenProcessor, unified } from 'unified';
+
+import { unifiedLatexFromString } from './plugin-from-string';
+import type { PluginOptions } from './plugin-from-string';
 
 let parser = unified().use(unifiedLatexFromString).freeze();
 
@@ -9,7 +11,7 @@ let parser = unified().use(unifiedLatexFromString).freeze();
  * Parse the string into an AST.
  */
 export function parse(str: string): Ast.Root {
-    return parser.parse(str);
+  return parser.parse(str);
 }
 
 /**
@@ -20,9 +22,9 @@ export function parse(str: string): Ast.Root {
  * newly created `unified-latex` parser with the provided `options`.
  */
 export function getParser(
-    options?: PluginOptions
+  options?: PluginOptions,
 ): FrozenProcessor<Ast.Root, Ast.Root, Ast.Root, void> {
-    return options
-        ? unified().use(unifiedLatexFromString, options).freeze()
-        : parser;
+  return options
+    ? unified().use(unifiedLatexFromString, options).freeze()
+    : parser;
 }

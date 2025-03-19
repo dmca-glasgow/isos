@@ -1,8 +1,9 @@
-import { ViewOptionsParam } from '../../constants';
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
 import classNames from 'classnames';
 import { ChangeEvent, MouseEvent } from 'preact/compat';
+
+import { ViewOptionsParam } from '../../constants';
 
 type Props = ViewOptionsParam & {
   value: Signal<string>;

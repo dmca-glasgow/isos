@@ -1,20 +1,15 @@
-import { processorOptions } from './hast-transforms';
 import { createProcessor } from '@mdx-js/mdx';
 import { ListItem, Nodes, Paragraph, Root } from 'mdast';
 import { toc } from 'mdast-util-toc';
+
+import { processorOptions } from './hast-transforms';
 
 export async function createTableOfContents(mdast: Root) {
   const { map: tocMdast } = toc(mdast as Nodes, {
     maxDepth: 3,
     minDepth: 2,
     tight: true,
-    // parents: ['tree', 'section'],
   });
-
-  // if (tocMdast === undefined) {
-  //   return [];
-  // }
-  // return inlineList(tocMdast.children || []);
 
   if (tocMdast === undefined) {
     return '';

@@ -1,5 +1,5 @@
 import { readFile } from 'fs/promises';
-import path from 'path';
+import { fileURLToPath } from 'node:url';
 
 import { createRuntimeHtml } from '@isos/export';
 
@@ -10,10 +10,17 @@ export async function createE2eTestBundle(markdown: string) {
   const frontmatter = {
     docTitle: 'Test', // TODO
   };
-  const resources = 'src-tauri/resources';
+  const folder = '../../../runtime/dist/assets';
+
   const bundle = {
-    css: await readFile(path.resolve(`${resources}/runtime.css`), 'utf-8'),
-    js: await readFile(path.resolve(`${resources}/runtime.js`), 'utf-8'),
+    css: await readFile(
+      fileURLToPath(new URL(`${folder}/index.css`, import.meta.url)),
+      'utf-8',
+    ),
+    js: await readFile(
+      fileURLToPath(new URL(`${folder}/runtime.js`, import.meta.url)),
+      'utf-8',
+    ),
     font: 'termes',
   };
   return createRuntimeHtml(md, frontmatter, bundle);

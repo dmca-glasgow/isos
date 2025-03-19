@@ -11,9 +11,9 @@ type Props = {
   hide?: boolean;
 };
 
-export function Runtime({ markdown, onRendered }: Props) {
+export function Runtime({ markdown, onRendered, hide }: Props) {
   return (
-    <Main>
+    <Main hide={hide === true}>
       <Content markdown={markdown} onRendered={onRendered} />
       <Template markdown={markdown} />
     </Main>
@@ -45,7 +45,7 @@ const Main = styled.main`
   --errorColor: #d90000;
   --transitionDuration: 0.15s;
 
-  width: 200vw;
+  /* width: 200vw; */
   min-height: 100vh;
   display: flex;
   overflow: hidden;

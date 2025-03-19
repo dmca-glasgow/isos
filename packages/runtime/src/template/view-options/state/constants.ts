@@ -1,19 +1,3 @@
-export const rootEl = document.querySelector('#root')! as HTMLElement;
-
-export const sidebarWidth = '18rem';
-
-export const scrollbarSize = '12px';
-export const scrollbarBorderSize = '3px';
-
-export const sideNoteWidth = '20vw';
-export const sideNoteGap = '4vw';
-
-export const actions = Object.freeze({
-  y: '1.2rem',
-  x: '1.5rem',
-  height: '1.4em',
-});
-
 // strings make sense when implementing these values in html
 export type ViewOptionsParam = Readonly<{
   label: string;

@@ -16,12 +16,12 @@ test('task and answer', async ({ page }) => {
   await page.setContent(html);
 
   await expect(
-    page.locator('div').filter({ hasText: /^Test answer$/ })
+    page.locator('.answer-reveal').filter({ hasText: /Test answer/ }),
   ).not.toBeVisible();
 
   await page.getByText('Show answer').click();
 
   await expect(
-    page.locator('div').filter({ hasText: /^Test answer$/ })
+    page.locator('.answer-reveal').filter({ hasText: /Test answer/ }),
   ).toBeVisible();
 });

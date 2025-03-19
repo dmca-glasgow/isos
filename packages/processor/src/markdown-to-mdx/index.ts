@@ -1,17 +1,20 @@
-import { createRehypePlugins, processorOptions } from './hast-transforms';
-import { markdownToMdast } from './mdast-transforms';
-// import { createMDXComponents } from './mdx-handlers';
-import { Options, defaultOptions } from './options';
-import { createProcessor } from '@mdx-js/mdx';
+import { createProcessor, run } from '@mdx-js/mdx';
 import { Root } from 'mdast';
 
 import { createContext } from './context';
+import { createRehypePlugins, processorOptions } from './hast-transforms';
+import { markdownToMdast } from './mdast-transforms';
+import { createRunOptions, createSidebarRunOptions } from './mdx-handlers';
+import { MdxState } from './mdx-handlers/mdx-state';
+import { Options, defaultOptions } from './options';
 import { createTableOfContents } from './sidebar';
 
+export { defaultOptions } from './options';
 export type { Options } from './options';
 
 export async function markdownToArticle(
   markdown: string,
+  mdxState: MdxState,
   _options: Partial<Options> = {},
 ) {
   const ctx = createContext();
@@ -19,9 +22,7 @@ export async function markdownToArticle(
     ...defaultOptions,
     ..._options,
   };
-  // const { mdast, tableOfContents } = await markdownToMdast(markdown, ctx, options);
   const mdast = await markdownToMdast(markdown, ctx, options);
-  // console.dir(mdast, { depth: null });
 
   const processor = createProcessor({
     ...processorOptions,
@@ -30,11 +31,14 @@ export async function markdownToArticle(
 
   // @ts-expect-error: mdast is not of type Program
   const estree = await processor.run(mdast);
-  return processor.stringify(estree);
+  const jsString = processor.stringify(estree);
+
+  return run(jsString, createRunOptions(mdxState));
 }
 
 export async function markdownToTOC(
   markdown: string,
+  mdxState: MdxState,
   _options: Partial<Options> = {},
 ) {
   const ctx = createContext();
@@ -43,8 +47,7 @@ export async function markdownToTOC(
     noSections: true,
     ..._options,
   };
-  // const { mdast, tableOfContents } = await markdownToMdast(markdown, ctx, options);
   const mdast = await markdownToMdast(markdown, ctx, options);
-  // console.dir(mdast, { depth: null });
-  return createTableOfContents(mdast as Root);
+  const jsString = await createTableOfContents(mdast as Root);
+  return run(jsString, createSidebarRunOptions(mdxState));
 }

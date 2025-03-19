@@ -1,7 +1,3 @@
-import { environmentReplacements as _environmentReplacements } from './pre-html-subs/environment-subs';
-import { macroReplacements as _macroReplacements } from './pre-html-subs/macro-subs';
-import { streamingMacroReplacements } from './pre-html-subs/streaming-command-subs';
-import { unifiedLatexWrapPars } from './unified-latex-wrap-pars';
 // import { unifiedLatexLintNoTexFontShapingCommands } from "@unified-latex/unified-latex-lint/rules/unified-latex-lint-no-tex-font-shaping-commands";
 import * as Ast from '@unified-latex/unified-latex-types';
 import { deleteComments } from '@unified-latex/unified-latex-util-comments';
@@ -15,6 +11,11 @@ import * as Hast from 'hast';
 import { Plugin, unified } from 'unified';
 
 import { printRaw } from '@isos/unified-latex-util-print-raw';
+
+import { environmentReplacements as _environmentReplacements } from './pre-html-subs/environment-subs';
+import { macroReplacements as _macroReplacements } from './pre-html-subs/macro-subs';
+import { streamingMacroReplacements } from './pre-html-subs/streaming-command-subs';
+import { unifiedLatexWrapPars } from './unified-latex-wrap-pars';
 
 type EnvironmentReplacements = typeof _environmentReplacements;
 type MacroReplacements = typeof _macroReplacements;
@@ -47,16 +48,16 @@ export const unifiedLatexToHtmlLike: Plugin<
   const macroReplacements = Object.assign(
     {},
     _macroReplacements,
-    options?.macroReplacements || {}
+    options?.macroReplacements || {},
   );
   const environmentReplacements = Object.assign(
     {},
     _environmentReplacements,
-    options?.environmentReplacements || {}
+    options?.environmentReplacements || {},
   );
   const isReplaceableMacro = match.createMacroMatcher(macroReplacements);
   const isReplaceableEnvironment = match.createEnvironmentMatcher(
-    environmentReplacements
+    environmentReplacements,
   );
 
   // const isKatexMacro = match.createMacroMatcher(
@@ -76,6 +77,7 @@ export const unifiedLatexToHtmlLike: Plugin<
     let processor = unified()
       // Replace `\bf` etc. with `\bfseries`. Only the latter are auto-recognized streaming commands
       // .use(unifiedLatexLintNoTexFontShapingCommands, { fix: true })
+      // @ts-expect-error
       .use(unifiedLatexReplaceStreamingCommands, {
         replacers: streamingMacroReplacements,
       });
@@ -141,10 +143,10 @@ function shouldBeWrappedInPars(tree: Ast.Root): boolean {
         return EXIT;
       }
     },
-    { test: (node) => match.environment(node, 'document') }
+    { test: (node) => match.environment(node, 'document') },
   );
 
   return content.some(
-    (node) => match.parbreak(node) || match.macro(node, 'par')
+    (node) => match.parbreak(node) || match.macro(node, 'par'),
   );
 }

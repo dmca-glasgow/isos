@@ -5,13 +5,13 @@ import wyw from '@wyw-in-js/vite';
 // import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
-import { viteSingleFile } from 'vite-plugin-singlefile';
+// import { viteSingleFile } from 'vite-plugin-singlefile';
 import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    viteSingleFile(),
+    // viteSingleFile(),
     svgr({
       include: '**/*.svg',
     }),
@@ -36,7 +36,7 @@ export default defineConfig({
       enforce: 'pre',
     },
     commonjs({
-      include: ['node_modules/**'],
+      include: ['node_modules/mathjax-*/**'],
     }),
   ],
   server: {

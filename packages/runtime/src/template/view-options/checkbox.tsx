@@ -1,4 +1,5 @@
 import { styled } from '@linaria/react';
+import { FormEvent } from 'preact/compat';
 
 type Props = {
   label: string;
@@ -15,7 +16,7 @@ export function Checkbox(props: Props) {
         id={name}
         name={name}
         checked={props.value}
-        onChange={(e) => {
+        onChange={(e: FormEvent<HTMLInputElement>) => {
           props.onChange(e.currentTarget.checked);
         }}
       />

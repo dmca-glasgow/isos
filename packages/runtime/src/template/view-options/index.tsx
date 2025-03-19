@@ -1,22 +1,24 @@
-// import { MathsContext } from '@isos/processor';
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
 import { useContext } from 'preact/hooks';
 
-import * as constants from '../../constants';
-import { ViewOptionsContext } from '../../context';
+import { actions, rootEl } from '../../constants';
+import { mdxState } from '../../mdx-state';
+// import { MathsOptionsContext } from '@isos/processor';
 import { Checkbox } from './checkbox';
 import { ColourSelect } from './colour-select';
 import { DarkModeToggle } from './dark-mode-toggle';
 import { RangeInput } from './range-input';
+import { ViewOptionsContext } from './state';
+import * as constants from './state/constants';
 import { useFullScreenHandle } from './use-fullscreen';
 
 export function ViewOptions() {
-  const ctx = useContext(ViewOptionsContext);
-  const handle = useFullScreenHandle(document.querySelector('#root')!);
-  // const maths = useContext(MathsContext);
+  const viewOptions = useContext(ViewOptionsContext);
+  // const mathsOptions = useContext(MathsOptionsContext);
+  const handle = useFullScreenHandle(rootEl);
 
-  if (ctx.data.showViewOptions.value === false) {
+  if (viewOptions.data.showViewOptions.value === false) {
     return null;
   }
 
@@ -25,34 +27,34 @@ export function ViewOptions() {
       <Fieldset>
         <Legend>Theme</Legend>
         <DarkModeToggle
-          value={ctx.data.theme as Signal<'light' | 'dark'>}
-          onChange={ctx.setTheme}
+          value={viewOptions.data.theme as Signal<'light' | 'dark'>}
+          onChange={viewOptions.setTheme}
         />
         <RangeInput
           {...constants.contrast}
-          value={ctx.data.contrast as Signal<string>}
-          onInput={ctx.setContrast}
+          value={viewOptions.data.contrast as Signal<string>}
+          onInput={viewOptions.setContrast}
         />
         <RangeInput
           {...constants.brightness}
-          value={ctx.data.brightness as Signal<string>}
-          onInput={ctx.setBrightness}
+          value={viewOptions.data.brightness as Signal<string>}
+          onInput={viewOptions.setBrightness}
         />
-        {ctx.data.theme.value === 'dark' ? (
+        {viewOptions.data.theme.value === 'dark' ? (
           <ColourSelect
             name="textColor"
             label="Text Colour"
-            value={ctx.data.textColor as Signal<string>}
+            value={viewOptions.data.textColor as Signal<string>}
             options={constants.colourOptions}
-            onChange={ctx.setTextColor}
+            onChange={viewOptions.setTextColor}
           />
         ) : (
           <ColourSelect
             name="bgColor"
             label="Background"
-            value={ctx.data.bgColor as Signal<string>}
+            value={viewOptions.data.bgColor as Signal<string>}
             options={constants.colourOptions}
-            onChange={ctx.setBgColor}
+            onChange={viewOptions.setBgColor}
           />
         )}
       </Fieldset>
@@ -74,38 +76,42 @@ export function ViewOptions() {
 
         <RangeInput
           {...constants.fontSize}
-          value={ctx.data.fontSize as Signal<string>}
-          onInput={ctx.setFontSize}
+          value={viewOptions.data.fontSize}
+          onInput={viewOptions.setFontSize}
         />
         <RangeInput
           {...constants.lineHeight}
-          value={ctx.data.lineHeight as Signal<string>}
-          onInput={ctx.setLineHeight}
+          value={viewOptions.data.lineHeight}
+          onInput={viewOptions.setLineHeight}
         />
         <RangeInput
           {...constants.letterSpacing}
-          value={ctx.data.letterSpacing as Signal<string>}
-          onInput={ctx.setLetterSpacing}
+          value={viewOptions.data.letterSpacing}
+          onInput={viewOptions.setLetterSpacing}
         />
         <RangeInput
           {...constants.lineWidth}
-          value={ctx.data.lineWidth as Signal<string>}
-          onInput={ctx.setLineWidth}
+          value={viewOptions.data.lineWidth}
+          onInput={viewOptions.setLineWidth}
         />
       </Fieldset>
       <Fieldset>
         <Legend>Maths</Legend>
         <Checkbox
           label="Sans-serif font"
-          value={ctx.data.mathsFontName.value === 'fira'}
+          value={mdxState.maths.mathsFontName.value === 'fira'}
           onChange={(sansSerif) => {
-            ctx.setMathsFontName(sansSerif ? 'fira' : 'termes');
+            mdxState.maths.mathsFontName.value = sansSerif
+              ? 'fira'
+              : 'termes';
           }}
         />
         <Checkbox
           label="Maths as LaTeX"
-          value={ctx.data.mathsAsTex.value as boolean}
-          onChange={ctx.setMathsAsTex}
+          value={mdxState.maths.mathsAsTex.value}
+          onChange={(val: boolean) => {
+            mdxState.maths.mathsAsTex.value = val;
+          }}
         />
       </Fieldset>
     </ViewOptionsForm>
@@ -115,7 +121,7 @@ export function ViewOptions() {
 const ViewOptionsForm = styled.form``;
 
 const Fieldset = styled.fieldset`
-  padding: 0 0.75em 0 ${constants.actions.x};
+  padding: 0 0.75em 0 ${actions.x};
   border: 0;
   margin-bottom: 2em;
 `;

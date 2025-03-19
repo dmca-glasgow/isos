@@ -1,7 +1,7 @@
 import { ComponentChildren, RefCallback } from 'preact';
 import { useCallback, useContext } from 'preact/hooks';
 
-import { MathsFont } from '../Math';
+import { MathsFont } from '../Maths';
 import { MathsElementsContext } from './state';
 
 type Props = {

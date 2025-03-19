@@ -131,7 +131,7 @@ test('headings with counters and attributes', async () => {
   expect(html).toBe(expected);
 });
 
-test.only('headings on environments', async () => {
+test('headings on environments', async () => {
   const latex = `
     \\documentclass{amsproc}
 

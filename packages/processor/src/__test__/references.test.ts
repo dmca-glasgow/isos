@@ -28,7 +28,7 @@ test('environment references', async () => {
 
   const expected = unindentStringAndTrim(`
     <div id="cmd11" class="boxout definition">
-      <p><span class="type">Definition <span class="count">1.</span></span> Let <code class="language-math math-inline">\\epsilon > 0</code> be a subset.</p>
+      <p><span class="type">Definition <span class="count">1.</span></span> Let <code class="latex">\\epsilon > 0</code> be a subset.</p>
     </div>
     <p>Definition <a href="#cmd11" class="ref">1</a> is automatically satisfied.</p>
   `);

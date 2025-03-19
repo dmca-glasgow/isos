@@ -1,16 +1,11 @@
 import { styled } from '@linaria/react';
 import { useRef, useState } from 'preact/hooks';
 
-import {
-  fontSize,
-  letterSpacing,
-  lineHeight,
-  lineWidth,
-  mobileLineWidthBase,
-  sidebarWidth,
-} from '../constants';
+import { RenderMDX, markdownToArticle } from '@isos/processor';
+
+import * as constants from '../constants';
+import { mdxState } from '../mdx-state';
 import { scrollbar } from '../scrollbars';
-import { RenderMDX } from './render-mdx';
 
 import './styles/index.scss';
 
@@ -22,7 +17,6 @@ type Props = {
 export function Content({ markdown, onRendered }: Props) {
   const [error, setError] = useState('');
   const ref = useRef<HTMLElement>(null);
-
   return (
     <ArticleWrapper ref={ref}>
       {error && (
@@ -32,7 +26,9 @@ export function Content({ markdown, onRendered }: Props) {
       )}
       <RenderMDX
         markdown={markdown}
-        setError={setError}
+        mdxState={mdxState}
+        renderFn={markdownToArticle}
+        onError={setError}
         onRendered={onRendered}
       />
     </ArticleWrapper>
@@ -45,11 +41,11 @@ const Error = styled.div`
   left: 0;
   width: 100%;
 
-  font-size: 0.6rem;
   color: white;
   background: #b41b1b;
-  padding: 0 0.6rem;
+  padding: 0.3em 1em;
   box-sizing: border-box;
+  text-align: center;
 
   & > span {
     font-weight: bold;
@@ -69,17 +65,20 @@ const ArticleWrapper = styled.div`
 
   & > article {
     width: calc(
-      ${lineWidth.base} * var(--lineWidth, ${lineWidth.initial})
+      ${constants.lineWidth.base} *
+        var(--lineWidth, ${constants.lineWidth.initial})
     );
     font-size: calc(
-      ${fontSize.base} * var(--fontSize, ${fontSize.initial})
+      ${constants.fontSize.base} *
+        var(--fontSize, ${constants.fontSize.initial})
     );
     line-height: calc(
-      ${lineHeight.base} * var(--lineHeight, ${lineHeight.initial})
+      ${constants.lineHeight.base} *
+        var(--lineHeight, ${constants.lineHeight.initial})
     );
     letter-spacing: calc(
-      ${letterSpacing.base} *
-        var(--letterSpacing, ${letterSpacing.initial})
+      ${constants.letterSpacing.base} *
+        var(--letterSpacing, ${constants.letterSpacing.initial})
     );
     padding: 2em 0 5em;
     margin: 0 auto;
@@ -88,23 +87,22 @@ const ArticleWrapper = styled.div`
     will-change: padding-left;
 
     &.has-sidenotes {
-      $sideNoteWidth: 20vw;
-      $sideNoteGap: 4vw;
-      padding-right: $sideNoteWidth + $sideNoteGap;
+      padding-right: ${constants.sideNoteWidth} + ${constants.sideNoteGap};
       .sideNote {
         small {
           width: $sideNoteWidth;
-          margin-right: -$sideNoteWidth - $sideNoteGap;
+          margin-right: -${constants.sideNoteWidth} -
+            ${constants.sideNoteGap};
         }
       }
     }
 
     #root.sidebar-show & {
-      padding-left: ${sidebarWidth};
+      padding-left: ${constants.sidebarWidth};
     }
 
     @media (max-width: 1000px) {
-      width: calc(${mobileLineWidthBase} * var(--lineWidth, 1));
+      width: calc(${constants.mobileLineWidthBase} * var(--lineWidth, 1));
 
       #root.sidebar-show & {
         padding-left: 0;

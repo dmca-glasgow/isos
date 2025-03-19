@@ -29,20 +29,16 @@ export function Task(props: HTMLAttributes<HTMLDivElement>) {
   const answerProps = answer.props || {};
   const answerChildren = answerProps.children || [];
 
-  function showAnswerToggle() {
-    setShow(!show);
-  }
-
   return (
     <div className={classNames('boxout', 'task')}>
       <span className="type">Task {id.replace('task-', '')}</span>
       {taskChildren}
-      <span className="answer-trigger" onClick={showAnswerToggle}>
+      <span
+        className="answer-trigger"
+        onClick={() => setShow((current) => !current)}>
         {show ? 'Hide' : 'Show'} answer
       </span>
-      <div className={classNames('answer-reveal', { show })}>
-        {answerChildren}
-      </div>
+      {show && <div className="answer-reveal">{answerChildren}</div>}
     </div>
   );
 }

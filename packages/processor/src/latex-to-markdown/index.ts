@@ -43,7 +43,6 @@ function getMdast(ctx: Context) {
 
 export async function parseLatexToMdast(ctx: Context) {
   const parsed = unified()
-    // @ts-expect-error
     .use(unifiedLatexFromString, {
       macros: {
         // signatures are defined in section 3 of:
@@ -62,8 +61,8 @@ export async function parseLatexToMdast(ctx: Context) {
     .run(parsed);
 
   const hast = await unified()
-    // @ts-expect-error
     .use(unifiedLatexToHast)
+    // @ts-expect-error
     .run(latexAst);
 
   const mdast = await createRemarkProcessor([

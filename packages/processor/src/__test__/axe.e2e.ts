@@ -1,20 +1,26 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { writeFile } from 'fs/promises';
 
+import { inputToMarkdown } from '../latex-to-markdown';
+import { createContext } from '../latex-to-markdown/context';
 // import { expect, test } from '@playwright/test';
 // import { readFile } from 'fs/promises';
+
 import { createE2eTestBundle } from '../test-utils/create-e2e-test-bundle';
 
 test.skip('axe', async ({ page }) => {
-  const html = await createE2eTestBundle(`
-    ::::task
-    Test task
+  test.slow();
 
-    :::answer
-    Test answer
-    :::
-    ::::
-  `);
+  const ctx = await createContext(
+    '/Users/staff/Work/latex-experiments/test1/MCA_lecturenotes.tex',
+  );
+
+  const markdown = await inputToMarkdown(ctx);
+
+  const html = await createE2eTestBundle(markdown);
+
+  await writeFile('./TESTY.html', html);
 
   await page.setContent(html);
 

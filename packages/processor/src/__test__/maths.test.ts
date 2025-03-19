@@ -48,11 +48,12 @@ test('parsing bug', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="example-1" class="boxout example">
-      <p><span class="type">Example <span class="count">1.</span></span> If <code class="language-math math-inline">n</code> is a natural number, then</p><pre><code class="language-math math-display">\\dfrac{d}{dz}z^{n} = nz^{n-1}.</code></pre>
+      <p><span class="type">Example <span class="count">1.</span></span> If <code class="latex">n</code> is a natural number, then</p>
+      <p><code class="latex">\\dfrac{d}{dz}z^{n} = nz^{n-1}.</code></p>
       <p>and bla bla bla.</p>
     </div>
-    <p>If <code class="language-math math-inline">n</code> is a natural number, then</p>
-    <pre><code class="language-math math-display">\\dfrac{d}{dz}z^{n} = nz^{n-1}.</code></pre>
+    <p>If <code class="latex">n</code> is a natural number, then</p>
+    <p><code class="latex">\\dfrac{d}{dz}z^{n} = nz^{n-1}.</code></p>
     <p>and bla bla bla.</p>
   `);
 
@@ -106,11 +107,16 @@ test('parsing bug2', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="example-1" class="boxout example">
-      <p><span class="type">Example <span class="count">1.</span></span> If <code class="language-math math-inline">n</code> is a natural number, then</p><pre><code class="language-math math-display">\\begin{align*}\\dfrac{d}{dz}z^{n} = nz^{n-1}.\\end{align*}</code></pre>
+      <p><span class="type">Example <span class="count">1.</span></span> If <code class="latex">n</code> is a natural number, then</p>
+      <p><code class="latex">\\begin{align*}
+    \\dfrac{d}{dz}z^{n} = nz^{n-1}.
+    \\end{align*}</code></p>
       <p>and bla bla bla.</p>
     </div>
-    <p>If <code class="language-math math-inline">n</code> is a natural number, then</p>
-    <pre><code class="language-math math-display">\\begin{align*}\\dfrac{d}{dz}z^{n} = nz^{n-1}.\\end{align*}</code></pre>
+    <p>If <code class="latex">n</code> is a natural number, then</p>
+    <p><code class="latex">\\begin{align*}
+    \\dfrac{d}{dz}z^{n} = nz^{n-1}.
+    \\end{align*}</code></p>
     <p>and bla bla bla.</p>
   `);
 
@@ -188,12 +194,17 @@ test('parsing bug3', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div id="solution-1" class="boxout solution">
-      <p><span class="type">Solution.</span> We treat the equation</p><pre><code class="language-math math-display">\\tfrac{1}{2}(e^{iz}+ e^{-iz}) = 10</code></pre>
-      <p>as a quadratic equation in <code class="language-math math-inline">e^{iz}</code>. After rearrangement it becomes</p><pre><code class="language-math math-display">(e^{iz})^{2}-20 e^{iz}+ 1 = 0.</code></pre>
-      <p>The solutions are</p><pre><code class="language-math math-display">e^{iz}= \\dfrac{20\\pm\\sqrt{396}}{2}= 10\\pm\\sqrt{99},</code></pre>
-      <p>so that</p><pre><code class="language-math math-display">iz = \\log(10\\pm\\sqrt{99}) + 2k\\pi i,</code></pre>
-      <p>that is,</p><pre><code class="language-math math-display">z = -i\\log(10\\pm\\sqrt{99}) + 2k\\pi,</code></pre>
-      <p>where <code class="language-math math-inline">k</code> is an arbitrary integer.<span class="proof-box">◻</span></p>
+      <p><span class="type">Solution.</span> We treat the equation</p>
+      <p><code class="latex">\\tfrac{1}{2}(e^{iz}+ e^{-iz}) = 10</code></p>
+      <p>as a quadratic equation in <code class="latex">e^{iz}</code>. After rearrangement it becomes</p>
+      <p><code class="latex">(e^{iz})^{2}-20 e^{iz}+ 1 = 0.</code></p>
+      <p>The solutions are</p>
+      <p><code class="latex">e^{iz}= \\dfrac{20\\pm\\sqrt{396}}{2}= 10\\pm\\sqrt{99},</code></p>
+      <p>so that</p>
+      <p><code class="latex">iz = \\log(10\\pm\\sqrt{99}) + 2k\\pi i,</code></p>
+      <p>that is,</p>
+      <p><code class="latex">z = -i\\log(10\\pm\\sqrt{99}) + 2k\\pi,</code></p>
+      <p>where <code class="latex">k</code> is an arbitrary integer.<span class="proof-box">◻</span></p>
     </div>
   `);
 
@@ -221,7 +232,7 @@ test('parsing bug4', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="framed">
-      <p>The <code class="language-math math-inline">A</code>.</p>
+      <p>The <code class="latex">A</code>.</p>
     </div>
   `);
 

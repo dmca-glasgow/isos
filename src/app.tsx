@@ -1,5 +1,5 @@
 import { resolveResource } from '@tauri-apps/api/path';
-import { useContext, useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
 import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';

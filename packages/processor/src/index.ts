@@ -7,8 +7,15 @@ export {
 
 export { inputToMarkdown } from './latex-to-markdown';
 
-export { markdownToArticle, markdownToTOC } from './markdown-to-mdx';
-
 export { createContext } from './latex-to-markdown/context';
 
-export type { Options as MarkdownToMDXOptions } from './markdown-to-mdx';
+export { markdownToArticle, markdownToTOC } from './markdown-to-mdx';
+
+export { RenderMDX } from './markdown-to-mdx/render-mdx';
+
+export type {
+  MathsFont,
+  MathsOptions,
+} from './markdown-to-mdx/mdx-handlers/maths/Maths';
+
+export { createMdxState } from './markdown-to-mdx/mdx-handlers/mdx-state';

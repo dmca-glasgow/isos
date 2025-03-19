@@ -1,14 +1,17 @@
-import rehypeStringify from "rehype-stringify";
-import * as Ast from "@unified-latex/unified-latex-types";
-import { processLatexViaUnified } from "@unified-latex/unified-latex";
+import { processLatexViaUnified } from '@unified-latex/unified-latex';
+import * as Ast from '@unified-latex/unified-latex-types';
+import rehypeStringify from 'rehype-stringify';
+
 import {
-    unifiedLatexToHast,
-    PluginOptions,
-} from "./unified-latex-plugin-to-hast";
+  PluginOptions,
+  unifiedLatexToHast,
+} from './unified-latex-plugin-to-hast';
 
 const _processor = processLatexViaUnified()
-    .use(unifiedLatexToHast)
-    .use(rehypeStringify);
+  // @ts-expect-error
+  .use(unifiedLatexToHast)
+  // @ts-expect-error
+  .use(rehypeStringify);
 
 /**
  * Convert the `unified-latex` AST `tree` into an HTML string. If you need
@@ -25,21 +28,23 @@ const _processor = processLatexViaUnified()
  * ```
  */
 export function convertToHtml(
-    tree: Ast.Node | Ast.Node[],
-    options?: PluginOptions
+  tree: Ast.Node | Ast.Node[],
+  options?: PluginOptions,
 ): string {
-    let processor = _processor;
-    if (!Array.isArray(tree) && tree.type !== "root") {
-        tree = { type: "root", content: [tree] };
-    }
-    if (Array.isArray(tree)) {
-        tree = { type: "root", content: tree };
-    }
+  let processor = _processor;
+  if (!Array.isArray(tree) && tree.type !== 'root') {
+    tree = { type: 'root', content: [tree] };
+  }
+  if (Array.isArray(tree)) {
+    tree = { type: 'root', content: tree };
+  }
 
-    if (options) {
-        processor = _processor.use(unifiedLatexToHast, options);
-    }
+  if (options) {
+    // @ts-expect-error
+    processor = _processor.use(unifiedLatexToHast, options);
+  }
 
-    const hast = processor.runSync(tree);
-    return processor.stringify(hast);
+  const hast = processor.runSync(tree);
+  // @ts-expect-error
+  return processor.stringify(hast);
 }

@@ -1,17 +1,11 @@
-import { scrollbarSize } from '../../constants';
-import { sidebarRunOptions } from './sidebar-run-options';
 import { styled } from '@linaria/react';
-import { run } from '@mdx-js/mdx';
-// import classNames from 'classnames';
-import { MDXModule } from 'mdx/types';
-import { useContext, useEffect, useState } from 'preact/hooks';
-import { Fragment } from 'preact/jsx-runtime';
+import { useContext, useState } from 'preact/hooks';
 
-import { markdownToTOC } from '@isos/processor';
+import { RenderMDX, markdownToTOC } from '@isos/processor';
 
-import { ViewOptionsContext } from '../../context';
-
-// import './table-of-contents.scss';
+import { scrollbarSize } from '../constants';
+import { mdxState } from '../mdx-state';
+import { ViewOptionsContext } from './view-options/state';
 
 type Props = {
   markdown: string;
@@ -20,21 +14,6 @@ type Props = {
 export function TableOfContents({ markdown }: Props) {
   const { data } = useContext(ViewOptionsContext);
   const [error, setError] = useState('');
-  const [MDX, setMDX] = useState<MDXModule | null>(null);
-  const MDXContent = MDX ? MDX.default : Fragment;
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const toc = await markdownToTOC(markdown);
-        const mdx = await run(toc, sidebarRunOptions);
-        setMDX(mdx);
-        setError('');
-      } catch (err: any) {
-        setError(err);
-      }
-    })();
-  }, [markdown]);
 
   if (data.showViewOptions.value === true) {
     return null;
@@ -48,7 +27,12 @@ export function TableOfContents({ markdown }: Props) {
         </Error>
       )}
       <TableOfContentsWrapper>
-        <MDXContent />
+        <RenderMDX
+          markdown={markdown}
+          mdxState={mdxState}
+          renderFn={markdownToTOC}
+          onError={setError}
+        />
       </TableOfContentsWrapper>
     </>
   );
@@ -72,8 +56,6 @@ const Error = styled.div`
 `;
 
 const TableOfContentsWrapper = styled.div`
-  $borderSize: 4px;
-
   ol {
     margin: 0;
     padding: 0 calc(0.7em - ${scrollbarSize}) 2em 0.7em;
@@ -159,6 +141,7 @@ const TableOfContentsWrapper = styled.div`
       }
     }
 
+    // $borderSize: 4px;
     // &::before {
     //   content: '';
     //   position: absolute;

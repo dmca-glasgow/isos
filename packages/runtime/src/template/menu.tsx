@@ -1,10 +1,10 @@
-import { Gear, TableOfContents } from './icons';
 import { css } from '@linaria/core';
 import { styled } from '@linaria/react';
 import classNames from 'classnames';
 import { useContext } from 'preact/hooks';
 
-import { ViewOptionsContext } from '../context';
+import { Gear, TableOfContents } from './icons';
+import { ViewOptionsContext } from './view-options/state';
 
 export function Menu() {
   const { data, setShowViewOptions } = useContext(ViewOptionsContext);

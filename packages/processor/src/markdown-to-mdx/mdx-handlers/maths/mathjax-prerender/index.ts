@@ -12,7 +12,7 @@ import { TeX } from 'mathjax-full/js/input/tex.js';
 import { mathjax } from 'mathjax-full/js/mathjax.js';
 import { SVG } from 'mathjax-full/js/output/svg.js';
 
-import { MathsFont } from '../Math';
+import { MathsFont } from '../Maths';
 import { FiraFont, TermesFont } from './fonts';
 // import { render } from './litedom';
 import { packages } from './packages';

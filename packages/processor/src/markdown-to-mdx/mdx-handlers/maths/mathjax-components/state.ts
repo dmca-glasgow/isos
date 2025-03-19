@@ -1,10 +1,9 @@
 import { createContext } from 'preact';
 
-import { MathsFont } from '../Math';
+import { MathsFont } from '../Maths';
 import { loadMathJax } from './load-mathjax';
 
 export type MathJaxComponentState = {
-  initialiseMathJax: (mathsFont: MathsFont) => unknown;
   queueMathJaxRender: (
     element: HTMLSpanElement,
     mathsFont: MathsFont,
@@ -21,7 +20,6 @@ function createState(): MathJaxComponentState {
   };
 
   return {
-    initialiseMathJax: loadMathJax,
     async queueMathJaxRender(
       element: HTMLSpanElement,
       mathsFont: MathsFont,
@@ -76,11 +74,10 @@ function createState(): MathJaxComponentState {
 
 function hasPriority(element: HTMLElement): Promise<boolean> {
   return new Promise((resolve) => {
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-      const rootHeight = entry.rootBounds?.height || 0;
-      const y = entry.boundingClientRect.y;
-      const isPriority = y > 0 && y < rootHeight * 2;
+    const observer = new IntersectionObserver(([entry]) => {
+      const { y } = entry.boundingClientRect;
+      const height = entry.rootBounds?.height || 0;
+      const isPriority = y > 0 && y < height * 2;
       resolve(isPriority);
       observer.unobserve(entry.target);
     });
@@ -95,13 +92,13 @@ function debounce(fn: () => unknown, delay: number) {
   timer = setTimeout(fn, delay);
 }
 
-function chunk(list: HTMLElement[], size: number) {
-  return list.reduce((acc: HTMLElement[][], item, idx) => {
-    if (idx % size === 0) {
-      acc.push([item]);
-    } else {
-      acc[acc.length - 1].push(item);
-    }
-    return acc;
-  }, []);
-}
+// function chunk(list: HTMLElement[], size: number) {
+//   return list.reduce((acc: HTMLElement[][], item, idx) => {
+//     if (idx % size === 0) {
+//       acc.push([item]);
+//     } else {
+//       acc[acc.length - 1].push(item);
+//     }
+//     return acc;
+//   }, []);
+// }

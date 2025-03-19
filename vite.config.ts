@@ -5,15 +5,16 @@ import commonjs from '@rollup/plugin-commonjs';
 import wyw from '@wyw-in-js/vite';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
+// import { viteSingleFile } from 'vite-plugin-singlefile';
 import svgr from 'vite-plugin-svgr';
 import { configDefaults } from 'vitest/config';
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    // viteSingleFile(),
     svgr({
       include: '**/assets/*.svg',
     }),
@@ -38,7 +39,7 @@ export default defineConfig({
       enforce: 'pre',
     },
     commonjs({
-      include: ['node_modules/**'],
+      include: ['node_modules/mathjax-*/**'],
     }),
   ],
   clearScreen: false,

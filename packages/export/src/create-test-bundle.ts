@@ -1,8 +1,9 @@
-import { createRuntimeHtml } from '.';
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import { createContext, inputToMarkdown } from '@isos/processor';
+
+import { createRuntimeHtml } from '.';
 
 // const fonts = [
 //   'modern', // good
@@ -25,26 +26,24 @@ const ctx = await createContext(
 const markdown = await inputToMarkdown(ctx);
 
 const frontmatter = {
-  docTitle: 'Test',
+  docTitle: 'Test', // TODO
 };
+
+const folder = '../../runtime/dist/assets';
 
 const bundle = {
   css: await readFile(
-    fileURLToPath(
-      new URL('../../runtime/dist/assets/index.css', import.meta.url),
-    ),
+    fileURLToPath(new URL(`${folder}/index.css`, import.meta.url)),
     'utf-8',
   ),
   js: await readFile(
-    fileURLToPath(
-      new URL('../../runtime/dist/assets/runtime.js', import.meta.url),
-    ),
+    fileURLToPath(new URL(`${folder}/index.css`, import.meta.url)),
     'utf-8',
   ),
   font: 'termes',
 };
 
-const filePath = fileURLToPath(new URL('../test.html', import.meta.url));
 const runtime = await createRuntimeHtml(markdown, frontmatter, bundle);
 
+const filePath = fileURLToPath(new URL('../test.html', import.meta.url));
 await writeFile(filePath, runtime);

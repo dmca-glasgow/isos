@@ -1,4 +1,3 @@
-import { styled } from '@linaria/react';
 import { JSX } from 'preact';
 
 type Props = JSX.SVGAttributes<SVGSVGElement>;

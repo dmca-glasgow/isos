@@ -1,5 +1,3 @@
-import { unifiedLatexProcessAtLetterAndExplMacros } from './process-at-letter-and-expl-macros';
-import { unifiedLatexProcessMacrosAndEnvironmentsWithMathReparse } from './process-macros-and-environments';
 import {
   environmentInfo,
   macroInfo,
@@ -17,6 +15,8 @@ import { Parser, Plugin, unified } from 'unified';
 
 import { unifiedLatexAstComplier } from './compiler-ast';
 import { unifiedLatexFromStringMinimal } from './plugin-from-string-minimal';
+import { unifiedLatexProcessAtLetterAndExplMacros } from './process-at-letter-and-expl-macros';
+import { unifiedLatexProcessMacrosAndEnvironmentsWithMathReparse } from './process-macros-and-environments';
 
 export type PluginOptions =
   | {
@@ -64,12 +64,12 @@ export const unifiedLatexFromString: Plugin<
   const allMacroInfo: MacroInfoRecord = Object.assign(
     {},
     ...Object.values(macroInfo),
-    macros
+    macros,
   );
   const allEnvInfo: EnvInfoRecord = Object.assign(
     {},
     ...Object.values(environmentInfo),
-    environments
+    environments,
   );
 
   // Build up a parser that will perform all the needed steps
@@ -86,10 +86,13 @@ export const unifiedLatexFromString: Plugin<
       macros: allMacroInfo,
       environments: allEnvInfo,
     })
+    // @ts-expect-error
     .use(unifiedLatexTrimEnvironmentContents)
+    // @ts-expect-error
     .use(unifiedLatexTrimRoot)
     .use(unifiedLatexAstComplier);
 
+  // @ts-expect-error
   const parser: Parser<Ast.Root> = (str) => {
     const file = fullParser.processSync({ value: str });
     return file.result;

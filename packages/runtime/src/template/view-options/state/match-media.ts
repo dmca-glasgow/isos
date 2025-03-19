@@ -1,27 +1,18 @@
-import * as constants from '../constants';
+import * as constants from './constants';
+import { ViewOptions, ViewOptionsState } from './state';
 
-import { AppState } from './index';
-
-export function prefersDarkMode() {
-  if (prefers('color-scheme', 'dark')) {
-    return 'dark';
-  }
-  return 'light';
+export function getPrefersState(): Partial<ViewOptions> {
+  const theme = prefersDarkMode();
+  const contrast = prefersContrast();
+  return {
+    theme,
+    contrast,
+    textColor: theme === 'dark' ? 'White' : 'Black',
+    bgColor: theme === 'dark' ? 'Black' : 'White',
+  };
 }
 
-export function prefersContrast() {
-  if (prefers('contrast', 'more')) {
-    return constants.contrast.max;
-  }
-  if (prefers('contrast', 'less')) {
-    return constants.contrast.min;
-  }
-  return constants.contrast.initial;
-}
-
-// prefers-reduced-motion
-
-export function createPrefersEvents(viewOptions: AppState) {
+export function createPrefersEvents(viewOptions: ViewOptionsState) {
   if (!window || !window.matchMedia) {
     return;
   }
@@ -64,6 +55,25 @@ export function createPrefersEvents(viewOptions: AppState) {
       }
     });
 }
+
+function prefersDarkMode() {
+  if (prefers('color-scheme', 'dark')) {
+    return 'dark';
+  }
+  return 'light';
+}
+
+function prefersContrast() {
+  if (prefers('contrast', 'more')) {
+    return constants.contrast.max;
+  }
+  if (prefers('contrast', 'less')) {
+    return constants.contrast.min;
+  }
+  return constants.contrast.initial;
+}
+
+// prefers-reduced-motion
 
 function prefers(subject: string, value: string) {
   if (!window || !window.matchMedia) {

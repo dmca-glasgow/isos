@@ -22,6 +22,6 @@
     "@unified-latex/unified-latex-util-print-raw": "^1.7.0",
     "@unified-latex/unified-latex-util-trim": "^1.7.0",
     "@unified-latex/unified-latex-util-visit": "^1.7.0",
-    "unified": "^10.1.2"
+    "unified": "^11.0.5"
   }
 }
