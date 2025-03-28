@@ -11,14 +11,14 @@ import { printRaw } from '@isos/unified-latex-util-print-raw';
  */
 function factory(
   tag: string,
-  attributes?: Record<string, string>
+  attributes?: Record<string, string>,
 ): (macro: Ast.Macro) => Ast.Macro {
   return (macro) => {
     if (!macro.args) {
       throw new Error(
         `Found macro to replace but couldn't find content ${printRaw(
-          macro
-        )}`
+          macro,
+        )}`,
       );
     }
     // Assume the meaningful argument is the last argument. This
@@ -206,11 +206,15 @@ export const macroReplacements: Record<
   includegraphics: (node) => {
     const args = getArgsContent(node);
     const src = printRaw(args[args.length - 1] || []);
+    const altMatch = printRaw(args[1] || []).match(/alt={(.*?)}/);
+    const alt = altMatch !== null ? altMatch[1] : '';
     return htmlLike({
       tag: 'img',
       attributes: {
         className: 'includegraphics',
         src,
+        alt,
+        title: 'hello',
       },
       content: [],
     });

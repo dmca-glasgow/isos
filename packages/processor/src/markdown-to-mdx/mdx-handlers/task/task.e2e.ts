@@ -24,4 +24,6 @@ test('task and answer', async ({ page }) => {
   await expect(
     page.locator('.answer-reveal').filter({ hasText: /Test answer/ }),
   ).toBeVisible();
+
+  await expect(page).toHaveScreenshot('task.png');
 });

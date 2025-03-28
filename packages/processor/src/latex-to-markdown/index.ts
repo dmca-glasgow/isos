@@ -18,15 +18,16 @@ import { FileType } from './utils/parse-file-path';
 
 export async function inputToMarkdown(
   ctx: Context,
-  options: Partial<Options> = {},
+  _options: Partial<Options> = {},
 ) {
-  const mdast = await getMdast(ctx);
+  const options = {
+    ...defaultOptions,
+    ..._options,
+  };
   const processor = createRemarkProcessor(
-    createMdastTransforms(ctx, {
-      ...defaultOptions,
-      ...options,
-    }),
+    createMdastTransforms(ctx, options),
   );
+  const mdast = await getMdast(ctx);
   const precompiled = await processor.run(mdast);
   const markdown = processor.stringify(precompiled as MDastRoot).trim();
   return markdown;
@@ -49,7 +50,7 @@ export async function parseLatexToMdast(ctx: Context) {
         // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
         sidenote: { signature: 'm' },
         title: { signature: 'om' },
-        underline: { signature: 'm' }, // TODO: create PR in unified-latex-ctan?
+        underline: { signature: 'm' },
         fancysection: { signature: 'm' },
         exsheetnumber: { signature: 'm' },
       },

@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+*.aux
 npm-debug.log*
 
 node_modules
