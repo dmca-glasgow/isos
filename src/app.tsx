@@ -3,7 +3,11 @@ import { useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
 import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
-import { createContext, inputToMarkdown } from '@isos/processor';
+import {
+  createContext,
+  createDefaultOptions,
+  inputToMarkdown,
+} from '@isos/processor';
 import { useLocalStorage } from '@isos/use-local-storage';
 
 import { Runtime } from '../packages/runtime/src';
@@ -31,8 +35,9 @@ export function App() {
 
   async function processMarkdown(newFilePath: string) {
     const ctx = await createContext(newFilePath);
+    const options = createDefaultOptions(ctx);
     try {
-      const newMarkdown = await inputToMarkdown(ctx);
+      const newMarkdown = await inputToMarkdown(ctx.content, options);
       setMarkdown(newMarkdown);
       // setError('');
     } catch (err: any) {

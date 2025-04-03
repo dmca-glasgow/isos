@@ -9,9 +9,8 @@ import { inlineImages } from './inline-images';
 
 export function createMdastTransforms(
   ctx: Context,
-  options: Options,
+  options: Partial<Options>,
 ): PluggableList {
-  // console.log(options);
   return [
     // () => (tree: Root) => {
     //   visit(tree, (node: Node) => {

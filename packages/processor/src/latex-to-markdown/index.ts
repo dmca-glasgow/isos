@@ -1,80 +1,63 @@
+import { Root as LatexAstRoot } from '@unified-latex/unified-latex-types';
+import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse';
 import { Root as HastRoot } from 'hast';
 import { Root as MDastRoot } from 'mdast';
 import rehypeRemark from 'rehype-remark';
 import { unified } from 'unified';
 
 import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
-import { unifiedLatexFromString } from '@isos/unified-latex-util-parse';
 
 import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
-import { Context } from './context';
-import { createLatexastTransforms } from './latexast-transforms';
-import { createMdastTransforms } from './mdast-transforms';
-import { addFrontmatter } from './mdast-transforms/add-frontmatter';
-import { formatBreak } from './mdast-transforms/format-break';
-import { Options, defaultOptions } from './options';
-import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
-import { FileType } from './utils/parse-file-path';
+import { Options } from './options';
 
-export async function inputToMarkdown(
-  ctx: Context,
-  _options: Partial<Options> = {},
-) {
-  const options = {
-    ...defaultOptions,
-    ..._options,
-  };
-  const processor = createRemarkProcessor(
-    createMdastTransforms(ctx, options),
-  );
-  const mdast = await getMdast(ctx);
-  const precompiled = await processor.run(mdast);
-  const markdown = processor.stringify(precompiled as MDastRoot).trim();
-  return markdown;
+export async function inputToMarkdown(input: string, options: Options) {
+  const mdAst = await getMdAst(input, options);
+  const processor = createRemarkProcessor(options.input.mdAstTransforms);
+  const transformed = await processor.run(mdAst);
+  return processor.stringify(transformed as MDastRoot).trim();
 }
 
-function getMdast(ctx: Context) {
-  switch (ctx.type) {
-    case FileType.latex:
-      return parseLatexToMdast(ctx);
+function getMdAst(input: string, options: Options) {
+  switch (options.type) {
+    case 'markdown':
+      return createRemarkProcessor().parse(input);
+    case 'latex':
+      return latexToMdAstProcessor(input, options.latexToMdAst);
     default:
-      return createRemarkProcessor().parse(ctx.content);
+      throw new Error(`file type : "${options.type}" is not supported`);
   }
 }
 
-export async function parseLatexToMdast(ctx: Context) {
+export async function latexToMdAstProcessor(
+  input: string,
+  options: Options['latexToMdAst'],
+) {
   const parsed = unified()
-    .use(unifiedLatexFromString, {
-      macros: {
-        // signatures are defined in section 3 of:
-        // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
-        sidenote: { signature: 'm' },
-        title: { signature: 'om' },
-        underline: { signature: 'm' },
-        fancysection: { signature: 'm' },
-        exsheetnumber: { signature: 'm' },
-      },
-    })
-    .parse(ctx.content);
+    .use(
+      // @ts-expect-error
+      unifiedLatexFromString,
+      options.latexAstFromStringOptions,
+    )
+    .parse(input);
 
   const latexAst = await unified()
-    .use(createLatexastTransforms(ctx))
+    .use(options.latexAstTransforms)
     .run(parsed);
 
-  const hast = await unified()
-    .use(unifiedLatexToHast)
-    // @ts-expect-error
-    .run(latexAst);
+  const htmlAst = await unified()
+    .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions)
+    .use(options.htmlAstTransforms)
+    .run(latexAst as LatexAstRoot);
 
-  const mdast = await createRemarkProcessor([
-    [rehypeRemark, { handlers: createRehypeRemarkHandlers(ctx) }],
-    [addFrontmatter, ctx],
-    formatBreak,
-  ]).run(hast as HastRoot);
+  const mdAst = await createRemarkProcessor([
+    [rehypeRemark, options.htmlAstToMdAstOptions],
+    ...options.mdAstTransforms,
+  ]).run(htmlAst as HastRoot);
 
+  // console.dir(parsed, { depth: null });
   // console.dir(latexAst, { depth: null });
-  // console.dir(hast, { depth: null });
-  // console.dir(mdast, { depth: null });
+  // console.dir(htmlAst, { depth: null });
+  // console.dir(mdAst, { depth: null });
 
-  return mdast;
+  return mdAst;
 }

@@ -5,6 +5,8 @@ export {
   parseFilePath,
 } from './latex-to-markdown/utils/parse-file-path';
 
+export { createDefaultOptions } from './latex-to-markdown/options';
+
 export { inputToMarkdown } from './latex-to-markdown';
 
 export { createContext } from './latex-to-markdown/context';

@@ -1,11 +1,22 @@
+import { Root as MDastRoot } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
-import { PluggableList, unified } from 'unified';
+import { PluggableList, Processor, unified } from 'unified';
 
-export function createRemarkProcessor(plugins: PluggableList = []) {
+export type RemarkProcessor = Processor<
+  MDastRoot,
+  undefined,
+  undefined,
+  MDastRoot,
+  string
+>;
+
+export function createRemarkProcessor(
+  plugins: PluggableList = [],
+): RemarkProcessor {
   return (
     unified()
       .use(remarkFrontmatter, { type: 'yaml', marker: '-' })

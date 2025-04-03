@@ -66,7 +66,16 @@ test.skip('parsing bug2', async () => {
     \\end{definition}
   `);
 
-  console.log(markdown);
+  const expectedMarkdown = unindentStringAndTrim(`
+    :::definition
+    Let $U$ be
+    (1) there exists
+    (2) for all
+    In this case.
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
 });
 
 test('parsing bug3', async () => {

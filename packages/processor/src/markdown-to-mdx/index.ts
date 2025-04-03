@@ -32,7 +32,6 @@ export async function markdownToArticle(
   // @ts-expect-error: mdast is not of type Program
   const estree = await processor.run(mdast);
   const jsString = processor.stringify(estree);
-
   return run(jsString, createRunOptions(mdxState));
 }
 

@@ -13,7 +13,8 @@ import {
   createContext,
   createTestContext,
 } from '../latex-to-markdown/context';
-import { Options } from '../markdown-to-mdx';
+import { createDefaultOptions } from '../latex-to-markdown/options';
+// import { Options } from '../markdown-to-mdx';
 import { unindentStringAndTrim } from './unindent-string';
 
 export const testProcessor = {
@@ -22,20 +23,22 @@ export const testProcessor = {
   fixture: fixtureToMarkdown,
 };
 
-const options = {
+const testOptions = {
   noInlineImages: true,
 };
 
 async function latexToMarkdown(latex: string) {
   const prepared = unindentStringAndTrim(latex);
   const ctx = createTestContext(FileType.latex, prepared);
-  return inputToMarkdown(ctx, options);
+  const options = createDefaultOptions(ctx, testOptions);
+  return inputToMarkdown(ctx.content, options);
 }
 
 async function markdownToHtml(md: string) {
   const prepared = unindentStringAndTrim(md);
   const ctx = createTestContext(FileType.markdown, prepared);
-  const markdown = await inputToMarkdown(ctx, options);
+  const options = createDefaultOptions(ctx, testOptions);
+  const markdown = await inputToMarkdown(ctx.content, options);
   const mdxState = createMdxState();
   mdxState.maths.mathsAsTex.value = true;
   mdxState.maths.syntaxHighlight.value = false;
@@ -52,5 +55,6 @@ async function fixtureToMarkdown(fixturePath: string) {
   const __dirname = import.meta.dirname;
   const filePath = resolve(__dirname, '../../fixtures', fixturePath);
   const ctx = await createContext(filePath);
-  return inputToMarkdown(ctx, options);
+  const options = createDefaultOptions(ctx, testOptions);
+  return inputToMarkdown(ctx.content, options);
 }

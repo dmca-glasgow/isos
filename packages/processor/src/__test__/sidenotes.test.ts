@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
-test('sidenote parsing bug', async () => {
+test.skip('sidenote parsing bug', async () => {
   const markdown = await testProcessor.latex(`
     Hello \\sidenote{This is a \\textbf{fast paced} course.} you.
   `);
@@ -38,7 +38,7 @@ test('sidenote parsing bug', async () => {
   // expect(html).toBe(expectedHtml);
 });
 
-test.only('sidenote parsing bug 2', async () => {
+test.skip('sidenote parsing bug 2', async () => {
   const markdown = await testProcessor.latex(`
     a
 

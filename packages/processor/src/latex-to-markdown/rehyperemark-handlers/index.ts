@@ -1,23 +1,28 @@
-import { createHeadings } from './headings';
-import { createInlineMaths, createMaths } from './maths';
 import { Element } from 'hast';
-import { State } from 'hast-util-to-mdast';
-import { PhrasingContent } from 'mdast';
+import { Handle, State } from 'hast-util-to-mdast';
+
+// import { toString } from 'hast-util-to-string';
+// import { PhrasingContent } from 'mdast';
 
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
 import { Context } from '../context';
 import { createEnvironment } from './environment';
 import { createFancySection, createFancyTitle } from './fancy';
 import { createFramed } from './framed';
+import { createHeadings } from './headings';
 import { createLabel } from './label';
+import { createInlineMaths, createMaths } from './maths';
 import { createReference } from './reference';
 import { createSideNote } from './sidenote';
 import { createTitle } from './title';
-import { createUnderline } from './underline';
 
 // import { createUnderline } from './underline';
 
-export function createRehypeRemarkHandlers(ctx: Context) {
+// import { createUnderline } from './underline';
+
+export function createRehypeRemarkHandlers(
+  ctx: Context,
+): Record<string, Handle> {
   return {
     h1: headingHandler,
     h2: headingHandler,
@@ -30,24 +35,10 @@ export function createRehypeRemarkHandlers(ctx: Context) {
       return spanHandler(ctx, state, node);
     },
     div: divHandler,
-    center: centerHandler,
+    // center: centerHandler,
     // img: imgHandler,
   };
 }
-
-export const handlers = {
-  h1: headingHandler,
-  h2: headingHandler,
-  h3: headingHandler,
-  h4: headingHandler,
-  h5: headingHandler,
-  h6: headingHandler,
-
-  span: spanHandler,
-  div: divHandler,
-  center: centerHandler,
-  // img: imgHandler,
-};
 
 function headingHandler(state: State, node: Element) {
   const result = createHeadings(state, node);
@@ -101,11 +92,11 @@ function spanHandler(ctx: Context, state: State, node: Element) {
       return result;
     }
 
-    if (className.includes('underline')) {
-      const result = createUnderline(state, node);
-      state.patch(node, result);
-      return result;
-    }
+    // if (className.includes('underline')) {
+    //   const result = createUnderline(state, node);
+    //   state.patch(node, result);
+    //   return result;
+    // }
   }
 
   return state.all(node);
@@ -144,25 +135,25 @@ function divHandler(state: State, node: Element) {
   return state.all(node);
 }
 
-function centerHandler(state: State, node: Element) {
-  return [
-    {
-      type: 'text',
-      value: '\n\n',
-    },
-    {
-      type: 'containerDirective',
-      name: 'center',
-      children: [
-        {
-          type: 'paragraph',
-          children: state.all(node) as PhrasingContent[],
-        },
-      ],
-    },
-    {
-      type: 'text',
-      value: '\n\n',
-    },
-  ];
-}
+// function centerHandler(state: State, node: Element) {
+//   return [
+//     {
+//       type: 'text',
+//       value: '\n\n',
+//     },
+//     {
+//       type: 'containerDirective',
+//       name: 'center',
+//       children: [
+//         {
+//           type: 'paragraph',
+//           children: state.all(node) as PhrasingContent[],
+//         },
+//       ],
+//     },
+//     {
+//       type: 'text',
+//       value: '\n\n',
+//     },
+//   ];
+// }

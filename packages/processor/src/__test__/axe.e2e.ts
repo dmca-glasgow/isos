@@ -4,6 +4,7 @@ import { writeFile } from 'fs/promises';
 
 import { inputToMarkdown } from '../latex-to-markdown';
 import { createContext } from '../latex-to-markdown/context';
+import { createDefaultOptions } from '../latex-to-markdown/options';
 // import { expect, test } from '@playwright/test';
 // import { readFile } from 'fs/promises';
 
@@ -16,7 +17,8 @@ test.skip('axe', async ({ page }) => {
     '/Users/staff/Work/latex-experiments/test1/MCA_lecturenotes.tex',
   );
 
-  const markdown = await inputToMarkdown(ctx);
+  const options = createDefaultOptions(ctx);
+  const markdown = await inputToMarkdown(ctx.content, options);
 
   const html = await createE2eTestBundle(markdown);
 

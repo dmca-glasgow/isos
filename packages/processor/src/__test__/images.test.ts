@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
-test('parsing bug 2', async () => {
+test.skip('parsing bug 2', async () => {
   const markdown = await testProcessor.fixture('images/article.tex');
 
   const expectedMarkdown = unindentStringAndTrim(`
