@@ -1,4 +1,3 @@
-import { Options } from '../options';
 import { ProcessorOptions } from '@mdx-js/mdx';
 import { ElementContent } from 'hast';
 import { PhrasingContent, Root } from 'mdast';
@@ -6,6 +5,7 @@ import { PhrasingContent, Root } from 'mdast';
 import { PluggableList, unified } from 'unified';
 
 import { Context } from '../context';
+import { Options } from '../options';
 import { createWrapper } from './wrapper';
 
 export const processorOptions: ProcessorOptions = {
@@ -14,7 +14,10 @@ export const processorOptions: ProcessorOptions = {
   providerImportSource: '@mdx-js/preact',
 };
 
-export function createRehypePlugins(ctx: Context, options: Options) {
+export function createRehypePlugins(
+  ctx: Context,
+  options: Pick<Options, 'noWrapper'>,
+) {
   const plugins = createRehypeFragmentPlugins(ctx, options);
 
   if (!options.noWrapper) {

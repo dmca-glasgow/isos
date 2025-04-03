@@ -14,6 +14,8 @@ import {
   createTestContext,
 } from '../latex-to-markdown/context';
 import { createDefaultOptions } from '../latex-to-markdown/options';
+import { createContext as createHtmlContext } from '../markdown-to-mdx/context';
+import { createDefaultOptions as createHtmlOptions } from '../markdown-to-mdx/options';
 // import { Options } from '../markdown-to-mdx';
 import { unindentStringAndTrim } from './unindent-string';
 
@@ -25,6 +27,11 @@ export const testProcessor = {
 
 const testOptions = {
   noInlineImages: true,
+};
+
+const testHtmlOptions = {
+  noWrapper: true,
+  // noSections: true,
 };
 
 async function latexToMarkdown(latex: string) {
@@ -42,10 +49,14 @@ async function markdownToHtml(md: string) {
   const mdxState = createMdxState();
   mdxState.maths.mathsAsTex.value = true;
   mdxState.maths.syntaxHighlight.value = false;
-  const component = await markdownToArticle(markdown, mdxState, {
-    noWrapper: true,
-    // noSections: true,
-  });
+
+  const htmlCtx = createHtmlContext();
+  const htmlOptions = createHtmlOptions(
+    mdxState,
+    htmlCtx,
+    testHtmlOptions,
+  );
+  const component = await markdownToArticle(markdown, htmlOptions);
   // @ts-expect-error
   const element = createElement(component.default);
   return formatHtml(renderToString(element));

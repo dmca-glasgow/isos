@@ -1,8 +1,11 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
-import { createContext, inputToMarkdown } from '@isos/processor';
-import { createDefaultOptions } from '@isos/processor';
+import {
+  createInputToMarkdownContext,
+  createInputToMarkdownOptions,
+  inputToMarkdown,
+} from '@isos/processor';
 
 import { createRuntimeHtml } from '.';
 
@@ -20,10 +23,10 @@ import { createRuntimeHtml } from '.';
 //   'tex',
 // ];
 
-const ctx = await createContext(
+const ctx = await createInputToMarkdownContext(
   '/Users/staff/Work/latex-experiments/test1/MCA_lecturenotes.tex',
 );
-const options = createDefaultOptions(ctx);
+const options = createInputToMarkdownOptions(ctx);
 const markdown = await inputToMarkdown(ctx.content, options);
 
 const frontmatter = {

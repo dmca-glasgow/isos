@@ -2,8 +2,9 @@ import { MDXModule } from 'mdx/types';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { Fragment, JSX } from 'preact/jsx-runtime';
 
+import { createContext } from './context';
 import { MdxState } from './mdx-handlers/mdx-state';
-import { Options } from './options';
+import { Options, createDefaultOptions } from './options';
 
 // import { MathsProviderOptions, Providers } from './providers';
 
@@ -11,8 +12,7 @@ type Props = {
   markdown: string;
   renderFn: (
     markdown: string,
-    mdxState: MdxState,
-    options: Partial<Options>,
+    options: Options,
   ) => MDXModule | Promise<MDXModule>;
   onError: (err: string) => unknown;
   onRendered?: () => unknown;
@@ -28,7 +28,7 @@ export function RenderMDX({
   onRendered,
   onError,
   mdxState,
-  options = {},
+  // options = {},
 }: Props) {
   const [MDX, setMDX] = useState<MDXModule | null>(null);
   const MDXContent = MDX ? MDX.default : Fragment;
@@ -39,7 +39,9 @@ export function RenderMDX({
         return;
       }
       try {
-        setMDX(await renderFn(markdown, mdxState, options));
+        const ctx = createContext();
+        const options = createDefaultOptions(mdxState, ctx);
+        setMDX(await renderFn(markdown, options));
         onError('');
       } catch (err: any) {
         onError(err?.message || '');

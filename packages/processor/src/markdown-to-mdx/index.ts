@@ -1,52 +1,46 @@
 import { createProcessor, run } from '@mdx-js/mdx';
 import { Root } from 'mdast';
 
-import { createContext } from './context';
-import { createRehypePlugins, processorOptions } from './hast-transforms';
-import { markdownToMdast } from './mdast-transforms';
-import { createRunOptions, createSidebarRunOptions } from './mdx-handlers';
-import { MdxState } from './mdx-handlers/mdx-state';
-import { Options, defaultOptions } from './options';
+import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
+import { processorOptions } from './hast-transforms';
+import { Options } from './options';
 import { createTableOfContents } from './sidebar';
-
-export { defaultOptions } from './options';
-export type { Options } from './options';
 
 export async function markdownToArticle(
   markdown: string,
-  mdxState: MdxState,
-  _options: Partial<Options> = {},
+  options: Options,
 ) {
-  const ctx = createContext();
-  const options = {
-    ...defaultOptions,
-    ..._options,
-  };
-  const mdast = await markdownToMdast(markdown, ctx, options);
-
+  const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
+  const mdAst = mdAstProcessor.parse(markdown);
+  const transformed = await mdAstProcessor.run(mdAst);
   const processor = createProcessor({
     ...processorOptions,
-    rehypePlugins: createRehypePlugins(ctx, options),
+    rehypePlugins: options.htmlAstTransforms,
   });
 
-  // @ts-expect-error: mdast is not of type Program
-  const estree = await processor.run(mdast);
-  const jsString = processor.stringify(estree);
-  return run(jsString, createRunOptions(mdxState));
+  // @ts-expect-error: mdAst is not of type Program
+  const esAst = await processor.run(transformed);
+  const mdxString = processor.stringify(esAst);
+
+  // console.dir(mdAst, { depth: null });
+  // console.dir(transformed, { depth: null });
+  // console.dir(esAst, {depth: null})
+
+  return run(mdxString, options.mdxArticleRunOptions);
 }
 
-export async function markdownToTOC(
-  markdown: string,
-  mdxState: MdxState,
-  _options: Partial<Options> = {},
-) {
-  const ctx = createContext();
+export async function markdownToTOC(markdown: string, _options: Options) {
   const options = {
-    ...defaultOptions,
-    noSections: true,
     ..._options,
+    noSections: true,
   };
-  const mdast = await markdownToMdast(markdown, ctx, options);
-  const jsString = await createTableOfContents(mdast as Root);
-  return run(jsString, createSidebarRunOptions(mdxState));
+  const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
+  const mdAst = mdAstProcessor.parse(markdown);
+  const transformed = await mdAstProcessor.run(mdAst);
+  const jsString = await createTableOfContents(transformed as Root);
+
+  // console.dir(mdAst, {depth: null})
+  // console.dir(transformed, { depth: null });
+
+  return run(jsString, options.mdxTOCRunOptions);
 }
