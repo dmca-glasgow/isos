@@ -32,6 +32,7 @@ export function TableOfContents({ markdown }: Props) {
           mdxState={mdxState}
           renderFn={markdownToTOC}
           onError={setError}
+          options={{ noSections: true }}
         />
       </TableOfContentsWrapper>
     </>

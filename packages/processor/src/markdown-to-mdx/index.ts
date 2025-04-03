@@ -39,7 +39,7 @@ export async function markdownToTOC(markdown: string, _options: Options) {
   const transformed = await mdAstProcessor.run(mdAst);
   const jsString = await createTableOfContents(transformed as Root);
 
-  // console.dir(mdAst, {depth: null})
+  // console.dir(mdAst, { depth: null });
   // console.dir(transformed, { depth: null });
 
   return run(jsString, options.mdxTOCRunOptions);

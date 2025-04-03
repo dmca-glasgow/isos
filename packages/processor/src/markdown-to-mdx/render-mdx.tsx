@@ -28,7 +28,7 @@ export function RenderMDX({
   onRendered,
   onError,
   mdxState,
-  // options = {},
+  options = {},
 }: Props) {
   const [MDX, setMDX] = useState<MDXModule | null>(null);
   const MDXContent = MDX ? MDX.default : Fragment;
@@ -40,8 +40,8 @@ export function RenderMDX({
       }
       try {
         const ctx = createContext();
-        const options = createDefaultOptions(mdxState, ctx);
-        setMDX(await renderFn(markdown, options));
+        const opts = createDefaultOptions(mdxState, ctx, options);
+        setMDX(await renderFn(markdown, opts));
         onError('');
       } catch (err: any) {
         onError(err?.message || '');
