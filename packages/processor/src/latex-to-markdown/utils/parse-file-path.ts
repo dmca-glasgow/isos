@@ -1,10 +1,7 @@
 export const supportedLaTeXExtensions = ['tex'];
 export const supportedMarkdownExtensions = ['md', 'Rmd', 'qmd'];
 
-export enum FileType {
-  latex = 'latex',
-  markdown = 'markdown',
-}
+export type FileType = 'latex' | 'markdown';
 
 export function parseFilePath(filePath: string) {
   return {
@@ -21,10 +18,10 @@ function getFileType(filePath: string): FileType {
   const ext = filePath.slice(filePath.lastIndexOf('.') + 1);
 
   if (supportedLaTeXExtensions.includes(ext)) {
-    return FileType.latex;
+    return 'latex';
   }
   if (supportedMarkdownExtensions.includes(ext)) {
-    return FileType.markdown;
+    return 'markdown';
   }
 
   throw new Error(`unsupported file extension: ${ext}`);

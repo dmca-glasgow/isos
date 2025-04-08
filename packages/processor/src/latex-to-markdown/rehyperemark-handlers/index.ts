@@ -1,9 +1,7 @@
-import { Element } from 'hast';
+import { Element, Text } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 
-// import { toString } from 'hast-util-to-string';
-// import { PhrasingContent } from 'mdast';
-
+import { superSubHandlers } from '../../plugins/super-sub';
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
 import { Context } from '../context';
 import { createEnvironment } from './environment';
@@ -37,6 +35,27 @@ export function createRehypeRemarkHandlers(
     div: divHandler,
     // center: centerHandler,
     // img: imgHandler,
+
+    sup: superSubHandlers.sup,
+    sub: superSubHandlers.sub,
+
+    del(_state: State, node: Element) {
+      const text = node.children[0] as Text;
+      return {
+        type: 'text',
+        value: `~~${text.value}~~`,
+        data: {
+          hName: 's',
+          hProperties: {},
+          hChildren: [
+            {
+              type: 'text',
+              value: `~~${text.value}~~`,
+            },
+          ],
+        },
+      };
+    },
   };
 }
 

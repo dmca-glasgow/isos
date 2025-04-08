@@ -1,3 +1,4 @@
+import remarkGfm from 'remark-gfm';
 import { PluggableList } from 'unified';
 
 import { Context } from '../context';
@@ -19,6 +20,7 @@ export function createMdastTransforms(
   options: Pick<Options, 'noSections'>,
 ): PluggableList {
   const plugins: PluggableList = [
+    [remarkGfm, { singleTilde: false }],
     [extractFrontmatter, ctx],
     [headings, ctx],
     fancyTitle,

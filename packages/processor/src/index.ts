@@ -1,9 +1,10 @@
 export {
   supportedLaTeXExtensions,
   supportedMarkdownExtensions,
-  FileType,
   parseFilePath,
 } from './latex-to-markdown/utils/parse-file-path';
+
+export type { FileType } from './latex-to-markdown/utils/parse-file-path';
 
 export { inputToMarkdown } from './latex-to-markdown';
 export { createDefaultOptions as createInputToMarkdownOptions } from './latex-to-markdown/options';

@@ -14,6 +14,7 @@ export async function inputToMarkdown(input: string, options: Options) {
   const mdAst = await getMdAst(input, options);
   const processor = createRemarkProcessor(options.input.mdAstTransforms);
   const transformed = await processor.run(mdAst);
+  // console.dir(transformed, { depth: null });
   return processor.stringify(transformed as MDastRoot).trim();
 }
 
@@ -40,23 +41,26 @@ export async function latexToMdAstProcessor(
     )
     .parse(input);
 
+  // console.dir(parsed, { depth: null });
+
   const latexAst = await unified()
     .use(options.latexAstTransforms)
     .run(parsed);
+
+  // console.dir(latexAst, { depth: null });
 
   const htmlAst = await unified()
     .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions)
     .use(options.htmlAstTransforms)
     .run(latexAst as LatexAstRoot);
 
+  // console.dir(htmlAst, { depth: null });
+
   const mdAst = await createRemarkProcessor([
     [rehypeRemark, options.htmlAstToMdAstOptions],
     ...options.mdAstTransforms,
   ]).run(htmlAst as HastRoot);
 
-  // console.dir(parsed, { depth: null });
-  // console.dir(latexAst, { depth: null });
-  // console.dir(htmlAst, { depth: null });
   // console.dir(mdAst, { depth: null });
 
   return mdAst;

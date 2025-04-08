@@ -4,6 +4,7 @@ import { Options as HtmlConvertOptions } from 'rehype-remark';
 import { PluggableList } from 'unified';
 
 import { Context } from './context';
+import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
 import { addFrontmatter } from './mdast-transforms/add-frontmatter';
@@ -57,13 +58,16 @@ export function createDefaultOptions(
           // underline: { signature: 'm' },
           // fancysection: { signature: 'm' },
           // exsheetnumber: { signature: 'm' },
+          textsuperscript: { signature: 'm' },
+          textsubscript: { signature: 'm' },
+          sout: { signature: 'm' },
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),
       latexAstToHtmlAstOptions: {
         macroReplacements: createLatexMacroToHastHandlers(ctx),
       },
-      htmlAstTransforms: [],
+      htmlAstTransforms: createHastTransforms(ctx),
       htmlAstToMdAstOptions: {
         handlers: createRehypeRemarkHandlers(ctx),
       },

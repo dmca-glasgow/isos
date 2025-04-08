@@ -6,6 +6,8 @@ import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { PluggableList, Processor, unified } from 'unified';
 
+import { remarkSuperSub } from '../plugins/super-sub';
+
 export type RemarkProcessor = Processor<
   MDastRoot,
   undefined,
@@ -19,8 +21,9 @@ export function createRemarkProcessor(
 ): RemarkProcessor {
   return (
     unified()
-      .use(remarkFrontmatter, { type: 'yaml', marker: '-' })
       .use(remarkParse)
+      .use(remarkFrontmatter, { type: 'yaml', marker: '-' })
+      .use(remarkSuperSub)
       // .use(function () {
       //   return function (tree) {
       //     // console.dir(tree, { depth: null });

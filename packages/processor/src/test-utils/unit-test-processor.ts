@@ -3,12 +3,7 @@ import { createElement } from 'preact';
 import renderToString from 'preact-render-to-string';
 import formatHtml from 'pretty';
 
-import {
-  FileType,
-  createMdxState,
-  inputToMarkdown,
-  markdownToArticle,
-} from '..';
+import { createMdxState, inputToMarkdown, markdownToArticle } from '..';
 import {
   createContext,
   createTestContext,
@@ -36,14 +31,14 @@ const testHtmlOptions = {
 
 async function latexToMarkdown(latex: string) {
   const prepared = unindentStringAndTrim(latex);
-  const ctx = createTestContext(FileType.latex, prepared);
+  const ctx = createTestContext('latex', prepared);
   const options = createDefaultOptions(ctx, testOptions);
   return inputToMarkdown(ctx.content, options);
 }
 
 async function markdownToHtml(md: string) {
   const prepared = unindentStringAndTrim(md);
-  const ctx = createTestContext(FileType.markdown, prepared);
+  const ctx = createTestContext('markdown', prepared);
   const options = createDefaultOptions(ctx, testOptions);
   const markdown = await inputToMarkdown(ctx.content, options);
   const mdxState = createMdxState();
