@@ -4,6 +4,7 @@ import { PhrasingContent, Root } from 'mdast';
 // import { createSvg } from '../utils/icons';
 import { PluggableList, unified } from 'unified';
 
+import { defListHastHandlers } from '../../plugins/definition-list';
 import { Context } from '../context';
 import { Options } from '../options';
 import { createWrapper } from './wrapper';
@@ -12,6 +13,11 @@ export const processorOptions: ProcessorOptions = {
   outputFormat: 'function-body',
   elementAttributeNameCase: 'html',
   providerImportSource: '@mdx-js/preact',
+  remarkRehypeOptions: {
+    handlers: {
+      ...defListHastHandlers,
+    },
+  },
 };
 
 export function createRehypePlugins(

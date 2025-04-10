@@ -4,6 +4,7 @@ import { Options as HtmlConvertOptions } from 'rehype-remark';
 import { PluggableList } from 'unified';
 
 import { mintedToPre } from '../plugins/code/minted-to-pre';
+import { descriptionToDl } from '../plugins/definition-list';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
@@ -82,6 +83,7 @@ function createLatexMacroToHastHandlers(
   return {
     environmentReplacements: {
       minted: mintedToPre,
+      description: descriptionToDl,
     },
   };
 }

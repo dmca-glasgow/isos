@@ -3,6 +3,7 @@ import { Handle, State } from 'hast-util-to-mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
+import { defListHastToMdast } from '../../plugins/definition-list';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
@@ -23,6 +24,8 @@ export function createRehypeRemarkHandlers(
   ctx: Context,
 ): Record<string, Handle> {
   return {
+    ...defListHastToMdast,
+
     h1: headingHandler,
     h2: headingHandler,
     h3: headingHandler,

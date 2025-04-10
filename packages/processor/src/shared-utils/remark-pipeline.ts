@@ -1,4 +1,5 @@
 import { Root as MDastRoot } from 'mdast';
+import { remarkDefinitionList } from 'remark-definition-list';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMath from 'remark-math';
@@ -24,6 +25,7 @@ export function createRemarkProcessor(
       .use(remarkParse)
       .use(remarkFrontmatter, { type: 'yaml', marker: '-' })
       .use(remarkSuperSub)
+      .use(remarkDefinitionList)
       // .use(function () {
       //   return function (tree) {
       //     // console.dir(tree, { depth: null });
