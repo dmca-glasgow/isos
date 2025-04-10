@@ -1,11 +1,9 @@
 import { PluggableList } from 'unified';
 
+import { mintInlineToCode } from '../../plugins/code/mint-inline-to-code';
+import { endashEmdashToDashes } from '../../plugins/endash-emdash';
 import { Context } from '../context';
 
-// import { expandSuperscript } from './expand-super-sub';
-
 export function createHastTransforms(_ctx: Context): PluggableList {
-  return [
-    // expandSuperscript
-  ];
+  return [endashEmdashToDashes, mintInlineToCode];
 }

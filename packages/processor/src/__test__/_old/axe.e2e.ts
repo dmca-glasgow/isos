@@ -2,13 +2,13 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'fs/promises';
 
-import { inputToMarkdown } from '../latex-to-markdown';
-import { createContext } from '../latex-to-markdown/context';
-import { createDefaultOptions } from '../latex-to-markdown/options';
+import { inputToMarkdown } from '../../latex-to-markdown';
+import { createContext } from '../../latex-to-markdown/context';
+import { createDefaultOptions } from '../../latex-to-markdown/options';
 // import { expect, test } from '@playwright/test';
 // import { readFile } from 'fs/promises';
 
-import { createE2eTestBundle } from '../test-utils/create-e2e-test-bundle';
+import { createE2eTestBundle } from '../../test-utils/create-e2e-test-bundle';
 
 test.skip('axe', async ({ page }) => {
   test.slow(); // approx. 45 seconds

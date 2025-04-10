@@ -45,7 +45,7 @@ export async function latexToMdAstProcessor(
 
   const latexAst = await unified()
     .use(options.latexAstTransforms)
-    .run(parsed);
+    .run(parsed as LatexAstRoot);
 
   // console.dir(latexAst, { depth: null });
 
@@ -63,5 +63,5 @@ export async function latexToMdAstProcessor(
 
   // console.dir(mdAst, { depth: null });
 
-  return mdAst;
+  return mdAst as MDastRoot;
 }

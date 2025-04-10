@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { createHeadingCounter } from '../heading-counter';
+import { createHeadingCounter } from '../../heading-counter';
 
 test('heading counter', async () => {
   const counter = createHeadingCounter();

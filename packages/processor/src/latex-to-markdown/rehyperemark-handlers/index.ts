@@ -1,6 +1,9 @@
-import { Element, Text } from 'hast';
+import { Element } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 
+import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
+import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
+import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
 import { Context } from '../context';
@@ -16,8 +19,6 @@ import { createTitle } from './title';
 
 // import { createUnderline } from './underline';
 
-// import { createUnderline } from './underline';
-
 export function createRehypeRemarkHandlers(
   ctx: Context,
 ): Record<string, Handle> {
@@ -29,33 +30,17 @@ export function createRehypeRemarkHandlers(
     h5: headingHandler,
     h6: headingHandler,
 
+    div: divHandler,
     span(state: State, node: Element) {
       return spanHandler(ctx, state, node);
     },
-    div: divHandler,
-    // center: centerHandler,
-    // img: imgHandler,
 
     sup: superSubHandlers.sup,
     sub: superSubHandlers.sub,
-
-    del(_state: State, node: Element) {
-      const text = node.children[0] as Text;
-      return {
-        type: 'text',
-        value: `~~${text.value}~~`,
-        data: {
-          hName: 's',
-          hProperties: {},
-          hChildren: [
-            {
-              type: 'text',
-              value: `~~${text.value}~~`,
-            },
-          ],
-        },
-      };
-    },
+    pre: rehypeRemarkPre,
+    del: rehypeRemarkDel,
+    // center: centerHandler,
+    // img: imgHandler,
   };
 }
 
@@ -147,6 +132,10 @@ function divHandler(state: State, node: Element) {
         state.patch(node, result);
         // console.log(state);
         return result;
+      }
+
+      if (environmentName === 'displayquote') {
+        return displayQuoteToBlockQuote(state, node);
       }
     }
   }

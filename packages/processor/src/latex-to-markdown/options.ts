@@ -3,6 +3,7 @@ import { PluginOptions as LatexParseOptions } from '@unified-latex/unified-latex
 import { Options as HtmlConvertOptions } from 'rehype-remark';
 import { PluggableList } from 'unified';
 
+import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
@@ -61,12 +62,11 @@ export function createDefaultOptions(
           textsuperscript: { signature: 'm' },
           textsubscript: { signature: 'm' },
           sout: { signature: 'm' },
+          mintinline: { signature: 'm m' },
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),
-      latexAstToHtmlAstOptions: {
-        macroReplacements: createLatexMacroToHastHandlers(ctx),
-      },
+      latexAstToHtmlAstOptions: createLatexMacroToHastHandlers(ctx),
       htmlAstTransforms: createHastTransforms(ctx),
       htmlAstToMdAstOptions: {
         handlers: createRehypeRemarkHandlers(ctx),
@@ -76,8 +76,14 @@ export function createDefaultOptions(
   };
 }
 
-function createLatexMacroToHastHandlers(_ctx: Context) {
-  return {};
+function createLatexMacroToHastHandlers(
+  _ctx: Context,
+): LatexConvertOptions {
+  return {
+    environmentReplacements: {
+      minted: mintedToPre,
+    },
+  };
 }
 
 function createLatexMdAstTransforms(ctx: Context): PluggableList {

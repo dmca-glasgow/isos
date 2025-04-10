@@ -1,6 +1,8 @@
 import remarkGfm from 'remark-gfm';
 import { PluggableList } from 'unified';
 
+import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
+import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { Context } from '../context';
 import { Options } from '../options';
 import { boxouts } from './boxouts';
@@ -32,6 +34,8 @@ export function createMdastTransforms(
     // () => (tree) => {
     //   console.dir(tree, { depth: null });
     // },
+    dashesToEndashEmdash,
+    inlineCodeHighlight,
   ];
 
   if (options.noSections === false) {

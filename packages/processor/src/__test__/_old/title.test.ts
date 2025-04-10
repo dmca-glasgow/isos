@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { unindentStringAndTrim } from '../test-utils/unindent-string';
-import { testProcessor } from '../test-utils/unit-test-processor';
+import { unindentStringAndTrim } from '../../test-utils/unindent-string';
+import { testProcessor } from '../../test-utils/unit-test-processor';
 
 test.skip('maths 2 fancytitle', async () => {
   const markdown = await testProcessor.latex(`

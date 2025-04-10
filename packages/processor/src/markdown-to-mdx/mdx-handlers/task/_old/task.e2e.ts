@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { createE2eTestBundle } from '../../../test-utils/create-e2e-test-bundle';
+import { createE2eTestBundle } from '../../../../test-utils/create-e2e-test-bundle';
 
 test('task and answer', async ({ page }) => {
   const html = await createE2eTestBundle(`
