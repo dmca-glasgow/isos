@@ -88,21 +88,21 @@ test('description to dl', async () => {
     Let.
     \begin{description}
     \item[one] two
-    \item[three] four
+    \item three
+    \item[four] five
     \end{description}
     me.
   `);
-
-  // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
     Let.
 
     one
     :   two
+    :   three
 
-    three
-    :   four
+    four
+    :   five
 
     me.
   `);
@@ -111,16 +111,16 @@ test('description to dl', async () => {
 
   const html = await testProcessor.md(markdown);
 
-  // console.log(html);
-
   const expectedHtml = unindentStringAndTrim(`
     <p>Let.</p>
     <dl>
       <dt>one</dt>
       <dd>two
       </dd>
-      <dt>three</dt>
-      <dd>four
+      <dd>three
+      </dd>
+      <dt>four</dt>
+      <dd>five
       </dd>
     </dl>
     <p>me.</p>

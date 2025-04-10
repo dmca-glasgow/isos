@@ -9,18 +9,28 @@ export function descriptionToDl(node: Environment) {
       .filter((node) => match.macro(node, 'item'))
       .flatMap((node) => {
         const args = node.args || [];
-        return [
-          htmlLike({
-            tag: 'dt',
-            content: args[1].content,
-            attributes: {},
-          }),
+        const label = args[1];
+        const content = args[args.length - 1];
+
+        const result = [
           htmlLike({
             tag: 'dd',
-            content: args[args.length - 1].content,
+            content: content.content,
             attributes: {},
           }),
         ];
+
+        if (label.content.length) {
+          result.unshift(
+            htmlLike({
+              tag: 'dt',
+              content: label.content,
+              attributes: {},
+            }),
+          );
+        }
+
+        return result;
       }),
   });
 }
