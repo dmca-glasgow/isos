@@ -11,24 +11,25 @@ export function descriptionToDl(node: Environment) {
         const args = node.args || [];
         const label = args[1];
         const content = args[args.length - 1];
-
-        const result = [
-          htmlLike({
-            tag: 'dd',
-            content: content.content,
-            attributes: {},
-          }),
-        ];
+        const result = [];
 
         if (label.content.length) {
-          result.unshift(
+          result.push(
             htmlLike({
               tag: 'dt',
-              content: label.content,
+              content: label?.content || [],
               attributes: {},
             }),
           );
         }
+
+        result.push(
+          htmlLike({
+            tag: 'dd',
+            content: content?.content || [],
+            attributes: {},
+          }),
+        );
 
         return result;
       }),
