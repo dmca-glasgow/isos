@@ -1,4 +1,3 @@
-import { wrapPars } from '../wrap-pars';
 import {
   TabularColumn,
   parseTabularSpec,
@@ -17,6 +16,8 @@ import cssesc from 'cssesc';
 
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
+import { wrapPars } from '../wrap-pars';
+
 const ITEM_ARG_NAMES_REG = ['label'] as const;
 const ITEM_ARG_NAMES_BEAMER = [null, 'label', null] as const;
 type ItemArgs = Record<
@@ -33,8 +34,8 @@ function getItemArgs(node: Ast.Macro): ItemArgs {
   if (!Array.isArray(node.args)) {
     throw new Error(
       `Cannot find \\item macros arguments; you must attach the \\item body to the macro before calling this function ${JSON.stringify(
-        node
-      )}`
+        node,
+      )}`,
     );
   }
   // The "body" has been added as a last argument to the `\item` node. We
@@ -45,7 +46,7 @@ function getItemArgs(node: Ast.Macro): ItemArgs {
       : ITEM_ARG_NAMES_REG;
   const ret = Object.assign(
     { body: node.args[node.args.length - 1].content },
-    getNamedArgsContent(node, argNames)
+    getNamedArgsContent(node, argNames),
   );
   return ret as ItemArgs;
 }
@@ -101,66 +102,92 @@ function createCenteredElement(env: Ast.Environment) {
 }
 
 function createTableFromTabular(env: Ast.Environment) {
-  const tabularBody = parseAlignEnvironment(env.content);
   const args = getArgsContent(env);
+
   let columnSpecs: TabularColumn[] = [];
   try {
     columnSpecs = parseTabularSpec(args[1] || []);
   } catch (e) {}
 
-  const tableBody = tabularBody.map((row) => {
-    const content = row.cells.map((cell, i) => {
-      const columnSpec = columnSpecs[i];
-      const styles: Record<string, string> = {};
-      if (columnSpec) {
-        const { alignment } = columnSpec;
-        if (alignment.alignment === 'center') {
-          styles['text-align'] = 'center';
-        }
-        if (alignment.alignment === 'right') {
-          styles['text-align'] = 'right';
-        }
-        if (
-          columnSpec.pre_dividers.some(
-            (div) => div.type === 'vert_divider'
-          )
-        ) {
-          styles['border-left'] = '1px solid';
-        }
-        if (
-          columnSpec.post_dividers.some(
-            (div) => div.type === 'vert_divider'
-          )
-        ) {
-          styles['border-right'] = '1px solid';
-        }
-      }
-      return htmlLike(
-        Object.keys(styles).length > 0
-          ? {
-              tag: 'td',
-              content: cell,
-              attributes: { style: styles },
-            }
-          : {
-              tag: 'td',
-              content: cell,
-            }
-      );
-    });
-    return htmlLike({ tag: 'tr', content });
-  });
+  const [tableHead, ...tableBody] = parseAlignEnvironment(env.content);
 
   return htmlLike({
     tag: 'table',
     content: [
       htmlLike({
+        tag: 'thead',
+        content: [
+          htmlLike({
+            tag: 'tr',
+            content: tableHead.cells.map((cell, i) => {
+              return createTableCell(cell, 'th', columnSpecs[i]);
+            }),
+          }),
+        ],
+      }),
+      htmlLike({
         tag: 'tbody',
-        content: tableBody,
+        content: tableBody.map((row) => {
+          return htmlLike({
+            tag: 'tr',
+            content: row.cells.map((cell, i) => {
+              return createTableCell(cell, 'td', columnSpecs[i]);
+            }),
+          });
+        }),
       }),
     ],
     attributes: { className: 'tabular' },
   });
+}
+
+function createTableCell(
+  content: Ast.Node[],
+  tag: 'td' | 'th',
+  spec?: TabularColumn,
+) {
+  const result: {
+    tag: string;
+    content?: Ast.Node | Ast.Node[];
+    attributes: {
+      align?: string;
+      style?: Record<string, string>;
+    };
+  } = {
+    tag,
+    content,
+    attributes: {},
+  };
+
+  if (spec) {
+    const style: Record<string, string> = {};
+    let align;
+
+    const { alignment } = spec.alignment;
+    if (alignment === 'left') {
+      align = 'left';
+    }
+    if (alignment === 'center') {
+      align = 'center';
+    }
+    if (alignment === 'right') {
+      align = 'right';
+    }
+    result.attributes.align = align;
+
+    if (spec.pre_dividers.some((div) => div.type === 'vert_divider')) {
+      style['border-left'] = '1px solid';
+    }
+    if (spec.post_dividers.some((div) => div.type === 'vert_divider')) {
+      style['border-right'] = '1px solid';
+    }
+
+    if (Object.keys(style).length) {
+      result.attributes.style = style;
+    }
+  }
+
+  return htmlLike(result);
 }
 
 /**
@@ -171,7 +198,7 @@ export const environmentReplacements: Record<
   string,
   (
     node: Ast.Environment,
-    info: VisitInfo
+    info: VisitInfo,
   ) => Ast.Macro | Ast.String | Ast.Environment
 > = {
   enumerate: enumerateFactory('ol'),

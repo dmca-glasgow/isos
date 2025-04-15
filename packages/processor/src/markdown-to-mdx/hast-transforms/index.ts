@@ -1,8 +1,8 @@
 import { ProcessorOptions } from '@mdx-js/mdx';
-import { ElementContent } from 'hast';
-import { PhrasingContent, Root } from 'mdast';
 // import { createSvg } from '../utils/icons';
-import { PluggableList, unified } from 'unified';
+import { PluggableList } from 'unified';
+
+// import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
 import { Context } from '../context';
@@ -32,28 +32,35 @@ export function createRehypePlugins(
   return plugins;
 }
 
-export async function toHast(
-  children: PhrasingContent[],
-  ctx: Context,
-  options: Partial<Options> = {},
-) {
-  const processor = unified().use(
-    createRehypeFragmentPlugins(ctx, options),
-  );
+// export async function toHast(
+//   children: PhrasingContent[],
+//   ctx: Context,
+//   options: Partial<Options> = {},
+// ) {
+//   const processor = unified().use(
+//     createRehypeFragmentPlugins(ctx, options),
+//   );
 
-  const root: Root = {
-    type: 'root',
-    children,
-  };
-  const hast = (await processor.run(root)) as Root;
-  return hast.children as ElementContent[];
-}
+//   const root: Root = {
+//     type: 'root',
+//     children,
+//   };
+//   const hast = (await processor.run(root)) as Root;
+//   return hast.children as ElementContent[];
+// }
 
 function createRehypeFragmentPlugins(
   _ctx: Context,
   _options: Partial<Options> = {},
 ): PluggableList {
   return [
+    // () => (tree: Root) => {
+    //   visit(tree, 'element', (node: Element) => {
+    //     if (node.tagName === 'table') {
+    //       console.dir(node, { depth: null });
+    //     }
+    //   });
+    // },
     // TODO:
     // [
     // autolinkHeadings,

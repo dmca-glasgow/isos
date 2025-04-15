@@ -2,7 +2,9 @@ import { Root as LatexAstRoot } from '@unified-latex/unified-latex-types';
 import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse';
 import { Root as HastRoot } from 'hast';
 import { Root as MDastRoot } from 'mdast';
+// import formatHtml from 'pretty';
 import rehypeRemark from 'rehype-remark';
+// import rehypeStringify from 'rehype-stringify';
 import { unified } from 'unified';
 
 import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
@@ -55,6 +57,8 @@ export async function latexToMdAstProcessor(
     .run(latexAst as LatexAstRoot);
 
   // console.dir(htmlAst, { depth: null });
+  // const html = unified().use(rehypeStringify).stringify(htmlAst);
+  // console.log(formatHtml(html));
 
   const mdAst = await createRemarkProcessor([
     [rehypeRemark, options.htmlAstToMdAstOptions],

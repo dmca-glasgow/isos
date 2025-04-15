@@ -14,7 +14,7 @@ export function createMdastTransforms(
   return [
     // () => (tree: Root) => {
     //   visit(tree, (node: Node) => {
-    //     if (node.type === 'element') {
+    //     if (node.type === 'table') {
     //       console.log(node);
     //     }
     //   });

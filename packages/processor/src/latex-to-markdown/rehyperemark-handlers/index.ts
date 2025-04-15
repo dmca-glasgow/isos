@@ -1,5 +1,5 @@
 import { Element } from 'hast';
-import { Handle, State } from 'hast-util-to-mdast';
+import { Handle, State, toMdast } from 'hast-util-to-mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
@@ -42,9 +42,30 @@ export function createRehypeRemarkHandlers(
     sub: superSubHandlers.sub,
     pre: rehypeRemarkPre,
     del: rehypeRemarkDel,
+
+    // td: cellHandler,
+    // th: cellHandler,
     // center: centerHandler,
     // img: imgHandler,
   };
+}
+
+function cellHandler(state: State, node: Element) {
+  // console.log(node);
+  const style = String(node.properties.style || '');
+  const match = style.match(/text-align:\s+([^;]+)/);
+  // console.log({ style, match: match && match[1] });
+  const mdast = toMdast({ type: 'root', children: node.children });
+  const result = {
+    type: 'tableCell',
+    children: mdast.children,
+  };
+  if (match !== null) {
+    result.properties = {
+      align: match[1],
+    };
+  }
+  return result;
 }
 
 function headingHandler(state: State, node: Element) {
