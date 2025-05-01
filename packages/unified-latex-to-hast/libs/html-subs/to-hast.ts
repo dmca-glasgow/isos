@@ -79,7 +79,7 @@ export function toHastWithLoggerFactory(
       case 'whitespace':
         return { type: 'text', value: ' ', position: node.position };
       case 'parbreak':
-        return h('br');
+        return [h('br'), h('br')];
       case 'group':
         // Groups are just ignored.
         return node.content.flatMap(toHast);

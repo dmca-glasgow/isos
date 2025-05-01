@@ -1,14 +1,14 @@
 import { Root as MDastRoot } from 'mdast';
 import { remarkDefinitionList } from 'remark-definition-list';
-import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
-import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { PluggableList, Processor, unified } from 'unified';
 
+import remarkGfm from '../plugins/remark-gfm';
 import { remarkSuperSub } from '../plugins/super-sub';
+import remarkDirective from '../plugins/theorems-proofs/remark-directive';
 
 export type RemarkProcessor = Processor<
   MDastRoot,

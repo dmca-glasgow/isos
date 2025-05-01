@@ -1,4 +1,4 @@
-import { Theorems } from '../../shared-utils/theorem';
+import { TheoremsYaml } from '../../plugins/theorems-proofs/default-theorems';
 
 export type HeadingCounter = {
   get: (depth: number) => number;
@@ -52,7 +52,10 @@ const headingDepths: Record<string, number> = {
 };
 
 // TODO: return TheoremCounter instead of error?
-export function getHeadingDepth(theorems: Theorems, name: string): number {
+export function getHeadingDepth(
+  theorems: TheoremsYaml,
+  name: string,
+): number {
   // console.log(theorems, name);
   const environment = theorems[name];
   if (environment === undefined) {

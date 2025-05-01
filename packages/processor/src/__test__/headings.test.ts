@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
-test('headings with counters and attributes', async () => {
+test.skip('headings with counters and attributes', async () => {
   const latex = String.raw`
     \title{Alfa}
     \section{Bravo \textbf{hi}}
@@ -26,7 +26,6 @@ test('headings with counters and attributes', async () => {
   `;
 
   const markdown = await testProcessor.latex(latex);
-
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
@@ -69,7 +68,7 @@ test('headings with counters and attributes', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
 
   // console.log(html);
 

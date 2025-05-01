@@ -1,6 +1,7 @@
 import { Root } from 'mdast';
 import { stringify } from 'yaml';
 
+import { theoremsToFrontmatter } from '../../plugins/theorems-proofs/theorems-to-frontmatter';
 import { Context } from '../context';
 
 export function addFrontmatter(ctx: Context) {
@@ -8,11 +9,13 @@ export function addFrontmatter(ctx: Context) {
     const toExport: Record<string, any> = {};
 
     const { theorems } = ctx.frontmatter;
-    if (Object.keys(theorems).length > 0) {
-      toExport.theorems = theorems;
+    const theoremsYaml = theoremsToFrontmatter(theorems);
+
+    if (Object.keys(theoremsYaml).length > 0) {
+      toExport.theorems = theoremsYaml;
     }
 
-    if (Object.keys(theorems).length > 0) {
+    if (Object.keys(toExport).length > 0) {
       tree.children.unshift({
         type: 'yaml',
         value: stringify(toExport).trim(),

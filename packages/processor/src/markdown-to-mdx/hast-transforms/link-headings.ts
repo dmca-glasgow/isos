@@ -18,7 +18,7 @@ export function linkHeadings() {
           },
           children: [],
         });
-        console.log(node);
+        // console.log(node);
       }
     });
   };

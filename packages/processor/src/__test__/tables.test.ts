@@ -12,7 +12,6 @@ test('tables', async () => {
   `;
 
   const markdown = await testProcessor.latex(latex);
-
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
@@ -23,8 +22,7 @@ test('tables', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
-
+  const html = await testProcessor.md(expectedMarkdown);
   // console.log(html);
 
   const expected = unindentStringAndTrim(`

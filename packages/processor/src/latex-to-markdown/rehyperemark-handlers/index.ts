@@ -1,16 +1,16 @@
 import { Element } from 'hast';
-import { Handle, State, toMdast } from 'hast-util-to-mdast';
+import { Handle, State } from 'hast-util-to-mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
 import { defListHastToMdast } from '../../plugins/definition-list';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
-import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
+import { defaultTheorems } from '../../plugins/theorems-proofs/default-theorems';
+import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
 import { Context } from '../context';
-import { createEnvironment } from './environment';
 import { createFancySection, createFancyTitle } from './fancy';
-import { createFramed } from './framed';
+// import { createFramed } from './framed';
 import { createHeadings } from './headings';
 import { createLabel } from './label';
 import { createInlineMaths, createMaths } from './maths';
@@ -43,29 +43,9 @@ export function createRehypeRemarkHandlers(
     pre: rehypeRemarkPre,
     del: rehypeRemarkDel,
 
-    // td: cellHandler,
-    // th: cellHandler,
     // center: centerHandler,
     // img: imgHandler,
   };
-}
-
-function cellHandler(state: State, node: Element) {
-  // console.log(node);
-  const style = String(node.properties.style || '');
-  const match = style.match(/text-align:\s+([^;]+)/);
-  // console.log({ style, match: match && match[1] });
-  const mdast = toMdast({ type: 'root', children: node.children });
-  const result = {
-    type: 'tableCell',
-    children: mdast.children,
-  };
-  if (match !== null) {
-    result.properties = {
-      align: match[1],
-    };
-  }
-  return result;
 }
 
 function headingHandler(state: State, node: Element) {
@@ -96,7 +76,8 @@ function spanHandler(ctx: Context, state: State, node: Element) {
       return result;
     }
 
-    if (className.includes('macro-ref')) {
+    // cleverref
+    if (className.includes('macro-cref')) {
       const result = createReference(state, node);
       state.patch(node, result);
       return result;
@@ -140,27 +121,33 @@ function divHandler(state: State, node: Element) {
       return result;
     }
 
+    if (className.includes('theorem')) {
+      const theoremType = String(className[className.length - 1]);
+
+      if (defaultTheorems.find((o) => o.name === theoremType)) {
+        const result = createTheorem(state, node, theoremType);
+        state.patch(node, result);
+        return result;
+      }
+    }
+
     if (className.includes('environment')) {
       const classes = className.filter((name) => name !== 'environment');
       const environmentName = String(classes[0]);
 
-      if (boxoutAllowList.includes(environmentName)) {
-        const result = createEnvironment(state, node, environmentName);
-        state.patch(node, result);
-        return result;
-      }
-
-      if (environmentName === 'framed') {
-        const result = createFramed(state, node);
-        // console.log(result);
-        state.patch(node, result);
-        // console.log(state);
-        return result;
-      }
-
       if (environmentName === 'displayquote') {
         return displayQuoteToBlockQuote(state, node);
       }
+
+      // console.log(node);
+
+      // if (environmentName === 'framed') {
+      //   const result = createFramed(state, node);
+      //   // console.log(result);
+      //   state.patch(node, result);
+      //   // console.log(state);
+      //   return result;
+      // }
     }
   }
 

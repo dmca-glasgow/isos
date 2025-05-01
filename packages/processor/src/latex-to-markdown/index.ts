@@ -57,7 +57,9 @@ export async function latexToMdAstProcessor(
     .run(latexAst as LatexAstRoot);
 
   // console.dir(htmlAst, { depth: null });
-  // const html = unified().use(rehypeStringify).stringify(htmlAst);
+  // const html = unified()
+  //   .use(rehypeStringify)
+  //   .stringify(htmlAst as HastRoot);
   // console.log(formatHtml(html));
 
   const mdAst = await createRemarkProcessor([

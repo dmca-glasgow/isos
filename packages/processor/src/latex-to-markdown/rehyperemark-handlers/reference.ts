@@ -1,21 +1,12 @@
 import { Element, Parent, Text } from 'hast';
 import { State } from 'hast-util-to-mdast';
-import { TextDirective } from 'mdast-util-directive';
+import { kebabCase } from 'lodash';
 
-export function createReference(
-  _state: State,
-  node: Element
-): TextDirective {
+export function createReference(_state: State, node: Element): Text {
   const id = findRefLabel(node);
   return {
-    type: 'textDirective',
-    name: 'ref',
-    children: [
-      {
-        type: 'text',
-        value: id,
-      },
-    ],
+    type: 'text',
+    value: `@${id}`,
   };
 }
 
@@ -31,5 +22,5 @@ function findRefLabel(node: Element) {
   }
 
   const literal = (parent.children[0] || {}) as Text;
-  return literal.value || '';
+  return kebabCase(literal.value || '');
 }

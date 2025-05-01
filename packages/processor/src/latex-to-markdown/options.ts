@@ -5,6 +5,7 @@ import { PluggableList } from 'unified';
 
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
+import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
@@ -67,7 +68,7 @@ export function createDefaultOptions(
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),
-      latexAstToHtmlAstOptions: createLatexMacroToHastHandlers(ctx),
+      latexAstToHtmlAstOptions: createLatexToHastHandlers(ctx),
       htmlAstTransforms: createHastTransforms(ctx),
       htmlAstToMdAstOptions: {
         handlers: createRehypeRemarkHandlers(ctx),
@@ -77,11 +78,10 @@ export function createDefaultOptions(
   };
 }
 
-function createLatexMacroToHastHandlers(
-  _ctx: Context,
-): LatexConvertOptions {
+function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
   return {
     environmentReplacements: {
+      ...createTheoremHandlers(ctx),
       minted: mintedToPre,
       description: descriptionToDl,
     },

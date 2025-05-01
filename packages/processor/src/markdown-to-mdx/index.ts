@@ -12,7 +12,11 @@ export async function markdownToArticle(
 ) {
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
+  // console.dir(mdAst, { depth: null });
+
   const transformed = await mdAstProcessor.run(mdAst);
+  // console.dir(transformed, { depth: null });
+
   const processor = createProcessor({
     ...processorOptions,
     rehypePlugins: options.htmlAstTransforms,
@@ -20,11 +24,9 @@ export async function markdownToArticle(
 
   // @ts-expect-error: mdAst is not of type Program
   const esAst = await processor.run(transformed);
-  const mdxString = processor.stringify(esAst);
-
-  // console.dir(mdAst, { depth: null });
-  // console.dir(transformed, { depth: null });
   // console.dir(esAst, {depth: null})
+
+  const mdxString = processor.stringify(esAst);
 
   return run(mdxString, options.mdxArticleRunOptions);
 }

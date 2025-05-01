@@ -1,6 +1,6 @@
 import { readTextFile } from '@isos/fs';
 
-import { Theorems } from '../shared-utils/theorem';
+import { TheoremsYaml } from '../plugins/theorems-proofs/default-theorems';
 import { FancyTitle } from './latexast-transforms/extract-fancytitle';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
@@ -9,7 +9,7 @@ export type Context = {
   type: FileType;
   content: string;
   frontmatter: {
-    theorems: Theorems;
+    theorems: TheoremsYaml;
   };
   fancyTitle: FancyTitle;
 };
@@ -33,7 +33,7 @@ export async function createContext(filePath: string): Promise<Context> {
 
 export function createTestContext(
   type: FileType,
-  content: string
+  content: string,
 ): Context {
   return {
     filePath: 'test',

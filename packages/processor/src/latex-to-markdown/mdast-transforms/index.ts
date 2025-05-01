@@ -1,7 +1,7 @@
-// import { Node, Root } from 'mdast';
 import { PluggableList } from 'unified';
 
-// import { visit } from 'unist-util-visit';
+import { deleteToDoubleTilde } from '../../plugins/strikethrough/delete-to-double-tilde';
+import { theoremLabelAsId } from '../../plugins/theorems-proofs/theorem-label-as-id';
 import { Context } from '../context';
 import { Options } from '../options';
 import { headingLabels } from './heading-labels';
@@ -12,14 +12,9 @@ export function createMdastTransforms(
   options: Partial<Options>,
 ): PluggableList {
   return [
-    // () => (tree: Root) => {
-    //   visit(tree, (node: Node) => {
-    //     if (node.type === 'table') {
-    //       console.log(node);
-    //     }
-    //   });
-    // },
+    deleteToDoubleTilde,
     headingLabels,
     [inlineImages, ctx, options],
+    [theoremLabelAsId, ctx],
   ];
 }

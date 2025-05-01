@@ -1,8 +1,3 @@
-import {
-  Attributes,
-  hasAttributes,
-  parseAttributes,
-} from '../../shared-utils/parse-heading-attributes';
 import GithubSlugger from 'github-slugger';
 import { startCase } from 'lodash';
 import { Heading, Root, Text } from 'mdast';
@@ -10,20 +5,26 @@ import { ContainerDirective } from 'mdast-util-directive';
 import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
 
-import { boxoutAllowList } from '../../shared-utils/boxout-allow-list';
+import { defaultTheorems } from '../../plugins/theorems-proofs/default-theorems';
+import {
+  TheoremCounter,
+  createTheoremCounter,
+} from '../../plugins/theorems-proofs/theorem-counter';
+import {
+  Attributes,
+  hasAttributes,
+  parseAttributes,
+} from '../../shared-utils/parse-heading-attributes';
 import { Context } from '../context';
 import {
   HeadingCounter,
   createHeadingCounter,
   getHeadingDepth,
 } from '../utils/heading-counter';
-import {
-  TheoremCounter,
-  createTheoremCounter,
-} from '../utils/theorem-counter';
 
 export function headings(ctx: Context) {
   return (tree: Root) => {
+    // console.dir(tree, { depth: null });
     const slugger = new GithubSlugger();
     const headingCounter = createHeadingCounter();
     const theoremCounter = createTheoremCounter();
@@ -35,9 +36,9 @@ export function headings(ctx: Context) {
       //   console.log(node);
       // }
 
-      if (node.type === 'heading') {
-        transformHeading(node, slugger, headingCounter, ctx);
-      }
+      // if (node.type === 'heading') {
+      //   transformHeading(node, slugger, headingCounter, ctx);
+      // }
       if (node.type === 'containerDirective') {
         transformEnvironment(
           node,
@@ -51,68 +52,68 @@ export function headings(ctx: Context) {
   };
 }
 
-function transformHeading(
-  heading: Heading,
-  slugger: GithubSlugger,
-  headingCounter: HeadingCounter,
-  ctx: Context,
-) {
-  const childrenText = heading.children.filter(
-    (o) => o.type !== 'textDirective',
-  );
-  const { text, attributes } = parseAttributes(toString(childrenText));
-  const id = slugger.slug(attributes.id || text);
-  const className = getClassNames(heading);
+// function transformHeading(
+//   heading: Heading,
+//   slugger: GithubSlugger,
+//   headingCounter: HeadingCounter,
+//   ctx: Context,
+// ) {
+//   const childrenText = heading.children.filter(
+//     (o) => o.type !== 'textDirective',
+//   );
+//   const { text, attributes } = parseAttributes(toString(childrenText));
+//   const id = slugger.slug(attributes.id || text);
+//   const className = getClassNames(heading);
 
-  // apply id and classes
-  const hProperties = heading.data?.hProperties || {};
-  hProperties.id = id;
-  if (className.length > 0) {
-    hProperties.className = className.join(' ');
-  }
-  heading.data = {
-    ...(heading.data || {}),
-    hProperties,
-  };
+//   // apply id and classes
+//   const hProperties = heading.data?.hProperties || {};
+//   hProperties.id = id;
+//   if (className.length > 0) {
+//     hProperties.className = className.join(' ');
+//   }
+//   heading.data = {
+//     ...(heading.data || {}),
+//     hProperties,
+//   };
 
-  // create and cache incrementing label
-  if (headingShouldIncrement(attributes)) {
-    headingCounter.increment(heading.depth);
-  }
-  const label = headingCounter.getCounts(heading.depth).join('.');
-  if (attributes.id) {
-    ctx.refMap[attributes.id] = { id, label };
-  }
+//   // create and cache incrementing label
+//   if (headingShouldIncrement(attributes)) {
+//     headingCounter.increment(heading.depth);
+//   }
+//   const label = headingCounter.getCounts(heading.depth).join('.');
+//   if (attributes.id) {
+//     ctx.refMap[attributes.id] = { id, label };
+//   }
 
-  if (
-    headingShouldIncrement(attributes) &&
-    headingShouldDisplayCount(heading) &&
-    label !== ''
-  ) {
-    heading.children.unshift(
-      {
-        type: 'text',
-        value: label,
-        data: {
-          hName: 'span',
-          hProperties: {
-            className: ['count'],
-          },
-          hChildren: [
-            {
-              type: 'text',
-              value: `${label}.`,
-            },
-          ],
-        },
-      },
-      {
-        type: 'text',
-        value: ' ',
-      },
-    );
-  }
-}
+//   if (
+//     headingShouldIncrement(attributes) &&
+//     headingShouldDisplayCount(heading) &&
+//     label !== ''
+//   ) {
+//     heading.children.unshift(
+//       {
+//         type: 'text',
+//         value: label,
+//         data: {
+//           hName: 'span',
+//           hProperties: {
+//             className: ['count'],
+//           },
+//           hChildren: [
+//             {
+//               type: 'text',
+//               value: `${label}.`,
+//             },
+//           ],
+//         },
+//       },
+//       {
+//         type: 'text',
+//         value: ' ',
+//       },
+//     );
+//   }
+// }
 
 function transformEnvironment(
   container: ContainerDirective,
@@ -122,7 +123,7 @@ function transformEnvironment(
   ctx: Context,
 ) {
   const name = container.name.trim();
-  if (!boxoutAllowList.includes(name)) {
+  if (!defaultTheorems.find((o) => o.name === name)) {
     return;
   }
 

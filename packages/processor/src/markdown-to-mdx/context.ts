@@ -2,7 +2,7 @@
 //   noEmbedAssetUrl: boolean;
 //   noSyntaxHighlight: boolean;
 // };
-import { Theorems } from '../shared-utils/theorem';
+import { TheoremsYaml } from '../plugins/theorems-proofs/default-theorems';
 
 // export type Context = {
 //   cacheDir: string;
@@ -18,16 +18,16 @@ export type Reference = {
 };
 
 export type Context = {
-  theorems: Theorems;
-  refMap: Record<string, Reference>;
-  hasSidenotes: boolean;
+  theorems: TheoremsYaml;
+  // refMap: Record<string, Reference>;
+  // hasSidenotes: boolean;
 };
 
 export function createContext(): Context {
   return {
     theorems: {},
-    refMap: {},
-    hasSidenotes: false,
+    // refMap: {},
+    // hasSidenotes: false,
     // cacheDir: '',
     // hasSidenotes: false,
     // figureCounter: 0,
