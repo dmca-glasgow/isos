@@ -7,6 +7,7 @@ import {
   gfmAutolinkLiteralHtml,
 } from 'micromark-extension-gfm-autolink-literal';
 import {
+  HtmlOptions,
   gfmFootnote,
   gfmFootnoteHtml,
 } from 'micromark-extension-gfm-footnote';
@@ -25,6 +26,8 @@ import {
   combineHtmlExtensions,
 } from 'micromark-util-combine-extensions';
 
+import { Options } from './index';
+
 /**
  * Create an extension for `micromark` to enable GFM syntax.
  *
@@ -36,7 +39,7 @@ import {
  *   Extension for `micromark` that can be passed in `extensions` to enable GFM
  *   syntax.
  */
-export function gfm(options) {
+export function gfm(options: Options) {
   return combineExtensions([
     gfmAutolinkLiteral(),
     gfmFootnote(),
@@ -57,7 +60,7 @@ export function gfm(options) {
  *   Extension for `micromark` that can be passed in `htmlExtensions` to
  *   support GFM when serializing to HTML.
  */
-export function gfmHtml(options) {
+export function gfmHtml(options: HtmlOptions) {
   return combineHtmlExtensions([
     gfmAutolinkLiteralHtml(),
     gfmFootnoteHtml(options),

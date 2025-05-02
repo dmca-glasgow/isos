@@ -4,7 +4,6 @@ export type HeadingCounter = {
   get: (depth: number) => number;
   getCounts: (depth: number) => number[];
   increment: (depth: number) => void;
-  format: (depth: number) => string;
 };
 
 export function createHeadingCounter(): HeadingCounter {
@@ -28,12 +27,6 @@ export function createHeadingCounter(): HeadingCounter {
         count.fill(0, depth, count.length);
       }
       lastDepth = depth;
-    },
-    format(depth: number) {
-      return count
-        .slice(1, depth)
-        .map((h) => `${h}.`)
-        .join('');
     },
   };
 }

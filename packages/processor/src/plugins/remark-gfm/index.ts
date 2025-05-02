@@ -4,7 +4,7 @@ import type { Options as MicromarkOptions } from 'micromark-extension-gfm';
 import { gfmFromMarkdown, gfmToMarkdown } from './mdast-util-gfm';
 import { gfm } from './micromark-extension-gfm';
 
-interface Options extends MicromarkOptions, MdastOptions {}
+export interface Options extends MicromarkOptions, MdastOptions {}
 
 const emptyOptions: Options = {};
 

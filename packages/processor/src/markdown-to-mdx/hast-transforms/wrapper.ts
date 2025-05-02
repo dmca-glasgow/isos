@@ -6,7 +6,7 @@ export function createWrapper(ctx: Context) {
   return (tree: Root) => {
     const properties: Properties = {};
 
-    if (ctx.hasSidenotes) {
+    if (ctx.hasSideNotes) {
       properties.className = 'has-sidenotes';
     }
 

@@ -6,30 +6,22 @@ import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
 import { TheoremYaml, defaultTheorems } from './default-theorems';
-import { createTheoremCounter } from './theorem-counter';
 
 export function theorems(ctx: Context) {
   return (tree: Root) => {
-    const counter = createTheoremCounter();
-    visit(tree, 'containerDirective', (node: ContainerDirective) => {
+    visit(tree, 'containerDirective', (node) => {
       if (node.name === ' ') {
         if (node.attributes?.id) {
           const [abbr] = node.attributes.id.split('-');
           const theorem = defaultTheorems.find((o) => o.abbr === abbr);
 
           if (theorem) {
-            // const unnumbered = node.attributes.class
-            //   ?.split(' ')
-            //   .find((s) => s === 'unnumbered');
             const ctxTheorem = ctx.theorems[theorem.name];
-            const { referenceCounter, unnumbered } = ctxTheorem;
-            const countRef = referenceCounter || theorem.name;
-            const count = unnumbered ? 0 : counter.increment(countRef);
-            createTheorem(node, count, theorem.name, ctxTheorem);
+            createTheorem(node, theorem.name, ctxTheorem);
           }
         }
         if (node.attributes?.class?.split(' ').includes('proof')) {
-          createTheorem(node, 0, 'proof', ctx.theorems.proof);
+          createTheorem(node, 'proof', ctx.theorems.proof);
         }
       }
     });
@@ -38,15 +30,14 @@ export function theorems(ctx: Context) {
 
 function createTheorem(
   node: ContainerDirective,
-  count: number,
-  name: string,
+  theoremName: string,
   theorem: TheoremYaml,
 ) {
   const properties: Properties = {
-    className: removeDupes([theorem.style || '', name]),
+    className: removeDupes([theorem.style || '', theoremName]),
   };
 
-  if (name !== 'proof' && !theorem.unnumbered) {
+  if (theoremName !== 'proof' && !theorem.unnumbered) {
     // TODO: check label list
     properties.id = node.attributes?.id;
   }
@@ -59,12 +50,8 @@ function createTheorem(
     },
   };
 
-  const label = createTitle(
-    theorem,
-    name,
-    count,
-    node.attributes?.name || '',
-  );
+  const customName = node.attributes?.name || undefined;
+  const label = createTitle(theorem, theoremName, customName);
   const children = createTitleElements(theorem, label);
   const firstP = node.children.find((o) => o.type === 'paragraph');
 
@@ -77,7 +64,7 @@ function createTheorem(
     });
   }
 
-  if (name === 'proof') {
+  if (theoremName === 'proof') {
     createQed(node);
   }
 }
@@ -85,26 +72,49 @@ function createTheorem(
 function createTitle(
   theorem: TheoremYaml,
   theoremName: string,
-  count: number,
-  name: string,
+  name?: string,
 ) {
   if (theoremName === 'proof') {
-    return name || theorem.heading || '';
+    return [
+      {
+        type: 'text',
+        value: name || theorem.heading || '',
+      },
+    ] as PhrasingContent[];
   }
-  const label = name ? `(${name})` : '';
-  return [theorem.heading, count, label].filter(Boolean).join(' ');
+
+  const result: PhrasingContent[] = [
+    {
+      type: 'text',
+      value: theorem.heading || '',
+    },
+    {
+      type: 'text',
+      value: '',
+      data: {
+        hName: 'span',
+        hProperties: {
+          className: ['thm-count', theoremName],
+        },
+        hChildren: [],
+      },
+    },
+  ];
+
+  if (name) {
+    result.push({
+      type: 'text',
+      value: ` (${name})`,
+    });
+  }
+
+  return result;
 }
 
-function removeDupes(arr: string[]) {
-  return arr.reduce((acc: string[], s) => {
-    if (Boolean(s) && !acc.includes(s)) {
-      acc.push(s);
-    }
-    return acc;
-  }, []);
-}
-
-function createTitleElements(theorem: TheoremYaml, label: string) {
+function createTitleElements(
+  theorem: TheoremYaml,
+  label: PhrasingContent[],
+) {
   switch (theorem.style) {
     case 'plain':
     case 'definition':
@@ -116,15 +126,12 @@ function createTitleElements(theorem: TheoremYaml, label: string) {
   }
 }
 
-function createDefinitionTitle(label: string): PhrasingContent[] {
+function createDefinitionTitle(
+  label: PhrasingContent[],
+): PhrasingContent[] {
   const title: PhrasingContent = {
     type: 'strong',
-    children: [
-      {
-        type: 'text',
-        value: label,
-      },
-    ],
+    children: label,
   };
 
   const space: Text = {
@@ -147,15 +154,10 @@ function createDefinitionTitle(label: string): PhrasingContent[] {
   ];
 }
 
-function createRemarkTitle(label: string): PhrasingContent[] {
+function createRemarkTitle(label: PhrasingContent[]): PhrasingContent[] {
   const title: PhrasingContent = {
     type: 'emphasis',
-    children: [
-      {
-        type: 'text',
-        value: label,
-      },
-    ],
+    children: label,
   };
 
   const periodSpace: Text = {
@@ -205,4 +207,13 @@ function createQed(node: ContainerDirective) {
       children: [proofBox],
     });
   }
+}
+
+function removeDupes(arr: string[]) {
+  return arr.reduce((acc: string[], s) => {
+    if (Boolean(s) && !acc.includes(s)) {
+      acc.push(s);
+    }
+    return acc;
+  }, []);
 }

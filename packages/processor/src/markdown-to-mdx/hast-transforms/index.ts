@@ -1,10 +1,12 @@
 import { ProcessorOptions } from '@mdx-js/mdx';
+// import { Root } from 'hast';
 // import { createSvg } from '../utils/icons';
 import { PluggableList } from 'unified';
 
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
+import { addCounts } from '../../plugins/numbered-elements/mdx-hast-add-counts';
 import { Context } from '../context';
 import { Options } from '../options';
 import { createWrapper } from './wrapper';
@@ -50,14 +52,15 @@ export function createRehypePlugins(
 // }
 
 function createRehypeFragmentPlugins(
-  _ctx: Context,
+  ctx: Context,
   _options: Partial<Options> = {},
 ): PluggableList {
   return [
+    [addCounts, ctx],
     // () => (tree: Root) => {
-    //   visit(tree, 'element', (node: Element) => {
-    //     if (node.tagName === 'table') {
-    //       console.dir(node, { depth: null });
+    //   visit(tree, 'element', (node) => {
+    //     if (node.tagName === 'span') {
+    //       console.log(node);
     //     }
     //   });
     // },

@@ -13,7 +13,7 @@ import {
 } from 'mdast-util-gfm-footnote';
 import {
   gfmStrikethroughFromMarkdown,
-  gfmStrikethroughToMarkdown,
+  // gfmStrikethroughToMarkdown,
 } from 'mdast-util-gfm-strikethrough';
 import {
   gfmTableFromMarkdown,
@@ -23,6 +23,8 @@ import {
   gfmTaskListItemFromMarkdown,
   gfmTaskListItemToMarkdown,
 } from 'mdast-util-gfm-task-list-item';
+
+import { Options } from './index';
 
 /**
  * Create an extension for `mdast-util-from-markdown` to enable GFM (autolink
@@ -52,7 +54,7 @@ export function gfmFromMarkdown() {
  *   Extension for `mdast-util-to-markdown` to enable GFM (autolink literals,
  *   footnotes, strikethrough, tables, tasklists).
  */
-export function gfmToMarkdown(options) {
+export function gfmToMarkdown(options: Options) {
   return {
     extensions: [
       gfmAutolinkLiteralToMarkdown(),

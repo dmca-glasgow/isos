@@ -19,15 +19,15 @@ export type Reference = {
 
 export type Context = {
   theorems: TheoremsYaml;
-  // refMap: Record<string, Reference>;
-  // hasSidenotes: boolean;
+  refMap: Record<string, Reference>;
+  hasSideNotes: boolean;
 };
 
 export function createContext(): Context {
   return {
     theorems: {},
-    // refMap: {},
-    // hasSidenotes: false,
+    refMap: {},
+    hasSideNotes: false,
     // cacheDir: '',
     // hasSidenotes: false,
     // figureCounter: 0,

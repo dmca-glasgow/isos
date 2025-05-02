@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { createTheoremCounter } from '../../../../plugins/theorems-proofs/theorem-counter';
+import { createTheoremCounter } from '../theorem-counter';
 
 test('theorem counter', async () => {
   const counter = createTheoremCounter();

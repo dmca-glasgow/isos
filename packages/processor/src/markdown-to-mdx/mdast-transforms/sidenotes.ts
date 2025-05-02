@@ -14,7 +14,7 @@ export function sidenotes(ctx: Context) {
     visit(tree, 'textDirective', (node: TextDirective) => {
       const name = node.name.trim();
       if (name === 'sidenote') {
-        ctx.hasSidenotes = true;
+        ctx.hasSideNotes = true;
         createSideNote(node, ++count);
       }
     });

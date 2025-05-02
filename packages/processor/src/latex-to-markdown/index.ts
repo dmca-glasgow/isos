@@ -9,7 +9,7 @@ import { unified } from 'unified';
 
 import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
 
-import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
+import { createRemarkProcessor } from '../remark-processor';
 import { Options } from './options';
 
 export async function inputToMarkdown(input: string, options: Options) {

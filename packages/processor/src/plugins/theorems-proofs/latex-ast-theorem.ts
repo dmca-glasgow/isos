@@ -1,8 +1,4 @@
-import {
-  Environment,
-  Macro,
-  String,
-} from '@unified-latex/unified-latex-types';
+import { Environment, Macro } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
 import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
@@ -12,7 +8,7 @@ import { defaultTheorems } from './default-theorems';
 
 type Handlers = Record<string, (node: Environment) => Macro>;
 
-export function createTheoremHandlers(ctx: Context) {
+export function createTheoremHandlers(_ctx: Context) {
   // console.log(ctx);
   return defaultTheorems.reduce((acc: Handlers, theorem) => {
     acc[theorem.name] = createTheorem;

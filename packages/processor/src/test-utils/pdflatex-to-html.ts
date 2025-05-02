@@ -1,4 +1,4 @@
-import { Element, Node, Parent, Root } from 'hast';
+import { Root } from 'hast';
 import * as mupdf from 'mupdf';
 import latex from 'node-latex';
 // import { exec } from 'node:child_process';

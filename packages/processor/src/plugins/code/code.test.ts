@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { unindentStringAndTrim } from '../test-utils/unindent-string';
-import { testProcessor } from '../test-utils/unit-test-processor';
+import { unindentStringAndTrim } from '../../test-utils/unindent-string';
+import { testProcessor } from '../../test-utils/unit-test-processor';
 
 test('verb to inline code', async () => {
   const markdown = await testProcessor.latex(

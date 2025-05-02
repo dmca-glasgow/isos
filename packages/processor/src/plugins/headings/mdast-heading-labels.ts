@@ -1,10 +1,11 @@
+import { Root, Text } from 'mdast';
+import { visit } from 'unist-util-visit';
+
 import {
   hasAttributes,
   parseAttributes,
   serialiseAttributes,
-} from '../../shared-utils/parse-heading-attributes';
-import { Root, Text } from 'mdast';
-import { visit } from 'unist-util-visit';
+} from './parse-heading-attributes';
 
 export function headingLabels() {
   return (tree: Root) => {

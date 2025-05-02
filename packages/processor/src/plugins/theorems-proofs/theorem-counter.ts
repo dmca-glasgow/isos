@@ -3,6 +3,8 @@ type Store = Record<string, number>;
 export type TheoremCounter = {
   get: (key: string) => number;
   increment: (key: string) => number;
+  reset: (key: string) => void;
+  log: () => Store;
 };
 
 export function createTheoremCounter(): TheoremCounter {
@@ -15,6 +17,13 @@ export function createTheoremCounter(): TheoremCounter {
       const value = (store[key] || 0) + 1;
       store[key] = value;
       return value;
+    },
+    reset(key: string) {
+      store[key] = 0;
+    },
+    log() {
+      console.log(store);
+      return store;
     },
   };
 }

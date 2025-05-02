@@ -4,21 +4,15 @@ import { Heading, PhrasingContent } from 'mdast';
 
 export function createHeadings(state: State, node: Element): Heading {
   const type = 'heading';
-  // console.log(node);
   const classNames = getClassNames(node);
   const depth = getAdjustedDepth(node, classNames);
   const children = state.all(node) as PhrasingContent[];
 
   if (classNames.includes('starred')) {
-    const lastChild = children[children.length - 1];
-    if (lastChild.type === 'text') {
-      lastChild.value += ' {.starred}';
-    } else {
-      children.push({
-        type: 'text',
-        value: ' {.starred}',
-      });
-    }
+    children.push({
+      type: 'text',
+      value: ' {.unnumbered}',
+    });
   }
 
   return { type, depth, children };

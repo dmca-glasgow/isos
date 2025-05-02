@@ -5,7 +5,7 @@ import { visit } from 'unist-util-visit';
 const MIN_HEADING_DEPTH = 1;
 const MAX_HEADING_DEPTH = 6;
 
-export function sectionize() {
+export function headingSections() {
   return (tree: Root) => {
     for (
       let depth = MAX_HEADING_DEPTH;

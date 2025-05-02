@@ -1,7 +1,7 @@
 import { createProcessor, run } from '@mdx-js/mdx';
 import { Root } from 'mdast';
 
-import { createRemarkProcessor } from '../shared-utils/remark-pipeline';
+import { createRemarkProcessor } from '../remark-processor';
 import { processorOptions } from './hast-transforms';
 import { Options } from './options';
 import { createTableOfContents } from './sidebar';
