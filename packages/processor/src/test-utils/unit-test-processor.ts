@@ -8,7 +8,10 @@ import {
   createContext,
   createTestContext,
 } from '../latex-to-markdown/context';
-import { createDefaultOptions } from '../latex-to-markdown/options';
+import {
+  Options,
+  createDefaultOptions,
+} from '../latex-to-markdown/options';
 import { createContext as createHtmlContext } from '../markdown-to-mdx/context';
 import { createDefaultOptions as createHtmlOptions } from '../markdown-to-mdx/options';
 // import { Options } from '../markdown-to-mdx';
@@ -17,6 +20,7 @@ import { unindentStringAndTrim } from './unindent-string';
 export const testProcessor = {
   latex: latexToMarkdown,
   md: markdownToHtml,
+  mdToMd: markdownToMarkdown,
   fixture: fixtureToMarkdown,
 };
 
@@ -57,10 +61,24 @@ async function markdownToHtml(md: string) {
   return formatHtml(renderToString(element));
 }
 
-async function fixtureToMarkdown(fixturePath: string) {
-  const __dirname = import.meta.dirname;
-  const filePath = resolve(__dirname, '../../fixtures', fixturePath);
-  const ctx = await createContext(filePath);
+async function markdownToMarkdown(md: string) {
+  const prepared = unindentStringAndTrim(md);
+  const ctx = createTestContext('markdown', prepared);
   const options = createDefaultOptions(ctx, testOptions);
   return inputToMarkdown(ctx.content, options);
+}
+
+async function fixtureToMarkdown(
+  fixturePath: string,
+  options?: Partial<Options>,
+) {
+  const filePath = getAbsoluteFixturePath(fixturePath);
+  const ctx = await createContext(filePath);
+  const opts = createDefaultOptions(ctx, { ...testOptions, ...options });
+  return inputToMarkdown(ctx.content, opts);
+}
+
+function getAbsoluteFixturePath(fixturePath: string) {
+  const __dirname = import.meta.dirname;
+  return resolve(__dirname, '../../fixtures', fixturePath);
 }

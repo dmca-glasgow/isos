@@ -4,10 +4,7 @@ import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
-import {
-  hasAttributes,
-  parseAttributes,
-} from './parse-heading-attributes';
+import { hasAttributes, parseAttributes } from '../../parse-attributes';
 
 export function headings(_ctx: Context) {
   return (tree: Root) => {

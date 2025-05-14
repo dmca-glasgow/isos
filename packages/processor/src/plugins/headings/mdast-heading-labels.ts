@@ -5,7 +5,7 @@ import {
   hasAttributes,
   parseAttributes,
   serialiseAttributes,
-} from './parse-heading-attributes';
+} from '../../parse-attributes';
 
 export function headingLabels() {
   return (tree: Root) => {

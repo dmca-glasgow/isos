@@ -14,21 +14,38 @@ import { Options } from './options';
 
 export async function inputToMarkdown(input: string, options: Options) {
   const mdAst = await getMdAst(input, options);
+  // console.dir(mdAst, { depth: null });
   const processor = createRemarkProcessor(options.input.mdAstTransforms);
   const transformed = await processor.run(mdAst);
   // console.dir(transformed, { depth: null });
-  return processor.stringify(transformed as MDastRoot).trim();
+  const markdown = processor.stringify(transformed as MDastRoot);
+  return markdownStringTransforms(
+    markdown,
+    options.markdownStringTransforms,
+  ).trim();
 }
 
 function getMdAst(input: string, options: Options) {
   switch (options.type) {
     case 'markdown':
-      return createRemarkProcessor().parse(input);
+      return markdownToMdAstProcessor(
+        input,
+        options.input.markdownStringTransforms,
+      );
     case 'latex':
       return latexToMdAstProcessor(input, options.latexToMdAst);
     default:
       throw new Error(`file type : "${options.type}" is not supported`);
   }
+}
+
+async function markdownToMdAstProcessor(
+  input: string,
+  transforms: Options['input']['markdownStringTransforms'],
+) {
+  const markdown = markdownStringTransforms(input, transforms);
+  // console.log(markdown);
+  return createRemarkProcessor().parse(markdown);
 }
 
 export async function latexToMdAstProcessor(
@@ -70,4 +87,11 @@ export async function latexToMdAstProcessor(
   // console.dir(mdAst, { depth: null });
 
   return mdAst as MDastRoot;
+}
+
+function markdownStringTransforms(
+  markdown: string,
+  transforms: Options['markdownStringTransforms'],
+) {
+  return transforms.reduce((acc, fn) => fn(acc), markdown);
 }

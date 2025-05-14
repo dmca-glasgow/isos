@@ -5,6 +5,11 @@ import { PluggableList } from 'unified';
 
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
+import {
+  altToCaptionAttribute,
+  captionAttributeToAlt,
+} from '../plugins/images/formatted-caption';
+import { imageToPandocFigure } from '../plugins/images/image-to-pandoc-figure';
 import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
@@ -21,7 +26,7 @@ export type Options = {
   noInlineImages: boolean;
   input: {
     latexStringTransforms: Array<(latex: string) => string>;
-    markdownStringTransforms: Array<(latex: string) => string>;
+    markdownStringTransforms: Array<(markdown: string) => string>;
     mdAstTransforms: PluggableList;
   };
   latexToMdAst: {
@@ -32,6 +37,7 @@ export type Options = {
     htmlAstToMdAstOptions: HtmlConvertOptions;
     mdAstTransforms: PluggableList;
   };
+  markdownStringTransforms: Array<(markdown: string) => string>;
 };
 
 export function createDefaultOptions(
@@ -48,7 +54,7 @@ export function createDefaultOptions(
       //   (str) => `${str}.jpg`
       // ],
       latexStringTransforms: [],
-      markdownStringTransforms: [],
+      markdownStringTransforms: [altToCaptionAttribute],
       mdAstTransforms: createMdastTransforms(ctx, { noInlineImages }),
     },
     latexToMdAst: {
@@ -75,6 +81,7 @@ export function createDefaultOptions(
       },
       mdAstTransforms: createLatexMdAstTransforms(ctx),
     },
+    markdownStringTransforms: [captionAttributeToAlt],
   };
 }
 
@@ -89,5 +96,5 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
 }
 
 function createLatexMdAstTransforms(ctx: Context): PluggableList {
-  return [[addFrontmatter, ctx], formatBreak];
+  return [[addFrontmatter, ctx], formatBreak, imageToPandocFigure];
 }

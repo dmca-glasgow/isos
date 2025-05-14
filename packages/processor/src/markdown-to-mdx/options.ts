@@ -1,6 +1,7 @@
 import { RunOptions } from '@mdx-js/mdx';
 import { PluggableList } from 'unified';
 
+import { altToCaptionAttribute } from '../plugins/images/formatted-caption';
 import { Context } from './context';
 import { createRehypePlugins } from './hast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
@@ -10,7 +11,7 @@ import { MdxState } from './mdx-handlers/mdx-state';
 export type Options = {
   noWrapper: boolean;
   noSections: boolean;
-  markdownStringTransforms: Array<(latex: string) => string>;
+  markdownStringTransforms: Array<(markdown: string) => string>;
   mdAstTransforms: PluggableList;
   htmlAstTransforms: PluggableList;
   mdxArticleRunOptions: RunOptions;
@@ -36,7 +37,7 @@ export function createDefaultOptions(
     //   (str) => `${str}2`,
     //   (str) => `${str}.jpg`
     // ],
-    markdownStringTransforms: [],
+    markdownStringTransforms: [altToCaptionAttribute],
     mdAstTransforms: createMdastTransforms(ctx, { noSections }),
     htmlAstTransforms: createRehypePlugins(ctx, { noWrapper }),
     mdxArticleRunOptions: createRunOptions(mdxState),

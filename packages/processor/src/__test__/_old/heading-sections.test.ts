@@ -38,7 +38,7 @@ test('framed environment', async () => {
     \\end{framed}
   `);
 
-  // console.log(markdown);ß
+  // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::::framed

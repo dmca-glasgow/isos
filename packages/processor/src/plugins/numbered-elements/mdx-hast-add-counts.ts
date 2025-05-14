@@ -34,9 +34,8 @@ export function addCounts(ctx: Context) {
               if (headingDepth < 2 || headingDepth > 4) {
                 Object.assign(node, { type: 'text', value: '' });
               } else {
-                const value = formatCount(
-                  headingCounter.getCounts(headingDepth),
-                );
+                const counts = headingCounter.getCounts(headingDepth);
+                const value = formatCount(counts);
                 Object.assign(node, {
                   properties: {
                     className: 'count',

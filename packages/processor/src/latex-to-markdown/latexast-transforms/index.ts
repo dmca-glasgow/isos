@@ -1,6 +1,7 @@
 import { PluggableList } from 'unified';
 
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
+import { figureCaptionToImageTitle } from '../../plugins/images/figure-caption-to-image-title';
 // import { insertParbreaksAroundBlockElements } from './block-elements';
 // import { expandDocumentMacrosPlugin } from './expand-macros';
 // import { expandMathOperatorPlugin } from './expand-math-ops';
@@ -13,6 +14,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
     trimVerbatim,
     replaceTildeWithSpace,
+    figureCaptionToImageTitle,
     [extractTheoremDefinitions, ctx],
     // expandDocumentMacrosPlugin,
     // expandMathOperatorPlugin,

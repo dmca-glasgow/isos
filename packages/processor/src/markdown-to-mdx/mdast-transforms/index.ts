@@ -4,6 +4,8 @@ import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { headingSections } from '../../plugins/headings/heading-sections';
 import { headings } from '../../plugins/headings/mdx-headings';
+import { imageAttributes } from '../../plugins/images/image-attributes';
+import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
 import atReferences from '../../plugins/reference';
 import { theorems } from '../../plugins/theorems-proofs/mdx-theorems';
 import { Context } from '../context';
@@ -37,6 +39,8 @@ export function createMdastTransforms(
     dashesToEndashEmdash,
     inlineCodeHighlight,
     [theorems, ctx],
+    imageAttributes,
+    pandocImplicitFigures,
 
     // fancyTitle,
     // [references, ctx],

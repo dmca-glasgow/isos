@@ -34,11 +34,13 @@ export function parseAttributes(attributeStr: string): ParsedAttributes {
   const attributes = match[2].split(' ').reduce((acc: Attributes, str) => {
     if (str.startsWith('#')) {
       acc.id = str.slice(1);
-    }
-    if (str.startsWith('.')) {
+    } else if (str.startsWith('.')) {
       const classes = str.slice(1).split('.');
       acc.classes.push(...classes);
+    } else {
+      console.log(str);
     }
+
     return acc;
   }, defaultAttributes);
 

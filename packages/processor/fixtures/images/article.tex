@@ -1,15 +1,24 @@
-\documentclass[a4paper]{article}
+\documentclass{article}
 \usepackage{graphicx}
 
 \begin{document}
 
 \begin{figure}
-\centering
-\includegraphics[alt={Alternative text}]{./figs/Ex2-2-13reflection.png}
-\caption{My caption}
-\label{fig:myimage}
+  \includegraphics[alt={My \textbf{SVG} alt text}]{image.pdf}
+  \caption{My \textbf{SVG} caption}
 \end{figure}
 
-As you can see in the figure \ref{fig:myimage}
+a
 
 \begin{figure}
+  \includegraphics[alt={my PNG alt text}]{image.png}
+  \caption{My PNG caption}
+\end{figure}
+
+b
+
+\begin{figure}
+  \includegraphics[alt={my JPEG alt text}]{image.jpg}
+  \caption{My JPEG caption}
+\end{figure}
+\end{document}

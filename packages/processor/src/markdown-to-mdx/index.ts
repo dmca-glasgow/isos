@@ -6,10 +6,11 @@ import { processorOptions } from './hast-transforms';
 import { Options } from './options';
 import { createTableOfContents } from './sidebar';
 
-export async function markdownToArticle(
-  markdown: string,
-  options: Options,
-) {
+export async function markdownToArticle(md: string, options: Options) {
+  const markdown = markdownStringTransforms(
+    md,
+    options.markdownStringTransforms,
+  );
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
   // console.dir(mdAst, { depth: null });
@@ -45,4 +46,11 @@ export async function markdownToTOC(markdown: string, _options: Options) {
   // console.dir(transformed, { depth: null });
 
   return run(jsString, options.mdxTOCRunOptions);
+}
+
+function markdownStringTransforms(
+  markdown: string,
+  transforms: Options['markdownStringTransforms'],
+) {
+  return transforms.reduce((acc, fn) => fn(acc), markdown);
 }

@@ -6,6 +6,7 @@ import { PluggableList } from 'unified';
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
+import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addCounts } from '../../plugins/numbered-elements/mdx-hast-add-counts';
 import { Context } from '../context';
 import { Options } from '../options';
@@ -57,10 +58,14 @@ function createRehypeFragmentPlugins(
 ): PluggableList {
   return [
     [addCounts, ctx],
+    addDefaultAltText,
     // () => (tree: Root) => {
+    //   // console.dir(tree, { depth: null });
     //   visit(tree, 'element', (node) => {
-    //     if (node.tagName === 'span') {
-    //       console.log(node);
+    //     if (node.tagName === 'img') {
+    //       if (node.properties.alt === '') {
+    //         node.properties.alt = 'image';
+    //       }
     //     }
     //   });
     // },
