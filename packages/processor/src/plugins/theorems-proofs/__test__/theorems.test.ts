@@ -109,9 +109,10 @@ test('theorem with id', async () => {
   const latex = unindentStringAndTrim(String.raw`
     \documentclass{article}
     \usepackage{amsthm}
-    \theoremstyle{definition}
     \usepackage{hyperref}
     \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+    \theoremstyle{definition}
     \newtheorem{theorem}{Theorem}
     \begin{document}
 

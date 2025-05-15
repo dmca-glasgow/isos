@@ -6,7 +6,6 @@ import { headingSections } from '../../plugins/headings/heading-sections';
 import { headings } from '../../plugins/headings/mdx-headings';
 import { imageAttributes } from '../../plugins/images/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
-import atReferences from '../../plugins/reference';
 import { theorems } from '../../plugins/theorems-proofs/mdx-theorems';
 import { Context } from '../context';
 import { Options } from '../options';
@@ -24,18 +23,15 @@ export function createMdastTransforms(
   options: Pick<Options, 'noSections'>,
 ): PluggableList {
   const plugins: PluggableList = [
-    // headingSections depends on this
-    [headings, ctx],
+    [headings, ctx], // headingSections depends on this
   ];
 
   if (options.noSections === false) {
-    // theorems depends on this
-    plugins.push(headingSections);
+    plugins.push(headingSections); // theorems depends on this
   }
 
   plugins.push(
     [extractFrontmatter, ctx],
-    atReferences,
     dashesToEndashEmdash,
     inlineCodeHighlight,
     [theorems, ctx],

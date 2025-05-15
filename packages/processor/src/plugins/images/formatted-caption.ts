@@ -7,6 +7,7 @@ export function altToCaptionAttribute(markdown: string) {
     .split('\n')
     .map((line) => {
       const match = line.match(/^!\[(.+)\]\((.+)\)([^`]*?)\s*$/);
+      // console.log(match);
       if (match !== null) {
         const caption = match[1];
         const url = match[2];
@@ -24,7 +25,8 @@ export function captionAttributeToAlt(markdown: string) {
   return markdown
     .split('\n')
     .map((line) => {
-      const match = line.match(/^!\[(.*)\]\((.+)\)`(.*)`/);
+      // console.log(line);
+      const match = line.match(/^!\[(.*)\]\((.+)\)`(.*)`(.*)/);
       if (match !== null) {
         const { caption, ...attrs } = parseAttr(match[3]).prop;
 
@@ -36,6 +38,11 @@ export function captionAttributeToAlt(markdown: string) {
           delete attrs['fig-alt'];
         }
 
+        const id = extractId(match[4]);
+        if (id !== null) {
+          attrs.id = id;
+        }
+
         const attributes = serialiseAttributes(attrs);
 
         const url = match[2];
@@ -44,6 +51,11 @@ export function captionAttributeToAlt(markdown: string) {
       return line;
     })
     .join('\n');
+}
+
+function extractId(rest: string) {
+  const match = rest.match(/:label\[(.+)\]/);
+  return match === null ? null : match[1];
 }
 
 export function serialiseAttributes(attributes: Record<string, string>) {

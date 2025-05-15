@@ -11,22 +11,21 @@ export function imageToPandocFigure() {
   return (tree: Root) => {
     // console.log('imageToPandocFigure');
     // console.dir(tree, { depth: null });
-    visit(tree, 'image', (node, _idx, parent) => {
+    visit(tree, 'image', (node, idx, parent) => {
       const children = parent?.children || [];
-      if (children.length === 1) {
-        const attrs: Record<string, string> = {
-          alt: getText(node.alt),
-          caption: node.title || '',
-        };
-        const attributes = serialiseAttributes(attrs);
-        if (attributes) {
-          children.push({
-            type: 'inlineCode',
-            value: attributes,
-          });
-          node.alt = null;
-          node.title = null;
-        }
+      const attrs: Record<string, string> = {
+        alt: getText(node.alt),
+        caption: node.title || '',
+      };
+      const attributes = serialiseAttributes(attrs);
+      if (attributes) {
+        const nextIdx = (idx || 0) + 1;
+        children.splice(nextIdx, 0, {
+          type: 'inlineCode',
+          value: attributes,
+        });
+        node.alt = null;
+        node.title = null;
       }
     });
     // console.dir(tree, { depth: null });

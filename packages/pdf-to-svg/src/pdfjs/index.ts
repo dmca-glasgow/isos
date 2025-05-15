@@ -9,21 +9,6 @@ import { visit } from 'unist-util-visit';
 // @ts-expect-error
 import { Element, Image, document } from './domstubs';
 
-// https://github.com/mozilla/pdf.js/releases/tag/v2.14.305
-// These files bring in pdfjs-dist@2.14.305 which is the
-// last version of pdfjs I've found that can convert PDF
-// graphics to SVGs in Node.js (canvas is supported and SVG
-// was removed).  Perhaps canvas and/or png conversion
-// should be explored.
-
-// https://bundlephobia.com/package/pdfjs-dist@2.14.305
-// This solution while more awkward is 227.3kB minfied,
-// mupdf's .wasm file is over 10MB (unminified).
-
-// Since this will never be necessary in the runtime bundle,
-// perhaps the large bundle size doesn't matter, but trying
-// it out to find it's limitations before adopting MuPDF.
-
 const pdfjsLib = SandboxedModule.require('./pdf', {
   globals: {
     document,

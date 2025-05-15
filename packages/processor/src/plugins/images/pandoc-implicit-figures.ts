@@ -5,8 +5,6 @@ import { visit } from 'unist-util-visit';
 
 import { createRemarkProcessor } from '../../remark-processor';
 
-const processor = createRemarkProcessor([remarkRehype]);
-
 export function pandocImplicitFigures() {
   return (tree: Root) => {
     // console.log('pandocImplicitFigures');
@@ -16,7 +14,9 @@ export function pandocImplicitFigures() {
         return;
       }
 
-      const caption = node.data?.hProperties?.['data-caption'] || '';
+      const props = node.data?.hProperties || {};
+      const id = props['id'] || null;
+      const caption = props['data-caption'] || '';
 
       if (!caption) {
         return;
@@ -29,6 +29,7 @@ export function pandocImplicitFigures() {
         hProperties: {
           src: null,
           alt: null,
+          id,
         },
         hChildren: [
           {
@@ -53,7 +54,20 @@ export function pandocImplicitFigures() {
                 children: [
                   {
                     type: 'text',
-                    value: 'Figure 1:', // TODO figure counter
+                    value: 'Figure',
+                  },
+                  {
+                    type: 'element',
+                    tagName: 'span',
+                    properties: {
+                      className: ['fig-count', 'figure'],
+                      ['data-id']: id,
+                    },
+                    children: [],
+                  },
+                  {
+                    type: 'text',
+                    value: ':',
                   },
                 ],
               },
@@ -69,6 +83,8 @@ export function pandocImplicitFigures() {
     });
   };
 }
+
+const processor = createRemarkProcessor([remarkRehype]);
 
 function getCaptionHast(caption: string) {
   const parsed = processor.parse(String(caption));

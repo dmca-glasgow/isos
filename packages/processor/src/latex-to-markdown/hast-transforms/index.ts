@@ -2,8 +2,9 @@ import { PluggableList } from 'unified';
 
 import { mintInlineToCode } from '../../plugins/code/mint-inline-to-code';
 import { endashEmdashToDashes } from '../../plugins/endash-emdash';
+import { figureToP } from '../../plugins/images/figure-to-p';
 import { Context } from '../context';
 
 export function createHastTransforms(_ctx: Context): PluggableList {
-  return [endashEmdashToDashes, mintInlineToCode];
+  return [endashEmdashToDashes, mintInlineToCode, figureToP];
 }

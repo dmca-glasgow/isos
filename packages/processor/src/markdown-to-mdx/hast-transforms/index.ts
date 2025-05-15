@@ -8,6 +8,7 @@ import { PluggableList } from 'unified';
 import { defListHastHandlers } from '../../plugins/definition-list';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addCounts } from '../../plugins/numbered-elements/mdx-hast-add-counts';
+import atReferenceToLink from '../../plugins/references/at-reference-to-link';
 import { Context } from '../context';
 import { Options } from '../options';
 import { createWrapper } from './wrapper';
@@ -58,7 +59,9 @@ function createRehypeFragmentPlugins(
 ): PluggableList {
   return [
     [addCounts, ctx],
+    [atReferenceToLink, ctx], // depends on addCounts
     addDefaultAltText,
+
     // () => (tree: Root) => {
     //   // console.dir(tree, { depth: null });
     //   visit(tree, 'element', (node) => {

@@ -24,6 +24,8 @@ export function addCounts(ctx: Context) {
 
         if (Array.isArray(className)) {
           if (className[0] === 'heading-count') {
+            // Count headings
+
             if (className.includes('unnumbered')) {
               Object.assign(node, { type: 'text', value: '' });
             } else {
@@ -36,11 +38,19 @@ export function addCounts(ctx: Context) {
               } else {
                 const counts = headingCounter.getCounts(headingDepth);
                 const value = formatCount(counts);
+
+                const _id = node.properties['data-id'];
+                if (_id) {
+                  const id = String(_id);
+                  const label = `Section ${value}`;
+                  ctx.refMap[id] = { id, label };
+                }
+
                 Object.assign(node, {
                   properties: {
                     className: 'count',
                   },
-                  children: [{ type: 'text', value: value }],
+                  children: [{ type: 'text', value }],
                 });
 
                 // add space after span.count
@@ -55,7 +65,12 @@ export function addCounts(ctx: Context) {
             }
           }
 
-          if (className[0] === 'thm-count') {
+          if (
+            className[0] === 'thm-count' ||
+            className[0] === 'fig-count'
+          ) {
+            // Count theorems
+
             const theoremName = String(className[1]);
             const ctxTheorem = ctx.theorems[theoremName];
 
@@ -66,10 +81,10 @@ export function addCounts(ctx: Context) {
               if (!unnumbered) {
                 const countName = referenceCounter || theoremName;
                 const countTheorem = ctx.theorems[countName];
+                const { numberWithin } = countTheorem;
                 const counts: number[] = [];
 
-                if (countTheorem?.numberWithin) {
-                  const { numberWithin } = countTheorem;
+                if (numberWithin) {
                   const depth = latexSectionToDepth(numberWithin);
 
                   if (newSection && depth >= headingDepth) {
@@ -79,11 +94,31 @@ export function addCounts(ctx: Context) {
 
                   const count = theoremCounter.increment(countName);
                   counts.push(...headingCounter.getCounts(depth), count);
+
+                  // TODO: counterWithin will be prioritised later
+                  // } else if (counterWithin) {
+                  //   const depth = latexSectionToDepth(counterWithin);
+
+                  //   if (newSection && depth >= headingDepth) {
+                  //     theoremCounter.reset(countName);
+                  //     newSection = false;
+                  //   }
+
+                  //   const count = theoremCounter.increment(countName);
+                  //   counts.push(...headingCounter.getCounts(depth), count);
                 } else {
                   counts.push(theoremCounter.increment(countName));
                 }
 
-                value = ` ${formatCount(counts)}`;
+                const count = formatCount(counts);
+                value = ` ${count}`;
+
+                const _id = node.properties['data-id'];
+                if (_id) {
+                  const id = String(_id);
+                  const label = `${ctxTheorem.heading} ${count}`;
+                  ctx.refMap[id] = { id, label };
+                }
               }
 
               Object.assign(node, { type: 'text', value });

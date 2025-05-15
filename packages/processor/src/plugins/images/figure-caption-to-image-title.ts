@@ -18,6 +18,7 @@ export function figureCaptionToImageTitle() {
             const text = extractCaptionText(caption);
 
             const args = img.args || [];
+            // console.dir(args, { depth: null });
             if (args[1]) {
               args[1].content.push({
                 type: 'string',

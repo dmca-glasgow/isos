@@ -19,10 +19,12 @@ export function headings(_ctx: Context) {
 }
 
 function transformHeading(heading: Heading, slugger: GithubSlugger) {
+  // console.log(heading);
   const childrenText = heading.children.filter(
     (o) => o.type !== 'textDirective',
   );
   const { text, attributes } = parseAttributes(toString(childrenText));
+  // console.log({ text, attributes });
   const id = slugger.slug(attributes.id || text);
   const className = getClassNames(heading);
 
@@ -48,6 +50,7 @@ function transformHeading(heading: Heading, slugger: GithubSlugger) {
           `depth-${heading.depth}`,
           ...attributes.classes,
         ],
+        ['data-id']: attributes.id || null,
       },
       hChildren: [
         {

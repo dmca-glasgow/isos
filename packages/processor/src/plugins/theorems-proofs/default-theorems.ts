@@ -3,9 +3,10 @@
 export type Theorem = {
   name: string;
   heading: string;
-  style: 'plain' | 'definition' | 'remark';
+  style?: 'plain' | 'definition' | 'remark';
   abbr?: string;
   numberWithin?: string;
+  counterWithin?: string;
   referenceCounter?: string;
   unnumbered?: boolean;
 };
@@ -85,6 +86,14 @@ export const defaultTheorems: Theorem[] = [
     name: 'proof',
     heading: 'Proof',
     style: 'remark',
+  },
+
+  // Not theorems, but have similar counter and ref support
+  {
+    name: 'figure',
+    heading: 'Figure',
+    abbr: 'fig',
+    unnumbered: false,
   },
 ];
 

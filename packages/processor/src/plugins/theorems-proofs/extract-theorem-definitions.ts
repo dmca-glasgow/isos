@@ -33,6 +33,23 @@ export function extractTheoremDefinitions(ctx: Context) {
           },
         };
       }
+
+      if (node.type === 'macro' && node.content === 'counterwithin') {
+        const args = getArgsContent(node);
+        if (args[0] !== null && args[1] !== null) {
+          const [name] = args[0];
+          const [counterWithin] = args[1];
+          if (name.type === 'string' && counterWithin.type === 'string') {
+            theorems = {
+              ...theorems,
+              [name.content]: {
+                ...(theorems[name.content] || {}),
+                counterWithin: counterWithin.content,
+              },
+            };
+          }
+        }
+      }
     });
     ctx.frontmatter.theorems = theorems;
   };

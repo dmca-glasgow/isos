@@ -11,13 +11,14 @@ export function theorems(ctx: Context) {
   return (tree: Root) => {
     visit(tree, 'containerDirective', (node) => {
       if (node.name === ' ') {
-        if (node.attributes?.id) {
-          const [abbr] = node.attributes.id.split('-');
+        const id = node.attributes?.id;
+        if (id) {
+          const [abbr] = id.split('-');
           const theorem = defaultTheorems.find((o) => o.abbr === abbr);
 
           if (theorem) {
             const ctxTheorem = ctx.theorems[theorem.name];
-            createTheorem(node, theorem.name, ctxTheorem);
+            createTheorem(node, theorem.name, ctxTheorem, id);
           }
         }
         if (node.attributes?.class?.split(' ').includes('proof')) {
@@ -32,6 +33,7 @@ function createTheorem(
   node: ContainerDirective,
   theoremName: string,
   theorem: TheoremYaml,
+  id?: string,
 ) {
   const properties: Properties = {
     className: removeDupes([theorem.style || '', theoremName]),
@@ -51,7 +53,7 @@ function createTheorem(
   };
 
   const customName = node.attributes?.name || undefined;
-  const label = createTitle(theorem, theoremName, customName);
+  const label = createTitle(theorem, theoremName, customName, id);
   const children = createTitleElements(theorem, label);
   const firstP = node.children.find((o) => o.type === 'paragraph');
 
@@ -73,6 +75,7 @@ function createTitle(
   theorem: TheoremYaml,
   theoremName: string,
   name?: string,
+  id?: string,
 ) {
   if (theoremName === 'proof') {
     return [
@@ -95,6 +98,7 @@ function createTitle(
         hName: 'span',
         hProperties: {
           className: ['thm-count', theoremName],
+          ['data-id']: id || null,
         },
         hChildren: [],
       },
