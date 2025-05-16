@@ -28,7 +28,7 @@ test('inline images', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ![My **SVG** caption](data\\:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTQuMzI1IDE0LjMyNSI+PHBhdGggZmlsbD0icmVkIiBkPSJNNy41IDBjNC4xNDEgMCA2LjgyNCAzLjM1OSA2LjgyNCA3LjVzLTIuNjgzIDYuODI0LTYuODI0IDYuODI0UzAgMTEuNjQxIDAgNy41IDMuMzU5IDAgNy41IDBtMCAwIj48L3BhdGg+PC9zdmc+){alt="My SVG alt text"}
+    ![My **SVG** caption](data\\:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNC4zMjUgMTQuMzI1Ij48ZGVmcz48L2RlZnM+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMCAxNC4zMjUpIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAwIDE0LjMyNSkiPjxwYXRoIGQ9Ik0gNy41IDAgQyAxMS42NDEgMCAxNC4zMjQgMy4zNTkgMTQuMzI0IDcuNSBDIDE0LjMyNCAxMS42NDEgMTEuNjQxIDE0LjMyNCA3LjUgMTQuMzI0IEMgMy4zNTkgMTQuMzI0IDAgMTEuNjQxIDAgNy41IEMgMCAzLjM1OSAzLjM1OSAwIDcuNSAwIFogTSA3LjUgMCIgZmlsbD0iI2ZmMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3BhdGg+PC9nPjwvZz48L3N2Zz4=){alt="My SVG alt text"}
 
     a
 
@@ -45,7 +45,7 @@ test('inline images', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure><img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTQuMzI1IDE0LjMyNSI+PHBhdGggZmlsbD0icmVkIiBkPSJNNy41IDBjNC4xNDEgMCA2LjgyNCAzLjM1OSA2LjgyNCA3LjVzLTIuNjgzIDYuODI0LTYuODI0IDYuODI0UzAgMTEuNjQxIDAgNy41IDMuMzU5IDAgNy41IDBtMCAwIj48L3BhdGg+PC9zdmc+" alt="My SVG alt text" />
+    <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNC4zMjUgMTQuMzI1Ij48ZGVmcz48L2RlZnM+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMCAxNC4zMjUpIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAwIDE0LjMyNSkiPjxwYXRoIGQ9Ik0gNy41IDAgQyAxMS42NDEgMCAxNC4zMjQgMy4zNTkgMTQuMzI0IDcuNSBDIDE0LjMyNCAxMS42NDEgMTEuNjQxIDE0LjMyNCA3LjUgMTQuMzI0IEMgMy4zNTkgMTQuMzI0IDAgMTEuNjQxIDAgNy41IEMgMCAzLjM1OSAzLjM1OSAwIDcuNSAwIFogTSA3LjUgMCIgZmlsbD0iI2ZmMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3BhdGg+PC9nPjwvZz48L3N2Zz4=" alt="My SVG alt text" />
       <figcaption><strong>Figure 1:</strong> My <strong>SVG</strong> caption</figcaption>
     </figure>
     <p>a</p>

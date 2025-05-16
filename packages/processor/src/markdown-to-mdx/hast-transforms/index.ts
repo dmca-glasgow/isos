@@ -63,14 +63,14 @@ function createRehypeFragmentPlugins(
     addDefaultAltText,
 
     // () => (tree: Root) => {
-    //   // console.dir(tree, { depth: null });
-    //   visit(tree, 'element', (node) => {
-    //     if (node.tagName === 'img') {
-    //       if (node.properties.alt === '') {
-    //         node.properties.alt = 'image';
-    //       }
-    //     }
-    //   });
+    //   console.dir(tree, { depth: null });
+    //   // visit(tree, 'element', (node) => {
+    //   //   if (node.tagName === 'img') {
+    //   //     if (node.properties.alt === '') {
+    //   //       node.properties.alt = 'image';
+    //   //     }
+    //   //   }
+    //   // });
     // },
     // TODO:
     // [

@@ -19,6 +19,7 @@ export async function inputToMarkdown(input: string, options: Options) {
   const transformed = await processor.run(mdAst);
   // console.dir(transformed, { depth: null });
   const markdown = processor.stringify(transformed as MDastRoot);
+  // console.log(markdown);
   return markdownStringTransforms(
     markdown,
     options.markdownStringTransforms,

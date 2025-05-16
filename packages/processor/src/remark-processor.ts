@@ -31,9 +31,9 @@ export function createRemarkProcessor(
       .use(remarkDirective)
       .use(remarkMath)
       .use(plugins)
-      // .use(function () {
-      //   return function (tree) {
-      //     // console.dir(tree, { depth: null });
+      // .use(() => {
+      //   return (tree) => {
+      //     console.dir(tree, { depth: null });
       //   };
       // })
       .use(remarkStringify)

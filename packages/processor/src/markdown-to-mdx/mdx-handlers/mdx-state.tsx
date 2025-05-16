@@ -1,17 +1,33 @@
 import { signal } from '@preact/signals';
 
-import { MathsOptions } from './maths/Maths';
+import { MathsFont, MathsOptions } from './maths/Maths';
 
 export type MdxState = {
   maths: MathsOptions;
 };
 
+export type MdxDefaultState = {
+  maths: {
+    mathsAsTex: boolean;
+    mathsFontName: MathsFont;
+    syntaxHighlight: boolean;
+  };
+};
+
+const defaultState: MdxDefaultState = {
+  maths: {
+    mathsAsTex: false,
+    mathsFontName: 'termes' as MathsFont,
+    syntaxHighlight: true,
+  },
+};
+
 export function createMdxState(): MdxState {
   return {
     maths: {
-      mathsAsTex: signal(false),
-      mathsFontName: signal('termes'),
-      syntaxHighlight: signal(true),
+      mathsAsTex: signal(defaultState.maths.mathsAsTex),
+      mathsFontName: signal(defaultState.maths.mathsFontName),
+      syntaxHighlight: signal(defaultState.maths.syntaxHighlight),
     },
   };
 }

@@ -13,6 +13,7 @@ import {
   createDefaultOptions,
 } from '../latex-to-markdown/options';
 import { createContext as createHtmlContext } from '../markdown-to-mdx/context';
+import { MdxDefaultState } from '../markdown-to-mdx/mdx-handlers/mdx-state';
 import { createDefaultOptions as createHtmlOptions } from '../markdown-to-mdx/options';
 // import { Options } from '../markdown-to-mdx';
 import { unindentStringAndTrim } from './unindent-string';
@@ -33,21 +34,35 @@ const testHtmlOptions = {
   // noSections: true,
 };
 
-async function latexToMarkdown(latex: string) {
+async function latexToMarkdown(latex: string, options?: Partial<Options>) {
   const prepared = unindentStringAndTrim(latex);
   const ctx = createTestContext('latex', prepared);
-  const options = createDefaultOptions(ctx, testOptions);
-  return inputToMarkdown(ctx.content, options);
+  const opts = createDefaultOptions(ctx, { ...testOptions, ...options });
+  return inputToMarkdown(ctx.content, opts);
 }
 
-async function markdownToHtml(md: string) {
+type Opts = Partial<Options> & {
+  state: Partial<MdxDefaultState>;
+};
+
+async function markdownToHtml(
+  md: string,
+  { state, ...options }: Partial<Opts> = {},
+) {
   const prepared = unindentStringAndTrim(md);
   const ctx = createTestContext('markdown', prepared);
-  const options = createDefaultOptions(ctx, testOptions);
-  const markdown = await inputToMarkdown(ctx.content, options);
+  const opts = createDefaultOptions(ctx, {
+    ...testOptions,
+    ...options,
+  });
+  const markdown = await inputToMarkdown(ctx.content, opts);
   const mdxState = createMdxState();
-  mdxState.maths.mathsAsTex.value = true;
-  mdxState.maths.syntaxHighlight.value = false;
+  const { mathsAsTex, syntaxHighlight } = state?.maths || {};
+
+  mdxState.maths.mathsAsTex.value =
+    mathsAsTex !== undefined ? mathsAsTex : true;
+  mdxState.maths.syntaxHighlight.value =
+    syntaxHighlight !== undefined ? syntaxHighlight : false;
 
   const htmlCtx = createHtmlContext();
   const htmlOptions = createHtmlOptions(

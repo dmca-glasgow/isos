@@ -3,7 +3,7 @@ import { Properties, Root } from 'hast';
 import { drawPageAsSVG, loadPDF } from 'mupdf/tasks';
 import rehype from 'rehype-parse';
 import stringify from 'rehype-stringify';
-import { optimize } from 'svgo';
+// import { optimize } from 'svgo';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
@@ -16,14 +16,12 @@ export async function pdfToSvg(filePath: string) {
 
 async function formatSvg(_str: string) {
   const str = _str.replace(/svg:/g, '');
-  const optimised = optimize(str, { multipass: true });
+  // const optimised = optimize(str, { multipass: true });
   const processor = unified()
     .use(rehype, { fragment: true })
     .use(addWrapper)
     .use(stringify);
-  const parsed = await processor.process(optimised.data);
-  // const transformed = (await processor.run(parsed)) as Parent;
-  // const firstChild = transformed.children[0] as Root;
+  const parsed = await processor.process(str);
   return String(parsed);
 }
 
@@ -33,6 +31,7 @@ function addWrapper() {
       if (node.tagName === 'svg') {
         const properties = node.properties || {};
         node.properties = {
+          xmlns: 'http://www.w3.org/2000/svg',
           // width: properties.width,
           // height: properties.height,
           viewBox: getViewBox(properties),

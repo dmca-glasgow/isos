@@ -1,28 +1,16 @@
 import { Properties, Root } from 'hast';
 import rehype from 'rehype-parse';
 import stringify from 'rehype-stringify';
-import SandboxedModule from 'sandboxed-module';
-import { optimize } from 'svgo';
+// import { optimize } from 'svgo';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-// @ts-expect-error
-import { Element, Image, document } from './domstubs';
+import { getPdfJs } from './pdfjs';
 
-const pdfjsLib = SandboxedModule.require('./pdf', {
-  globals: {
-    document,
-    Image,
-    Element,
-    Blob,
-    console,
-    process,
-    URL,
-  },
-});
+const { SVGGraphics, getDocument } = await getPdfJs();
 
 export async function pdfToSvg(data: Uint8Array<ArrayBuffer>) {
-  const doc = await pdfjsLib.getDocument({
+  const doc = await getDocument({
     data: new Uint8Array(data),
     fontExtraProperties: true,
     verbosity: 0,
@@ -32,22 +20,24 @@ export async function pdfToSvg(data: Uint8Array<ArrayBuffer>) {
   const opList = await page.getOperatorList();
   const viewport = page.getViewport({ scale: 1.0 });
 
-  const svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
+  // @ts-expect-error
+  const svgGfx = new SVGGraphics(page.commonObjs, page.objs);
   svgGfx.embedFonts = true;
   const svg = await svgGfx.getSVG(opList, viewport);
-  return formatSvg(svg.toString());
+  const svgStr =
+    process.env.NODE_ENV === 'test' ? svg.toString() : svg.outerHTML;
+
+  return formatSvg(svgStr);
 }
 
 async function formatSvg(_str: string) {
   const str = _str.replace(/svg:/g, '');
-  const optimised = optimize(str, { multipass: true });
+  // const optimised = optimize(str, { multipass: true });
   const processor = unified()
     .use(rehype, { fragment: true })
     .use(addWrapper)
     .use(stringify);
-  const parsed = await processor.process(optimised.data);
-  // const transformed = (await processor.run(parsed)) as Parent;
-  // const firstChild = transformed.children[0] as Root;
+  const parsed = await processor.process(str);
   return String(parsed);
 }
 
@@ -57,6 +47,7 @@ function addWrapper() {
       if (node.tagName === 'svg') {
         const properties = node.properties || {};
         node.properties = {
+          xmlns: 'http://www.w3.org/2000/svg',
           // width: properties.width,
           // height: properties.height,
           viewBox: getViewBox(properties),

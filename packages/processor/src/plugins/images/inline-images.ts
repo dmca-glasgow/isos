@@ -27,33 +27,33 @@ export function inlineImages(ctx: Context, options: Options) {
     for (const node of nodes) {
       const imagePath = resolve(dir, node.url);
       const ext = extname(imagePath);
-      const { mime, url } = await getFile(imagePath, ext);
-
-      if (mime !== null) {
-        node.url = toBase64(url, mime);
+      if (ext !== '') {
+        const mime = mimes.getType(ext);
+        if (mime !== null) {
+          node.url = await getDataUrl(imagePath, ext, mime);
+        }
       }
     }
   };
 }
 
-async function getFile(imagePath: string, ext: string) {
-  const mime = mimes.getType(ext);
+async function getDataUrl(imagePath: string, ext: string, mime: string) {
   switch (ext) {
-    case '.pdf':
+    case '.pdf': {
       const svg = await pdfToSvg(await readBinaryFile(imagePath));
-      return {
-        mime: mimes.getType('.svg'),
-        url: Buffer.from(svg),
-      };
+      const base64 = btoa(svg);
+      return 'data:' + mimes.getType('.svg') + ';base64,' + base64;
+    }
+    case '.jpg':
+    case '.jpeg':
+    case '.png': {
+      const img = await readBinaryFile(imagePath);
+      const base64 = btoa(String.fromCharCode(...img));
+      return 'data:' + mime + ';base64,' + base64;
+    }
     default:
-      return {
-        mime,
-        url: await readBinaryFile(imagePath),
-      };
+      throw new Error(
+        `[inline-images]: unsupported file extension "${ext}"`,
+      );
   }
-}
-
-function toBase64(img: Uint8Array<ArrayBufferLike>, mime: string) {
-  const base64 = btoa(String.fromCharCode(...img));
-  return 'data:' + mime + ';base64,' + base64;
 }
