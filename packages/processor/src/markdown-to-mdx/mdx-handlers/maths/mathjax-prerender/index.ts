@@ -26,7 +26,7 @@ const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 
 const doc: Document = mathjax.document('', {
-  InputJax: new TeX({ packages, tags: 'ams' }),
+  InputJax: new TeX({ packages }),
 });
 
 const output: FontOutput = {
@@ -35,6 +35,7 @@ const output: FontOutput = {
 };
 
 export function toMathJaxSvgString(expr: string, fontName: MathsFont) {
+  console.log('hey!')
   doc.outputJax = output[fontName];
   doc.outputJax.setAdaptor(doc.adaptor);
   const node = doc.convert(expr) as LiteElement;
