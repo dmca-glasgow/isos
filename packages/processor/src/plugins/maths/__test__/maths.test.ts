@@ -10,37 +10,44 @@ import { testProcessor } from '../../../test-utils/unit-test-processor';
 test('maths', async () => {
   const latex = String.raw`
     \documentclass{article}
+    \usepackage{amsmath}
+    \usepackage{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
     \begin{document}
 
-    \section{Hello}
+    \section{Hello2}
 
     \begin{equation}
-    \tag{x}
     \label{eq:myref}
     x^2 - 5 x + 6 = 0
     \end{equation}
 
-    Check out~\eqref{eq:myref}.
+    Check out~\autoref{eq:myref}.
 
     \end{document}
   `;
 
   const markdown = await testProcessor.latex(latex);
   console.log(markdown);
+  return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ## Hello
 
     $$
-    \begin{equation}x^{2} - 5 x + 6 = 0\label{label1}\end{equation}
-    $$
+    \begin{equation}\label{eq:myref}x^{2} - 5 x + 6 = 0\end{equation}
+    $$ {#eq-black-scholes}
 
-    Check out $\ref{label1}$.
+    $$
+    \begin{equation}\label{eq:myref}x^{2} - 5 x + 6 = 0\end{equation}
+    $$ {#eq-black-scholes2}
+
+    Check out @eq-myref.
   `);
 
   // expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown, {
+  const html = await testProcessor.md(markdown, {
     state: {
       maths: {
         mathsAsTex: false,
@@ -49,7 +56,7 @@ test('maths', async () => {
       },
     },
   });
-  console.log(html);
+  // console.log(html);
 
   // const expectedHtml = unindentStringAndTrim(`
   //   <p><img src="image.png" alt="Image" /></p>
@@ -57,6 +64,6 @@ test('maths', async () => {
 
   // expect(html).toBe(expectedHtml);
 
-  // const quartoHtml = await markdownToQuartoHtml(markdown);
-  // console.log(quartoHtml);
+  const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
+  console.log(quartoHtml);
 });

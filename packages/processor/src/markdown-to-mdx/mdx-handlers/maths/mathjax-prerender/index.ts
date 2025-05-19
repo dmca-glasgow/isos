@@ -26,7 +26,7 @@ const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 
 const doc: Document = mathjax.document('', {
-  InputJax: new TeX({ packages }),
+  InputJax: new TeX({ packages, tags: 'ams' }),
 });
 
 const output: FontOutput = {
