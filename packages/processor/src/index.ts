@@ -19,4 +19,4 @@ export { RenderMDX } from './markdown-to-mdx/render-mdx';
 export type {
   MathsFont,
   MathsOptions,
-} from './markdown-to-mdx/mdx-handlers/maths/Maths';
+} from './plugins/maths/mdx-handlers/Maths';

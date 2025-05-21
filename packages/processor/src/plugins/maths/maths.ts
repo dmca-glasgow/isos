@@ -1,6 +1,6 @@
 import { Element } from 'hast';
-import { InlineMath, Math } from 'mdast-util-math';
 import { Text } from 'mdast';
+import { InlineMath, Math } from 'mdast-util-math';
 
 export function createInlineMaths(node: Element): InlineMath {
   const math = node.children[0] as Text;
@@ -12,8 +12,13 @@ export function createInlineMaths(node: Element): InlineMath {
 
 export function createMaths(node: Element): Math {
   const math = node.children[0] as Text;
-  return {
+  const result: Math = {
     type: 'math',
     value: math.value,
   };
+  const id = String(node.properties.id || '');
+  if (id) {
+    result.meta = ` {#${id}}`;
+  }
+  return result;
 }

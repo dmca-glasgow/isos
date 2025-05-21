@@ -35,7 +35,6 @@ const output: FontOutput = {
 };
 
 export function toMathJaxSvgString(expr: string, fontName: MathsFont) {
-  console.log('hey!')
   doc.outputJax = output[fontName];
   doc.outputJax.setAdaptor(doc.adaptor);
   const node = doc.convert(expr) as LiteElement;

@@ -1,6 +1,9 @@
 import { signal } from '@preact/signals';
 
-import { MathsFont, MathsOptions } from './maths/Maths';
+import {
+  MathsFont,
+  MathsOptions,
+} from '../../plugins/maths/mdx-handlers/Maths';
 
 export type MdxState = {
   maths: MathsOptions;

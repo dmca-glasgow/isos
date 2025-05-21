@@ -15,55 +15,73 @@ test('maths', async () => {
     \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
     \begin{document}
 
-    \section{Hello2}
+    \section{Hello}
 
     \begin{equation}
-    \label{eq:myref}
+    \label{eq:myref1}
     x^2 - 5 x + 6 = 0
     \end{equation}
 
-    Check out~\autoref{eq:myref}.
+    \begin{equation}
+    x^2 - 5 x + 6 = 0
+    \end{equation}
+
+    \begin{equation}
+    \label{eq:myref3}
+    x^2 - 5 x + 6 = 0
+    \end{equation}
+
+    Check out \autoref{eq:myref1} and \autoref{eq:myref2} and \autoref{eq:myref3}.
 
     \end{document}
   `;
 
   const markdown = await testProcessor.latex(latex);
-  console.log(markdown);
-  return;
+  // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ## Hello
 
     $$
-    \begin{equation}\label{eq:myref}x^{2} - 5 x + 6 = 0\end{equation}
-    $$ {#eq-black-scholes}
+    \begin{equation}x^{2} - 5 x + 6 = 0\end{equation}
+    $$ {#eq-myref-1}
 
     $$
-    \begin{equation}\label{eq:myref}x^{2} - 5 x + 6 = 0\end{equation}
-    $$ {#eq-black-scholes2}
+    \begin{equation}x^{2} - 5 x + 6 = 0\end{equation}
+    $$
 
-    Check out @eq-myref.
+    $$
+    \begin{equation}x^{2} - 5 x + 6 = 0\end{equation}
+    $$ {#eq-myref-3}
+
+    Check out @eq-myref-1 and @eq-myref-2 and @eq-myref-3.
   `);
 
-  // expect(markdown).toBe(expectedMarkdown);
+  expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown, {
-    state: {
-      maths: {
-        mathsAsTex: false,
-        mathsFontName: 'termes',
-        syntaxHighlight: false,
-      },
-    },
+    // state: {
+    //   maths: {
+    //     mathsAsTex: false,
+    //     mathsFontName: 'termes',
+    //     syntaxHighlight: false,
+    //   },
+    // },
   });
   // console.log(html);
 
-  // const expectedHtml = unindentStringAndTrim(`
-  //   <p><img src="image.png" alt="Image" /></p>
-  // `);
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <section id="hello">
+      <h2><span class="count">1</span> Hello</h2>
+      <p id="eq-myref-1" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(<a href="#eq-myref-1">1</a>)</span></p>
+      <p class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(2)</span></p>
+      <p id="eq-myref-3" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(<a href="#eq-myref-3">3</a>)</span></p>
+      <p>Check out <a href="#eq-myref-1" class="ref">Equation 1</a> and <span class="error">?@eq-myref-2</span> and <a href="#eq-myref-3" class="ref">Equation 3</a>.</p>
+    </section>
+  `);
 
-  // expect(html).toBe(expectedHtml);
+  expect(html).toBe(expectedHtml);
 
-  const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
-  console.log(quartoHtml);
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
 });

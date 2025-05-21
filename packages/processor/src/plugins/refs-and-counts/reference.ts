@@ -6,7 +6,7 @@ export function createReference(_state: State, node: Element): Text {
   const id = findRefLabel(node);
   return {
     type: 'text',
-    value: `@${id}`,
+    value: id ? `@${id}` : '',
   };
 }
 

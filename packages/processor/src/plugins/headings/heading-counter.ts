@@ -1,4 +1,4 @@
-import { TheoremsYaml } from '../../plugins/theorems-proofs/default-theorems';
+import { RefObjectsYaml } from '../refs-and-counts/default-objects';
 
 export type HeadingCounter = {
   get: (depth: number) => number;
@@ -46,7 +46,7 @@ const headingDepths: Record<string, number> = {
 
 // TODO: return TheoremCounter instead of error?
 export function getHeadingDepth(
-  theorems: TheoremsYaml,
+  theorems: RefObjectsYaml,
   name: string,
 ): number {
   // console.log(theorems, name);

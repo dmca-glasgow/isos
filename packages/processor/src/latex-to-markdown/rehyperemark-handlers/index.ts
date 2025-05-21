@@ -6,15 +6,15 @@ import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
 import { defListHastToMdast } from '../../plugins/definition-list';
 // import { createFramed } from './framed';
 import { createHeadings } from '../../plugins/headings/headings';
+import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
+import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { defaultTheorems } from '../../plugins/theorems-proofs/default-theorems';
 import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
 import { Context } from '../context';
-import { createFancySection, createFancyTitle } from './fancy';
+// import { createFancySection, createFancyTitle } from './fancy';
 import { createLabel } from './label';
-import { createInlineMaths, createMaths } from './maths';
-import { createReference } from './reference';
 import { createSideNote } from './sidenote';
 import { createTitle } from './title';
 
@@ -54,7 +54,7 @@ function headingHandler(state: State, node: Element) {
   return result;
 }
 
-function spanHandler(ctx: Context, state: State, node: Element) {
+function spanHandler(_ctx: Context, state: State, node: Element) {
   const { className } = node.properties;
 
   if (Array.isArray(className)) {
@@ -77,7 +77,10 @@ function spanHandler(ctx: Context, state: State, node: Element) {
     }
 
     // cleverref
-    if (className.includes('macro-cref')) {
+    if (
+      className.includes('macro-cref') ||
+      className.includes('macro-autoref')
+    ) {
       const result = createReference(state, node);
       state.patch(node, result);
       return result;
@@ -89,17 +92,17 @@ function spanHandler(ctx: Context, state: State, node: Element) {
       return result;
     }
 
-    if (className.includes('macro-fancysection')) {
-      const result = createFancySection(state, node);
-      state.patch(node, result);
-      return result;
-    }
+    // if (className.includes('macro-fancysection')) {
+    //   const result = createFancySection(state, node);
+    //   state.patch(node, result);
+    //   return result;
+    // }
 
-    if (className.includes('macro-fancytitle')) {
-      const result = createFancyTitle(ctx);
-      state.patch(node, result);
-      return result;
-    }
+    // if (className.includes('macro-fancytitle')) {
+    //   const result = createFancyTitle(ctx);
+    //   state.patch(node, result);
+    //   return result;
+    // }
 
     // if (className.includes('underline')) {
     //   const result = createUnderline(state, node);
@@ -123,7 +126,6 @@ function divHandler(state: State, node: Element) {
 
     if (className.includes('theorem')) {
       const theoremType = String(className[className.length - 1]);
-
       if (defaultTheorems.find((o) => o.name === theoremType)) {
         const result = createTheorem(state, node, theoremType);
         state.patch(node, result);

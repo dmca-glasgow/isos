@@ -10,6 +10,10 @@ import {
   captionAttributeToAlt,
 } from '../plugins/images/formatted-caption';
 import { imageToPandocFigure } from '../plugins/images/image-to-pandoc-figure';
+import {
+  mathsMetaToPandocAttributes,
+  pandocAttributesToMathsMeta,
+} from '../plugins/maths/formatted-maths';
 import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
@@ -54,7 +58,10 @@ export function createDefaultOptions(
       //   (str) => `${str}.jpg`
       // ],
       latexStringTransforms: [],
-      markdownStringTransforms: [altToCaptionAttribute],
+      markdownStringTransforms: [
+        altToCaptionAttribute,
+        pandocAttributesToMathsMeta,
+      ],
       mdAstTransforms: createMdastTransforms(ctx, { noInlineImages }),
     },
     latexToMdAst: {
@@ -82,7 +89,10 @@ export function createDefaultOptions(
       },
       mdAstTransforms: createLatexMdAstTransforms(ctx),
     },
-    markdownStringTransforms: [captionAttributeToAlt],
+    markdownStringTransforms: [
+      captionAttributeToAlt,
+      mathsMetaToPandocAttributes,
+    ],
   };
 }
 

@@ -2,7 +2,7 @@
 //   noEmbedAssetUrl: boolean;
 //   noSyntaxHighlight: boolean;
 // };
-import { TheoremsYaml } from '../plugins/theorems-proofs/default-theorems';
+import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 
 // export type Context = {
 //   cacheDir: string;
@@ -18,7 +18,7 @@ export type Reference = {
 };
 
 export type Context = {
-  theorems: TheoremsYaml;
+  theorems: RefObjectsYaml;
   refMap: Record<string, Reference>;
   hasSideNotes: boolean;
 };

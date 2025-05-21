@@ -4,13 +4,13 @@ import { visit } from 'unist-util-visit';
 import { parse } from 'yaml';
 
 import {
-  TheoremsYaml,
-  createDefaultTheoremsYaml,
-} from '../../plugins/theorems-proofs/default-theorems';
+  RefObjectsYaml,
+  createDefaultObjectsYaml,
+} from '../../plugins/refs-and-counts/default-objects';
 import { Context } from '../context';
 
 type Frontmatter = {
-  theorems: TheoremsYaml;
+  theorems: RefObjectsYaml;
 };
 
 export function extractFrontmatter(ctx: Context) {
@@ -22,7 +22,7 @@ export function extractFrontmatter(ctx: Context) {
     });
 
     ctx.theorems = merge(
-      createDefaultTheoremsYaml(),
+      createDefaultObjectsYaml(),
       frontmatter?.theorems || {},
     );
   };

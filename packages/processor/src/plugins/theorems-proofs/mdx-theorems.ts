@@ -5,7 +5,8 @@ import { toHast } from 'mdast-util-to-hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
-import { TheoremYaml, defaultTheorems } from './default-theorems';
+import { RefObjectYaml } from '../refs-and-counts/default-objects';
+import { defaultTheorems } from './default-theorems';
 
 export function theorems(ctx: Context) {
   return (tree: Root) => {
@@ -32,7 +33,7 @@ export function theorems(ctx: Context) {
 function createTheorem(
   node: ContainerDirective,
   theoremName: string,
-  theorem: TheoremYaml,
+  theorem: RefObjectYaml,
   id?: string,
 ) {
   const properties: Properties = {
@@ -72,7 +73,7 @@ function createTheorem(
 }
 
 function createTitle(
-  theorem: TheoremYaml,
+  theorem: RefObjectYaml,
   theoremName: string,
   name?: string,
   id?: string,
@@ -116,7 +117,7 @@ function createTitle(
 }
 
 function createTitleElements(
-  theorem: TheoremYaml,
+  theorem: RefObjectYaml,
   label: PhrasingContent[],
 ) {
   switch (theorem.style) {

@@ -20,10 +20,12 @@ export async function inputToMarkdown(input: string, options: Options) {
   // console.dir(transformed, { depth: null });
   const markdown = processor.stringify(transformed as MDastRoot);
   // console.log(markdown);
-  return markdownStringTransforms(
+  const stringTransformed = markdownStringTransforms(
     markdown,
     options.markdownStringTransforms,
   ).trim();
+  // console.log(stringTransformed);
+  return stringTransformed;
 }
 
 function getMdAst(input: string, options: Options) {

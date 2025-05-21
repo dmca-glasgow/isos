@@ -1,7 +1,7 @@
 import { Link, Root, Text } from 'mdast';
 import { visit } from 'unist-util-visit';
 
-import { Context } from '../context';
+import { Context } from '../../markdown-to-mdx/context';
 
 export function references(ctx: Context) {
   return (tree: Root) => {

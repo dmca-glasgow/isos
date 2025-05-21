@@ -2,6 +2,7 @@ import { RunOptions } from '@mdx-js/mdx';
 import { PluggableList } from 'unified';
 
 import { altToCaptionAttribute } from '../plugins/images/formatted-caption';
+import { pandocAttributesToMathsMeta } from '../plugins/maths/formatted-maths';
 import { Context } from './context';
 import { createRehypePlugins } from './hast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
@@ -37,7 +38,10 @@ export function createDefaultOptions(
     //   (str) => `${str}2`,
     //   (str) => `${str}.jpg`
     // ],
-    markdownStringTransforms: [altToCaptionAttribute],
+    markdownStringTransforms: [
+      altToCaptionAttribute,
+      pandocAttributesToMathsMeta,
+    ],
     mdAstTransforms: createMdastTransforms(ctx, { noSections }),
     htmlAstTransforms: createRehypePlugins(ctx, { noWrapper }),
     mdxArticleRunOptions: createRunOptions(mdxState),

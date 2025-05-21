@@ -1,9 +1,9 @@
 import { RunOptions } from '@mdx-js/mdx';
+import classNames from 'classnames';
 import { VNode } from 'preact';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
-import { JSX } from 'preact/jsx-runtime';
 
-import { Maths } from './maths/Maths';
+import { Maths } from '../../plugins/maths/mdx-handlers/Maths';
 import { MdxState } from './mdx-state';
 import { Task } from './task/Task';
 import { Section } from './toc-highlight/section';
@@ -31,16 +31,29 @@ export function createRunOptions({ maths }: MdxState): RunOptions {
         }
       },
       pre(props) {
-        const children = (props.children || {}) as VNode;
-        const childProps = (children?.props ||
-          {}) as JSX.HTMLAttributes<HTMLElement>;
-        const className = String(childProps.class || '');
+        const _children = props.children;
+        let children: VNode[] = [];
+        if (Array.isArray(_children)) {
+          children = _children;
+        } else if (_children?.props) {
+          children.push(_children);
+        } else {
+          children = [];
+        }
+
+        const child = children[0];
+        const count = children[1];
+        // @ts-expect-error
+        const className = String(child.props?.class || '');
 
         if (className.includes('math-display')) {
-          const expr = childProps.children as string;
+          const id = props['data-id'];
+          const expr = child.props.children as string;
+          const className = classNames('maths', { 'env-equation': count });
           return (
-            <p>
+            <p id={id} className={className}>
               <Maths expr={expr} format="display" options={maths} />
+              {count}
             </p>
           );
         }

@@ -16,7 +16,9 @@ export default function atReferenceToLink(ctx: Context) {
           return createReferenceLink(reference);
         } else {
           // TODO: warn about undefined reference
-          return null;
+          // console.error(`undefined reference: ${ref}`);
+
+          return createBrokenReferenceWarning(ref);
         }
       },
     ]);
@@ -32,5 +34,16 @@ function createReferenceLink(reference: Reference): Element | null {
       class: 'ref',
     },
     children: [{ type: 'text', value: reference.label }],
+  };
+}
+
+function createBrokenReferenceWarning(ref: string): Element | null {
+  return {
+    type: 'element',
+    tagName: 'span',
+    properties: {
+      class: 'error',
+    },
+    children: [{ type: 'text', value: `?@${ref}` }],
   };
 }

@@ -6,6 +6,7 @@ import { headingSections } from '../../plugins/headings/heading-sections';
 import { headings } from '../../plugins/headings/mdx-headings';
 import { imageAttributes } from '../../plugins/images/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
+import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
 import { theorems } from '../../plugins/theorems-proofs/mdx-theorems';
 import { Context } from '../context';
 import { Options } from '../options';
@@ -37,6 +38,7 @@ export function createMdastTransforms(
     [theorems, ctx],
     imageAttributes,
     pandocImplicitFigures,
+    mathMetaToId,
 
     // fancyTitle,
     // [references, ctx],

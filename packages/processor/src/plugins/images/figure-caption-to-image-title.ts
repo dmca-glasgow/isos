@@ -59,6 +59,6 @@ function extractImage(figure: Ast.Node): Ast.Macro | null {
 }
 
 function extractCaptionText(caption: Ast.Macro) {
-  const cArgs = getArgsContent(caption);
-  return convertToMarkdown(cArgs[cArgs.length - 1] || []).trim();
+  const args = getArgsContent(caption);
+  return convertToMarkdown(args[args.length - 1] || []).trim();
 }

@@ -9,12 +9,13 @@ import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 
 import { Context } from '../../latex-to-markdown/context';
-import { Theorem, createDefaultTheoremsYaml } from './default-theorems';
+import { Theorem } from '../theorems-proofs/default-theorems';
+import { createDefaultObjectsYaml } from './default-objects';
 
 export function extractTheoremDefinitions(ctx: Context) {
   return (tree: Root) => {
     let style: Theorem['style'] = 'plain';
-    let theorems = createDefaultTheoremsYaml();
+    let theorems = createDefaultObjectsYaml();
 
     visit(tree, (node) => {
       if (node.type === 'macro' && node.content === 'theoremstyle') {

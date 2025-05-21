@@ -1,4 +1,4 @@
-import { Root } from 'hast';
+import { ElementContent, Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
@@ -17,6 +17,8 @@ export function addCounts(ctx: Context) {
 
     let headingDepth = 0;
     let newSection = false;
+
+    // console.dir(tree, { depth: null });
 
     visit(tree, 'element', (node, idx, parent) => {
       if (node.tagName === 'span') {
@@ -67,7 +69,8 @@ export function addCounts(ctx: Context) {
 
           if (
             className[0] === 'thm-count' ||
-            className[0] === 'fig-count'
+            className[0] === 'fig-count' ||
+            className[0] === 'eq-count'
           ) {
             // Count theorems
 
@@ -76,6 +79,7 @@ export function addCounts(ctx: Context) {
 
             if (ctxTheorem) {
               const { referenceCounter, unnumbered } = ctxTheorem;
+              const id = String(node.properties['data-id'] || '');
               let value = '';
 
               if (!unnumbered) {
@@ -113,19 +117,64 @@ export function addCounts(ctx: Context) {
                 const count = formatCount(counts);
                 value = ` ${count}`;
 
-                const _id = node.properties['data-id'];
-                if (_id) {
-                  const id = String(_id);
+                if (id) {
                   const label = `${ctxTheorem.heading} ${count}`;
                   ctx.refMap[id] = { id, label };
                 }
               }
 
-              Object.assign(node, { type: 'text', value });
+              if (className[0] === 'eq-count') {
+                const children = createEquationLabel(value.trim(), id);
+                Object.assign(node, {
+                  type: 'element',
+                  tagName: 'span',
+                  properties: {
+                    className: ['eq-count'],
+                  },
+                  children,
+                });
+              } else {
+                Object.assign(node, { type: 'text', value });
+              }
             }
           }
         }
       }
     });
   };
+}
+
+function createEquationLabel(count: string, id?: string) {
+  const children: ElementContent[] = [];
+  if (id) {
+    children.push(
+      {
+        type: 'text',
+        value: '(',
+      },
+      {
+        type: 'element',
+        tagName: 'a',
+        properties: {
+          href: `#${id}`,
+        },
+        children: [
+          {
+            type: 'text',
+            value: count,
+          },
+        ],
+      },
+      {
+        type: 'text',
+        value: ')',
+      },
+    );
+  } else {
+    children.push({
+      type: 'text',
+      value: `(${count})`,
+    });
+  }
+  return children;
 }

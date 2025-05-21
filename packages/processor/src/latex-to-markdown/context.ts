@@ -1,6 +1,6 @@
 import { readTextFile } from '@isos/fs';
 
-import { TheoremsYaml } from '../plugins/theorems-proofs/default-theorems';
+import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 import { FancyTitle } from './latexast-transforms/extract-fancytitle';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
@@ -9,7 +9,7 @@ export type Context = {
   type: FileType;
   content: string;
   frontmatter: {
-    theorems: TheoremsYaml;
+    theorems: RefObjectsYaml;
   };
   fancyTitle: FancyTitle;
 };

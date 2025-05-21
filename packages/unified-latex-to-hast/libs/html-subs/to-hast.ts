@@ -1,4 +1,5 @@
 import * as Ast from '@unified-latex/unified-latex-types';
+// import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import {
   extractFromHtmlLike,
   isHtmlLikeTag,
@@ -64,7 +65,15 @@ export function toHastWithLoggerFactory(
           printRaw(node.content),
         );
       case 'mathenv':
-        return h('div', { className: 'display-math' }, printRaw(node));
+        // @ts-expect-error
+        const id = node.data?.id;
+        const attributes: Record<string, string> = {
+          className: 'display-math',
+        };
+        if (id) {
+          attributes.id = id;
+        }
+        return h('div', attributes, printRaw(node));
       case 'displaymath':
         // console.dir(node, { depth: null });
         return h(

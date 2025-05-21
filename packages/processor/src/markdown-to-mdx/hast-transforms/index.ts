@@ -7,8 +7,9 @@ import { PluggableList } from 'unified';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
-import { addCounts } from '../../plugins/numbered-elements/mdx-hast-add-counts';
-import atReferenceToLink from '../../plugins/references/at-reference-to-link';
+import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
+import atReferenceToLink from '../../plugins/refs-and-counts/at-reference-to-link';
+import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
 import { Context } from '../context';
 import { Options } from '../options';
 import { createWrapper } from './wrapper';
@@ -58,9 +59,8 @@ function createRehypeFragmentPlugins(
   _options: Partial<Options> = {},
 ): PluggableList {
   return [
-    [addCounts, ctx],
-    [atReferenceToLink, ctx], // depends on addCounts
     addDefaultAltText,
+    addMathsRefsAndCount,
 
     // () => (tree: Root) => {
     //   console.dir(tree, { depth: null });
@@ -80,5 +80,9 @@ function createRehypeFragmentPlugins(
     //   properties: { className: 'link' },
     // },
     // ],
+
+    // should be last
+    [addCounts, ctx],
+    [atReferenceToLink, ctx], // depends on addCounts
   ];
 }

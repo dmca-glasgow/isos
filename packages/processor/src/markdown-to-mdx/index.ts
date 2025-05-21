@@ -7,10 +7,12 @@ import { Options } from './options';
 import { createTableOfContents } from './sidebar';
 
 export async function markdownToArticle(md: string, options: Options) {
+  // console.log(md);
   const markdown = markdownStringTransforms(
     md,
     options.markdownStringTransforms,
   );
+  // console.log(markdown);
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
   // console.dir(mdAst, { depth: null });
