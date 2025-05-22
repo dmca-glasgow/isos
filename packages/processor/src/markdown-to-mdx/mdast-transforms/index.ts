@@ -7,6 +7,7 @@ import { headings } from '../../plugins/headings/mdx-headings';
 import { imageAttributes } from '../../plugins/images/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
 import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
+import { tableCaptionToFigure } from '../../plugins/tables/table-caption-to-figure';
 import { theorems } from '../../plugins/theorems-proofs/mdx-theorems';
 import { Context } from '../context';
 import { Options } from '../options';
@@ -33,12 +34,14 @@ export function createMdastTransforms(
 
   plugins.push(
     [extractFrontmatter, ctx],
+    [theorems, ctx],
+
     dashesToEndashEmdash,
     inlineCodeHighlight,
-    [theorems, ctx],
     imageAttributes,
     pandocImplicitFigures,
     mathMetaToId,
+    tableCaptionToFigure,
 
     // fancyTitle,
     // [references, ctx],

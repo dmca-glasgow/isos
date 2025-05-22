@@ -66,9 +66,9 @@ test('image with counter', async () => {
 
     ![My **caption**](image.pdf){alt="my alt text"}
 
-    ![My **caption**](image.pdf){alt="my alt text" id="fig-line"}
+    ![My **caption**](image.pdf){#fig-line alt="my alt text"}
 
-    ![My other **caption**](image.pdf){alt="my other alt text" id="fig-line-2"}
+    ![My other **caption**](image.pdf){#fig-line-2 alt="my other alt text"}
 
     Check out my @fig-line and @fig-line-2 and @hi.
   `);

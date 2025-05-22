@@ -103,6 +103,7 @@ function createCenteredElement(env: Ast.Environment) {
 
 function createTableFromTabular(env: Ast.Environment) {
   const args = getArgsContent(env);
+  // console.dir(args);
 
   let columnSpecs: TabularColumn[] = [];
   try {
@@ -111,8 +112,25 @@ function createTableFromTabular(env: Ast.Environment) {
 
   const [tableHead, ...tableBody] = parseAlignEnvironment(env.content);
 
+  const attributes: Record<string, string> = {
+    className: 'tabular',
+  };
+
+  // @ts-expect-error
+  const caption = String(env.data?.caption || '');
+  if (caption) {
+    attributes.caption = caption;
+  }
+
+  // @ts-expect-error
+  const id = String(env.data?.id || '');
+  if (id) {
+    attributes.id = id;
+  }
+
   return htmlLike({
     tag: 'table',
+    attributes,
     content: [
       htmlLike({
         tag: 'thead',
@@ -137,7 +155,6 @@ function createTableFromTabular(env: Ast.Environment) {
         }),
       }),
     ],
-    attributes: { className: 'tabular' },
   });
 }
 

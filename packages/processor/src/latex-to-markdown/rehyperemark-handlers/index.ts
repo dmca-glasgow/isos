@@ -43,6 +43,15 @@ export function createRehypeRemarkHandlers(
     pre: rehypeRemarkPre,
     del: rehypeRemarkDel,
 
+    // table(state: State, node: Element) {
+    //   console.log(node);
+    //   return {
+    //     type: 'table',
+    //     align: node.align,
+    //     children: state.all(node),
+    //   };
+    // },
+
     // center: centerHandler,
     // img: imgHandler,
   };

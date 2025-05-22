@@ -100,6 +100,12 @@ export const defaultObjects: RefObject[] = [
     abbr: 'eq',
     unnumbered: false,
   },
+  {
+    name: 'table',
+    heading: 'Table',
+    abbr: 'tbl',
+    unnumbered: false,
+  },
 ];
 
 export type RefObjectYaml = Partial<Omit<RefObject, 'name'>>;

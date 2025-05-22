@@ -12,6 +12,7 @@ import atReferenceToLink from '../../plugins/refs-and-counts/at-reference-to-lin
 import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
 import { Context } from '../context';
 import { Options } from '../options';
+import { removeEmptyParagraphs } from './remove-empty-paragraphs';
 import { createWrapper } from './wrapper';
 
 export const processorOptions: ProcessorOptions = {
@@ -61,16 +62,18 @@ function createRehypeFragmentPlugins(
   return [
     addDefaultAltText,
     addMathsRefsAndCount,
+    removeEmptyParagraphs,
 
     // () => (tree: Root) => {
     //   console.dir(tree, { depth: null });
-    //   // visit(tree, 'element', (node) => {
-    //   //   if (node.tagName === 'img') {
-    //   //     if (node.properties.alt === '') {
-    //   //       node.properties.alt = 'image';
-    //   //     }
-    //   //   }
-    //   // });
+    //   visit(tree, 'element', (node, idx, parent) => {
+    //     if (node.tagName === 'p' && node.children.length === 0) {
+    //       parent?.children.splice(idx || 0, 1);
+    //       // if (node.properties.alt === '') {
+    //       //   node.properties.alt = 'image';
+    //       // }
+    //     }
+    //   });
     // },
     // TODO:
     // [

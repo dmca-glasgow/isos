@@ -5,6 +5,7 @@ import { figureCaptionToImageTitle } from '../../plugins/images/figure-caption-t
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 // import { extractFancyTitle } from './extract-fancytitle';
 import { extractTheoremDefinitions } from '../../plugins/refs-and-counts/extract-theorem-definitions';
+import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
 import { Context } from '../context';
 import { insertParbreaksAroundBlockElements } from './block-elements';
 import { expandDocumentMacrosPlugin } from './expand-macros';
@@ -22,5 +23,6 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     equationLabelToId,
     // [extractFancyTitle, ctx],
     insertParbreaksAroundBlockElements,
+    tableCaptionToData,
   ];
 }

@@ -14,6 +14,7 @@ import {
   mathsMetaToPandocAttributes,
   pandocAttributesToMathsMeta,
 } from '../plugins/maths/formatted-maths';
+import { codeToTableCaption } from '../plugins/tables/formatted-table-caption';
 import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
@@ -92,6 +93,7 @@ export function createDefaultOptions(
     markdownStringTransforms: [
       captionAttributeToAlt,
       mathsMetaToPandocAttributes,
+      codeToTableCaption,
     ],
   };
 }

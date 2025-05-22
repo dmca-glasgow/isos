@@ -60,8 +60,27 @@ function extractId(rest: string) {
 
 export function serialiseAttributes(attributes: Record<string, string>) {
   const properties = Object.entries(attributes)
-    .reduce((acc, [k, v]) => acc + (v ? `${k}="${v}" ` : ''), '')
+    .reduce((acc, [k, v]) => {
+      if (!v) {
+        return acc;
+      }
+      if (k === 'id') {
+        return getAttribute(k, v) + acc;
+      }
+      return acc + getAttribute(k, v);
+    }, '')
     .trim();
 
   return properties.length ? `{${properties}}` : '';
+}
+
+function getAttribute(key: string, value: string) {
+  switch (key) {
+    case 'id':
+      return `#${value} `;
+    case 'class':
+      return `.${value} `;
+    default:
+      return `${key}="${value}" `;
+  }
 }

@@ -3,6 +3,7 @@ import { PluggableList } from 'unified';
 
 import { altToCaptionAttribute } from '../plugins/images/formatted-caption';
 import { pandocAttributesToMathsMeta } from '../plugins/maths/formatted-maths';
+import { tableCaptionToDirective } from '../plugins/tables/formatted-table-caption';
 import { Context } from './context';
 import { createRehypePlugins } from './hast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
@@ -41,6 +42,7 @@ export function createDefaultOptions(
     markdownStringTransforms: [
       altToCaptionAttribute,
       pandocAttributesToMathsMeta,
+      tableCaptionToDirective,
     ],
     mdAstTransforms: createMdastTransforms(ctx, { noSections }),
     htmlAstTransforms: createRehypePlugins(ctx, { noWrapper }),

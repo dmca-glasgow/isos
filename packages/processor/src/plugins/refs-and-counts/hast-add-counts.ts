@@ -1,4 +1,4 @@
-import { ElementContent, Root } from 'hast';
+import { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
@@ -70,7 +70,8 @@ export function addCounts(ctx: Context) {
           if (
             className[0] === 'thm-count' ||
             className[0] === 'fig-count' ||
-            className[0] === 'eq-count'
+            className[0] === 'eq-count' ||
+            className[0] === 'tbl-count'
           ) {
             // Count theorems
 
@@ -124,14 +125,18 @@ export function addCounts(ctx: Context) {
               }
 
               if (className[0] === 'eq-count') {
-                const children = createEquationLabel(value.trim(), id);
                 Object.assign(node, {
                   type: 'element',
                   tagName: 'span',
                   properties: {
                     className: ['eq-count'],
                   },
-                  children,
+                  children: [
+                    {
+                      type: 'text',
+                      value: `(${value.trim()})`,
+                    },
+                  ],
                 });
               } else {
                 Object.assign(node, { type: 'text', value });
@@ -142,39 +147,4 @@ export function addCounts(ctx: Context) {
       }
     });
   };
-}
-
-function createEquationLabel(count: string, id?: string) {
-  const children: ElementContent[] = [];
-  if (id) {
-    children.push(
-      {
-        type: 'text',
-        value: '(',
-      },
-      {
-        type: 'element',
-        tagName: 'a',
-        properties: {
-          href: `#${id}`,
-        },
-        children: [
-          {
-            type: 'text',
-            value: count,
-          },
-        ],
-      },
-      {
-        type: 'text',
-        value: ')',
-      },
-    );
-  } else {
-    children.push({
-      type: 'text',
-      value: `(${count})`,
-    });
-  }
-  return children;
 }

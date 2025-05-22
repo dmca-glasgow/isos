@@ -73,9 +73,9 @@ test('maths', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section id="hello">
       <h2><span class="count">1</span> Hello</h2>
-      <p id="eq-myref-1" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(<a href="#eq-myref-1">1</a>)</span></p>
+      <p id="eq-myref-1" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(1)</span></p>
       <p class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(2)</span></p>
-      <p id="eq-myref-3" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(<a href="#eq-myref-3">3</a>)</span></p>
+      <p id="eq-myref-3" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(3)</span></p>
       <p>Check out <a href="#eq-myref-1" class="ref">Equation 1</a> and <span class="error">?@eq-myref-2</span> and <a href="#eq-myref-3" class="ref">Equation 3</a>.</p>
     </section>
   `);
