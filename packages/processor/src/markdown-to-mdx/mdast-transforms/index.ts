@@ -1,6 +1,7 @@
 import { PluggableList } from 'unified';
 
 import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
+import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { headingSections } from '../../plugins/headings/heading-sections';
 import { headings } from '../../plugins/headings/mdx-headings';
@@ -33,8 +34,9 @@ export function createMdastTransforms(
   }
 
   plugins.push(
-    [extractFrontmatter, ctx],
+    [extractFrontmatter, ctx], // theorems depends on this
     [theorems, ctx],
+    [divSyntax, ctx],
 
     dashesToEndashEmdash,
     inlineCodeHighlight,

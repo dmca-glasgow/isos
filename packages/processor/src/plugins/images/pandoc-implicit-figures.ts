@@ -61,7 +61,7 @@ export function pandocImplicitFigures() {
                     tagName: 'span',
                     properties: {
                       className: ['fig-count', 'figure'],
-                      ['data-id']: id,
+                      'data-id': id,
                     },
                     children: [],
                   },

@@ -43,8 +43,9 @@ export function addCounts(ctx: Context) {
 
                 const _id = node.properties['data-id'];
                 if (_id) {
+                  const ctxObj = ctx.theorems.section;
                   const id = String(_id);
-                  const label = `Section ${value}`;
+                  const label = `${ctxObj.heading} ${value}`;
                   ctx.refMap[id] = { id, label };
                 }
 
@@ -69,9 +70,10 @@ export function addCounts(ctx: Context) {
 
           if (
             className[0] === 'thm-count' ||
-            className[0] === 'fig-count' ||
             className[0] === 'eq-count' ||
-            className[0] === 'tbl-count'
+            className[0] === 'fig-count' ||
+            className[0] === 'tbl-count' ||
+            className[0] === 'lst-count'
           ) {
             // Count theorems
 
@@ -100,7 +102,7 @@ export function addCounts(ctx: Context) {
                   const count = theoremCounter.increment(countName);
                   counts.push(...headingCounter.getCounts(depth), count);
 
-                  // TODO: counterWithin will be prioritised later
+                  // TODO: counterWithin
                   // } else if (counterWithin) {
                   //   const depth = latexSectionToDepth(counterWithin);
 

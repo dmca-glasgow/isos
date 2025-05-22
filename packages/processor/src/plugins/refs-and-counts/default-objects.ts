@@ -87,17 +87,18 @@ export const defaultObjects: RefObject[] = [
     heading: 'Proof',
     style: 'remark',
   },
-  // end Theorems & Proofs
-  {
-    name: 'figure',
-    heading: 'Figure',
-    abbr: 'fig',
-    unnumbered: false,
-  },
+  // equation
   {
     name: 'equation',
     heading: 'Equation',
     abbr: 'eq',
+    unnumbered: false,
+  },
+  // floats
+  {
+    name: 'figure',
+    heading: 'Figure',
+    abbr: 'fig',
     unnumbered: false,
   },
   {
@@ -106,6 +107,20 @@ export const defaultObjects: RefObject[] = [
     abbr: 'tbl',
     unnumbered: false,
   },
+  {
+    name: 'section',
+    heading: 'Section',
+    abbr: 'sec',
+    unnumbered: false,
+  },
+  // TODO: listing
+  // https://quarto.org/docs/authoring/cross-references-divs.html#listings
+  // {
+  //   name: 'listing',
+  //   heading: 'Listing',
+  //   abbr: 'lst',
+  //   unnumbered: false,
+  // },
 ];
 
 export type RefObjectYaml = Partial<Omit<RefObject, 'name'>>;
