@@ -128,17 +128,8 @@ export function addCounts(ctx: Context) {
 
               if (className[0] === 'eq-count') {
                 Object.assign(node, {
-                  type: 'element',
-                  tagName: 'span',
-                  properties: {
-                    className: ['eq-count'],
-                  },
-                  children: [
-                    {
-                      type: 'text',
-                      value: `(${value.trim()})`,
-                    },
-                  ],
+                  type: 'text',
+                  value: `(${value.trim()})`,
                 });
               } else {
                 Object.assign(node, { type: 'text', value });

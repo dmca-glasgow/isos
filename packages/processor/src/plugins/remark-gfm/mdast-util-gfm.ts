@@ -19,10 +19,11 @@ import {
   gfmTableFromMarkdown,
   gfmTableToMarkdown,
 } from 'mdast-util-gfm-table';
-import {
-  gfmTaskListItemFromMarkdown,
-  gfmTaskListItemToMarkdown,
-} from 'mdast-util-gfm-task-list-item';
+
+// import {
+//   gfmTaskListItemFromMarkdown,
+//   gfmTaskListItemToMarkdown,
+// } from 'mdast-util-gfm-task-list-item';
 
 import { Options } from './index';
 
@@ -40,7 +41,7 @@ export function gfmFromMarkdown() {
     gfmFootnoteFromMarkdown(),
     gfmStrikethroughFromMarkdown(),
     gfmTableFromMarkdown(),
-    gfmTaskListItemFromMarkdown(),
+    // gfmTaskListItemFromMarkdown(),
   ];
 }
 
@@ -61,7 +62,7 @@ export function gfmToMarkdown(options: Options) {
       gfmFootnoteToMarkdown(options),
       // gfmStrikethroughToMarkdown(),
       gfmTableToMarkdown(options),
-      gfmTaskListItemToMarkdown(),
+      // gfmTaskListItemToMarkdown(),
     ],
   };
 }

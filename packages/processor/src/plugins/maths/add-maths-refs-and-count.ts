@@ -26,8 +26,17 @@ export function addMathsRefsAndCount() {
             node.children.push({
               type: 'element',
               tagName: 'span',
-              properties,
-              children: [],
+              properties: {
+                className: ['eq-count'],
+              },
+              children: [
+                {
+                  type: 'element',
+                  tagName: 'span',
+                  properties,
+                  children: [],
+                },
+              ],
             });
           }
         }

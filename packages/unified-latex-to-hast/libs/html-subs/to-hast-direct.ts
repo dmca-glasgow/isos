@@ -1,6 +1,7 @@
+import * as Ast from '@unified-latex/unified-latex-types';
 import * as Hast from 'hast';
 import { h } from 'hastscript';
-import * as Ast from '@unified-latex/unified-latex-types';
+
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 /**
@@ -8,7 +9,7 @@ import { printRaw } from '@isos/unified-latex-util-print-raw';
  * This function is not recursive! But, it will produce an output for every input.
  */
 export function toHastDirect(
-  node: Ast.Node | Ast.Argument
+  node: Ast.Node | Ast.Argument,
 ): Hast.Element | Hast.Text | Hast.Comment {
   switch (node.type) {
     case 'string':
@@ -27,14 +28,14 @@ export function toHastDirect(
       return h(
         'span',
         { className: 'inline-math' },
-        printRaw(node.content)
+        printRaw(node.content),
       );
     case 'mathenv':
     case 'displaymath':
       return h(
         'div',
         { className: 'display-math' },
-        printRaw(node.content)
+        printRaw(node.content),
       );
     case 'verb':
     case 'verbatim':
@@ -49,13 +50,13 @@ export function toHastDirect(
       return h(
         'div',
         { className: ['environment', printRaw(node.env)] },
-        printRaw(node.content)
+        printRaw(node.content),
       );
     case 'macro':
       return h(
         'span',
         { className: ['macro', `macro-${node.content}`] },
-        (node.args || []).map(toHastDirect)
+        (node.args || []).map(toHastDirect),
       );
     case 'argument':
       return h(
@@ -65,14 +66,14 @@ export function toHastDirect(
           'data-open-mark': node.openMark,
           'data-close-mark': node.closeMark,
         },
-        printRaw(node.content)
+        printRaw(node.content),
       );
     case 'root':
       return h('root');
     default: {
       const _exhaustiveCheck: never = node;
       throw new Error(
-        `Unknown node type; cannot convert to HAST ${JSON.stringify(node)}`
+        `Unknown node type; cannot convert to HAST ${JSON.stringify(node)}`,
       );
     }
   }

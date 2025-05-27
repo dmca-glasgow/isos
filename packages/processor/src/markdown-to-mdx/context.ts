@@ -20,6 +20,7 @@ export type Reference = {
 export type Context = {
   theorems: RefObjectsYaml;
   refMap: Record<string, Reference>;
+  referenceLocation: string;
   hasSideNotes: boolean;
 };
 
@@ -27,6 +28,7 @@ export function createContext(): Context {
   return {
     theorems: {},
     refMap: {},
+    referenceLocation: 'margin',
     hasSideNotes: false,
     // cacheDir: '',
     // hasSidenotes: false,

@@ -15,6 +15,11 @@ export function addFrontmatter(ctx: Context) {
       toExport.theorems = theoremsYaml;
     }
 
+    if (ctx.frontmatter['reference-location'] !== 'margin') {
+      toExport['reference-location'] =
+        ctx.frontmatter['reference-location'];
+    }
+
     if (Object.keys(toExport).length > 0) {
       tree.children.unshift({
         type: 'yaml',

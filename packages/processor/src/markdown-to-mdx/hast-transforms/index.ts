@@ -6,6 +6,8 @@ import { PluggableList } from 'unified';
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
+import { footNotesToSideNotes } from '../../plugins/footnotes/footnotes-to-sidenotes';
+import { replaceFootnoteDefinitions } from '../../plugins/footnotes/replace-fn-definitions';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
 import atReferenceToLink from '../../plugins/refs-and-counts/at-reference-to-link';
@@ -63,6 +65,8 @@ function createRehypeFragmentPlugins(
     addDefaultAltText,
     addMathsRefsAndCount,
     removeEmptyParagraphs,
+    replaceFootnoteDefinitions,
+    [footNotesToSideNotes, ctx],
 
     // () => (tree: Root) => {
     //   console.dir(tree, { depth: null });

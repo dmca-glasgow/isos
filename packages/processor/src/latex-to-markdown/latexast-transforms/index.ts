@@ -1,6 +1,7 @@
 import { PluggableList } from 'unified';
 
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
+import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
 import { figureCaptionToImageTitle } from '../../plugins/images/figure-caption-to-image-title';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 // import { extractFancyTitle } from './extract-fancytitle';
@@ -10,14 +11,17 @@ import { Context } from '../context';
 import { insertParbreaksAroundBlockElements } from './block-elements';
 import { expandDocumentMacrosPlugin } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
-import { replaceTildeWithSpace } from './replace-tilde-with-space';
+
+// import { replaceTildeWithSpace } from './replace-tilde-with-space';
 
 export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
-    trimVerbatim,
-    replaceTildeWithSpace,
-    figureCaptionToImageTitle,
+    [setSideNotes, ctx],
     [extractTheoremDefinitions, ctx],
+
+    trimVerbatim,
+    // replaceTildeWithSpace,
+    figureCaptionToImageTitle,
     expandDocumentMacrosPlugin,
     expandMathOperatorPlugin,
     equationLabelToId,

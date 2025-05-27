@@ -3,6 +3,7 @@ import { PluggableList } from 'unified';
 import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
 import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
+import { footnoteReference } from '../../plugins/footnotes/footnote-reference';
 import { headingSections } from '../../plugins/headings/heading-sections';
 import { headings } from '../../plugins/headings/mdx-headings';
 import { imageAttributes } from '../../plugins/images/image-attributes';
@@ -14,6 +15,7 @@ import { Context } from '../context';
 import { Options } from '../options';
 import { escapeCharsForMdx } from './escape-mdx-chars';
 import { extractFrontmatter } from './extract-frontmatter';
+import { warn } from './warn';
 
 // import { center } from './center';
 // import { fancyTitle } from './fancy-title';
@@ -44,6 +46,8 @@ export function createMdastTransforms(
     pandocImplicitFigures,
     mathMetaToId,
     tableCaptionToFigure,
+    footnoteReference,
+    warn,
 
     // fancyTitle,
     // [references, ctx],

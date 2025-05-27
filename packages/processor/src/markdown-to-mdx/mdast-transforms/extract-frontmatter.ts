@@ -11,6 +11,7 @@ import { Context } from '../context';
 
 type Frontmatter = {
   theorems: RefObjectsYaml;
+  'reference-location': string;
 };
 
 export function extractFrontmatter(ctx: Context) {
@@ -21,9 +22,14 @@ export function extractFrontmatter(ctx: Context) {
       frontmatter = parse(node.value);
     });
 
-    ctx.theorems = merge(
-      createDefaultObjectsYaml(),
-      frontmatter?.theorems || {},
-    );
+    ctx.theorems = createDefaultObjectsYaml();
+
+    // console.log(frontmatter);
+    if (frontmatter) {
+      ctx.theorems = merge(ctx.theorems, frontmatter.theorems || {});
+
+      ctx.referenceLocation =
+        frontmatter['reference-location'] || 'margin';
+    }
   };
 }

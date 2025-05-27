@@ -1,9 +1,14 @@
-import { Element } from 'hast';
+import { Element, Parents } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
 import { defListHastToMdast } from '../../plugins/definition-list';
+import {
+  createFootnote,
+  createFootnoteMark,
+  createFootnoteText,
+} from '../../plugins/footnotes/footnote';
 // import { createFramed } from './framed';
 import { createHeadings } from '../../plugins/headings/headings';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
@@ -63,7 +68,12 @@ function headingHandler(state: State, node: Element) {
   return result;
 }
 
-function spanHandler(_ctx: Context, state: State, node: Element) {
+function spanHandler(
+  _ctx: Context,
+  state: State,
+  node: Element,
+  parents?: Parents,
+) {
   const { className } = node.properties;
 
   if (Array.isArray(className)) {
@@ -97,6 +107,24 @@ function spanHandler(_ctx: Context, state: State, node: Element) {
 
     if (className.includes('macro-label')) {
       const result = createLabel(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-footnote')) {
+      const result = createFootnote(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-footnotemark')) {
+      const result = createFootnoteMark(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-footnotetext')) {
+      const result = createFootnoteText(state, node, parents);
       state.patch(node, result);
       return result;
     }

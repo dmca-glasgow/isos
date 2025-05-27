@@ -20,16 +20,16 @@ export async function markdownToArticle(md: string, options: Options) {
   const transformed = await mdAstProcessor.run(mdAst);
   // console.dir(transformed, { depth: null });
 
-  const processor = createProcessor({
+  const mdxProcessor = createProcessor({
     ...processorOptions,
     rehypePlugins: options.htmlAstTransforms,
   });
 
   // @ts-expect-error: mdAst is not of type Program
-  const esAst = await processor.run(transformed);
+  const esAst = await mdxProcessor.run(transformed);
   // console.dir(esAst, {depth: null})
 
-  const mdxString = processor.stringify(esAst);
+  const mdxString = mdxProcessor.stringify(esAst);
 
   return run(mdxString, options.mdxArticleRunOptions);
 }
@@ -41,11 +41,10 @@ export async function markdownToTOC(markdown: string, _options: Options) {
   };
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
-  const transformed = await mdAstProcessor.run(mdAst);
-  const jsString = await createTableOfContents(transformed as Root);
-
   // console.dir(mdAst, { depth: null });
+  const transformed = await mdAstProcessor.run(mdAst);
   // console.dir(transformed, { depth: null });
+  const jsString = await createTableOfContents(transformed as Root);
 
   return run(jsString, options.mdxTOCRunOptions);
 }

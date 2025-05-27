@@ -17,10 +17,10 @@ import {
 } from 'micromark-extension-gfm-strikethrough';
 import { gfmTable, gfmTableHtml } from 'micromark-extension-gfm-table';
 import { gfmTagfilterHtml } from 'micromark-extension-gfm-tagfilter';
-import {
-  gfmTaskListItem,
-  gfmTaskListItemHtml,
-} from 'micromark-extension-gfm-task-list-item';
+// import {
+//   gfmTaskListItem,
+//   gfmTaskListItemHtml,
+// } from 'micromark-extension-gfm-task-list-item';
 import {
   combineExtensions,
   combineHtmlExtensions,
@@ -40,12 +40,13 @@ import { Options } from './index';
  *   syntax.
  */
 export function gfm(options: Options) {
+  // console.log(options);
   return combineExtensions([
     gfmAutolinkLiteral(),
     gfmFootnote(),
     gfmStrikethrough(options),
     gfmTable(),
-    gfmTaskListItem(),
+    // gfmTaskListItem(),
   ]);
 }
 
@@ -67,6 +68,6 @@ export function gfmHtml(options: HtmlOptions) {
     gfmStrikethroughHtml(),
     gfmTableHtml(),
     gfmTagfilterHtml(),
-    gfmTaskListItemHtml(),
+    // gfmTaskListItemHtml(),
   ]);
 }

@@ -5,6 +5,8 @@ import { PluggableList } from 'unified';
 
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
+import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
+import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
 import {
   altToCaptionAttribute,
   captionAttributeToAlt,
@@ -23,6 +25,7 @@ import { createMdastTransforms } from './mdast-transforms';
 import { addFrontmatter } from './mdast-transforms/add-frontmatter';
 import { formatBreak } from './mdast-transforms/format-break';
 import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
+import { nbspToSpace } from './string-transforms/nbsp-to-space';
 
 export type Options = {
   filePath: string;
@@ -80,6 +83,8 @@ export function createDefaultOptions(
           sout: { signature: 'm' },
           mintinline: { signature: 'm m' },
           counterwithin: { signature: 'm m' },
+          footnote: { signature: 'm' },
+          setsidenotes: { signature: 'm' },
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),
@@ -94,6 +99,7 @@ export function createDefaultOptions(
       captionAttributeToAlt,
       mathsMetaToPandocAttributes,
       codeToTableCaption,
+      nbspToSpace,
     ],
   };
 }
@@ -109,5 +115,11 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
 }
 
 function createLatexMdAstTransforms(ctx: Context): PluggableList {
-  return [[addFrontmatter, ctx], formatBreak, imageToPandocFigure];
+  return [
+    [addFrontmatter, ctx],
+    formatBreak,
+    imageToPandocFigure,
+    footnoteMarkToRef,
+    footnoteToRefDef,
+  ];
 }

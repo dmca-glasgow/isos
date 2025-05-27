@@ -1,7 +1,7 @@
 import { readTextFile } from '@isos/fs';
 
 import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
-import { FancyTitle } from './latexast-transforms/extract-fancytitle';
+// import { FancyTitle } from './latexast-transforms/extract-fancytitle';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
 export type Context = {
@@ -10,8 +10,9 @@ export type Context = {
   content: string;
   frontmatter: {
     theorems: RefObjectsYaml;
+    'reference-location': string;
   };
-  fancyTitle: FancyTitle;
+  // fancyTitle: FancyTitle;
 };
 
 export async function createContext(filePath: string): Promise<Context> {
@@ -23,11 +24,12 @@ export async function createContext(filePath: string): Promise<Context> {
     content,
     frontmatter: {
       theorems: {},
+      'reference-location': 'margin',
     },
-    fancyTitle: {
-      content: '',
-      part: '',
-    },
+    // fancyTitle: {
+    //   content: '',
+    //   part: '',
+    // },
   };
 }
 
@@ -41,10 +43,11 @@ export function createTestContext(
     content,
     frontmatter: {
       theorems: {},
+      'reference-location': 'margin',
     },
-    fancyTitle: {
-      content: '',
-      part: '',
-    },
+    // fancyTitle: {
+    //   content: '',
+    //   part: '',
+    // },
   };
 }
