@@ -15,6 +15,7 @@ import { Context } from '../context';
 import { Options } from '../options';
 import { escapeCharsForMdx } from './escape-mdx-chars';
 import { extractFrontmatter } from './extract-frontmatter';
+import { removeComments } from './remove-comments';
 import { warn } from './warn';
 
 // import { center } from './center';
@@ -48,6 +49,7 @@ export function createMdastTransforms(
     tableCaptionToFigure,
     footnoteReference,
     warn,
+    removeComments,
 
     // fancyTitle,
     // [references, ctx],

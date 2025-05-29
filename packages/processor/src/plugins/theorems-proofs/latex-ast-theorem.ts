@@ -3,7 +3,7 @@ import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
 import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 
-import { Context } from '../../latex-to-markdown/context';
+import { Context } from '../../input-to-markdown/context';
 import { defaultTheorems } from './default-theorems';
 
 type Handlers = Record<string, (node: Environment) => Macro>;

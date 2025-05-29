@@ -2,7 +2,7 @@ import { Root } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { visit } from 'unist-util-visit';
 
-import { Context } from '../../latex-to-markdown/context';
+import { Context } from '../../input-to-markdown/context';
 import { defaultTheorems } from './default-theorems';
 import { createTheoremCounter } from './theorem-counter';
 

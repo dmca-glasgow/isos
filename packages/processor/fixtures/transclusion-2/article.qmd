@@ -1,0 +1,13 @@
+## Hello
+
+Here's my paragraph in article.qmd
+
+{{< include other1.qmd >}}
+
+Here's my second paragraph in article.qmd
+
+![My **caption** text](image.png){alt="My alt text"}
+
+```python
+{{< include demo.py >}}
+```

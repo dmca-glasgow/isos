@@ -6,6 +6,7 @@ import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
 import {
   createInputToMarkdownContext,
   createInputToMarkdownOptions,
+  embedIncludes,
   inputToMarkdown,
 } from '@isos/processor';
 import { useLocalStorage } from '@isos/use-local-storage';
@@ -15,10 +16,11 @@ import { Header } from './header';
 
 import './styles.scss';
 
-let destroyWatcher = () => {};
+const watchers: (() => void)[] = [];
 
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', '');
+  const [subFilePaths, setSubFilePaths] = useState<string[]>([]);
   // const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
@@ -28,49 +30,59 @@ export function App() {
       return;
     }
     (async () => {
-      await processMarkdown(filePath);
-      createFileWatcher(filePath);
+      await processMarkdown();
     })();
   }, [filePath]);
 
-  async function processMarkdown(newFilePath: string) {
+  async function processMarkdown() {
     try {
-      const ctx = await createInputToMarkdownContext(newFilePath);
+      const ctx = await createInputToMarkdownContext(filePath);
       const options = createInputToMarkdownOptions(ctx);
+      await embedIncludes(ctx, options);
       const newMarkdown = await inputToMarkdown(ctx.content, options);
       setMarkdown(newMarkdown);
+      setSubFilePaths(ctx.subFilePaths);
+      createFileWatchers(ctx.subFilePaths);
       // setError('');
     } catch (err: any) {
-      console.log(err);
+      console.error(err);
       // setError(err.message);
     }
   }
 
-  async function createFileWatcher(newFilePath: string) {
-    // destroy previous watcher by calling it
+  async function createFileWatchers(subFiles: string[]) {
+    // destroy previous watchers by calling them
     // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
-    destroyWatcher();
+    watchers.map((fn) => fn()).splice(0, watchers.length);
+    const pathsToWatch = [filePath, ...subFiles];
 
-    destroyWatcher = await watchImmediate(newFilePath, (event) => {
-      // can be of type 'any' or 'other'
-      if (typeof event.type === 'string') {
-        return;
-      }
-      const type = event.type as Record<string, any>;
-      if (type.create?.kind === 'file' || type.modify?.kind === 'data') {
-        setLoading(true);
-        processMarkdown(newFilePath);
-      }
-    });
+    for (const toWatch of pathsToWatch) {
+      watchers.push(
+        await watchImmediate(toWatch, (event) => {
+          // can be of type 'any' or 'other'
+          if (typeof event.type === 'string') {
+            return;
+          }
+          const type = event.type as Record<string, any>;
+          if (
+            type.create?.kind === 'file' ||
+            type.modify?.kind === 'data'
+          ) {
+            setLoading(true);
+            processMarkdown();
+          }
+        }),
+      );
+    }
   }
 
   async function handleProcessFile(newFilePath: string | null) {
     if (newFilePath === null || newFilePath === filePath) {
       return;
     }
-    setFilePath(newFilePath);
     setLoading(true);
-    createFileWatcher(newFilePath);
+    setFilePath(newFilePath);
+    // createFileWatcher(newFilePath);
   }
 
   async function handleExportFile(saveFilePath: string) {
@@ -98,6 +110,7 @@ export function App() {
     <>
       <Header
         filePath={filePath}
+        numWatchedFiles={subFilePaths.length + 1}
         loading={loading}
         handleProcessFile={handleProcessFile}
         handleExportFile={handleExportFile}

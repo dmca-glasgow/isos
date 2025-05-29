@@ -1,7 +1,7 @@
 import { Root } from '@unified-latex/unified-latex-types';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 
-import { Context } from '../../latex-to-markdown/context';
+import { Context } from '../../input-to-markdown/context';
 
 export function setSideNotes(ctx: Context) {
   return (tree: Root) => {

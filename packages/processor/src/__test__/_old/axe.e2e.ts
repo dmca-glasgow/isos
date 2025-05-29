@@ -2,9 +2,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'fs/promises';
 
-import { inputToMarkdown } from '../../latex-to-markdown';
-import { createContext } from '../../latex-to-markdown/context';
-import { createDefaultOptions } from '../../latex-to-markdown/options';
+import { inputToMarkdown } from '../../input-to-markdown';
+import { createContext } from '../../input-to-markdown/context';
+import { createDefaultOptions } from '../../input-to-markdown/options';
 // import { expect, test } from '@playwright/test';
 // import { readFile } from 'fs/promises';
 

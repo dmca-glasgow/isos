@@ -4,14 +4,15 @@ import renderToString from 'preact-render-to-string';
 import formatHtml from 'pretty';
 
 import { createMdxState, inputToMarkdown, markdownToArticle } from '..';
+import { embedIncludes } from '../embed-includes';
 import {
   createContext,
   createTestContext,
-} from '../latex-to-markdown/context';
+} from '../input-to-markdown/context';
 import {
   Options,
   createDefaultOptions,
-} from '../latex-to-markdown/options';
+} from '../input-to-markdown/options';
 import { createContext as createHtmlContext } from '../markdown-to-mdx/context';
 import { MdxDefaultState } from '../markdown-to-mdx/mdx-handlers/mdx-state';
 import { createDefaultOptions as createHtmlOptions } from '../markdown-to-mdx/options';
@@ -56,6 +57,7 @@ async function markdownToHtml(
     ...options,
   });
   const markdown = await inputToMarkdown(ctx.content, opts);
+  // return markdown;
   const mdxState = createMdxState();
   const { mathsAsTex, syntaxHighlight } = state?.maths || {};
 
@@ -90,6 +92,7 @@ async function fixtureToMarkdown(
   const filePath = getAbsoluteFixturePath(fixturePath);
   const ctx = await createContext(filePath);
   const opts = createDefaultOptions(ctx, { ...testOptions, ...options });
+  await embedIncludes(ctx, opts);
   return inputToMarkdown(ctx.content, opts);
 }
 

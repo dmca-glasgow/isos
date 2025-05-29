@@ -1,0 +1,3 @@
+## Other 2
+
+Text from other2.qmd.

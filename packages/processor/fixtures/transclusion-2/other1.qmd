@@ -1,0 +1,7 @@
+## Other 1
+
+A paragraph from other1.qmd.
+
+Another paragraph from other1.qmd.
+
+{{< include other2.qmd >}}

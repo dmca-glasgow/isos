@@ -2,13 +2,13 @@ export {
   supportedLaTeXExtensions,
   supportedMarkdownExtensions,
   parseFilePath,
-} from './latex-to-markdown/utils/parse-file-path';
+} from './input-to-markdown/utils/parse-file-path';
 
-export type { FileType } from './latex-to-markdown/utils/parse-file-path';
+export type { FileType } from './input-to-markdown/utils/parse-file-path';
 
-export { inputToMarkdown } from './latex-to-markdown';
-export { createDefaultOptions as createInputToMarkdownOptions } from './latex-to-markdown/options';
-export { createContext as createInputToMarkdownContext } from './latex-to-markdown/context';
+export { inputToMarkdown } from './input-to-markdown';
+export { createDefaultOptions as createInputToMarkdownOptions } from './input-to-markdown/options';
+export { createContext as createInputToMarkdownContext } from './input-to-markdown/context';
 
 export { markdownToArticle, markdownToTOC } from './markdown-to-mdx';
 export { createDefaultOptions as createMarkdownToMdxOptions } from './markdown-to-mdx/options';
@@ -20,3 +20,5 @@ export type {
   MathsFont,
   MathsOptions,
 } from './plugins/maths/mdx-handlers/Maths';
+
+export { embedIncludes } from './embed-includes';

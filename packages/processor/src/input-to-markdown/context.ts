@@ -6,6 +6,8 @@ import { FileType, parseFilePath } from './utils/parse-file-path';
 
 export type Context = {
   filePath: string;
+  subFilePaths: string[];
+  base64Images: Record<string, string>;
   type: FileType;
   content: string;
   frontmatter: {
@@ -20,6 +22,8 @@ export async function createContext(filePath: string): Promise<Context> {
   const content = await readTextFile(filePath);
   return {
     filePath,
+    subFilePaths: [],
+    base64Images: {},
     type,
     content,
     frontmatter: {
@@ -39,6 +43,8 @@ export function createTestContext(
 ): Context {
   return {
     filePath: 'test',
+    subFilePaths: [],
+    base64Images: {},
     type,
     content,
     frontmatter: {

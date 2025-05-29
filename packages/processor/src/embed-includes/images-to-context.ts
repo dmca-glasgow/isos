@@ -6,16 +6,12 @@ import { visit } from 'unist-util-visit';
 import { readBinaryFile } from '@isos/fs';
 import { pdfToSvg } from '@isos/pdf-to-svg';
 
-import { Context } from '../../latex-to-markdown/context';
-import { Options } from '../../latex-to-markdown/options';
+import { Context } from '../input-to-markdown/context';
 
-export function inlineImages(ctx: Context, options: Options) {
+export const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+
+export function inlineImages(ctx: Context) {
   return async (tree: Root) => {
-    // console.log('inlineImages');
-    if (options.noInlineImages) {
-      return;
-    }
-
     const nodes: Image[] = [];
 
     visit(tree, 'image', (node) => {
@@ -27,33 +23,41 @@ export function inlineImages(ctx: Context, options: Options) {
     for (const node of nodes) {
       const imagePath = resolve(dir, node.url);
       const ext = extname(imagePath);
-      if (ext !== '') {
-        const mime = mimes.getType(ext);
-        if (mime !== null) {
-          node.url = await getDataUrl(imagePath, ext, mime);
-        }
+      if (supportedExtensions.includes(ext)) {
+        node.url = await getDataUrl(imagePath, ext);
       }
     }
   };
 }
 
-async function getDataUrl(imagePath: string, ext: string, mime: string) {
+export async function getDataUrl(imagePath: string, ext: string) {
   switch (ext) {
     case '.pdf': {
+      const mime = mimes.getType('.svg') as string;
       const svg = await pdfToSvg(await readBinaryFile(imagePath));
       const base64 = btoa(svg);
-      return 'data:' + mimes.getType('.svg') + ';base64,' + base64;
+      return toUrl({ mime, base64 });
     }
     case '.jpg':
     case '.jpeg':
     case '.png': {
+      const mime = mimes.getType(ext) as string;
       const img = await readBinaryFile(imagePath);
       const base64 = btoa(String.fromCharCode(...img));
-      return 'data:' + mime + ';base64,' + base64;
+      return toUrl({ mime, base64 });
     }
     default:
       throw new Error(
-        `[inline-images]: unsupported file extension "${ext}"`,
+        `[inline-images]: unsupported file extension "${ext || '(none)'}"`,
       );
   }
+}
+
+type Props = {
+  mime: string;
+  base64: string;
+};
+
+function toUrl({ mime, base64 }: Props) {
+  return `data:${mime};base64,${base64}`;
 }

@@ -38,7 +38,7 @@ function getMdAst(input: string, options: Options) {
     case 'latex':
       return latexToMdAstProcessor(input, options.latexToMdAst);
     default:
-      throw new Error(`file type : "${options.type}" is not supported`);
+      throw new Error(`file type: "${options.type}" is not supported`);
   }
 }
 
