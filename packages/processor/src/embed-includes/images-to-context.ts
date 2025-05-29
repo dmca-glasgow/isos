@@ -1,34 +1,9 @@
-import { Image, Root } from 'mdast';
 import mimes from 'mime/lite';
-import { dirname, extname, resolve } from 'pathe';
-import { visit } from 'unist-util-visit';
 
 import { readBinaryFile } from '@isos/fs';
 import { pdfToSvg } from '@isos/pdf-to-svg';
 
-import { Context } from '../input-to-markdown/context';
-
 export const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
-
-export function inlineImages(ctx: Context) {
-  return async (tree: Root) => {
-    const nodes: Image[] = [];
-
-    visit(tree, 'image', (node) => {
-      nodes.push(node);
-    });
-
-    const dir = dirname(ctx.filePath);
-
-    for (const node of nodes) {
-      const imagePath = resolve(dir, node.url);
-      const ext = extname(imagePath);
-      if (supportedExtensions.includes(ext)) {
-        node.url = await getDataUrl(imagePath, ext);
-      }
-    }
-  };
-}
 
 export async function getDataUrl(imagePath: string, ext: string) {
   switch (ext) {

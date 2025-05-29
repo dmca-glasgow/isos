@@ -42,7 +42,7 @@ export default defineConfig({
       include: ['node_modules/mathjax-*/**'],
     }),
   ],
-  clearScreen: false,
+  // clearScreen: false,
   server: {
     port: 1420,
     strictPort: true,

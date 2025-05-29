@@ -85,6 +85,12 @@ export function createDefaultOptions(
           counterwithin: { signature: 'm m' },
           footnote: { signature: 'm' },
           setsidenotes: { signature: 'm' },
+
+          notebox: { signature: 'm' },
+          tipbox: { signature: 'm' },
+          warningbox: { signature: 'm' },
+          cautionbox: { signature: 'm' },
+          importantbox: { signature: 'm' },
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),

@@ -1,5 +1,6 @@
 import { PluggableList } from 'unified';
 
+import { createCallouts } from '../../plugins/callout/create-callouts';
 import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
 import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
@@ -50,6 +51,7 @@ export function createMdastTransforms(
     footnoteReference,
     warn,
     removeComments,
+    createCallouts,
 
     // fancyTitle,
     // [references, ctx],

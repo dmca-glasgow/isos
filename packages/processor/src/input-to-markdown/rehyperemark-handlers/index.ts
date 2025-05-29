@@ -2,6 +2,8 @@ import { Element, Parents } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
+import { callouts } from '../../plugins/callout/callouts';
+import { createCallout } from '../../plugins/callout/rehype-remark-callout';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
 import { defListHastToMdast } from '../../plugins/definition-list';
 import {
@@ -125,6 +127,18 @@ function spanHandler(
 
     if (className.includes('macro-footnotetext')) {
       const result = createFootnoteText(state, node, parents);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (
+      className.find((klass) => {
+        return callouts.find((callout) => {
+          return String(klass) === `macro-${callout}box`;
+        });
+      })
+    ) {
+      const result = createCallout(state, node);
       state.patch(node, result);
       return result;
     }

@@ -57,11 +57,10 @@ function getName(node: Environment) {
       .trim()
       .match(/^\[(.*)\]/);
 
-    const idx = node.content.findIndex((o) => {
-      return o.type === 'string' && o.content === ']';
-    });
-
     if (match !== null) {
+      const idx = node.content.findIndex((o) => {
+        return o.type === 'string' && o.content === ']';
+      });
       node.content.splice(0, idx + 1);
       return match[1];
     }
