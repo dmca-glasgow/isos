@@ -18,12 +18,12 @@ export function theorems(ctx: Context) {
           const theorem = defaultTheorems.find((o) => o.abbr === abbr);
 
           if (theorem) {
-            const ctxTheorem = ctx.theorems[theorem.name];
+            const ctxTheorem = ctx.frontmatter.theorems[theorem.name];
             createTheorem(node, theorem.name, ctxTheorem, id);
           }
         }
         if (node.attributes?.class?.split(' ').includes('proof')) {
-          createTheorem(node, 'proof', ctx.theorems.proof);
+          createTheorem(node, 'proof', ctx.frontmatter.theorems.proof);
         }
       }
     });

@@ -17,18 +17,45 @@ export type Reference = {
   label: string;
 };
 
-export type Context = {
+export type Author = {
+  name: string;
+  orcid?: string;
+  affiliation?: string;
+};
+
+export type Frontmatter = {
+  title: string;
+  date: string;
+  author: Author | Author[];
+  abstract: string;
   theorems: RefObjectsYaml;
-  refMap: Record<string, Reference>;
-  referenceLocation: string;
+  'reference-location': string;
+};
+
+export type Context = {
+  frontmatter: {
+    title: string;
+    date: string;
+    author: Author[];
+    abstract: string;
+    theorems: RefObjectsYaml;
+    refMap: Record<string, Reference>;
+    referenceLocation: string;
+  };
   hasSideNotes: boolean;
 };
 
 export function createContext(): Context {
   return {
-    theorems: {},
-    refMap: {},
-    referenceLocation: 'margin',
+    frontmatter: {
+      title: '',
+      date: '',
+      author: [],
+      abstract: '',
+      theorems: {},
+      refMap: {},
+      referenceLocation: 'margin',
+    },
     hasSideNotes: false,
     // cacheDir: '',
     // hasSidenotes: false,

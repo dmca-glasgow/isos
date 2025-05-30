@@ -2,6 +2,7 @@ import { PluggableList } from 'unified';
 
 import { createCallouts } from '../../plugins/callout/create-callouts';
 import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
+import { cover } from '../../plugins/cover/cover';
 import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { footnoteReference } from '../../plugins/footnotes/footnote-reference';
@@ -41,6 +42,7 @@ export function createMdastTransforms(
     [extractFrontmatter, ctx], // theorems depends on this
     [theorems, ctx],
     [divSyntax, ctx],
+    [cover, ctx],
 
     dashesToEndashEmdash,
     inlineCodeHighlight,

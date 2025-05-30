@@ -43,10 +43,10 @@ export function addCounts(ctx: Context) {
 
                 const _id = node.properties['data-id'];
                 if (_id) {
-                  const ctxObj = ctx.theorems.section;
+                  const ctxObj = ctx.frontmatter.theorems.section;
                   const id = String(_id);
                   const label = `${ctxObj.heading} ${value}`;
-                  ctx.refMap[id] = { id, label };
+                  ctx.frontmatter.refMap[id] = { id, label };
                 }
 
                 Object.assign(node, {
@@ -78,7 +78,7 @@ export function addCounts(ctx: Context) {
             // Count theorems
 
             const theoremName = String(className[1]);
-            const ctxTheorem = ctx.theorems[theoremName];
+            const ctxTheorem = ctx.frontmatter.theorems[theoremName];
 
             if (ctxTheorem) {
               const { referenceCounter, unnumbered } = ctxTheorem;
@@ -87,7 +87,7 @@ export function addCounts(ctx: Context) {
 
               if (!unnumbered) {
                 const countName = referenceCounter || theoremName;
-                const countTheorem = ctx.theorems[countName];
+                const countTheorem = ctx.frontmatter.theorems[countName];
                 const { numberWithin } = countTheorem;
                 const counts: number[] = [];
 
@@ -122,7 +122,7 @@ export function addCounts(ctx: Context) {
 
                 if (id) {
                   const label = `${ctxTheorem.heading} ${count}`;
-                  ctx.refMap[id] = { id, label };
+                  ctx.frontmatter.refMap[id] = { id, label };
                 }
               }
 

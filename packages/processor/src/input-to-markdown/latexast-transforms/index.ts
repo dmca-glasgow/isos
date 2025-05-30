@@ -1,6 +1,7 @@
 import { PluggableList } from 'unified';
 
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
+import { extractTopMatter } from '../../plugins/cover/extract-top-matter';
 import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
 import { figureCaptionToImageTitle } from '../../plugins/images/figure-caption-to-image-title';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
@@ -18,6 +19,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
     [setSideNotes, ctx],
     [extractTheoremDefinitions, ctx],
+    [extractTopMatter, ctx],
 
     trimVerbatim,
     // replaceTildeWithSpace,

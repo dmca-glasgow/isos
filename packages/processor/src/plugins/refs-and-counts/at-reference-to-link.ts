@@ -11,7 +11,7 @@ export default function atReferenceToLink(ctx: Context) {
     findAndReplace(tree, [
       pattern,
       (_, ref) => {
-        const reference = ctx.refMap[ref];
+        const reference = ctx.frontmatter.refMap[ref];
         if (reference) {
           return createReferenceLink(reference);
         } else {

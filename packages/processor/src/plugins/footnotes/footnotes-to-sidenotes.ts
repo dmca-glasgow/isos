@@ -7,7 +7,7 @@ export function footNotesToSideNotes(ctx: Context) {
   return (tree: Root) => {
     // console.dir(tree, { depth: null });
     // console.log(ctx);
-    if (ctx.referenceLocation !== 'margin') {
+    if (ctx.frontmatter.referenceLocation !== 'margin') {
       return;
     }
 

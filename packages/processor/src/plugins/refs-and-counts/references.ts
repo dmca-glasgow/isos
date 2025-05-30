@@ -9,7 +9,7 @@ export function references(ctx: Context) {
       if (node.name === 'ref') {
         const text = node.children[0] as Text;
         const id = text.value;
-        const reference = ctx.refMap[id];
+        const reference = ctx.frontmatter.refMap[id];
         // console.log(id, count);
 
         const link: Link = {

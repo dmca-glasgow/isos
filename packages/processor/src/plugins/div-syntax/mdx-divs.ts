@@ -24,7 +24,7 @@ export function divSyntax(ctx: Context) {
           const [abbr] = id.split('-');
           const float = defaultFloats.find((o) => o.abbr === abbr);
           if (float) {
-            const ctxObj = ctx.theorems[float.name];
+            const ctxObj = ctx.frontmatter.theorems[float.name];
             createFigure(node, float.name, ctxObj, id);
           }
         }

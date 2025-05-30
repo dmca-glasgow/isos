@@ -86,6 +86,10 @@ export function createDefaultOptions(
           footnote: { signature: 'm' },
           setsidenotes: { signature: 'm' },
 
+          author: { signature: 'o m' },
+          affil: { signature: 'o m' },
+          orcidlink: { signature: 'm' },
+
           notebox: { signature: 'm' },
           tipbox: { signature: 'm' },
           warningbox: { signature: 'm' },
