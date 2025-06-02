@@ -7,7 +7,7 @@ on:
 
 jobs:
   version-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.check-for-version-change.outputs.version}}
       has-version-change: ${{ steps.check-for-version-change.outputs.has-version-change }}
