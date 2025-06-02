@@ -4,7 +4,7 @@ import {
 } from 'mdast-util-directive';
 
 // Inlined micromark extension directive to allow for syntax ::: {attributes}
-import { directive } from './micromark-extension-directive';
+import { directive } from './micromark-extension-directive/index.js';
 
 export default function remarkDirective() {
   // @ts-expect-error: TS is wrong about `this`.

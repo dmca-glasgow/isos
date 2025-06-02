@@ -91,6 +91,8 @@ jobs:
 
       - name: install frontend dependencies
         run: npm ci
+      - name: build runtime package
+        run: npm -w @isos/runtime run build
       - uses: tauri-apps/tauri-action@v0
         id: build-tauri-app
         env:
