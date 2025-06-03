@@ -43,7 +43,7 @@
     "@babel/preset-react": "^7.26.3",
     "@playwright/test": "^1.51.1",
     "@preact/preset-vite": "^2.10.1",
-    "@tauri-apps/cli": "^2",
+    "@tauri-apps/cli": "2.4.1",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/hast": "^3.0.4",
     "@types/lodash": "^4.17.16",
