@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "isos",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "identifier": "com.isos.app",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -33,6 +33,9 @@
     ],
     "resources": {
       "../packages/runtime/dist/assets/*": "resources/runtime"
+    },
+    "windows": {
+      "signCommand": "trusted-signing-cli -e https://weu.codesigning.azure.net -a uogtrustedsigning -c isos-cert %1"
     }
   }
 }
