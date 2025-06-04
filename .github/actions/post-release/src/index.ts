@@ -75,10 +75,10 @@ async function run() {
     const macArmUpdater = getAsset(assets, 'aarch64.app.tar.gz');
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
-    const windowsInstaller = getAsset(assets, '-setup.exe');
-    const windowsUpdater = getAsset(assets, '-setup.nsis.zip');
+    const windowsInstaller = getAsset(assets, 'x64-setup.exe');
+    // const windowsUpdater = getAsset(assets, 'x64_en-US.msi');
     const linuxInstaller = getAsset(assets, 'amd64.AppImage');
-    const linuxUpdater = getAsset(assets, 'amd64.AppImage.tar.gz');
+    // const linuxUpdater = getAsset(assets, 'amd64.AppImage.tar.gz');
 
     const macArmInstallerName = `isos_installer_mac_${version}_aarch64.dmg`;
     const macIntelInstallerName = `isos_installer_mac_${version}_x64.dmg`;
@@ -92,13 +92,13 @@ async function run() {
 
     const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
     const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
-    const windowsUpdaterName = `isos_updater_win_${version}_x64-setup.nsis.zip`;
-    const linuxUpdaterName = `isos_updater_nix_${version}_amd64.AppImage.tar.gz`;
+    // const windowsUpdaterName = `isos_updater_win_${version}_x64-setup.nsis.zip`;
+    // const linuxUpdaterName = `isos_updater_nix_${version}_amd64.AppImage.tar.gz`;
 
     renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
     renameUpdaterAsset(updater, 'darwin-x86_64', macIntelUpdaterName);
-    renameUpdaterAsset(updater, 'windows-x86_64', windowsUpdaterName);
-    renameUpdaterAsset(updater, 'linux-x86_64', linuxUpdaterName);
+    // renameUpdaterAsset(updater, 'windows-x86_64', windowsUpdaterName);
+    // renameUpdaterAsset(updater, 'linux-x86_64', linuxUpdaterName);
 
     // console.log('updater', updater);
 
@@ -126,19 +126,19 @@ async function run() {
         name: windowsInstallerName,
         label: windowsInstallerLabel,
       },
-      {
-        id: windowsUpdater.id,
-        name: windowsUpdaterName,
-      },
+      // {
+      //   id: windowsUpdater.id,
+      //   name: windowsUpdaterName,
+      // },
       {
         id: linuxInstaller.id,
         name: linuxInstallerName,
         label: linuxInstallerLabel,
       },
-      {
-        id: linuxUpdater.id,
-        name: linuxUpdaterName,
-      },
+      // {
+      //   id: linuxUpdater.id,
+      //   name: linuxUpdaterName,
+      // },
     ];
 
     // console.log(
