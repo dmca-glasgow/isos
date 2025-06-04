@@ -55,12 +55,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04'
-            args: ''
+          # - platform: 'macos-latest'
+          #   args: '--target aarch64-apple-darwin'
+          # - platform: 'macos-latest'
+          #   args: '--target x86_64-apple-darwin'
+          # - platform: 'ubuntu-22.04'
+          #   args: ''
           - platform: 'windows-latest'
             args: ''
     runs-on: ${{ matrix.platform }}
@@ -86,7 +86,7 @@ jobs:
           WINDOWS_SIGN_COMMAND: trusted-signing-cli -e ${{ secrets.AZURE_ACCOUNT_URI }} -a ${{ secrets.AZURE_CODE_SIGNING_NAME }} -c ${{ secrets.AZURE_CERT_PROFILE_NAME }} %1
         run: |
           cd "$GITHUB_WORKSPACE"
-          cat './src-tauri/tauri.conf.json' | jq '.bundle .windows += {"signCommand": env.WINDOWS_SIGN_COMMAND}' > './src-tauri/tauri.conf.json'
+          cat './src-tauri/tauri.conf.json' | jq '.bundle .windows += {"signCommand": env.WINDOWS_SIGN_COMMAND}' > './src-tauri/temp.json' && mv './src-tauri/temp.json' './src-tauri/tauri.conf.json'
           cargo install trusted-signing-cli
 
       - name: install frontend dependencies
