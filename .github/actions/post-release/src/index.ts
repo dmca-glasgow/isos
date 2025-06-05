@@ -45,10 +45,8 @@ async function run() {
 
     // console.log(assets.map((o) => o.name));
 
-    const latestJsonAsset = getAsset(assets, 'latest.json');
-
     console.log('getting latest.json contents...');
-    const updater = await getAssetTextContent(token, latestJsonAsset);
+    const latestJsonAsset = getAsset(assets, 'latest.json');
 
     console.log('removing latest.json asset...');
     await octokit.rest.repos.deleteReleaseAsset({
@@ -76,37 +74,19 @@ async function run() {
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
     const windowsInstaller = getAsset(assets, 'x64-setup.exe');
-    // const windowsUpdater = getAsset(assets, 'x64_en-US.msi');
     const linuxInstaller = getAsset(assets, 'amd64.AppImage');
-    // const linuxUpdater = getAsset(assets, 'amd64.AppImage.tar.gz');
-
-    const macArmInstallerName = `isos_installer_mac_${version}_aarch64.dmg`;
-    const macIntelInstallerName = `isos_installer_mac_${version}_x64.dmg`;
-    const windowsInstallerName = `isos_installer_win_${version}_x64-setup.exe`;
-    const linuxInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
-
-    const macArmInstallerLabel = `ISOS installer for Mac (Apple Silicon)`;
-    const macIntelInstallerLabel = `ISOS installer for Mac (Intel)`;
-    const windowsInstallerLabel = `ISOS installer for Windows`;
-    const linuxInstallerLabel = `ISOS installer for Linux (cross-distribution AppImage)`;
 
     const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
     const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
-    // const windowsUpdaterName = `isos_updater_win_${version}_x64-setup.nsis.zip`;
-    // const linuxUpdaterName = `isos_updater_nix_${version}_amd64.AppImage.tar.gz`;
-
+    const updater = await getAssetTextContent(token, latestJsonAsset);
     renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
     renameUpdaterAsset(updater, 'darwin-x86_64', macIntelUpdaterName);
-    // renameUpdaterAsset(updater, 'windows-x86_64', windowsUpdaterName);
-    // renameUpdaterAsset(updater, 'linux-x86_64', linuxUpdaterName);
-
-    // console.log('updater', updater);
 
     const newAssets = [
       {
         id: macArmInstaller.id,
-        name: macArmInstallerName,
-        label: macArmInstallerLabel,
+        name: `isos_installer_mac_${version}_aarch64.dmg`,
+        label: `ISOS installer for Mac (Apple Silicon)`,
       },
       {
         id: macArmUpdater.id,
@@ -114,8 +94,8 @@ async function run() {
       },
       {
         id: macIntelInstaller.id,
-        name: macIntelInstallerName,
-        label: macIntelInstallerLabel,
+        name: `isos_installer_mac_${version}_x64.dmg`,
+        label: `ISOS installer for Mac (Intel)`,
       },
       {
         id: macIntelUpdater.id,
@@ -123,22 +103,14 @@ async function run() {
       },
       {
         id: windowsInstaller.id,
-        name: windowsInstallerName,
-        label: windowsInstallerLabel,
+        name: `isos_installer_win_${version}_x64-setup.exe`,
+        label: `ISOS installer for Windows`,
       },
-      // {
-      //   id: windowsUpdater.id,
-      //   name: windowsUpdaterName,
-      // },
       {
         id: linuxInstaller.id,
-        name: linuxInstallerName,
-        label: linuxInstallerLabel,
+        name: `isos_installer_nix_${version}_amd64.AppImage`,
+        label: `ISOS installer for Linux`,
       },
-      // {
-      //   id: linuxUpdater.id,
-      //   name: linuxUpdaterName,
-      // },
     ];
 
     // console.log(
@@ -191,6 +163,14 @@ async function getVersion(): Promise<string> {
   return json.version;
 }
 
+function getAsset(assets: Asset[], endsWith: string) {
+  const result = assets.find((o) => o.name.endsWith(endsWith));
+  if (!result) {
+    throw new Error(`No asset ends with: ${endsWith}`);
+  }
+  return result;
+}
+
 async function getAssetTextContent(token: string, asset: Asset) {
   const octokit = getOctokit(token);
   const res = await octokit.request(
@@ -203,14 +183,6 @@ async function getAssetTextContent(token: string, asset: Asset) {
   );
   const contents = new TextDecoder('utf-8').decode(res.data);
   return JSON.parse(contents) as VersionContent;
-}
-
-function getAsset(assets: Asset[], endsWith: string) {
-  const result = assets.find((o) => o.name.endsWith(endsWith));
-  if (!result) {
-    throw new Error(`No asset ends with: ${endsWith}`);
-  }
-  return result;
 }
 
 function renameUpdaterAsset(

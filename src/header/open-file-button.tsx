@@ -16,11 +16,18 @@ export function OpenFileButton({ onChange }: Props) {
       directory: false,
       filters: [
         {
-          name: 'LaTeX',
+          name: 'All supported extensions',
+          extensions: [
+            ...supportedLaTeXExtensions,
+            ...supportedMarkdownExtensions,
+          ],
+        },
+        {
+          name: 'Supported LaTeX extensions',
           extensions: supportedLaTeXExtensions,
         },
         {
-          name: 'Markdown',
+          name: 'Supported Markdown extensions',
           extensions: supportedMarkdownExtensions,
         },
       ],
