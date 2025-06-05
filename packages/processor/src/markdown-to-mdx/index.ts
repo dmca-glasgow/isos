@@ -18,6 +18,7 @@ export async function markdownToArticle(md: string, options: Options) {
   // console.dir(mdAst, { depth: null });
 
   const transformed = await mdAstProcessor.run(mdAst);
+  // console.dir(transformed, { depth: null });
 
   const mdxProcessor = createProcessor({
     ...processorOptions,
@@ -26,7 +27,6 @@ export async function markdownToArticle(md: string, options: Options) {
 
   // @ts-expect-error: mdAst is not of type Program
   const esAst = await mdxProcessor.run(transformed);
-  // console.log(2);
   // console.dir(esAst, {depth: null})
 
   const mdxString = mdxProcessor.stringify(esAst);

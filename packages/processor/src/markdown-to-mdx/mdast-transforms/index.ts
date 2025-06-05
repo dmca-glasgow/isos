@@ -17,6 +17,7 @@ import { Context } from '../context';
 import { Options } from '../options';
 import { escapeCharsForMdx } from './escape-mdx-chars';
 import { extractFrontmatter } from './extract-frontmatter';
+import { htmlToWarn } from './html-to-warn';
 import { removeComments } from './remove-comments';
 import { warn } from './warn';
 
@@ -54,6 +55,7 @@ export function createMdastTransforms(
     warn,
     removeComments,
     createCallouts,
+    htmlToWarn,
 
     // fancyTitle,
     // [references, ctx],
