@@ -1,4 +1,5 @@
 import { save } from '@tauri-apps/plugin-dialog';
+import { useState } from 'preact/hooks';
 
 import { parseFilePath } from '@isos/processor';
 
@@ -8,6 +9,8 @@ type Props = {
 };
 
 export function SaveFileButton({ filePath, onSave }: Props) {
+  const [saved, setSaved] = useState(false);
+
   async function handleSave() {
     const { name } = parseFilePath(filePath);
     const saveFilePath = await save({
@@ -25,8 +28,12 @@ export function SaveFileButton({ filePath, onSave }: Props) {
       return;
     }
 
-    onSave(saveFilePath);
+    await onSave(saveFilePath);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   }
 
-  return <button onClick={handleSave}>Save HTML</button>;
+  return (
+    <button onClick={handleSave}>{saved ? 'Saved' : 'Save HTML'}</button>
+  );
 }
