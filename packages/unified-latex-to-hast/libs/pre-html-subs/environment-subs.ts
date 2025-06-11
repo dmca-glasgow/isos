@@ -110,7 +110,13 @@ function createTableFromTabular(env: Ast.Environment) {
     columnSpecs = parseTabularSpec(args[1] || []);
   } catch (e) {}
 
-  const [tableHead, ...tableBody] = parseAlignEnvironment(env.content);
+  const rows = parseAlignEnvironment(env.content).filter(
+    (o) => o.cells.length,
+  );
+  const tableHead = rows[0];
+  const tableBody = rows
+    .slice(1)
+    .filter((o) => o.cells.length === tableHead.cells.length);
 
   const attributes: Record<string, string> = {
     className: 'tabular',
