@@ -44,6 +44,7 @@ export async function watchImmediate(
     return (await import('@tauri-apps/plugin-fs')).watchImmediate(
       filePath,
       callback,
+      { recursive: false },
     );
   }
 }

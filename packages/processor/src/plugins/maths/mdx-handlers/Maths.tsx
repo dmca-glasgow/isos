@@ -1,10 +1,10 @@
 import { Signal } from '@preact/signals';
 
 import { formatLaTeX, syntaxHighlight } from './latex';
-// import {
-//   MathJaxComponentsDisplay,
-//   MathJaxComponentsInline,
-// } from './mathjax-components/MathJaxComponents';
+import {
+  MathJaxComponentsDisplay,
+  // MathJaxComponentsInline,
+} from './mathjax-components/MathJaxComponents';
 import { toMathJaxSvgString } from './mathjax-prerender';
 
 export type MathsFont = 'fira' | 'termes';
@@ -27,7 +27,7 @@ export function Maths({
   expr,
   options,
   // format,
-  // asComponents = false,
+  // asComponents = true,
 }: Props) {
   if (options.mathsAsTex.value) {
     const formatted = formatLaTeX(expr);
@@ -45,10 +45,10 @@ export function Maths({
 
   // if (asComponents) {
   //   return (
-  //     <MathJaxComponentsInline
+  //     <MathJaxComponentsDisplay
   //       expr={expr}
-  //       format={format}
-  //       mathsFont={mathsFontName.value}
+  //       // format={format}
+  //       mathsFont={options.mathsFontName.value}
   //     />
   //   );
   // }

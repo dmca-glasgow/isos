@@ -1,6 +1,7 @@
 import { Environment, Macro } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
+import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
 import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 
 import { Context } from '../../input-to-markdown/context';
@@ -19,7 +20,7 @@ export function createTheoremHandlers(_ctx: Context) {
 // console.log(latexAstTheorems);
 
 function createTheorem(node: Environment): Macro {
-  const name = getName(node);
+  const name = extractName(node);
   const attributes: {
     className: string[];
     name?: string;
@@ -42,17 +43,20 @@ function createTheorem(node: Environment): Macro {
   });
 }
 
-function getName(node: Environment) {
+function extractName(node: Environment) {
   const args = getArgsContent(node);
-  const name = printRaw(args[args.length - 1] || []).trim();
+  const arg = args[args.length - 1] || [];
+  expandUnicodeLigatures(arg);
+  const name = printRaw(arg).trim();
   if (name !== '') {
     return name;
   }
 
   // amsthm environments conjecture, exercise and solution are not set in:
   // https://github.com/siefkenj/unified-latex/blob/main/packages/unified-latex-ctan/package/mathtools/provides.ts#L209-L217
+
   const first = node.content[0];
-  if (first.type === 'string' && first.content === '[') {
+  if (first && first.type === 'string' && first.content === '[') {
     const match = printRaw(node.content)
       .trim()
       .match(/^\[(.*)\]/);

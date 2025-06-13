@@ -13,8 +13,8 @@ html#editor {
     flex-direction: column;
   }
 
-  header,
-  .error {
+  #root > header,
+  #root > .error {
     font-family: system-ui, sans-serif;
     font-weight: 400;
     line-height: 1.75;
@@ -41,7 +41,7 @@ html#editor {
   }
 }
 
-header {
+#root > header {
   height: 60px;
   display: flex;
   flex: 0 0 auto;

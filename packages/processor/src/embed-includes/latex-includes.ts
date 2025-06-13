@@ -43,32 +43,17 @@ function embedIncludes(ctx: Context) {
     const filePaths: string[] = [];
 
     visit(tree, (node) => {
-      if (node.type === 'macro' && node.content === 'includegraphics') {
-        const args = getArgsContent(node as Ast.Macro);
-        const filePath = printRaw(args[args.length - 1] || []);
-        const fullPath = resolve(dir, filePath);
-        ctx.subFilePaths.push(fullPath);
-        imagePaths.push(fullPath);
-      }
+      if (node.type === 'macro') {
+        if (node.content === 'includegraphics') {
+          imagePaths.push(getFullPath(node, dir));
+        }
 
-      if (
-        node.type === 'macro' &&
-        ['input', 'include'].includes(node.content)
-      ) {
-        const args = getArgsContent(node as Ast.Macro);
-        const filePath = printRaw(args[args.length - 1] || []);
-        const fullPath = resolve(dir, filePath);
-        ctx.subFilePaths.push(fullPath);
-        filePaths.push(fullPath);
+        if (['input', 'include'].includes(node.content)) {
+          filePaths.push(getFullPath(node, dir));
+          // ctx.subFilePaths.push(fullPath);
+        }
       }
     });
-
-    const contents: Ast.Root[] = [];
-    for (const filePath of filePaths) {
-      const content = await readTextFile(filePath);
-      const ast = await getLatexAst(content, ctx);
-      contents.push(ast);
-    }
 
     for (const imagePath of imagePaths) {
       const ext = extname(imagePath);
@@ -77,20 +62,45 @@ function embedIncludes(ctx: Context) {
       }
     }
 
-    let contentsIdx = 0;
+    const contents: Record<string, Ast.Root> = {};
+
+    for (const filePath of filePaths) {
+      const content = await readFileContents(filePath);
+      if (content !== null) {
+        const ast = await getLatexAst(content, ctx);
+        contents[filePath] = ast;
+      }
+    }
+
     visit(tree, (node, info) => {
       if (
         node.type === 'macro' &&
         ['input', 'include'].includes(node.content)
       ) {
+        const fullPath = getFullPath(node, dir);
+        const ast = contents[fullPath] || { content: [] };
+
         const idx = info.index || 0;
         const parent = info.parents[0] as Ast.Environment;
-        const ast = contents[contentsIdx];
         parent.content.splice(idx, 1, ...ast.content);
-        contentsIdx++;
       }
     });
   };
+}
+
+function getFullPath(node: Ast.Macro, dir: string) {
+  const args = getArgsContent(node as Ast.Macro);
+  const filePath = printRaw(args[args.length - 1] || []);
+  return resolve(dir, filePath);
+}
+
+async function readFileContents(filePath: string): Promise<string | null> {
+  try {
+    return await readTextFile(filePath);
+  } catch (err: any) {
+    console.log('[read file]:', err);
+    return null;
+  }
 }
 
 // export async function embedLatexIncludes(input: string, ctx: Context) {

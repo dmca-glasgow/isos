@@ -20,19 +20,28 @@ body {
 .logo {
   height: 55px;
   background: #4f2660;
-}
-
-.logo img {
-  display: block;
-  margin: 0 auto;
-  position: relative;
-  right: 184px;
+  & > div {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 7rem;
+    img {
+      display: block;
+    }
+  }
 }
 
 main {
-  width: 450px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 7rem;
+
+  & > pre {
+    overflow-x: auto;
+  }
+
+  & > table {
+    margin: 2rem auto;
+  }
 }
 
 /* ------ */
@@ -60,9 +69,13 @@ a {
   text-decoration: none;
 }
 
+pre {
+  margin: 0;
+}
+
 code {
-  padding: 0.1em 0.5em;
-  background: rgba(255, 255, 255, 0.11);
+  /* padding: 0.1em 0.5em; */
+  /* background: rgba(255, 255, 255, 0.11); */
   border-radius: 0.3em;
 }
 
@@ -73,6 +86,7 @@ table td {
 }
 
 table {
+  border-collapse: collapse;
   border-width: 1px 0 0 1px;
 }
 

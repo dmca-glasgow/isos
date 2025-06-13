@@ -1,0 +1,62 @@
+## Tables
+
+While the `\tabular` environment in LaTeX is powerful enough to create complex table layouts, with column and row spans and intricate border styling, complex and unusual table layouts can cause unnecessary barriers for some users and are generally discouraged. A convenient rule of thumb is that tables should be reserved only for displaying content that can be reasonably defined as tabular data.
+
+Markdown (specifically the [GitHub Flavoured Markdown tables extension](https://github.github.com/gfm/#tables-extension-) used by ISOS) has a minimal set of features which were conceived with accessibility in mind.
+
+ISOS supports that subset of features defined in LaTeX, in it's entirety:
+
+<CodeSnippet
+  latex={String.raw`
+    \begin{tabular}{lcr}
+    Beep & Pharetra & Commodo Pellentesque \\
+    beep & 1024 & xyz \\
+    \end{tabular}
+  `}
+/>
+
+The first row of values always becomes the column titles. If you would like to create a table with row titles, please consider another structure such as a definition list, or a combination of headings and lists.
+
+Table cell formatting other than `l`, `c` and `r`, and `\hline` are ignored:
+
+<CodeSnippet
+  latex={String.raw`
+    \begin{tabular}{|m{4em}|m{3cm}|m{3cm}|}
+      \hline
+    Area & Number of dogs inspected & Number of dogs with a flea infestation \\
+      \hline
+      Urban Clinic & 213 & 30 \\
+      \hline
+      Rural Clinic & 156 & 43 \\
+      \hline
+    \end{tabular}
+  `}
+/>
+
+### Referencing and captioning a table
+
+Using the `float` package and the `[H]` parameter on `\begin{table}` we can create a layout with `pdflatex` that is consistent with the the HTML version (by essentially disabling the float behaviour). This is optional, these parameters are simply ignored by ISOS.
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{float}
+    \usepackage{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+    \begin{document}
+
+    \begin{table}[H]
+      \caption{My \emph{example} table caption}
+      \begin{tabular}{}
+        Col1 & Col2 & Col3 \\
+        A & B & C \\
+      \end{tabular}
+      \label{tbl:example}
+    \end{table}
+
+    See \autoref{tbl:example}.
+
+    \end{document}
+
+`}
+/>

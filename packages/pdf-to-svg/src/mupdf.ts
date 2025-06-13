@@ -1,17 +1,35 @@
-import { readFile } from 'fs/promises';
+// import { readFile } from 'fs/promises';
 import { Properties, Root } from 'hast';
-import { drawPageAsSVG, loadPDF } from 'mupdf/tasks';
+import * as mupdf from 'mupdf';
 import rehype from 'rehype-parse';
 import stringify from 'rehype-stringify';
 // import { optimize } from 'svgo';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-export async function pdfToSvg(filePath: string) {
-  const data = await readFile(filePath);
+export async function pdfToSvg(data: Uint8Array<ArrayBuffer>) {
+  // const data = await readFile(filePath);
   const doc = loadPDF(data);
   const svg = drawPageAsSVG(doc, 0);
   return formatSvg(svg);
+}
+
+function loadPDF(data: Buffer | ArrayBuffer | Uint8Array) {
+  return new mupdf.PDFDocument(data);
+}
+
+function drawPageAsSVG(
+  document: mupdf.PDFDocument,
+  pageNumber: number,
+): string {
+  const page = document.loadPage(pageNumber);
+  const buffer = new mupdf.Buffer();
+  const writer = new mupdf.DocumentWriter(buffer, 'svg', '');
+  const device = writer.beginPage(page.getBounds());
+  page.run(device, mupdf.Matrix.identity);
+  device.close();
+  writer.endPage();
+  return buffer.asString();
 }
 
 async function formatSvg(_str: string) {

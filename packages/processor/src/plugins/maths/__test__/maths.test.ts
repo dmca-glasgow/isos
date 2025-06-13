@@ -10,6 +10,57 @@ import { testProcessor } from '../../../test-utils/unit-test-processor';
 test('maths', async () => {
   const latex = String.raw`
     \documentclass{article}
+    \begin{document}
+
+    \section{Hello}
+
+    $$
+    x^2 - 5 x + 6 = 0
+    $$
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ## Hello
+
+    $$
+    x^{2} - 5 x + 6 = 0
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    // state: {
+    //   maths: {
+    //     mathsAsTex: false,
+    //     mathsFontName: 'termes',
+    //     syntaxHighlight: false,
+    //   },
+    // },
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <section id="hello">
+      <h2><span class="count">1</span> Hello</h2>
+      <p class="maths"><code class="latex">x^{2} - 5 x + 6 = 0</code></p>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
+
+test('maths equations', async () => {
+  const latex = String.raw`
+    \documentclass{article}
     \usepackage{amsmath}
     \usepackage{hyperref}
     \usepackage[noabbrev, capitalise, nameinlink]{cleveref}

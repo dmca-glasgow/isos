@@ -33,7 +33,7 @@ ${markdown.trim()}
 <style>
 ${bundle.css}
 </style>
-<script>
+<script type="module" crossorigin>
 ${bundle.js}
 </script>
 </body>

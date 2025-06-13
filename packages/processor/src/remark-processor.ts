@@ -5,6 +5,7 @@ import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { PluggableList, Processor, unified } from 'unified';
+import { visit } from 'unist-util-visit';
 
 import remarkGfm from './plugins/remark-gfm';
 import { remarkSuperSub } from './plugins/super-sub';
@@ -28,8 +29,11 @@ export function createRemarkProcessor(
       .use(remarkSuperSub)
       .use(remarkDefinitionList)
       .use(remarkGfm, { singleTilde: false })
-      .use(remarkDirective)
       .use(remarkMath)
+
+      .use([remarkDirective, allowColonInText])
+      .use(allowColonInText)
+
       .use(plugins)
       // .use(() => {
       //   return (tree) => {
@@ -38,4 +42,19 @@ export function createRemarkProcessor(
       // })
       .use(remarkStringify)
   );
+}
+
+function allowColonInText() {
+  // due to allowing a whitespace character after : in remarkDirective
+  // we need to handle the case of a colon used conventionally in text
+  return (tree: Root) => {
+    visit(tree, 'textDirective', (node) => {
+      if (node.name.startsWith(' ') && node.children.length === 0) {
+        Object.assign(node, {
+          type: 'text',
+          value: `:${node.name}`,
+        });
+      }
+    });
+  };
 }

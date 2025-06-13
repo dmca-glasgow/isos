@@ -8,7 +8,10 @@ export type { FileType } from './input-to-markdown/utils/parse-file-path';
 
 export { inputToMarkdown } from './input-to-markdown';
 export { createDefaultOptions as createInputToMarkdownOptions } from './input-to-markdown/options';
-export { createContext as createInputToMarkdownContext } from './input-to-markdown/context';
+export {
+  createContext as createInputToMarkdownContext,
+  createTestContext as createInputToMarkdownTestContext,
+} from './input-to-markdown/context';
 
 export { markdownToArticle, markdownToTOC } from './markdown-to-mdx';
 export { createDefaultOptions as createMarkdownToMdxOptions } from './markdown-to-mdx/options';

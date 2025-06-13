@@ -1,0 +1,54 @@
+
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\section{Volume of a sphere}
+
+Here is a small formula rendered by MathJax:
+
+$$
+V=\frac{4}{3} \pi r^3
+$$
+
+I interact with MathJax in two main ways:
+
+\begin{enumerate}
+  \item Right-clicking opens a contextual menu with configuration options.  Under Accessibility > Braille > Code Format, it's possible to change from Nemeth to Euro.  Then under Show Math As > Braille Code we can preview the braille.  I hope we can verify this is UEB.
+
+  \item Each time I press Tab, the browser jumps to the next interactive element, including MathJax items, and when in focus displays both the maths as a readable sentence (to be dictated by a screen reader) and the Braille.  Does the braille somehow appear in the BrailleNote braille cells?  Can we get this to work?
+\end{enumerate}
+
+I realise that both ways I interact with MathJax would not be suitable for someone using a screen reader or braille.  I am interested to know how this works.
+
+\section{Standard deviation}
+
+Here is a larger maths formula with sub-expressions:
+
+$$
+\sqrt{\frac{\sum(x-\bar{x})^2}{n-1}}=\sqrt{\frac{\sum x^2-\left(\sum x\right)^2 / n}{n-1}}
+$$
+
+With maths equations this large and above (the equations in University coursework can be much much larger than this) the readable sentence no longer seems practical, and braille seems a better medium as the learner can more naturally jump around the different sub-expressions taking them in one at a time.
+
+However MathJax has a new trick up it's sleeve for screen reader users. There is now a Maths Explorer which allows the user to traverse sub-expressions using \href{https://docs.mathjax.org/en/latest/basic/explorer-commands.html}{keyboard controls}. When the maths is highlighted (by pressing Tab until it is active), you can begin "exploring" this formula by pressing the down arrow.
+
+I'm interested to know if this is useful, it looks tricky to learn.  I'm interested to know if it is effective when using a screen reader, and if we can get the braille sub-expressions to appear in the BrailleNote braille cells as the user traverses the formula.
+
+\section{Tabular data}
+
+Here is a sample table:
+
+\begin{tabular}{lll}
+Alpha & Bravo & Charlie \\
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 \\
+\end{tabular}
+
+I am interested to know if it's possible, either in screen reader or braille mode, to navigate the cells of a table with keyboard controls.  For example, is it possible to navigate down from Charlie to 3 to 6 to 9?
+
+
+
+\end{document}

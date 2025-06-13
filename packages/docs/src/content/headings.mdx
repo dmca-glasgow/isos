@@ -1,0 +1,31 @@
+## Headings
+
+In HTML, there is the concept of 6 heading levels, represented as `<h1>` to `<h6>`. In accessible HTML guidelines, it's usually recommended that there be only one `<h1>` in a document, and to avoid skipping heading ranks (for example, make sure that an `<h2>` is not followed directly by an `<h4>`).
+
+In the HTML file produced by ISOS, there is a table of contents in the sidebar to help users easily navigate around large documents. This table of contents is generated from the `<h2>`'s and `<h3>`'s in the document.
+
+You many need to adjust your LaTeX section titles in order for this table of contents to render correctly.
+
+Here is how ISOS maps LaTeX sections and HTML headings:
+
+| HTML | LaTeX          |
+| ---- | -------------- |
+| h1   | \title         |
+| h2   | \section       |
+| h3   | \subsection    |
+| h4   | \subsubsection |
+| h5   | \paragraph     |
+| h6   | \subparagraph  |
+
+Headings have counters which match default `pdflatex` behaviour:
+
+<CodeSnippet
+  latex={String.raw`
+    \title{Alpha}
+    \section{Bravo}
+    \subsection{Charlie}
+    \subsubsection{Delta}
+    \paragraph{Echo}
+    \subparagraph{Foxtrot}
+  `}
+/>

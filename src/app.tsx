@@ -26,11 +26,10 @@ export function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (filePath === '') {
-      return;
-    }
     (async () => {
-      await processMarkdown();
+      if (filePath !== '') {
+        await processMarkdown();
+      }
     })();
   }, [filePath]);
 
@@ -57,22 +56,26 @@ export function App() {
     const pathsToWatch = [filePath, ...subFiles];
 
     for (const toWatch of pathsToWatch) {
-      watchers.push(
-        await watchImmediate(toWatch, (event) => {
-          // can be of type 'any' or 'other'
-          if (typeof event.type === 'string') {
-            return;
-          }
-          const type = event.type as Record<string, any>;
-          if (
-            type.create?.kind === 'file' ||
-            type.modify?.kind === 'data'
-          ) {
-            setLoading(true);
-            processMarkdown();
-          }
-        }),
-      );
+      try {
+        watchers.push(
+          await watchImmediate(toWatch, (event) => {
+            // can be of type 'any' or 'other'
+            if (typeof event.type === 'string') {
+              return;
+            }
+            const type = event.type as Record<string, any>;
+            if (
+              type.create?.kind === 'file' ||
+              type.modify?.kind === 'data'
+            ) {
+              setLoading(true);
+              processMarkdown();
+            }
+          }),
+        );
+      } catch (err: any) {
+        console.log('[file watcher]:', String(err));
+      }
     }
   }
 

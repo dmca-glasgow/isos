@@ -1,4 +1,5 @@
 import { Properties, Root } from 'hast';
+import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
 
 export function addMathsRefsAndCount() {
@@ -7,6 +8,7 @@ export function addMathsRefsAndCount() {
     visit(tree, 'element', (node) => {
       if (node.tagName === 'pre') {
         const code = node.children[0];
+        // console.log(code);
         if (code && code.type === 'element' && code.tagName === 'code') {
           const { className } = code.properties;
           if (
@@ -23,21 +25,23 @@ export function addMathsRefsAndCount() {
               properties['data-id'] = id;
             }
 
-            node.children.push({
-              type: 'element',
-              tagName: 'span',
-              properties: {
-                className: ['eq-count'],
-              },
-              children: [
-                {
-                  type: 'element',
-                  tagName: 'span',
-                  properties,
-                  children: [],
+            if (toString(code).startsWith('\\begin{equation}')) {
+              node.children.push({
+                type: 'element',
+                tagName: 'span',
+                properties: {
+                  className: ['eq-count'],
                 },
-              ],
-            });
+                children: [
+                  {
+                    type: 'element',
+                    tagName: 'span',
+                    properties,
+                    children: [],
+                  },
+                ],
+              });
+            }
           }
         }
       }

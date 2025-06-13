@@ -26,7 +26,9 @@ const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 
 const doc: Document = mathjax.document('', {
-  InputJax: new TeX({ packages }),
+  InputJax: new TeX({
+    packages,
+  }),
 });
 
 const output: FontOutput = {
@@ -37,6 +39,10 @@ const output: FontOutput = {
 export function toMathJaxSvgString(expr: string, fontName: MathsFont) {
   doc.outputJax = output[fontName];
   doc.outputJax.setAdaptor(doc.adaptor);
+
+  // TODO get pounds working
+  // const expr = _expr.replace(/\\pounds/g, '\\it\\unicode{xA3}');
+
   const node = doc.convert(expr) as LiteElement;
   if ((node.children || []).length === 0) {
     console.log('[mathjax]: node has no children');

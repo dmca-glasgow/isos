@@ -1,0 +1,28 @@
+{
+  "name": "@isos/docs",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "classnames": "^2.5.1",
+    "preact": "^10.25.4",
+    "prism-react-renderer": "^2.4.1",
+    "react-syntax-highlighter": "^15.6.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@babel/preset-env": "^7.26.8",
+    "@babel/preset-typescript": "^7.26.0",
+    "@linaria/react": "^6.3.0",
+    "@mdx-js/rollup": "^3.0.1",
+    "@wyw-in-js/babel-preset": "^0.6.0",
+    "@wyw-in-js/vite": "^0.6.0",
+    "remark-gfm": "^4.0.0"
+  }
+}

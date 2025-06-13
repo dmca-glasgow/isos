@@ -15,15 +15,13 @@ export function MathJaxComponentsInline({ expr, mathsFont }: Props) {
 
 export function MathJaxComponentsDisplay({ expr, mathsFont }: Props) {
   return (
-    <p>
-      <Maths mathsFont={mathsFont}>
-        $$
-        <br />
-        {expr}
-        <br />
-        $$
-      </Maths>
-    </p>
+    <Maths mathsFont={mathsFont}>
+      $$
+      <br />
+      {expr}
+      <br />
+      $$
+    </Maths>
   );
 }
 
