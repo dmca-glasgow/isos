@@ -1,5 +1,4 @@
 import { PluggableList } from 'unified';
-import { visit } from 'unist-util-visit';
 
 import { createCallouts } from '../../plugins/callout/create-callouts';
 import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';

@@ -1,10 +1,10 @@
 import { Signal } from '@preact/signals';
 
 import { formatLaTeX, syntaxHighlight } from './latex';
-import {
-  MathJaxComponentsDisplay,
-  // MathJaxComponentsInline,
-} from './mathjax-components/MathJaxComponents';
+// import {
+//   MathJaxComponentsDisplay,
+//   // MathJaxComponentsInline,
+// } from './mathjax-components/MathJaxComponents';
 import { toMathJaxSvgString } from './mathjax-prerender';
 
 export type MathsFont = 'fira' | 'termes';
