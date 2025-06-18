@@ -16,7 +16,10 @@ import {
   mathsMetaToPandocAttributes,
   pandocAttributesToMathsMeta,
 } from '../plugins/maths/formatted-maths';
-import { codeToTableCaption } from '../plugins/tables/formatted-table-caption';
+import {
+  codeToTableCaption,
+  tableCaptionToCode,
+} from '../plugins/tables/formatted-table-caption';
 import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
@@ -40,9 +43,9 @@ export type Options = {
   latexToMdAst: {
     latexAstFromStringOptions: LatexParseOptions;
     latexAstTransforms: PluggableList;
-    latexAstToHtmlAstOptions: LatexConvertOptions;
+    latexAstToHtmlAstOptions: () => LatexConvertOptions;
     htmlAstTransforms: PluggableList;
-    htmlAstToMdAstOptions: HtmlConvertOptions;
+    htmlAstToMdAstOptions: () => HtmlConvertOptions;
     mdAstTransforms: PluggableList;
   };
   markdownStringTransforms: Array<(markdown: string) => string>;
@@ -63,6 +66,7 @@ export function createDefaultOptions(
       // ],
       latexStringTransforms: [],
       markdownStringTransforms: [
+        tableCaptionToCode,
         altToCaptionAttribute,
         pandocAttributesToMathsMeta,
       ],
@@ -98,17 +102,17 @@ export function createDefaultOptions(
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),
-      latexAstToHtmlAstOptions: createLatexToHastHandlers(ctx),
+      latexAstToHtmlAstOptions: () => createLatexToHastHandlers(ctx),
       htmlAstTransforms: createHastTransforms(ctx),
-      htmlAstToMdAstOptions: {
+      htmlAstToMdAstOptions: () => ({
         handlers: createRehypeRemarkHandlers(ctx),
-      },
+      }),
       mdAstTransforms: createLatexMdAstTransforms(ctx),
     },
     markdownStringTransforms: [
+      codeToTableCaption,
       captionAttributeToAlt,
       mathsMetaToPandocAttributes,
-      codeToTableCaption,
       nbspToSpace,
     ],
   };

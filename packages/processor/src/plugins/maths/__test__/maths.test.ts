@@ -136,3 +136,38 @@ test('maths equations', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('maths with mathjax error', async () => {
+  const latex = String.raw`
+    i.e.  $\pounds 1$ wins
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    i.e. $\pounds 1$ wins
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    state: {
+      maths: {
+        mathsAsTex: false,
+        mathsFontName: 'termes',
+        syntaxHighlight: false,
+      },
+    },
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>i.e. <code class="maths"><span class="mathjax-error">Undefined control sequence \pounds</span></code> wins</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});

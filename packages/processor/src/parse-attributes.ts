@@ -38,7 +38,7 @@ export function parseAttributes(attributeStr: string): ParsedAttributes {
       const classes = str.slice(1).split('.');
       acc.classes.push(...classes);
     } else {
-      console.log(str);
+      // console.log(str);
     }
 
     return acc;
@@ -54,5 +54,5 @@ export function serialiseAttributes(attributes: Partial<Attributes>) {
   const id = attributes.id ? `#${attributes.id}` : '';
   const classes = (attributes.classes || []).map((s) => `.${s}`).join('');
   const both = `${id} ${classes}`.trim();
-  return `{${both}}`;
+  return both ? `{${both}}` : '';
 }

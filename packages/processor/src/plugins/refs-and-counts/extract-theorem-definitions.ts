@@ -31,6 +31,7 @@ export function extractTheoremDefinitions(ctx: Context) {
           [name]: {
             ...(theorems[name] || {}),
             ...theorem,
+            type: 'theorem',
           },
         };
       }
@@ -53,6 +54,8 @@ export function extractTheoremDefinitions(ctx: Context) {
       }
     });
     ctx.frontmatter.theorems = theorems;
+
+    // console.log('extractTheoremDefinitions', ctx.frontmatter.theorems);
   };
 }
 

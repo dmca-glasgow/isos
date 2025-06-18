@@ -17,7 +17,6 @@ import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
 import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
-import { defaultTheorems } from '../../plugins/theorems-proofs/default-theorems';
 import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
 import { Context } from '../context';
 // import { createFancySection, createFancyTitle } from './fancy';
@@ -40,7 +39,9 @@ export function createRehypeRemarkHandlers(
     h5: headingHandler,
     h6: headingHandler,
 
-    div: divHandler,
+    div(state: State, node: Element) {
+      return divHandler(ctx, state, node);
+    },
     span(state: State, node: Element) {
       return spanHandler(ctx, state, node);
     },
@@ -165,8 +166,9 @@ function spanHandler(
   return state.all(node);
 }
 
-function divHandler(state: State, node: Element) {
+function divHandler(ctx: Context, state: State, node: Element) {
   const { className } = node.properties;
+  // console.log(node);
 
   if (Array.isArray(className)) {
     if (className.includes('display-math')) {
@@ -176,12 +178,17 @@ function divHandler(state: State, node: Element) {
     }
 
     if (className.includes('theorem')) {
+      // console.log('hey!', ctx.frontmatter.theorems);
       const theoremType = String(className[className.length - 1]);
-      if (defaultTheorems.find((o) => o.name === theoremType)) {
+      const theorem = ctx.frontmatter.theorems[theoremType];
+
+      if (theorem && theorem.type === 'theorem') {
         const result = createTheorem(state, node, theoremType);
         state.patch(node, result);
         return result;
       }
+
+      console.log('unhandled theorem:', theoremType);
     }
 
     if (className.includes('environment')) {
@@ -192,6 +199,7 @@ function divHandler(state: State, node: Element) {
         return displayQuoteToBlockQuote(state, node);
       }
 
+      console.log('unhandled environment:', environmentName);
       // console.log(node);
 
       // if (environmentName === 'framed') {

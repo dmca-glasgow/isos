@@ -28,10 +28,14 @@ RegisterHTMLHandler(adaptor);
 const doc: Document = mathjax.document('', {
   InputJax: new TeX({
     packages,
+    // macros: {
+    //   pounds: '\\textsterling',
+    // },
   }),
 });
 
 const output: FontOutput = {
+  // svg: new SVG(),
   termes: new SVG({ fontData: TermesFont }),
   fira: new SVG({ fontData: FiraFont }),
 };
@@ -49,7 +53,15 @@ export function toMathJaxSvgString(expr: string, fontName: MathsFont) {
     return '';
   }
   const svg = node.children[0] as LiteElement;
-  return adaptor.outerHTML(svg);
+  const html = adaptor.outerHTML(svg);
+  // console.log(html);
+
+  const match = html.match(/data-mjx-error="(.*?)"/);
+  if (match !== null) {
+    return `<span class="mathjax-error">${match[1]}</span>`;
+  }
+
+  return html;
 }
 
 // export function toMathJaxSvgJSX(expr: string, fontName: MathsFont) {

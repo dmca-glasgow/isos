@@ -11,7 +11,7 @@ export async function embedIncludes(
     case 'markdown':
       return embedMarkdownIncludes(ctx);
     case 'latex':
-      return embedLatexIncludes(ctx);
+      return embedLatexIncludes(ctx, options);
     default:
       throw new Error(`file type: "${options.type}" is not supported`);
   }

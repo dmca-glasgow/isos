@@ -217,7 +217,19 @@ article {
   }
 }
 
-div.maths {
+code.maths {
+  .mathjax-error {
+    display: inline-block;
+    padding: 0 0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    background: red;
+    color: white;
+    border-radius: 0.2em;
+  }
+}
+
+p.maths {
   padding-left: 1em;
   // overflow: auto;
   svg {

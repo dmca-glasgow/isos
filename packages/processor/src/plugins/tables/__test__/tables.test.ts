@@ -52,6 +52,7 @@ test('maths', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     | Col1 | Col2 | Col3 |
@@ -81,8 +82,9 @@ test('maths', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(expectedMarkdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure id="tbl-letters-1">

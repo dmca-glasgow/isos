@@ -16,15 +16,15 @@ export function theoremLabelAsId(ctx: Context) {
       // console.dir(node, { depth: null });
 
       const klass = node.attributes?.class || '';
-      const type = getTypeFromClass(klass);
+      const type = getTypeFromClass(klass, ctx);
 
       if (type !== undefined && type !== 'proof') {
         const label = extractLabelFromContainer(node);
-        const theorem = defaultTheorems.find((o) => o.name === type);
-        const typeKey = theorem?.abbr;
+        const theorem = theorems[type];
+        const typeKey = theorem?.abbr || type;
         const id =
           label !== null
-            ? idFromLabel(label, typeKey)
+            ? idFromLabel(label, typeKey, ctx)
             : idFromCount(counter.increment(type), typeKey);
 
         const { unnumbered } = theorems[type];
@@ -44,8 +44,9 @@ export function theoremLabelAsId(ctx: Context) {
   };
 }
 
-function getTypeFromClass(str: string) {
-  const names = defaultTheorems.map((o) => o.name);
+function getTypeFromClass(str: string, ctx: Context) {
+  const { theorems } = ctx.frontmatter;
+  const names = Object.keys(theorems);
   return str.split(' ').find((s) => names.includes(s));
 }
 
@@ -82,9 +83,13 @@ function extractLabelFromContainer(
   return label;
 }
 
-function idFromLabel(label: string, typeKey: string = '') {
+function idFromLabel(label: string, typeKey: string = '', ctx: Context) {
+  const { theorems } = ctx.frontmatter;
+  // console.log(theorems);
   const [key] = label.split('-');
   if (defaultTheorems.map((o) => o.abbr).includes(key)) {
+    return label;
+  } else if (theorems[key]) {
     return label;
   } else {
     return `${typeKey}-${label}`;

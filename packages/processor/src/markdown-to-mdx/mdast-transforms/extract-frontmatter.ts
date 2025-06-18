@@ -3,7 +3,10 @@ import { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 import { parse } from 'yaml';
 
-import { createDefaultObjectsYaml } from '../../plugins/refs-and-counts/default-objects';
+import {
+  RefObjectsYaml,
+  createDefaultObjectsYaml,
+} from '../../plugins/refs-and-counts/default-objects';
 import { Context, Frontmatter } from '../context';
 
 export function extractFrontmatter(ctx: Context) {
@@ -35,9 +38,18 @@ export function extractFrontmatter(ctx: Context) {
         ctx.frontmatter.abstract = fm.abstract;
       }
       if (fm.theorems) {
+        const { custom = [], ...theorems } = fm.theorems;
+        const customObj = custom.reduce(
+          (acc: RefObjectsYaml, { name, ...theorem }) => {
+            acc[name] = { ...theorem, type: 'theorem' };
+            return acc;
+          },
+          {},
+        );
         ctx.frontmatter.theorems = merge(
           ctx.frontmatter.theorems,
-          fm.theorems || {},
+          theorems || {},
+          customObj,
         );
       }
       if (fm['reference-location']) {

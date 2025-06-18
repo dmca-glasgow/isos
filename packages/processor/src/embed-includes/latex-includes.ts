@@ -10,10 +10,11 @@ import { unified } from 'unified';
 import { readTextFile } from '@isos/fs';
 
 import { Context } from '../input-to-markdown/context';
+import { Options } from '../input-to-markdown/options';
 import { getDataUrl, supportedExtensions } from './images-to-context';
 
-export async function embedLatexIncludes(ctx: Context) {
-  const ast = await getLatexAst(ctx.content, ctx);
+export async function embedLatexIncludes(ctx: Context, options: Options) {
+  const ast = await getLatexAst(ctx.content, ctx, options);
   const processor = unified()
     // @ts-expect-error
     .use(unifiedLatexStringCompiler, {
@@ -26,17 +27,17 @@ export async function embedLatexIncludes(ctx: Context) {
   ctx.content = String(processor.stringify(ast));
 }
 
-async function getLatexAst(input: string, ctx: Context) {
+async function getLatexAst(input: string, ctx: Context, options: Options) {
   const processor = unified()
     // @ts-expect-error
     .use(unifiedLatexFromString)
-    .use(embedIncludes, ctx);
+    .use(embedIncludes, ctx, options);
   const parsed = processor.parse(input);
   const transformed = await processor.run(parsed);
   return transformed as Ast.Root;
 }
 
-function embedIncludes(ctx: Context) {
+function embedIncludes(ctx: Context, options: Options) {
   return async (tree: Ast.Root) => {
     const dir = dirname(ctx.filePath);
     const imagePaths: string[] = [];
@@ -55,10 +56,12 @@ function embedIncludes(ctx: Context) {
       }
     });
 
-    for (const imagePath of imagePaths) {
-      const ext = extname(imagePath);
-      if (supportedExtensions.includes(ext)) {
-        ctx.base64Images[imagePath] = await getDataUrl(imagePath, ext);
+    if (!options.noInlineImages) {
+      for (const imagePath of imagePaths) {
+        const ext = extname(imagePath);
+        if (supportedExtensions.includes(ext)) {
+          ctx.base64Images[imagePath] = await getDataUrl(imagePath, ext);
+        }
       }
     }
 
@@ -67,7 +70,7 @@ function embedIncludes(ctx: Context) {
     for (const filePath of filePaths) {
       const content = await readFileContents(filePath);
       if (content !== null) {
-        const ast = await getLatexAst(content, ctx);
+        const ast = await getLatexAst(content, ctx, options);
         contents[filePath] = ast;
       }
     }

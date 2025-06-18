@@ -12,6 +12,7 @@ export function codeToTableCaption(markdown: string) {
   return markdown
     .split('\n')
     .map((line) => {
+      // console.log({ line });
       if (line.length > 0 && !line.startsWith('`')) {
         open = false;
       }
@@ -34,18 +35,48 @@ export function codeToTableCaption(markdown: string) {
     .join('\n');
 }
 
-export function tableCaptionToDirective(markdown: string) {
+export function tableCaptionToCode(markdown: string) {
   // console.log('tableCaptionToCode');
   let open = false;
   return markdown
     .split('\n')
     .map((line) => {
+      // console.log({ line });
       if (line.length > 0 && !line.startsWith(': ')) {
         open = false;
       }
 
       if (open && line.length) {
-        const match = line.match(/^:\s+(.*)$/);
+        const match = line.match(/^\\?:\s+(.*)$/);
+        if (match !== null) {
+          const { text, attributes } = parseAttributes(match[1]);
+          const attrs = serialiseAttributes(attributes);
+          return `\`:table-caption[${text}]${attrs}\``;
+        }
+      }
+
+      if (line.startsWith('|')) {
+        open = true;
+      }
+
+      return line;
+    })
+    .join('\n');
+}
+
+export function tableCaptionToDirective(markdown: string) {
+  // console.log('tableCaptionToDirective');
+  let open = false;
+  return markdown
+    .split('\n')
+    .map((line) => {
+      // console.log({ line });
+      if (line.length > 0 && !line.startsWith(': ')) {
+        open = false;
+      }
+
+      if (open && line.length) {
+        const match = line.match(/^\\?:\s+(.*)$/);
         if (match !== null) {
           const { text, attributes } = parseAttributes(match[1]);
           const attrs = serialiseAttributes(attributes);

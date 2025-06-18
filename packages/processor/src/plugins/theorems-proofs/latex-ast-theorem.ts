@@ -5,19 +5,23 @@ import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatu
 import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 
 import { Context } from '../../input-to-markdown/context';
-import { defaultTheorems } from './default-theorems';
 
 type Handlers = Record<string, (node: Environment) => Macro>;
 
-export function createTheoremHandlers(_ctx: Context) {
-  // console.log(ctx);
-  return defaultTheorems.reduce((acc: Handlers, theorem) => {
-    acc[theorem.name] = createTheorem;
-    return acc;
-  }, {});
+export function createTheoremHandlers(ctx: Context) {
+  const { custom, ...theorems } = ctx.frontmatter.theorems;
+  // console.log(theorems);
+  return Object.entries(theorems).reduce(
+    (acc: Handlers, [name, theorem]) => {
+      // console.log(name, theorem);
+      if (theorem?.type === 'theorem') {
+        acc[name] = createTheorem;
+      }
+      return acc;
+    },
+    {},
+  );
 }
-
-// console.log(latexAstTheorems);
 
 function createTheorem(node: Environment): Macro {
   const name = extractName(node);

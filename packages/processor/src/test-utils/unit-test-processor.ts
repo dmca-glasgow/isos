@@ -39,7 +39,8 @@ async function latexToMarkdown(latex: string, options?: Partial<Options>) {
   const prepared = unindentStringAndTrim(latex);
   const ctx = createTestContext('latex', prepared);
   const opts = createDefaultOptions(ctx, { ...testOptions, ...options });
-  return inputToMarkdown(ctx.content, opts);
+  const markdown = await inputToMarkdown(ctx.content, opts);
+  return markdown;
 }
 
 type Opts = Partial<Options> & {
@@ -57,7 +58,6 @@ async function markdownToHtml(
     ...options,
   });
   const markdown = await inputToMarkdown(ctx.content, opts);
-  // return markdown;
   const mdxState = createMdxState();
   const { mathsAsTex, syntaxHighlight } = state?.maths || {};
 

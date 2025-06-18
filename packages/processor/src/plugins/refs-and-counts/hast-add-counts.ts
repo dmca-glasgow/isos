@@ -79,6 +79,7 @@ export function addCounts(ctx: Context) {
 
             const theoremName = String(className[1]);
             const ctxTheorem = ctx.frontmatter.theorems[theoremName];
+            // console.log(ctx.frontmatter.theorems);
 
             if (ctxTheorem) {
               const { referenceCounter, unnumbered } = ctxTheorem;

@@ -13,6 +13,7 @@ import { createRemarkProcessor } from '../remark-processor';
 import { Options } from './options';
 
 export async function inputToMarkdown(input: string, options: Options) {
+  // console.log(input);
   const mdAst = await getMdAst(input, options);
   // console.dir(mdAst, { depth: null });
   const processor = createRemarkProcessor(options.input.mdAstTransforms);
@@ -46,6 +47,7 @@ async function markdownToMdAstProcessor(
   input: string,
   transforms: Options['input']['markdownStringTransforms'],
 ) {
+  // console.log(input);
   const markdown = markdownStringTransforms(input, transforms);
   // console.log(markdown);
   return createRemarkProcessor().parse(markdown);
@@ -72,7 +74,7 @@ export async function latexToMdAstProcessor(
   // console.dir(latexAst, { depth: null });
 
   const htmlAst = await unified()
-    .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions)
+    .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions())
     .use(options.htmlAstTransforms)
     .run(latexAst as LatexAstRoot);
 
@@ -83,7 +85,7 @@ export async function latexToMdAstProcessor(
   // console.log(formatHtml(html));
 
   const mdAst = await createRemarkProcessor([
-    [rehypeRemark, options.htmlAstToMdAstOptions],
+    [rehypeRemark, options.htmlAstToMdAstOptions()],
     ...options.mdAstTransforms,
   ]).run(htmlAst as HastRoot);
 

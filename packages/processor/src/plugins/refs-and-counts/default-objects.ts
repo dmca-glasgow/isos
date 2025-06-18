@@ -1,4 +1,5 @@
 export type RefObject = {
+  type: 'theorem' | 'float' | 'equation';
   name: string;
   heading: string;
   style?: 'plain' | 'definition' | 'remark';
@@ -13,6 +14,7 @@ export const defaultObjects: RefObject[] = [
   // Theorems & Proofs
   // https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs
   {
+    type: 'theorem',
     name: 'theorem',
     heading: 'Theorem',
     style: 'definition',
@@ -20,6 +22,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'lemma',
     heading: 'Lemma',
     style: 'definition',
@@ -27,6 +30,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'corollary',
     heading: 'Corollary',
     style: 'definition',
@@ -34,6 +38,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'proposition',
     heading: 'Proposition',
     style: 'definition',
@@ -41,6 +46,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'conjecture',
     heading: 'Conjecture',
     style: 'definition',
@@ -48,6 +54,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'definition',
     heading: 'Definition',
     style: 'definition',
@@ -55,6 +62,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'example',
     heading: 'Example',
     style: 'definition',
@@ -62,6 +70,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'exercise',
     heading: 'Exercise',
     style: 'definition',
@@ -69,6 +78,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'solution',
     heading: 'Solution',
     style: 'remark',
@@ -76,6 +86,7 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'remark',
     heading: 'Remark',
     style: 'remark',
@@ -83,12 +94,14 @@ export const defaultObjects: RefObject[] = [
     unnumbered: false,
   },
   {
+    type: 'theorem',
     name: 'proof',
     heading: 'Proof',
     style: 'remark',
   },
   // equation
   {
+    type: 'equation',
     name: 'equation',
     heading: 'Equation',
     abbr: 'eq',
@@ -96,18 +109,21 @@ export const defaultObjects: RefObject[] = [
   },
   // floats
   {
+    type: 'float',
     name: 'figure',
     heading: 'Figure',
     abbr: 'fig',
     unnumbered: false,
   },
   {
+    type: 'float',
     name: 'table',
     heading: 'Table',
     abbr: 'tbl',
     unnumbered: false,
   },
   {
+    type: 'float',
     name: 'section',
     heading: 'Section',
     abbr: 'sec',
@@ -124,7 +140,9 @@ export const defaultObjects: RefObject[] = [
 ];
 
 export type RefObjectYaml = Partial<Omit<RefObject, 'name'>>;
-export type RefObjectsYaml = Record<string, RefObjectYaml>;
+export type RefObjectsYaml = Record<string, RefObjectYaml> & {
+  custom?: RefObject[];
+};
 
 export function createDefaultObjectsYaml() {
   return defaultObjects.reduce((acc: RefObjectsYaml, { name, ...obj }) => {

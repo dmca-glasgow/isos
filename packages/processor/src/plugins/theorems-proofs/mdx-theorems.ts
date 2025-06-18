@@ -5,35 +5,56 @@ import { toHast } from 'mdast-util-to-hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
-import { RefObjectYaml } from '../refs-and-counts/default-objects';
-import { defaultTheorems } from './default-theorems';
+import { Theorem } from './default-theorems';
 
 export function theorems(ctx: Context) {
   return (tree: Root) => {
+    // const theorems = prepareTheorems(ctx);
+    const { theorems } = ctx.frontmatter;
+
+    const refArr = Object.entries(theorems).map(([name, theorem]) => {
+      return { name, ...theorem };
+    }) as Theorem[];
+
+    const theoremArr = refArr.filter((o) => o.type === 'theorem');
+
     visit(tree, 'containerDirective', (node) => {
       if (node.name === ' ') {
         const id = node.attributes?.id;
         if (id) {
           const [abbr] = id.split('-');
-          const theorem = defaultTheorems.find((o) => o.abbr === abbr);
+          const theorem = theoremArr.find((o) => o.abbr === abbr);
 
           if (theorem) {
-            const ctxTheorem = ctx.frontmatter.theorems[theorem.name];
-            createTheorem(node, theorem.name, ctxTheorem, id);
+            createTheorem(node, theorem, theorem.name, id);
           }
         }
         if (node.attributes?.class?.split(' ').includes('proof')) {
-          createTheorem(node, 'proof', ctx.frontmatter.theorems.proof);
+          const proof = theoremArr.find(
+            (o) => o.name === 'proof',
+          ) as Theorem;
+          createTheorem(node, proof, 'proof');
         }
       }
     });
   };
 }
 
+// function prepareTheorems(ctx: Context) {
+//   const { custom, ...theorems } = ctx.frontmatter.theorems;
+//   return [
+//     ...Object.entries(theorems).map(([name, theorem]) => ({
+//       name,
+//       ...theorem,
+//     })),
+//     ...(custom || []),
+//   ] as Theorem[];
+// }
+
 function createTheorem(
   node: ContainerDirective,
+  theorem: Theorem,
   theoremName: string,
-  theorem: RefObjectYaml,
   id?: string,
 ) {
   const properties: Properties = {
@@ -73,7 +94,7 @@ function createTheorem(
 }
 
 function createTitle(
-  theorem: RefObjectYaml,
+  theorem: Theorem,
   theoremName: string,
   name?: string,
   id?: string,
@@ -116,10 +137,7 @@ function createTitle(
   return result;
 }
 
-function createTitleElements(
-  theorem: RefObjectYaml,
-  label: PhrasingContent[],
-) {
+function createTitleElements(theorem: Theorem, label: PhrasingContent[]) {
   switch (theorem.style) {
     case 'plain':
     case 'definition':

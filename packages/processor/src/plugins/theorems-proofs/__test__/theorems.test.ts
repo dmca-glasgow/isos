@@ -1264,15 +1264,14 @@ test('theorems with reference and section counters', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test.skip('ignore an unsupported boxout', async () => {
+test('ignore an unsupported boxout', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
     \theoremstyle{definition}
-    \newtheorem{theorem2}{Theorem}
     \begin{document}
     \begin{theorem2}
-    An \\verb|example\\n| of \\emph{this}!
+    An \verb|example\n| of \emph{this}!
     \end{theorem2}
     \end{document}
   `;

@@ -32,7 +32,6 @@ export function createRemarkProcessor(
       .use(remarkMath)
 
       .use([remarkDirective, allowColonInText])
-      .use(allowColonInText)
 
       .use(plugins)
       // .use(() => {
@@ -49,7 +48,11 @@ function allowColonInText() {
   // we need to handle the case of a colon used conventionally in text
   return (tree: Root) => {
     visit(tree, 'textDirective', (node) => {
-      if (node.name.startsWith(' ') && node.children.length === 0) {
+      if (
+        node.name.startsWith(' ') &&
+        node.children.length === 0 &&
+        Object.keys(node.attributes || {}).length === 0
+      ) {
         Object.assign(node, {
           type: 'text',
           value: `:${node.name}`,
