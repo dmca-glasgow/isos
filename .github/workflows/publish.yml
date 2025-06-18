@@ -24,7 +24,7 @@ jobs:
   create-release:
     needs: version-check
     if: needs.version-check.outputs.has-version-change == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       release-id: ${{ steps.create-release.outputs.result }}
     steps:
@@ -113,7 +113,7 @@ jobs:
           AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
         with:
           releaseId: ${{ needs.create-release.outputs.release-id }}
-          args: ${{ matrix.args }}
+          args: ${{ matrix.args }} --debug
 
   post-release:
     needs: [create-release, build-tauri]
