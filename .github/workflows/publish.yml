@@ -77,6 +77,7 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: './src-tauri -> target'
+
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
         run: |
@@ -113,7 +114,7 @@ jobs:
           AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
         with:
           releaseId: ${{ needs.create-release.outputs.release-id }}
-          args: ${{ matrix.args }} --debug
+          args: ${{ matrix.args }}
 
   post-release:
     needs: [create-release, build-tauri]
