@@ -10,8 +10,11 @@ import { extractTheoremDefinitions } from '../../plugins/refs-and-counts/extract
 import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
 import { Context } from '../context';
 import { insertParbreaksAroundBlockElements } from './block-elements';
+import { convertEmToEmph } from './convert-em-to-emph';
 import { expandDocumentMacrosPlugin } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
+
+// import { parsePgfKeys } from './parse-pgf-keys';
 
 // import { replaceTildeWithSpace } from './replace-tilde-with-space';
 
@@ -22,6 +25,8 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     [extractTopMatter, ctx],
 
     trimVerbatim,
+    convertEmToEmph,
+    // parsePgfKeys,
     // replaceTildeWithSpace,
     figureCaptionToImageTitle,
     expandDocumentMacrosPlugin,

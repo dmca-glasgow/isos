@@ -28,9 +28,9 @@ RegisterHTMLHandler(adaptor);
 const doc: Document = mathjax.document('', {
   InputJax: new TeX({
     packages,
-    // macros: {
-    //   pounds: '\\textsterling',
-    // },
+    macros: {
+      pounds: '\\textsterling',
+    },
   }),
 });
 

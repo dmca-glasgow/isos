@@ -6,9 +6,9 @@ import { unindentStringAndTrim } from '../test-utils/unindent-string';
 import { testProcessor } from '../test-utils/unit-test-processor';
 
 test.skip('course', async () => {
-  const markdown = await testProcessor.fixture('course/index.tex', {
-    noInlineImages: true,
-  });
+  const markdown = await testProcessor.fixture('course/index.tex');
+  console.log(markdown);
+  // return;
   const html = await testProcessor.md(markdown);
   console.log(html);
 });

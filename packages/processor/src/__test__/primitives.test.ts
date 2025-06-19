@@ -10,6 +10,17 @@ test('emph to italics', async () => {
   expect(html).toBe('<p><em>hi 1.2</em></p>');
 });
 
+test('{\\em value} to italics', async () => {
+  const markdown = await testProcessor.latex(
+    String.raw`What is the {\em financial value} of an object?`,
+  );
+  expect(markdown).toBe('What is the *financial value* of an object?');
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe(
+    '<p>What is the <em>financial value</em> of an object?</p>',
+  );
+});
+
 test('textit to italics', async () => {
   const markdown = await testProcessor.latex(String.raw`\textit{hi 1.2}`);
   expect(markdown).toBe('*hi 1.2*');
