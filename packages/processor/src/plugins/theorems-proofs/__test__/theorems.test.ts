@@ -1279,7 +1279,7 @@ test('ignore an unsupported boxout', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
-    An \`example\\n\` of *this*!
+    :warn[**unhandled environment: theorem2** \`An example\\n of this!\`]
   `);
 
   expect(markdown).toBe(expectedMarkdown);

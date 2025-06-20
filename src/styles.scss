@@ -9,8 +9,28 @@ html#editor {
   }
 
   #root {
-    display: flex;
-    flex-direction: column;
+    // an absolute layout is used here to correct the behaviour
+    // where clicking an anchor link at the top of an article
+    // in tauri would scroll the header out of view with no
+    // way to recover again besides reopening the app.
+
+    $headerHeight: 60px;
+
+    & > header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: $headerHeight;
+    }
+
+    & > main {
+      position: absolute;
+      top: $headerHeight;
+      left: 0;
+      width: 100%;
+      height: calc(100% - $headerHeight);
+    }
   }
 
   #root > header,
@@ -20,10 +40,54 @@ html#editor {
     line-height: 1.75;
   }
 
-  main {
-    flex: 1;
-    // overflow: auto;
+  #root > header {
+    display: flex;
+    // flex: 0 0 auto;
+    align-items: center;
 
+    padding: 0.6rem;
+    box-sizing: border-box;
+
+    color: #fff;
+    background: #000;
+    font-size: 13px;
+
+    .file-path {
+      flex: 1;
+      padding: 0 1rem 0.1rem;
+    }
+
+    .file-status {
+      display: block;
+      color: #29e808;
+      line-height: 1;
+
+      &.watching {
+        color: #29e808;
+      }
+
+      &.loading {
+        color: #e88308;
+      }
+    }
+
+    button {
+      border: 0;
+      font-weight: 600;
+      padding: 1.2em 2.4em;
+      border-radius: 0.4em;
+      background: #fff2;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s background;
+
+      &:hover {
+        box-shadow: inset 0 0 0 2px #fff3;
+      }
+    }
+  }
+
+  main {
     & > .actions-top-left,
     & > .actions-top-right {
       top: calc(1.2rem + 60px);
@@ -37,54 +101,6 @@ html#editor {
     #article-wrapper,
     #print-view {
       overflow: auto;
-    }
-  }
-}
-
-#root > header {
-  height: 60px;
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-
-  padding: 0.6rem;
-  box-sizing: border-box;
-
-  color: #fff;
-  background: #000;
-  font-size: 13px;
-
-  .file-path {
-    flex: 1;
-    padding: 0 1rem 0.1rem;
-  }
-
-  .file-status {
-    display: block;
-    color: #29e808;
-    line-height: 1;
-
-    &.watching {
-      color: #29e808;
-    }
-
-    &.loading {
-      color: #e88308;
-    }
-  }
-
-  button {
-    border: 0;
-    font-weight: 600;
-    padding: 1.2em 2.4em;
-    border-radius: 0.4em;
-    background: #fff2;
-    color: #fff;
-    cursor: pointer;
-    transition: 0.2s background;
-
-    &:hover {
-      box-shadow: inset 0 0 0 2px #fff3;
     }
   }
 }

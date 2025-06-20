@@ -148,6 +148,35 @@ article {
   table {
     width: 100%;
   }
+
+  code.maths {
+    .mathjax-error {
+      display: inline-block;
+      padding: 0 0.5em;
+      font-size: 0.8em;
+      font-weight: bold;
+      background: red;
+      color: white;
+      border-radius: 0.2em;
+    }
+  }
+
+  p.maths {
+    padding-left: 1em;
+    // overflow: auto;
+    svg {
+      max-width: calc(100% - 1em);
+    }
+  }
+
+  span.warn {
+    display: inline-block;
+    padding: 0 0.5em;
+    font-size: 0.8em;
+    background: orange;
+    color: black;
+    border-radius: 0.2em;
+  }
 }
 
 .boxout {
@@ -214,25 +243,5 @@ article {
         background: #b9d1b8aa;
       }
     }
-  }
-}
-
-code.maths {
-  .mathjax-error {
-    display: inline-block;
-    padding: 0 0.5em;
-    font-size: 0.8em;
-    font-weight: bold;
-    background: red;
-    color: white;
-    border-radius: 0.2em;
-  }
-}
-
-p.maths {
-  padding-left: 1em;
-  // overflow: auto;
-  svg {
-    max-width: calc(100% - 1em);
   }
 }

@@ -152,6 +152,7 @@ test('footnotemark and footnotetext with no identifier', async () => {
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
 
+  // TODO: I lose whitespace (before "and") and so far don't see how to get it back
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     Some text :warn[footnote mark has no identifier]and :warn[footnote mark has no identifier].
 
@@ -161,8 +162,6 @@ test('footnotemark and footnotetext with no identifier', async () => {
 
     :warn[footnote text has no identifier]
   `);
-
-  // TODO: I lose whitespace (before "and") and so far don't see how to get it back
 
   expect(markdown).toBe(expectedMarkdown);
 

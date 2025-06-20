@@ -58,6 +58,7 @@ export function toMathJaxSvgString(expr: string, fontName: MathsFont) {
 
   const match = html.match(/data-mjx-error="(.*?)"/);
   if (match !== null) {
+    console.log('mathjax error:', match[1]);
     return `<span class="mathjax-error">${match[1]}</span>`;
   }
 

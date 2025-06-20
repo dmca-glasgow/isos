@@ -18,6 +18,7 @@ import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
+import { createWarn } from '../../plugins/warn/mdast-warn';
 import { Context } from '../context';
 // import { createFancySection, createFancyTitle } from './fancy';
 import { createLabel } from './label';
@@ -51,15 +52,7 @@ export function createRehypeRemarkHandlers(
     pre: rehypeRemarkPre,
     del: rehypeRemarkDel,
 
-    // table(state: State, node: Element) {
-    //   console.log(node);
-    //   return {
-    //     type: 'table',
-    //     align: node.align,
-    //     children: state.all(node),
-    //   };
-    // },
-
+    // table: tableWithSpaceAround,
     // center: centerHandler,
     // img: imgHandler,
   };
@@ -161,6 +154,29 @@ function spanHandler(
     //   state.patch(node, result);
     //   return result;
     // }
+
+    // do nothing
+    if (
+      className.includes('macro-centering') ||
+      className.includes('macro-maketitle') ||
+      className.includes('macro-newpage') ||
+      className.includes('macro-newline') ||
+      className.includes('macro-tableofcontents')
+    ) {
+      return state.all(node);
+    }
+
+    // unhandled
+    const macroName = className.find((str) =>
+      String(str).startsWith('macro-'),
+    ) as string;
+
+    if (macroName) {
+      const name = macroName.slice(6);
+      const result = createWarn(node, 'macro', name);
+      state.patch(node, result);
+      return result;
+    }
   }
 
   return state.all(node);
@@ -168,7 +184,6 @@ function spanHandler(
 
 function divHandler(ctx: Context, state: State, node: Element) {
   const { className } = node.properties;
-  // console.log(node);
 
   if (Array.isArray(className)) {
     if (className.includes('display-math')) {
@@ -178,7 +193,6 @@ function divHandler(ctx: Context, state: State, node: Element) {
     }
 
     if (className.includes('theorem')) {
-      // console.log('hey!', ctx.frontmatter.theorems);
       const theoremType = String(className[className.length - 1]);
       const theorem = ctx.frontmatter.theorems[theoremType];
 
@@ -188,7 +202,10 @@ function divHandler(ctx: Context, state: State, node: Element) {
         return result;
       }
 
-      console.log('unhandled theorem:', theoremType);
+      // unhandled
+      const result = createWarn(node, 'theorem', theoremType);
+      state.patch(node, result);
+      return result;
     }
 
     if (className.includes('environment')) {
@@ -199,8 +216,11 @@ function divHandler(ctx: Context, state: State, node: Element) {
         return displayQuoteToBlockQuote(state, node);
       }
 
-      console.log('unhandled environment:', environmentName);
-      // console.log(node);
+      // if (environmentName === 'tikzpicture') {
+      //   const result: Text = { type: 'text', value: '' };
+      //   state.patch(node, result);
+      //   return result;
+      // }
 
       // if (environmentName === 'framed') {
       //   const result = createFramed(state, node);
@@ -209,6 +229,16 @@ function divHandler(ctx: Context, state: State, node: Element) {
       //   // console.log(state);
       //   return result;
       // }
+
+      // do nothing
+      if (environmentName === 'table') {
+        return state.all(node);
+      }
+
+      // unhandled
+      const result = createWarn(node, 'environment', environmentName);
+      state.patch(node, result);
+      return result;
     }
   }
 

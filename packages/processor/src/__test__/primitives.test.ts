@@ -142,15 +142,23 @@ test('url to link', async () => {
   expect(markdown).toBe('<http://www.yahoo.com>');
   const html = await testProcessor.md(markdown);
   expect(html).toBe(
-    '<p><a href="http://www.yahoo.com">http://www.yahoo.com</a></p>',
+    '<p><a href="http://www.yahoo.com" target="_blank">http://www.yahoo.com</a></p>',
   );
 });
 
-test('href to link', async () => {
+test('external href to link', async () => {
   const markdown = await testProcessor.latex(
     String.raw`\href{http://www.yahoo.com}{Yahoo}`,
   );
   expect(markdown).toBe('[Yahoo](http://www.yahoo.com)');
   const html = await testProcessor.md(markdown);
-  expect(html).toBe('<p><a href="http://www.yahoo.com">Yahoo</a></p>');
+  expect(html).toBe(
+    '<p><a href="http://www.yahoo.com" target="_blank">Yahoo</a></p>',
+  );
+});
+
+test('anchor href to link', async () => {
+  const markdown = '[Yahoo](#yahoo)';
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe('<p><a href="#yahoo">Yahoo</a></p>');
 });

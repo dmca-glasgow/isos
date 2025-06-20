@@ -40,6 +40,8 @@ function createTheorem(node: Environment): Macro {
     attributes.name = name;
   }
 
+  // console.log(node.content);
+
   return htmlLike({
     tag: 'div',
     attributes,

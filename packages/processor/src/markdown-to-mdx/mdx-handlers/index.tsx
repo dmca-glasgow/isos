@@ -4,8 +4,9 @@ import { VNode } from 'preact';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 
 import { Maths } from '../../plugins/maths/mdx-handlers/Maths';
+// import { WarnSpan } from '../../plugins/warn/mdx-warn';
 import { MdxState } from './mdx-state';
-import { Task } from './task/Task';
+import { Task } from './task/mdx-task';
 import { Section } from './toc-highlight/section';
 import { TocListItem } from './toc-highlight/toc-list-item';
 
@@ -13,6 +14,25 @@ export function createRunOptions({ maths }: MdxState): RunOptions {
   return {
     Fragment,
     useMDXComponents: () => ({
+      a(props) {
+        // this is to ensure external links open in your
+        // default browser and not the tauri app window
+        const href = String(props?.href || '');
+        if (href.startsWith('#')) {
+          return <a {...props} />;
+        } else {
+          return <a {...props} target="_blank" />;
+        }
+      },
+      // TODO: not working with some tests
+      // span(props) {
+      //   const className = String(props.class || '');
+      //   if (className.startsWith('warn')) {
+      //     return <WarnSpan {...props} />;
+      //   } else {
+      //     return <span {...props} />;
+      //   }
+      // },
       div(props) {
         const className = String(props.class || '');
         if (className.includes('task')) {

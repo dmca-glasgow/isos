@@ -54,8 +54,8 @@ const Error = styled.div`
 
 const ArticleWrapper = styled.div`
   display: block;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   flex: 0 0 auto;

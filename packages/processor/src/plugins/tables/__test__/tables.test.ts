@@ -7,7 +7,7 @@ import { markdownToQuartoHtml } from '../../../test-utils/md-to-quarto-html';
 import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
 import { testProcessor } from '../../../test-utils/unit-test-processor';
 
-test('maths', async () => {
+test('tables', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{float}
@@ -70,6 +70,8 @@ test('maths', async () => {
     | Col1 | Col2 | Col3 |
     | :--- | :--- | :--- |
     | G    | H    | I    |
+
+
 
     | Col1 | Col2 | Col3 |
     | :--- | :--- | :--- |

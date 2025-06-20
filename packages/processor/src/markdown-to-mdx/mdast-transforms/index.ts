@@ -13,13 +13,13 @@ import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figu
 import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
 import { tableCaptionToFigure } from '../../plugins/tables/table-caption-to-figure';
 import { theorems } from '../../plugins/theorems-proofs/mdx-theorems';
+import { warn } from '../../plugins/warn/warn';
 import { Context } from '../context';
 import { Options } from '../options';
 import { escapeCharsForMdx } from './escape-mdx-chars';
 import { extractFrontmatter } from './extract-frontmatter';
 import { htmlToWarn } from './html-to-warn';
 import { removeComments } from './remove-comments';
-import { warn } from './warn';
 
 // import { center } from './center';
 // import { fancyTitle } from './fancy-title';
