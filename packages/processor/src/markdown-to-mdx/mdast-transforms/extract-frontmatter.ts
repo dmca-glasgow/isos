@@ -24,6 +24,8 @@ export function extractFrontmatter(ctx: Context) {
       const combined = fmStrings.join('\n\n');
       const fm = parse(combined) as Frontmatter;
 
+      // console.log(fm);
+
       if (fm.title) {
         ctx.frontmatter.title = fm.title;
       }
@@ -55,6 +57,8 @@ export function extractFrontmatter(ctx: Context) {
       if (fm['reference-location']) {
         ctx.frontmatter.referenceLocation = fm['reference-location'];
       }
+
+      // console.log(ctx.frontmatter);
     }
   };
 }

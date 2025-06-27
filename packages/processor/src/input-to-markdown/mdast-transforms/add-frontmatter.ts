@@ -30,6 +30,7 @@ export function addFrontmatter(ctx: Context) {
     }
 
     if (ctx.frontmatter['reference-location'] !== 'margin') {
+      // console.log('hey!');
       toExport['reference-location'] =
         ctx.frontmatter['reference-location'];
     }

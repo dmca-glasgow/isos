@@ -152,9 +152,14 @@ function createTitleElements(theorem: Theorem, label: PhrasingContent[]) {
 function createDefinitionTitle(
   label: PhrasingContent[],
 ): PhrasingContent[] {
+  const period: Text = {
+    type: 'text',
+    value: '.',
+  };
+
   const title: PhrasingContent = {
     type: 'strong',
-    children: label,
+    children: [...label, period],
   };
 
   const space: Text = {
@@ -214,7 +219,7 @@ function createQed(node: ContainerDirective) {
       hChildren: [
         {
           type: 'text',
-          value: '◻',
+          value: ' ◻',
         },
       ],
     },

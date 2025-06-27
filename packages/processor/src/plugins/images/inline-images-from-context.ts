@@ -10,7 +10,7 @@ const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
 export function inlineImagesFromContext(ctx: Context, options: Options) {
   return async (tree: Root) => {
     // console.log(ctx);
-    // console.log('inlineImages');
+    // console.log('inlineImages', options.noInlineImages);
     if (options.noInlineImages) {
       return;
     }

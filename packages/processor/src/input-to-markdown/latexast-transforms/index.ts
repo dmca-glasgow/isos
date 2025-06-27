@@ -3,7 +3,8 @@ import { PluggableList } from 'unified';
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
 import { extractTopMatter } from '../../plugins/cover/extract-top-matter';
 import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
-import { figureCaptionToImageTitle } from '../../plugins/images/figure-caption-to-image-title';
+import { figureToImage } from '../../plugins/images/figure-to-image';
+// import { inlineFilesFromContext } from '../../plugins/includes/inline-files-from-context';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 // import { extractFancyTitle } from './extract-fancytitle';
 import { extractTheoremDefinitions } from '../../plugins/refs-and-counts/extract-theorem-definitions';
@@ -18,6 +19,7 @@ import { expandMathOperatorPlugin } from './expand-math-ops';
 
 export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
+    // [inlineFilesFromContext, ctx],
     [setSideNotes, ctx],
     [extractTheoremDefinitions, ctx],
     [extractTopMatter, ctx],
@@ -25,7 +27,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     trimVerbatim,
     convertEmToEmph,
     // replaceTildeWithSpace,
-    figureCaptionToImageTitle,
+    figureToImage,
     expandDocumentMacrosPlugin,
     expandMathOperatorPlugin,
     equationLabelToId,

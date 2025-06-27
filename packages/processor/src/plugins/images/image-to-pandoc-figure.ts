@@ -12,10 +12,13 @@ export function imageToPandocFigure() {
     // console.log('imageToPandocFigure');
     // console.dir(tree, { depth: null });
     visit(tree, 'image', (node, idx, parent) => {
+      // console.log(node);
       const children = parent?.children || [];
+      const data = (node.data || {}) as Record<string, string>;
       const attrs: Record<string, string> = {
         alt: getText(node.alt),
         caption: node.title || '',
+        ...data,
       };
       const attributes = serialiseAttributes(attrs);
       if (attributes) {

@@ -1,0 +1,53 @@
+Use the `\verb` (short for verbatim) macro to display code inside a paragraph:
+
+<CodeSnippet latex={String.raw`
+
+Inline code: \verb|var i = 0;|.
+
+`} />
+
+Use the `\verbatim` environment to display a block of code:
+
+<CodeSnippet latex={String.raw`
+  \begin{verbatim}
+  code {
+    display: inline-block;
+    background: hsl(from #fff h s calc(l - 75));
+    font-family: monospace;
+    margin: 0 0.2em;
+  }
+  \end{verbatim}
+
+`} />
+
+Use the `minted` package to enable syntax highlighting:
+
+<CodeSnippet latex={String.raw`
+  \documentclass{article}
+  \usepackage{minted}
+  \begin{document}
+
+Inline syntax-highlighted code: \mintinline{javascript}{var i = 0;}.
+
+\end{document}
+
+`} />
+
+<CodeSnippet latex={String.raw`
+  \documentclass{article}
+  \usepackage{minted}
+  \begin{document}
+  \begin{minted}{css}
+  pre {
+    background: #aaa;
+    border-left: 0.3em solid #ccc;
+    code {
+      display: block;
+      background: none;
+      padding: 1em;
+    }
+  }
+  \end{minted}
+  \end{document}
+
+`} />

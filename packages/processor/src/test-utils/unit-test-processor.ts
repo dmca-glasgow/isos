@@ -15,8 +15,8 @@ import {
 } from '../input-to-markdown/options';
 import { createContext as createHtmlContext } from '../markdown-to-mdx/context';
 import { MdxDefaultState } from '../markdown-to-mdx/mdx-handlers/mdx-state';
+import { Options as MarkdownToMdxOptions } from '../markdown-to-mdx/options';
 import { createDefaultOptions as createHtmlOptions } from '../markdown-to-mdx/options';
-// import { Options } from '../markdown-to-mdx';
 import { unindentStringAndTrim } from './unindent-string';
 
 export const testProcessor = {
@@ -32,7 +32,7 @@ const testOptions = {
 
 const testHtmlOptions = {
   noWrapper: true,
-  // noSections: true,
+  noSections: true,
 };
 
 async function latexToMarkdown(latex: string, options?: Partial<Options>) {
@@ -43,9 +43,10 @@ async function latexToMarkdown(latex: string, options?: Partial<Options>) {
   return markdown;
 }
 
-type Opts = Partial<Options> & {
-  state: Partial<MdxDefaultState>;
-};
+type Opts = Partial<Options> &
+  Partial<MarkdownToMdxOptions> & {
+    state: Partial<MdxDefaultState>;
+  };
 
 async function markdownToHtml(
   md: string,
@@ -67,15 +68,15 @@ async function markdownToHtml(
     syntaxHighlight !== undefined ? syntaxHighlight : false;
 
   const htmlCtx = createHtmlContext();
-  const htmlOptions = createHtmlOptions(
-    mdxState,
-    htmlCtx,
-    testHtmlOptions,
-  );
+  const htmlOptions = createHtmlOptions(mdxState, htmlCtx, {
+    ...testHtmlOptions,
+    ...options,
+  });
   const component = await markdownToArticle(markdown, htmlOptions);
   // @ts-expect-error
   const element = createElement(component.default);
-  return formatHtml(renderToString(element));
+  const str = renderToString(element);
+  return formatHtml(str);
 }
 
 async function markdownToMarkdown(md: string) {

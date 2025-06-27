@@ -64,27 +64,50 @@ const ArticleWrapper = styled.div`
   ${scrollbar()};
 
   & > article {
+    section,
+    header {
+      --contentWidth: ${constants.lineWidth.base} *
+        var(--lineWidth, ${constants.lineWidth.initial});
+      --margin: calc((100vw - var(--contentWidth)) / 2);
+
+      display: grid;
+      gap: 0;
+      grid-template-columns:
+        [left-margin] var(--margin)
+        [content] 1fr
+        [content-end] var(--margin)
+        [end];
+
+      & > * {
+        grid-column: content / content-end;
+      }
+    }
+
+    &.has-sidenotes {
+      section,
+      header {
+        grid-template-columns:
+          [left-margin] var(--margin)
+          [content] 1fr
+          [content-end] 2em
+          [side] 10em
+          [right-margin] var(--margin)
+          [end];
+      }
+
+      section {
+        aside {
+          grid-column: side / right-margin;
+          font-size: 0.9em;
+        }
+      }
+    }
+
+    /*
     width: calc(
       ${constants.lineWidth.base} *
         var(--lineWidth, ${constants.lineWidth.initial})
     );
-    font-size: calc(
-      ${constants.fontSize.base} *
-        var(--fontSize, ${constants.fontSize.initial})
-    );
-    line-height: calc(
-      ${constants.lineHeight.base} *
-        var(--lineHeight, ${constants.lineHeight.initial})
-    );
-    letter-spacing: calc(
-      ${constants.letterSpacing.base} *
-        var(--letterSpacing, ${constants.letterSpacing.initial})
-    );
-    padding: 2em 0 5em;
-    margin: 0 auto;
-
-    transition: padding-left 0.2s;
-    will-change: padding-left;
 
     &.has-sidenotes {
       padding-right: ${constants.sideNoteWidth} + ${constants.sideNoteGap};
@@ -97,13 +120,35 @@ const ArticleWrapper = styled.div`
       }
     }
 
+    @media (max-width: 1000px) {
+      width: calc(${constants.mobileLineWidthBase} * var(--lineWidth, 1));
+    }
+    */
+
+    font-size: calc(
+      ${constants.fontSize.base} *
+        var(--fontSize, ${constants.fontSize.initial})
+    );
+    line-height: calc(
+      ${constants.lineHeight.base} *
+        var(--lineHeight, ${constants.lineHeight.initial})
+    );
+    letter-spacing: calc(
+      ${constants.letterSpacing.base} *
+        var(--letterSpacing, ${constants.letterSpacing.initial})
+    );
+
+    padding: 2em 0 5em;
+    margin: 0 auto;
+
+    transition: padding-left 0.2s;
+    will-change: padding-left;
+
     #root.sidebar-show & {
       padding-left: ${constants.sidebarWidth};
     }
 
     @media (max-width: 1000px) {
-      width: calc(${constants.mobileLineWidthBase} * var(--lineWidth, 1));
-
       #root.sidebar-show & {
         padding-left: 0;
       }

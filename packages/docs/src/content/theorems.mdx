@@ -1,0 +1,167 @@
+Here is a theorem configuration which matches the default configuration of Quarto:
+
+<CodeSnippet
+  latex={String.raw`
+
+\documentclass{article}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}{Definition}
+\newtheorem{example}[definition]{Example}
+\newtheorem{exercise}[definition]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{solution}[definition]{Solution}
+\newtheorem{remark}[definition]{Remark}
+
+\begin{document}
+
+\begin{theorem} Some text \end{theorem}
+\begin{lemma} Some text \end{lemma}
+\begin{corollary} Some text \end{corollary}
+\begin{proposition} Some text \end{proposition}
+\begin{conjecture} Some text \end{conjecture}
+\begin{definition} Some text \end{definition}
+\begin{example} Some text \end{example}
+\begin{exercise} Some text \end{exercise}
+\begin{solution} Some text \end{solution}
+\begin{remark} Some text \end{remark}
+\begin{proof} Some text \end{proof}
+
+\end{document}
+
+`}
+/>
+
+ISOS aims to match the custom counter behaviour of `pdflatex` when defined with `\theoremstyle` and `\newtheorem`:
+
+<CodeSnippet
+  latex={String.raw`
+
+\documentclass{article}
+\usepackage{amsthm}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}{Definition}
+\newtheorem{example}[definition]{Example}
+\newtheorem{exercise}[definition]{Exercise}
+\newtheorem{solution}[definition]{Solution}
+\newtheorem{remark}[definition]{Remark}
+
+\begin{document}
+
+\section{My first section}
+
+\begin{theorem} Some text \end{theorem}
+\begin{lemma} Some text \end{lemma}
+\begin{corollary} Some text \end{corollary}
+\begin{proposition} Some text \end{proposition}
+\begin{conjecture} Some text \end{conjecture}
+
+\section{My second section}
+
+\begin{definition} Some text \end{definition}
+\begin{example} Some text \end{example}
+\begin{exercise} Some text \end{exercise}
+\begin{solution} Some text \end{solution}
+\begin{remark} Some text \end{remark}
+\begin{proof} Some text \end{proof}
+
+\end{document}
+
+`}
+/>
+
+Supported values for `\theoremstyle` are `plain`, `definition` and `remark`:
+
+<CodeSnippet
+  latex={String.raw`
+
+\documentclass{article}
+\usepackage{amsthm}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\begin{document}
+
+\begin{theorem}[Theorem name] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. \end{theorem}
+\begin{lemma}[Theorem name] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. \end{lemma}
+\begin{corollary}[Theorem name] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. \end{corollary}
+
+\end{document}
+
+`}
+/>
+
+To reference a theorem use `\cref` and the correct prefix for the theorem:
+
+<CodeSnippet latex={String.raw`
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+
+\section{My Section}
+
+\begin{theorem}
+\label{thm:example}
+My convention
+\end{theorem}
+
+See~\cref{thm:example}.
+
+\end{document}
+`} />
+
+Here is a table of the default theorems and their prefixes:
+
+| Prefix | Label       |
+| :----- | :---------- |
+| thm    | Theorem     |
+| lem    | Lemma       |
+| cor    | Corollary   |
+| prp    | Proposition |
+| cnj    | Conjecture  |
+| def    | Definition  |
+| exm    | Example     |
+| exr    | Exercise    |
+| sol    | Solution    |
+| rem    | Remark      |
+
+Custom theorems can be defined, and their labels will be picked up automatically from the `\newtheorem` definition:
+
+<CodeSnippet latex={String.raw`
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+\newtheorem{convention}{Convention}
+\begin{document}
+
+\begin{convention}[My name]
+\label{convention:example}
+My convention
+\end{convention}
+
+See \cref{convention:example}.
+
+\end{document}
+`} />

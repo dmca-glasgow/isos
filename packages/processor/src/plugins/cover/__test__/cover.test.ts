@@ -51,7 +51,7 @@ test('cover', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
@@ -59,7 +59,7 @@ test('cover', async () => {
       <h1>How to <em>Structure</em> a LaTeX Document</h1>
       <p class="author">Written by David <em>McArthur</em></p>
       <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
-      <aside aria-labelledby="h-abstract">
+      <aside aria-labelledby="h-abstract" class="abstract">
         <h2 id="h-abstract">Abstract</h2>
         <p>My abstract.</p>
         <p>Has multiple paragraphs.</p>
@@ -158,7 +158,7 @@ test('cover with multiple authors with ORCIDs', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
@@ -167,13 +167,15 @@ test('cover with multiple authors with ORCIDs', async () => {
       <div class="authors">
         <p>Written by:</p>
         <ul>
-          <li>David <em>McArthur</em> <a href="https://orcid.org/0000-0002-1825-0097" target="_blank" class="orcid">ORCID Link</a>, <span class="affiliation">Department of Mathematics, University X</span></li>
-          <li>Ivor Question <a href="https://orcid.org/0000-0002-1825-0097" target="_blank" class="orcid">ORCID Link</a>, <span class="affiliation">Department of Biology, University Y</span></li>
+          <li>David <em>McArthur</em> <a href="https://orcid.org/0000-0002-1825-0097" target="_blank" class="orcid" title="ORCID link"></a>, <span class="affiliation">Department of Mathematics, University X</span></li>
+          <li>Ivor Question <a href="https://orcid.org/0000-0002-1825-0097" target="_blank" class="orcid" title="ORCID link"></a>, <span class="affiliation">Department of Biology, University Y</span></li>
         </ul>
       </div>
       <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
     </header>
-    <p>Hello</p>
+    <section>
+      <p>Hello</p>
+    </section>
   `);
 
   expect(html).toBe(expectedHtml);

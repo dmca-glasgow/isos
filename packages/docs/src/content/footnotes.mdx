@@ -1,0 +1,98 @@
+In an effort to avoid jumping around the document too much, by default ISOS transforms footnotes to sidenotes. This can be replicated in LaTeX with the `snotez` package:
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{snotez}
+    \setsidenotes{footnote=true} % optional, true by default
+    \begin{document}
+
+    Inline footnotes \footnote{
+      Text for \emph{footnote}.
+
+      Paragraphs are ok.
+    }~and \footnote{Text for \emph{footnote} 2}.
+
+    Another paragraph.
+
+    \end{document}
+
+`}
+/>
+
+Adding `\setsidenotes{footnote=false}` to your preamble will instruct ISOS and `pdflatex` to keep footnotes as footnotes, if you prefer:
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{snotez}
+    \setsidenotes{footnote=false}
+    \begin{document}
+
+    Inline footnotes \footnote{
+      Text for \emph{footnote}.
+
+      Paragraphs are ok.
+    }~and \footnote{Text for \emph{footnote} 2}.
+
+    Another paragraph.
+
+    \end{document}
+
+`}
+/>
+
+`\footnotemark` and `\footnotetext` are also supported when used with the **_number_** argument:
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{snotez}
+    \setsidenotes{footnote=false}
+    \begin{document}
+
+    Block footnotes \footnotemark[1] and \footnotemark[2].
+
+    Another paragraph.
+
+    \footnotetext[1]{
+      Text for \emph{footnote}.
+
+      Paragraphs are ok.
+    }
+
+    \footnotetext[2]{
+      Text for \emph{footnote} 2.
+    }
+
+    \end{document}
+
+`}
+/>
+
+If you prefer this approach, you will need to be careful to ensure the numbers of `\footnotemark` and `\footnotetext` match correctly, with no duplicates, and not to mix with `\footnote` as it will auto-increment it's own set of numbers. ISOS does support using text labels instead of numbers which seems like the best approach, but so far I haven't found a working LaTeX solution for this:
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{snotez}
+    \begin{document}
+
+    Block footnotes with labels \footnotemark[alpha] and \footnotemark[bravo].
+
+    Another paragraph.
+
+    \footnotetext[alpha]{
+      Text for \emph{footnote}.
+
+      Paragraphs are ok.
+    }
+
+    \footnotetext[bravo]{
+      Text for \emph{footnote} 2.
+    }
+
+    \end{document}
+
+`}
+/>

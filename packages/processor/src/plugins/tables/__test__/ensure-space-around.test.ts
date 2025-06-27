@@ -57,7 +57,7 @@ test('tables', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 1</strong></span> Hi.</p>
+      <p><span class="title"><strong>Theorem 1.</strong></span> Hi.</p>
       <table>
         <thead>
           <tr>

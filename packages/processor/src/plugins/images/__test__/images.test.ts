@@ -4,6 +4,8 @@ import { expect, test } from 'vitest';
 import { markdownToPandocHtml } from '../../../test-utils/md-to-pandoc-html';
 // @ts-ignore
 import { markdownToQuartoHtml } from '../../../test-utils/md-to-quarto-html';
+// @ts-ignore
+import { pdfLatexToHtml } from '../../../test-utils/pdflatex-to-html';
 import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
 import { testProcessor } from '../../../test-utils/unit-test-processor';
 
@@ -171,4 +173,51 @@ test('image with alt text and caption', async () => {
   `);
 
   expect(html).toBe(expectedHtml);
+});
+
+test('image with label', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{figure}
+    \label{fig:logo}
+    \includegraphics[alt={My alt text}]{image.png}
+    \caption{My \textbf{caption} text}
+    \end{figure}
+
+    Refer to \cref{fig:logo}.
+
+    \end{document}
+  `;
+
+  // const latexHtml = await pdfLatexToHtml.mupdf(latex);
+  // console.log(latexHtml);
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ![My **caption** text](image.png){#fig-logo alt="My alt text"}
+
+    Refer to @fig-logo.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <figure id="fig-logo"><img src="image.png" alt="My alt text" />
+      <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
+    </figure>
+    <p>Refer to <a href="#fig-logo" class="ref">Figure 1</a>.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
 });

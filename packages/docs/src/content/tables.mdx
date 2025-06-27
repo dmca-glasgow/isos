@@ -1,5 +1,3 @@
-## Tables
-
 While the `\tabular` environment in LaTeX is powerful enough to create complex table layouts, with column and row spans and intricate border styling, complex and unusual table layouts can cause unnecessary barriers for some users and are generally discouraged. A convenient rule of thumb is that tables should be reserved only for displaying content that can be reasonably defined as tabular data.
 
 Markdown (specifically the [GitHub Flavoured Markdown tables extension](https://github.github.com/gfm/#tables-extension-) used by ISOS) has a minimal set of features which were conceived with accessibility in mind.
@@ -23,7 +21,7 @@ Table cell formatting other than `l`, `c` and `r`, and `\hline` are ignored:
   latex={String.raw`
     \begin{tabular}{|m{4em}|m{3cm}|m{3cm}|}
       \hline
-    Area & Number of dogs inspected & Number of dogs with a flea infestation \\
+      Area & Number of dogs inspected & Number of dogs with a flea infestation \\
       \hline
       Urban Clinic & 213 & 30 \\
       \hline
@@ -35,7 +33,9 @@ Table cell formatting other than `l`, `c` and `r`, and `\hline` are ignored:
 
 ### Referencing and captioning a table
 
-Using the `float` package and the `[H]` parameter on `\begin{table}` we can create a layout with `pdflatex` that is consistent with the the HTML version (by essentially disabling the float behaviour). This is optional, these parameters are simply ignored by ISOS.
+The `\table` float environment can be used to associate a caption and label with the table and the `\autoref` macro with the prefix `tbl` will automatically label.
+
+Using the `float` package and the `[H]` parameter on `\begin{table}` we can create a layout with `pdflatex` that is consistent with the the HTML version (by essentially disabling the float behaviour and forcing the table to occupy the full width of the document). This is optional, these parameters are simply ignored by ISOS.
 
 <CodeSnippet
   latex={String.raw`

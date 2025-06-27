@@ -53,7 +53,7 @@ test('account for ligatures in theorem names', async () => {
   const expectedHtml = unindentStringAndTrim(`
     <p>l’Hôpital’s rule.</p>
     <div class="definition proposition" id="prp-1">
-      <p><span class="title"><strong>Proposition 1 (l’Hôpital’s rule)</strong></span> If</p>
+      <p><span class="title"><strong>Proposition 1 (l’Hôpital’s rule).</strong></span> If</p>
     </div>
   `);
 

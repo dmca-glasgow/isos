@@ -22,8 +22,9 @@ test('heading with counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
-  // console.log(html);
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
 
   const expectedHtml = unindentStringAndTrim(`
     <section id="hello">
@@ -52,7 +53,9 @@ test('heading with no counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
@@ -127,60 +130,62 @@ test('headings with counters and attributes', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
   // console.log(html);
 
   const expected = unindentStringAndTrim(`
     <section id="bravo-hi">
       <h2><span class="count">1</span> Bravo <strong>hi</strong></h2>
-      <section id="hi">
-        <h3><span class="count">1.1</span> Charlie</h3>
-        <section id="delta-hi">
-          <h4><span class="count">1.1.1</span> <strong>Delta</strong> hi</h4>
-          <section id="echo">
-            <h5>Echo</h5>
-            <section id="foxtrot">
-              <h6>Foxtrot</h6>
-            </section>
-          </section>
-          <section id="golf">
-            <h5>Golf</h5>
-            <section id="hotel">
-              <h6>Hotel</h6>
-            </section>
-          </section>
-        </section>
-      </section>
+    </section>
+    <section id="hi">
+      <h3><span class="count">1.1</span> Charlie</h3>
+    </section>
+    <section id="delta-hi">
+      <h4><span class="count">1.1.1</span> <strong>Delta</strong> hi</h4>
+    </section>
+    <section id="echo">
+      <h5>Echo</h5>
+    </section>
+    <section id="foxtrot">
+      <h6>Foxtrot</h6>
+    </section>
+    <section id="golf">
+      <h5>Golf</h5>
+    </section>
+    <section id="hotel">
+      <h6>Hotel</h6>
     </section>
     <section id="india">
       <h2>India</h2>
     </section>
     <section id="juliett">
       <h2><span class="count">2</span> Juliett</h2>
-      <section id="kilo">
-        <h3><strong>Kilo</strong></h3>
-      </section>
+    </section>
+    <section id="kilo">
+      <h3><strong>Kilo</strong></h3>
     </section>
     <section id="lima">
       <h2><span class="count">3</span> Lima</h2>
-      <section id="mike">
-        <h3><span class="count">3.1</span> Mike</h3>
-        <section id="november">
-          <h4><span class="count">3.1.1</span> November</h4>
-        </section>
-      </section>
-      <section id="oscar">
-        <h3><span class="count">3.2</span> Oscar</h3>
-        <section id="papa">
-          <h4><span class="count">3.2.1</span> Papa</h4>
-        </section>
-        <section id="quebec-hi">
-          <h4>Quebec <strong>hi</strong></h4>
-        </section>
-        <section id="romeo">
-          <h4><span class="count">3.2.2</span> Romeo</h4>
-        </section>
-      </section>
+    </section>
+    <section id="mike">
+      <h3><span class="count">3.1</span> Mike</h3>
+    </section>
+    <section id="november">
+      <h4><span class="count">3.1.1</span> November</h4>
+    </section>
+    <section id="oscar">
+      <h3><span class="count">3.2</span> Oscar</h3>
+    </section>
+    <section id="papa">
+      <h4><span class="count">3.2.1</span> Papa</h4>
+    </section>
+    <section id="quebec-hi">
+      <h4>Quebec <strong>hi</strong></h4>
+    </section>
+    <section id="romeo">
+      <h4><span class="count">3.2.2</span> Romeo</h4>
     </section>
   `);
 

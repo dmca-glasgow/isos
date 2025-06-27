@@ -1,9 +1,12 @@
 import { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 
-export function footnoteReference() {
+import { Context } from '../../markdown-to-mdx/context';
+
+export function footnoteReference(ctx: Context) {
   return (tree: Root) => {
     visit(tree, 'footnoteReference', (node) => {
+      ctx.hasSideNotes = true;
       node.data = {
         hName: 'sup',
         hProperties: {

@@ -86,7 +86,7 @@ test('custom theorem', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="plain conv" id="conv-line">
-      <p><span class="title"><strong>Convention 1 (Pythagorean)</strong></span> Cras mattis.</p>
+      <p><span class="title"><strong>Convention 1 (Pythagorean).</strong></span> Cras mattis.</p>
       <p>Cras justo odio.</p>
     </div>
     <p>See <a href="#conv-line" class="ref">Convention 1</a>.</p>

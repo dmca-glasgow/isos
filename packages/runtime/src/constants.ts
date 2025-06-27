@@ -14,7 +14,7 @@ export const actions = Object.freeze({
   height: '1.4em',
 });
 
-// strings make sense when implementing these values in html
+// strings make sense when setting these values in html
 export type ViewOptionsParam = Readonly<{
   label: string;
   base: string;
@@ -24,16 +24,16 @@ export type ViewOptionsParam = Readonly<{
   increment: string;
 }>;
 
-export const mobileLineWidthBase = '85vw';
-
 export const lineWidth: ViewOptionsParam = Object.freeze({
   label: 'Line width',
-  base: '60vw',
+  base: '80vw',
   initial: '1',
   min: '0.6',
   max: '1.5',
   increment: '0.05',
 });
+
+export const mobileLineWidthBase = '85vw';
 
 export const fontSize: ViewOptionsParam = Object.freeze({
   label: 'Font-size',

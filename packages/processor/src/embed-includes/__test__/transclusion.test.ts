@@ -32,6 +32,9 @@ test('file transclusion with latex', async () => {
   `);
 
   expect(markdown).toBe(expectedMarkdown);
+
+  // const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
 });
 
 test('file transclusion with markdown', async () => {
@@ -67,4 +70,7 @@ test('file transclusion with markdown', async () => {
   `);
 
   expect(markdown).toBe(expectedMarkdown);
+
+  // const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
 });

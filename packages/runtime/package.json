@@ -24,7 +24,8 @@
     "mathjax-full": "^4.0.0-beta.7",
     "mathjax-termes-font": "^4.0.0-beta.7",
     "preact": "^10.26.9",
-    "prismjs": "^1.30.0"
+    "prismjs": "^1.30.0",
+    "refractor": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -37,6 +38,7 @@
     "@rollup/plugin-commonjs": "^28.0.2",
     "@types/fscreen": "^1.0.4",
     "@types/prismjs": "^1.26.5",
+    "@types/refractor": "^3.4.1",
     "@wyw-in-js/babel-preset": "^0.7.0",
     "@wyw-in-js/vite": "^0.7.0",
     "vite-plugin-prismjs": "^0.0.11",

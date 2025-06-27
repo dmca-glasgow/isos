@@ -7,7 +7,7 @@ import { markdownToQuartoHtml } from '../../../test-utils/md-to-quarto-html';
 import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
 import { testProcessor } from '../../../test-utils/unit-test-processor';
 
-test('image with counter', async () => {
+test('div', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{hyperref}
@@ -56,7 +56,9 @@ test('image with counter', async () => {
     See @sec-introduction and @tbl-table and @tbl-chair.
   `);
 
-  const html = await testProcessor.md(quartoMarkdown);
+  const html = await testProcessor.md(quartoMarkdown, {
+    noSections: false,
+  });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`

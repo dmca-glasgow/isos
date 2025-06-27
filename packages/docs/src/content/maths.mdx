@@ -1,0 +1,35 @@
+Use `$` to delimit inline maths and `$$` for display maths:
+
+<CodeSnippet latex={String.raw`
+
+Inline maths $x^2 - 5$ and display maths:
+
+$$
+x^2 - 5 x + 6 = 0
+$$
+
+`} />
+
+Equations are numbered, and when labelled (with prefix `eq`) can be referenced like so:
+
+<CodeSnippet latex={String.raw`
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+\begin{document}
+
+\begin{equation}
+\label{eq:myref1}
+x^2 - 5 x + 6 = 0
+\end{equation}
+
+\begin{equation}
+x^2 - 5 x + 6 = 0
+\end{equation}
+
+Check out \autoref{eq:myref1} and \autoref{eq:myref2}.
+
+\end{document}
+
+`} />

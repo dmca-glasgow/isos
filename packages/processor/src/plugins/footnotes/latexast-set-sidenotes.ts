@@ -11,16 +11,16 @@ export function setSideNotes(ctx: Context) {
       if (node.type === 'macro' && node.content === 'setsidenotes') {
         const args = node.args || [];
         const arg = args[args.length - 1] || {};
-        if (
+        // console.log(arg.content);
+        ctx.frontmatter['reference-location'] =
           arg.content[0].type === 'string' &&
           arg.content[0].content === 'footnote' &&
           arg.content[1].type === 'string' &&
           arg.content[1].content === '=' &&
           arg.content[2].type === 'string' &&
           arg.content[2].content === 'false'
-        ) {
-          ctx.frontmatter['reference-location'] = 'document';
-        }
+            ? 'document'
+            : 'margin';
       }
     });
   };

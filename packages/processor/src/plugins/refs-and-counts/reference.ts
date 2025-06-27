@@ -21,6 +21,6 @@ function findRefLabel(node: Element) {
     return '';
   }
 
-  const literal = (parent.children[0] || {}) as Text;
-  return kebabCase(literal.value || '');
+  const text = (parent.children[0] || {}) as Text;
+  return kebabCase(text.value || '');
 }

@@ -1,5 +1,6 @@
 import { Element, Parents } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
+import { Image } from 'mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { callouts } from '../../plugins/callout/callouts';
@@ -55,6 +56,18 @@ export function createRehypeRemarkHandlers(
     // table: tableWithSpaceAround,
     // center: centerHandler,
     // img: imgHandler,
+    img(state: State, node: Element) {
+      const { src, alt, title, ...props } = node.properties;
+      const result: Image = {
+        type: 'image',
+        url: String(src || ''),
+        alt: String(alt || ''),
+        title: String(title || ''),
+        data: props,
+      };
+      state.patch(node, result);
+      return result;
+    },
   };
 }
 

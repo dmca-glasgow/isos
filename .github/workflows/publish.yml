@@ -130,28 +130,28 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
 
-  # publish-docs:
-  #   needs: [version-check, post-release]
-  #   if: needs.version-check.outputs.has-version-change == 'true'
-  #   runs-on: ubuntu-22.04
-  #   permissions:
-  #     pages: write
-  #     id-token: write
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  #   defaults:
-  #     run:
-  #       working-directory: ./docs
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: lts/*
-  #     - run: npm ci
-  #     - run: VITE_ISOS_VERSION=${{ needs.version-check.outputs.version }} npm run build -- --base /isos/
-  #     - uses: actions/upload-pages-artifact@v3
-  #       with:
-  #         path: ./docs/dist
-  #     - id: deployment
-  #       uses: actions/deploy-pages@v4
+  publish-docs:
+    needs: [version-check, post-release]
+    if: needs.version-check.outputs.has-version-change == 'true'
+    runs-on: ubuntu-22.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: ./docs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: npm ci
+      - run: VITE_ISOS_VERSION=${{ needs.version-check.outputs.version }} npm run build -- --base /isos/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

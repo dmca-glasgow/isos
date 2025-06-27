@@ -1,0 +1,56 @@
+Title, author, ORCID link, date and abstract can optionally be displayed at the top of a document:
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{orcidlink}
+    \begin{document}
+    \title{My LaTeX Document}
+    \date{June 2025}
+    \author{Alison Carefully \orcidlink{0000-0002-1825-0097}}
+    \maketitle
+
+    \begin{abstract}
+    My abstract
+    \end{abstract}
+
+    \section{Introduction}
+
+    Paragraph
+
+    \end{document}
+
+`}
+/>
+
+For multiple authors, the `authblk` package can be used like so:
+
+<CodeSnippet
+  latex={String.raw`
+    \documentclass{article}
+    \usepackage{authblk}
+    \usepackage{orcidlink}
+    \begin{document}
+    \title{My LaTeX Document}
+
+    \author[1]{Alison Carefully \orcidlink{0000-0002-1825-0097}}
+    \author[2]{Ivor Question \orcidlink{0000-0002-1825-0097}}
+    \affil[1]{University of X}
+    \affil[2]{University of Y}
+
+    \begin{abstract}
+    My abstract
+    \end{abstract}
+
+    \section{Introduction}
+
+    Paragraph
+
+    \maketitle
+
+    \end{document}
+
+`}
+/>
+
+In the example above, you may notice `\maketitle` has not inserted the title below the section. In an effort for consistent structure to the document, the title, author and abstract are always placed at the top and the `\maketitle` macro is ignored.

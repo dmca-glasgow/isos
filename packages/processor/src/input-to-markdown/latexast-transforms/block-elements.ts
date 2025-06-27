@@ -46,6 +46,7 @@ function shouldGetParBreaks(node: Node | Argument) {
     isItemize(node) ||
     isFigure(node) ||
     isTable(node) ||
+    isCallout(node) ||
     isCenter(node)
   );
 }
@@ -72,6 +73,17 @@ function isCenter(node: Node | Argument) {
 
 function isTable(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'tabular';
+}
+
+const callouts = [
+  'notebox',
+  'tipbox',
+  'warningbox',
+  'cautionbox',
+  'importantbox',
+];
+function isCallout(node: Node | Argument) {
+  return node.type === 'macro' && callouts.includes(node.content);
 }
 
 function isParBreak(node?: Node) {

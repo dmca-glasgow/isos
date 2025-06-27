@@ -29,10 +29,12 @@ export function captionAttributeToAlt(markdown: string) {
       const match = line.match(/^!\[(.*)\]\((.+)\)`(.*)`(.*)/);
       if (match !== null) {
         const { caption, ...attrs } = parseAttr(match[3]).prop;
+        // console.log({ caption, attrs });
 
         // replace fig-alt with alt to support Pandoc implicit figures
         // https://github.com/jgm/pandoc/issues/10830
         // https://github.com/quarto-dev/quarto-cli/discussions/12731
+        // update: decided against this as other features need Quarto
         if ('fig-alt' in attrs) {
           attrs.alt = attrs['fig-alt'];
           delete attrs['fig-alt'];

@@ -2,11 +2,13 @@ import { Element, Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
+import { extractFootnoteDefinitions } from './extract-definitions';
 
 export function footNotesToSideNotes(ctx: Context) {
   return (tree: Root) => {
     // console.dir(tree, { depth: null });
-    // console.log(ctx);
+    // console.log(ctx.frontmatter);
+    // console.log(ctx.frontmatter.referenceLocation);
     if (ctx.frontmatter.referenceLocation !== 'margin') {
       return;
     }
@@ -22,7 +24,6 @@ export function footNotesToSideNotes(ctx: Context) {
         const refs = node.children.filter((o) => {
           return o.type === 'element' && o.tagName === 'sup';
         }) as Element[];
-
         const definitions: Element[] = [];
 
         refs.forEach((ref) => {
@@ -54,36 +55,18 @@ export function footNotesToSideNotes(ctx: Context) {
   };
 }
 
-function extractFootnoteDefinitions(tree: Root): Element[] | null {
-  let definitions: Element[] | null = null;
-  visit(tree, 'element', (node, idx, parent) => {
-    if (node.tagName === 'section') {
-      const { className } = node.properties;
-
-      if (Array.isArray(className) && className.includes('footnotes')) {
-        const ol = node.children[0] as Element;
-        definitions = ol.children as Element[];
-
-        // remove definitions section from tree
-        parent?.children.splice(idx || 0, 1);
-      }
-    }
-  });
-  return definitions;
-}
-
 function findFootnote(
   definitions: Element[],
   id: string,
 ): Element[] | null {
-  const def = definitions.find((o) => o.properties.id === `fn-${id}`);
-  if (!def) {
+  const idx = definitions.findIndex((o) => o.properties.id === `fn-${id}`);
+  if (idx === -1) {
     return null;
   }
-  return injectSupMarker(def.children as Element[], id);
+  return injectSupMarker(definitions[idx].children as Element[], id, idx);
 }
 
-function injectSupMarker(sideNotes: Element[], id: string) {
+function injectSupMarker(sideNotes: Element[], id: string, idx: number) {
   const firstP = sideNotes.find(
     (o) => o.type === 'element' && o.tagName === 'p',
   );
@@ -102,7 +85,7 @@ function injectSupMarker(sideNotes: Element[], id: string) {
           children: [
             {
               type: 'text',
-              value: id,
+              value: String(idx + 1),
             },
           ],
         },

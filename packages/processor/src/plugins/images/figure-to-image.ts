@@ -1,23 +1,36 @@
 import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
+import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 
-export function figureCaptionToImageTitle() {
+export function figureToImage() {
   return (tree: Ast.Root) => {
     // console.log('figureCaptionToImageTitle');
     // console.dir(tree, { depth: null });
     visit(tree, (node) => {
       if (node.type === 'environment' && node.env === 'figure') {
-        const caption = extractCaption(node);
+        const img = extractImage(node);
 
-        if (caption !== null) {
-          const img = extractImage(node);
+        if (img !== null) {
+          const args = img.args || [];
 
-          if (img !== null) {
+          const label = extractLabel(node);
+          if (label !== null) {
+            const text = extractText(label);
+            // console.log(text);
+            if (args[1]) {
+              args[1].content.push({
+                type: 'string',
+                content: `id="${text}"`,
+              });
+            }
+          }
+
+          const caption = extractCaption(node);
+          if (caption !== null) {
             const text = extractCaptionText(caption);
 
-            const args = img.args || [];
             // console.dir(args, { depth: null });
             if (args[1]) {
               args[1].content.push({
@@ -28,8 +41,26 @@ export function figureCaptionToImageTitle() {
           }
         }
       }
+
+      // console.dir(node, { depth: null });
     });
   };
+}
+
+function extractLabel(figure: Ast.Node): Ast.Macro | null {
+  let label = null;
+  visit(figure, (node, info) => {
+    if (node.type === 'macro' && node.content === 'label') {
+      label = node;
+
+      // remove caption
+      const parent = info.parents[0];
+      if (parent && parent.type === 'environment') {
+        parent.content.splice(info.index || 0, 1);
+      }
+    }
+  });
+  return label;
 }
 
 function extractCaption(figure: Ast.Node): Ast.Macro | null {
@@ -61,4 +92,9 @@ function extractImage(figure: Ast.Node): Ast.Macro | null {
 function extractCaptionText(caption: Ast.Macro) {
   const args = getArgsContent(caption);
   return convertToMarkdown(args[args.length - 1] || []).trim();
+}
+
+function extractText(caption: Ast.Macro) {
+  const args = getArgsContent(caption);
+  return printRaw(args[args.length - 1] || []).trim();
 }

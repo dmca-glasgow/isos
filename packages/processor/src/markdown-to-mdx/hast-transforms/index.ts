@@ -7,7 +7,7 @@ import { PluggableList } from 'unified';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
 import { footNotesToSideNotes } from '../../plugins/footnotes/footnotes-to-sidenotes';
-import { replaceFootnoteDefinitions } from '../../plugins/footnotes/replace-fn-definitions';
+import { replaceFootnoteRefDefs } from '../../plugins/footnotes/replace-ref-def';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
 import atReferenceToLink from '../../plugins/refs-and-counts/at-reference-to-link';
@@ -65,19 +65,20 @@ function createRehypeFragmentPlugins(
     addDefaultAltText,
     addMathsRefsAndCount,
     removeEmptyParagraphs,
-    replaceFootnoteDefinitions,
+
+    [replaceFootnoteRefDefs, ctx],
     [footNotesToSideNotes, ctx],
 
     // () => (tree: Root) => {
     //   console.dir(tree, { depth: null });
-    //   visit(tree, 'element', (node, idx, parent) => {
-    //     if (node.tagName === 'p' && node.children.length === 0) {
-    //       parent?.children.splice(idx || 0, 1);
-    //       // if (node.properties.alt === '') {
-    //       //   node.properties.alt = 'image';
-    //       // }
-    //     }
-    //   });
+    //   // visit(tree, 'element', (node, idx, parent) => {
+    //   //   if (node.tagName === 'p' && node.children.length === 0) {
+    //   //     parent?.children.splice(idx || 0, 1);
+    //   //     // if (node.properties.alt === '') {
+    //   //     //   node.properties.alt = 'image';
+    //   //     // }
+    //   //   }
+    //   // });
     // },
     // TODO:
     // [

@@ -171,6 +171,7 @@ function createAbstract(abstract: string): Element {
     tagName: 'aside',
     properties: {
       'aria-labelledby': 'h-abstract',
+      className: 'abstract',
     },
     children: [
       {

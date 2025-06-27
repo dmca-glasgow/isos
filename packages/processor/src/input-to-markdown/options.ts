@@ -7,6 +7,7 @@ import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
 import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
 import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
+import { createFigure } from '../plugins/images/create-figure';
 import {
   altToCaptionAttribute,
   captionAttributeToAlt,
@@ -122,8 +123,12 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
   return {
     environmentReplacements: {
       ...createTheoremHandlers(ctx),
+      // figure: ,
       minted: mintedToPre,
       description: descriptionToDl,
+    },
+    macroReplacements: {
+      includegraphics: createFigure,
     },
   };
 }

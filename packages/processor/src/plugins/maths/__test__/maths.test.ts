@@ -46,10 +46,8 @@ test('maths', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <section id="hello">
-      <h2><span class="count">1</span> Hello</h2>
-      <p class="maths"><code class="latex">x^{2} - 5 x + 6 = 0</code></p>
-    </section>
+    <h2 id="hello"><span class="count">1</span> Hello</h2>
+    <p class="maths"><code class="latex">x^{2} - 5 x + 6 = 0</code></p>
   `);
 
   expect(html).toBe(expectedHtml);
@@ -122,13 +120,11 @@ test('maths equations', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <section id="hello">
-      <h2><span class="count">1</span> Hello</h2>
-      <p id="eq-myref-1" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(1)</span></p>
-      <p class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(2)</span></p>
-      <p id="eq-myref-3" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(3)</span></p>
-      <p>Check out <a href="#eq-myref-1" class="ref">Equation 1</a> and <span class="error">?@eq-myref-2</span> and <a href="#eq-myref-3" class="ref">Equation 3</a>.</p>
-    </section>
+    <h2 id="hello"><span class="count">1</span> Hello</h2>
+    <p id="eq-myref-1" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(1)</span></p>
+    <p class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(2)</span></p>
+    <p id="eq-myref-3" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(3)</span></p>
+    <p>Check out <a href="#eq-myref-1" class="ref">Equation 1</a> and <span class="warn"><strong>unknown ref:</strong> <code>eq-myref-2</code></span> and <a href="#eq-myref-3" class="ref">Equation 3</a>.</p>
   `);
 
   expect(html).toBe(expectedHtml);

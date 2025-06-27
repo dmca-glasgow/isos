@@ -7,11 +7,12 @@ const pattern = /@([\w-]+)/g;
 
 export default function atReferenceToLink(ctx: Context) {
   return (tree: Root) => {
-    // console.log(ctx.refMap);
+    // console.log(ctx.frontmatter.refMap);
     findAndReplace(tree, [
       pattern,
       (_, ref) => {
         const reference = ctx.frontmatter.refMap[ref];
+        // console.log(reference);
         if (reference) {
           return createReferenceLink(reference);
         } else {
@@ -38,12 +39,32 @@ function createReferenceLink(reference: Reference): Element | null {
 }
 
 function createBrokenReferenceWarning(ref: string): Element | null {
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`unknown ref:`, ref);
+  }
   return {
     type: 'element',
     tagName: 'span',
     properties: {
-      class: 'error',
+      class: 'warn',
     },
-    children: [{ type: 'text', value: `?@${ref}` }],
+    children: [
+      {
+        type: 'element',
+        tagName: 'strong',
+        properties: {},
+        children: [{ type: 'text', value: `unknown ref:` }],
+      },
+      {
+        type: 'text',
+        value: ' ',
+      },
+      {
+        type: 'element',
+        tagName: 'code',
+        properties: {},
+        children: [{ type: 'text', value: ref }],
+      },
+    ],
   };
 }

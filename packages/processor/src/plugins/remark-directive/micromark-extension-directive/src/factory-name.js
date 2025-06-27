@@ -25,8 +25,8 @@ export function factoryName(effects, ok, nok, type) {
     if (
       code === codes.eof ||
       markdownLineEnding(code) ||
-      unicodePunctuation(code)
-      // || unicodeWhitespace(code) // DAVE MADE THIS CHANGE
+      unicodePunctuation(code) ||
+      (type !== 'directiveContainerName' && unicodeWhitespace(code)) // DAVE MADE THIS CHANGE
     ) {
       return nok(code);
     }

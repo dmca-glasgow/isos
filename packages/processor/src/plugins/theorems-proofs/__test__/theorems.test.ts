@@ -57,7 +57,7 @@ test('theorem', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 1</strong></span> An <code>example\\n</code> of <em>this</em>!</p>
+      <p><span class="title"><strong>Theorem 1.</strong></span> An <code>example\\n</code> of <em>this</em>!</p>
     </div>
   `);
 
@@ -97,7 +97,7 @@ test('theorem with name', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 1 (Pythagorean)</strong></span> Cras mattis.</p>
+      <p><span class="title"><strong>Theorem 1 (Pythagorean).</strong></span> Cras mattis.</p>
       <p>Cras justo odio.</p>
     </div>
   `);
@@ -171,7 +171,7 @@ test('theorem with id', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="definition theorem" id="thm-line">
-      <p><span class="title"><strong>Theorem 1 (Ho ha)</strong></span> Cras mattis.</p>
+      <p><span class="title"><strong>Theorem 1 (Ho ha).</strong></span> Cras mattis.</p>
       <p>Cras justo odio.</p>
     </div>
     <p>See <a href="#thm-line" class="ref">Theorem 1</a>.</p>
@@ -297,51 +297,53 @@ test('theorems with section counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 0.1</strong></span> Some text</p>
-    </div>
-    <div class="definition lemma" id="lem-1">
-      <p><span class="title"><strong>Lemma 0.2</strong></span> Some text</p>
-    </div>
+    <section>
+      <div class="definition theorem" id="thm-1">
+        <p><span class="title"><strong>Theorem 0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-1">
+        <p><span class="title"><strong>Lemma 0.2.</strong></span> Some text</p>
+      </div>
+    </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
       <div class="definition theorem" id="thm-2">
-        <p><span class="title"><strong>Theorem 1.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-2">
-        <p><span class="title"><strong>Lemma 1.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection">
-        <h3><span class="count">1.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-3">
-          <p><span class="title"><strong>Theorem 1.3</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-3">
-          <p><span class="title"><strong>Lemma 1.4</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection">
+      <h3><span class="count">1.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-3">
+        <p><span class="title"><strong>Theorem 1.3.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-3">
+        <p><span class="title"><strong>Lemma 1.4.</strong></span> Some text</p>
+      </div>
     </section>
     <section id="my-section-1">
       <h2><span class="count">2</span> My section</h2>
       <div class="definition theorem" id="thm-4">
-        <p><span class="title"><strong>Theorem 2.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 2.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-4">
-        <p><span class="title"><strong>Lemma 2.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 2.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection-1">
-        <h3><span class="count">2.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-5">
-          <p><span class="title"><strong>Theorem 2.3</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-5">
-          <p><span class="title"><strong>Lemma 2.4</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection-1">
+      <h3><span class="count">2.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-5">
+        <p><span class="title"><strong>Theorem 2.3.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-5">
+        <p><span class="title"><strong>Lemma 2.4.</strong></span> Some text</p>
+      </div>
     </section>
   `);
 
@@ -465,51 +467,53 @@ test('theorems with subsection counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 0.0.1</strong></span> Some text</p>
-    </div>
-    <div class="definition lemma" id="lem-1">
-      <p><span class="title"><strong>Lemma 0.0.2</strong></span> Some text</p>
-    </div>
+    <section>
+      <div class="definition theorem" id="thm-1">
+        <p><span class="title"><strong>Theorem 0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-1">
+        <p><span class="title"><strong>Lemma 0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
       <div class="definition theorem" id="thm-2">
-        <p><span class="title"><strong>Theorem 1.0.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 1.0.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-2">
-        <p><span class="title"><strong>Lemma 1.0.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 1.0.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection">
-        <h3><span class="count">1.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-3">
-          <p><span class="title"><strong>Theorem 1.1.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-3">
-          <p><span class="title"><strong>Lemma 1.1.2</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection">
+      <h3><span class="count">1.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-3">
+        <p><span class="title"><strong>Theorem 1.1.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-3">
+        <p><span class="title"><strong>Lemma 1.1.2.</strong></span> Some text</p>
+      </div>
     </section>
     <section id="my-section-1">
       <h2><span class="count">2</span> My section</h2>
       <div class="definition theorem" id="thm-4">
-        <p><span class="title"><strong>Theorem 2.0.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 2.0.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-4">
-        <p><span class="title"><strong>Lemma 2.0.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 2.0.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection-1">
-        <h3><span class="count">2.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-5">
-          <p><span class="title"><strong>Theorem 2.1.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-5">
-          <p><span class="title"><strong>Lemma 2.1.2</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection-1">
+      <h3><span class="count">2.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-5">
+        <p><span class="title"><strong>Theorem 2.1.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-5">
+        <p><span class="title"><strong>Lemma 2.1.2.</strong></span> Some text</p>
+      </div>
     </section>
   `);
 
@@ -633,51 +637,53 @@ test('theorems with subsubsection counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 0.0.0.1</strong></span> Some text</p>
-    </div>
-    <div class="definition lemma" id="lem-1">
-      <p><span class="title"><strong>Lemma 0.0.0.2</strong></span> Some text</p>
-    </div>
+    <section>
+      <div class="definition theorem" id="thm-1">
+        <p><span class="title"><strong>Theorem 0.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-1">
+        <p><span class="title"><strong>Lemma 0.0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
       <div class="definition theorem" id="thm-2">
-        <p><span class="title"><strong>Theorem 1.0.0.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 1.0.0.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-2">
-        <p><span class="title"><strong>Lemma 1.0.0.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 1.0.0.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection">
-        <h3><span class="count">1.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-3">
-          <p><span class="title"><strong>Theorem 1.1.0.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-3">
-          <p><span class="title"><strong>Lemma 1.1.0.2</strong></span> Some text</p>
-        </div>
-        <section id="my-subsubsection">
-          <h4><span class="count">1.1.1</span> My subsubsection</h4>
-          <div class="definition theorem" id="thm-4">
-            <p><span class="title"><strong>Theorem 1.1.1.1</strong></span> Some text</p>
-          </div>
-          <div class="definition lemma" id="lem-4">
-            <p><span class="title"><strong>Lemma 1.1.1.2</strong></span> Some text</p>
-          </div>
-        </section>
-      </section>
-      <section id="my-subsection-1">
-        <h3><span class="count">1.2</span> My subsection</h3>
-        <div class="definition theorem" id="thm-5">
-          <p><span class="title"><strong>Theorem 1.2.0.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-5">
-          <p><span class="title"><strong>Lemma 1.2.0.2</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection">
+      <h3><span class="count">1.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-3">
+        <p><span class="title"><strong>Theorem 1.1.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-3">
+        <p><span class="title"><strong>Lemma 1.1.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-subsubsection">
+      <h4><span class="count">1.1.1</span> My subsubsection</h4>
+      <div class="definition theorem" id="thm-4">
+        <p><span class="title"><strong>Theorem 1.1.1.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-4">
+        <p><span class="title"><strong>Lemma 1.1.1.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-subsection-1">
+      <h3><span class="count">1.2</span> My subsection</h3>
+      <div class="definition theorem" id="thm-5">
+        <p><span class="title"><strong>Theorem 1.2.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-5">
+        <p><span class="title"><strong>Lemma 1.2.0.2.</strong></span> Some text</p>
+      </div>
     </section>
   `);
 
@@ -801,51 +807,53 @@ test('theorems with paragraph counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 0.0.0.0.1</strong></span> Some text</p>
-    </div>
-    <div class="definition lemma" id="lem-1">
-      <p><span class="title"><strong>Lemma 0.0.0.0.2</strong></span> Some text</p>
-    </div>
+    <section>
+      <div class="definition theorem" id="thm-1">
+        <p><span class="title"><strong>Theorem 0.0.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-1">
+        <p><span class="title"><strong>Lemma 0.0.0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
       <div class="definition theorem" id="thm-2">
-        <p><span class="title"><strong>Theorem 1.0.0.0.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 1.0.0.0.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-2">
-        <p><span class="title"><strong>Lemma 1.0.0.0.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 1.0.0.0.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection">
-        <h3><span class="count">1.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-3">
-          <p><span class="title"><strong>Theorem 1.1.0.0.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-3">
-          <p><span class="title"><strong>Lemma 1.1.0.0.2</strong></span> Some text</p>
-        </div>
-        <section id="my-subsubsection">
-          <h4><span class="count">1.1.1</span> My subsubsection</h4>
-          <div class="definition theorem" id="thm-4">
-            <p><span class="title"><strong>Theorem 1.1.1.0.1</strong></span> Some text</p>
-          </div>
-          <div class="definition lemma" id="lem-4">
-            <p><span class="title"><strong>Lemma 1.1.1.0.2</strong></span> Some text</p>
-          </div>
-        </section>
-      </section>
-      <section id="my-subsection-1">
-        <h3><span class="count">1.2</span> My subsection</h3>
-        <div class="definition theorem" id="thm-5">
-          <p><span class="title"><strong>Theorem 1.2.0.0.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-5">
-          <p><span class="title"><strong>Lemma 1.2.0.0.2</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection">
+      <h3><span class="count">1.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-3">
+        <p><span class="title"><strong>Theorem 1.1.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-3">
+        <p><span class="title"><strong>Lemma 1.1.0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-subsubsection">
+      <h4><span class="count">1.1.1</span> My subsubsection</h4>
+      <div class="definition theorem" id="thm-4">
+        <p><span class="title"><strong>Theorem 1.1.1.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-4">
+        <p><span class="title"><strong>Lemma 1.1.1.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-subsection-1">
+      <h3><span class="count">1.2</span> My subsection</h3>
+      <div class="definition theorem" id="thm-5">
+        <p><span class="title"><strong>Theorem 1.2.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-5">
+        <p><span class="title"><strong>Lemma 1.2.0.0.2.</strong></span> Some text</p>
+      </div>
     </section>
   `);
 
@@ -984,60 +992,62 @@ test('theorems with subparagraph counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 0.0.0.0.0.1</strong></span> Some text</p>
-    </div>
-    <div class="definition lemma" id="lem-1">
-      <p><span class="title"><strong>Lemma 0.0.0.0.0.2</strong></span> Some text</p>
-    </div>
+    <section>
+      <div class="definition theorem" id="thm-1">
+        <p><span class="title"><strong>Theorem 0.0.0.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-1">
+        <p><span class="title"><strong>Lemma 0.0.0.0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
       <div class="definition theorem" id="thm-2">
-        <p><span class="title"><strong>Theorem 1.0.0.0.0.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 1.0.0.0.0.1.</strong></span> Some text</p>
       </div>
       <div class="definition lemma" id="lem-2">
-        <p><span class="title"><strong>Lemma 1.0.0.0.0.2</strong></span> Some text</p>
+        <p><span class="title"><strong>Lemma 1.0.0.0.0.2.</strong></span> Some text</p>
       </div>
-      <section id="my-subsection">
-        <h3><span class="count">1.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-3">
-          <p><span class="title"><strong>Theorem 1.1.0.0.0.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-3">
-          <p><span class="title"><strong>Lemma 1.1.0.0.0.2</strong></span> Some text</p>
-        </div>
-        <section id="my-subsubsection">
-          <h4><span class="count">1.1.1</span> My subsubsection</h4>
-          <div class="definition theorem" id="thm-4">
-            <p><span class="title"><strong>Theorem 1.1.1.0.0.1</strong></span> Some text</p>
-          </div>
-          <div class="definition lemma" id="lem-4">
-            <p><span class="title"><strong>Lemma 1.1.1.0.0.2</strong></span> Some text</p>
-          </div>
-          <section id="my-paragraph">
-            <h5>My paragraph</h5>
-            <div class="definition theorem" id="thm-5">
-              <p><span class="title"><strong>Theorem 1.1.1.1.0.1</strong></span> Some text</p>
-            </div>
-            <div class="definition lemma" id="lem-5">
-              <p><span class="title"><strong>Lemma 1.1.1.1.0.2</strong></span> Some text</p>
-            </div>
-            <section id="my-subparagraph">
-              <h6>My subparagraph</h6>
-              <div class="definition theorem" id="thm-6">
-                <p><span class="title"><strong>Theorem 1.1.1.1.1.1</strong></span> Some text</p>
-              </div>
-              <div class="definition lemma" id="lem-6">
-                <p><span class="title"><strong>Lemma 1.1.1.1.1.2</strong></span> Some text</p>
-              </div>
-            </section>
-          </section>
-        </section>
-      </section>
+    </section>
+    <section id="my-subsection">
+      <h3><span class="count">1.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-3">
+        <p><span class="title"><strong>Theorem 1.1.0.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-3">
+        <p><span class="title"><strong>Lemma 1.1.0.0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-subsubsection">
+      <h4><span class="count">1.1.1</span> My subsubsection</h4>
+      <div class="definition theorem" id="thm-4">
+        <p><span class="title"><strong>Theorem 1.1.1.0.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-4">
+        <p><span class="title"><strong>Lemma 1.1.1.0.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-paragraph">
+      <h5>My paragraph</h5>
+      <div class="definition theorem" id="thm-5">
+        <p><span class="title"><strong>Theorem 1.1.1.1.0.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-5">
+        <p><span class="title"><strong>Lemma 1.1.1.1.0.2.</strong></span> Some text</p>
+      </div>
+    </section>
+    <section id="my-subparagraph">
+      <h6>My subparagraph</h6>
+      <div class="definition theorem" id="thm-6">
+        <p><span class="title"><strong>Theorem 1.1.1.1.1.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-6">
+        <p><span class="title"><strong>Lemma 1.1.1.1.1.2.</strong></span> Some text</p>
+      </div>
     </section>
   `);
 
@@ -1204,60 +1214,60 @@ test('theorems with reference and section counters', async () => {
   // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
   // console.log(quartoHtml);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
-      <section id="my-subsection">
-        <h3><span class="count">1.1</span> My subsection</h3>
-        <div class="definition theorem" id="thm-1">
-          <p><span class="title"><strong>Theorem 1.1.1</strong></span> Some text</p>
-        </div>
-        <div class="definition lemma" id="lem-1">
-          <p><span class="title"><strong>Lemma 1.1</strong></span> Some text</p>
-        </div>
-        <div class="definition corollary" id="cor-1">
-          <p><span class="title"><strong>Corollary 1.1.2</strong></span> Some text</p>
-        </div>
-        <div class="definition proposition" id="prp-1">
-          <p><span class="title"><strong>Proposition 1.1.3</strong></span> Some text</p>
-        </div>
-        <div class="definition conjecture" id="cnj-1">
-          <p><span class="title"><strong>Conjecture 1.2</strong></span> Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection">
+      <h3><span class="count">1.1</span> My subsection</h3>
+      <div class="definition theorem" id="thm-1">
+        <p><span class="title"><strong>Theorem 1.1.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition lemma" id="lem-1">
+        <p><span class="title"><strong>Lemma 1.1.</strong></span> Some text</p>
+      </div>
+      <div class="definition corollary" id="cor-1">
+        <p><span class="title"><strong>Corollary 1.1.2.</strong></span> Some text</p>
+      </div>
+      <div class="definition proposition" id="prp-1">
+        <p><span class="title"><strong>Proposition 1.1.3.</strong></span> Some text</p>
+      </div>
+      <div class="definition conjecture" id="cnj-1">
+        <p><span class="title"><strong>Conjecture 1.2.</strong></span> Some text</p>
+      </div>
     </section>
     <section id="my-section-1">
       <h2>My section</h2>
       <div class="definition" id="def-1">
-        <p><span class="title"><strong>Definition 1</strong></span> Some text</p>
+        <p><span class="title"><strong>Definition 1.</strong></span> Some text</p>
       </div>
       <div class="definition example">
-        <p><span class="title"><strong>Example</strong></span> Some text</p>
+        <p><span class="title"><strong>Example.</strong></span> Some text</p>
       </div>
       <div class="definition exercise" id="exr-1">
-        <p><span class="title"><strong>Exercise 1.1.4</strong></span> Some text</p>
+        <p><span class="title"><strong>Exercise 1.1.4.</strong></span> Some text</p>
       </div>
       <div class="remark">
         <p><span class="title"><em>Remark</em>. </span>Some text</p>
       </div>
-      <section id="my-subsection-1">
-        <h3><span class="count">1.2</span> My subsection</h3>
-        <div class="remark solution" id="sol-1">
-          <p><span class="title"><em>Solution 1.3</em>. </span>Some text</p>
-        </div>
-        <div class="definition exercise" id="exr-2">
-          <p><span class="title"><strong>Exercise 1.2.1</strong></span> Some text</p>
-        </div>
-        <div class="remark proof">
-          <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed">◻</span></p>
-        </div>
-        <div class="remark solution" id="sol-2">
-          <p><span class="title"><em>Solution 1.4</em>. </span>Some text</p>
-        </div>
-      </section>
+    </section>
+    <section id="my-subsection-1">
+      <h3><span class="count">1.2</span> My subsection</h3>
+      <div class="remark solution" id="sol-1">
+        <p><span class="title"><em>Solution 1.3</em>. </span>Some text</p>
+      </div>
+      <div class="definition exercise" id="exr-2">
+        <p><span class="title"><strong>Exercise 1.2.1.</strong></span> Some text</p>
+      </div>
+      <div class="remark proof">
+        <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      </div>
+      <div class="remark solution" id="sol-2">
+        <p><span class="title"><em>Solution 1.4</em>. </span>Some text</p>
+      </div>
     </section>
   `);
 

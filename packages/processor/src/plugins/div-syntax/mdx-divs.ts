@@ -11,11 +11,15 @@ import { toHast } from 'mdast-util-to-hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
-import { RefObjectYaml } from '../refs-and-counts/default-objects';
+import {
+  RefObjectYaml,
+  defaultObjects,
+} from '../refs-and-counts/default-objects';
 import { defaultFloats } from './default-floats';
 
-export function divSyntax(ctx: Context) {
+export function divSyntax(_ctx: Context) {
   return (tree: Root) => {
+    const floats = defaultObjects.filter((o) => o.type === 'float');
     // console.dir(tree, { depth: null });
     visit(tree, 'containerDirective', (node) => {
       if (node.name === ' ') {
@@ -24,8 +28,10 @@ export function divSyntax(ctx: Context) {
           const [abbr] = id.split('-');
           const float = defaultFloats.find((o) => o.abbr === abbr);
           if (float) {
-            const ctxObj = ctx.frontmatter.theorems[float.name];
-            createFigure(node, float.name, ctxObj, id);
+            const ctxObj = floats.find((o) => o.name === float.name);
+            if (ctxObj) {
+              createFigure(node, float.name, ctxObj, id);
+            }
           }
         }
       }

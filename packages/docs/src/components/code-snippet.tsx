@@ -9,6 +9,7 @@ import {
   createInputToMarkdownOptions,
   createInputToMarkdownTestContext,
   createMdxState,
+  // embedIncludes,
   inputToMarkdown,
   markdownToArticle,
 } from '@isos/processor';
@@ -19,6 +20,8 @@ import { SyntaxHighlight } from './syntax-highlight';
 
 type Props = {
   latex: string;
+  withImages?: Record<string, string>;
+  withFiles?: Record<string, string>;
 };
 
 const mdxState = createMdxState();
@@ -32,7 +35,11 @@ export function CodeSnippet(props: Props) {
     (async () => {
       const prepared = unindentStringAndTrim(latex);
       const ctx = createInputToMarkdownTestContext('latex', prepared);
+      if (props.withImages) {
+        ctx.base64Images = props.withImages;
+      }
       const options = createInputToMarkdownOptions(ctx);
+      // await embedIncludes(ctx, options);
       setMarkdown(await inputToMarkdown(ctx.content, options));
     })();
   }, [latex]);
@@ -70,7 +77,9 @@ export function CodeSnippet(props: Props) {
             markdown={markdown}
             mdxState={mdxState}
             renderFn={markdownToArticle}
-            onError={(err) => console.log(err)}
+            onError={(err) => {
+              throw err;
+            }}
             // onRendered={onRendered}
           />
         </HTMLPreview>

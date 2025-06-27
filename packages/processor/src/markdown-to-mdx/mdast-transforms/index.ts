@@ -1,16 +1,16 @@
 import { PluggableList } from 'unified';
 
 import { createCallouts } from '../../plugins/callout/create-callouts';
-import { inlineCodeHighlight } from '../../plugins/code/inline-code-highlight';
+import { codeHighlight } from '../../plugins/code/code-highlight';
 import { cover } from '../../plugins/cover/cover';
 import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { footnoteReference } from '../../plugins/footnotes/footnote-reference';
-import { headingSections } from '../../plugins/headings/heading-sections';
 import { headings } from '../../plugins/headings/mdx-headings';
 import { imageAttributes } from '../../plugins/images/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
 import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
+import { headingSections } from '../../plugins/sections/heading-sections';
 import { tableCaptionToFigure } from '../../plugins/tables/table-caption-to-figure';
 import { theorems } from '../../plugins/theorems-proofs/mdx-theorems';
 import { warn } from '../../plugins/warn/warn';
@@ -32,6 +32,18 @@ export function createMdastTransforms(
   options: Pick<Options, 'noSections'>,
 ): PluggableList {
   const plugins: PluggableList = [
+    dashesToEndashEmdash,
+    codeHighlight,
+    imageAttributes,
+    pandocImplicitFigures,
+    mathMetaToId,
+    tableCaptionToFigure,
+    warn,
+    removeComments,
+    createCallouts,
+    htmlToWarn,
+    [divSyntax, ctx],
+    [footnoteReference, ctx],
     [headings, ctx], // headingSections depends on this
   ];
 
@@ -42,20 +54,7 @@ export function createMdastTransforms(
   plugins.push(
     [extractFrontmatter, ctx], // theorems depends on this
     [theorems, ctx],
-    [divSyntax, ctx],
     [cover, ctx],
-
-    dashesToEndashEmdash,
-    inlineCodeHighlight,
-    imageAttributes,
-    pandocImplicitFigures,
-    mathMetaToId,
-    tableCaptionToFigure,
-    footnoteReference,
-    warn,
-    removeComments,
-    createCallouts,
-    htmlToWarn,
 
     // fancyTitle,
     // [references, ctx],

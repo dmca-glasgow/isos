@@ -11,7 +11,7 @@ import { readTextFile } from '@isos/fs';
 
 import { Context } from '../input-to-markdown/context';
 import { Options } from '../input-to-markdown/options';
-import { getDataUrl, supportedExtensions } from './images-to-context';
+import { getDataUrl, supportedExtensions } from './inline-image';
 
 export async function embedLatexIncludes(ctx: Context, options: Options) {
   const ast = await getLatexAst(ctx.content, ctx, options);
@@ -26,6 +26,12 @@ export async function embedLatexIncludes(ctx: Context, options: Options) {
 
   ctx.content = String(processor.stringify(ast));
 }
+
+// TODO: rework this section to:
+// * first get all the included image paths recursively
+// * check those files exist
+// * allow for injection of test files using `withFiles`
+// * paste files into the document recursively
 
 async function getLatexAst(input: string, ctx: Context, options: Options) {
   const processor = unified()

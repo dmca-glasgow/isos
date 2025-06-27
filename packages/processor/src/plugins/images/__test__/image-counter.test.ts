@@ -75,14 +75,16 @@ test('image with counter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
     <section id="hi">
       <h2><span class="count">1</span> Hello</h2>
       <div class="plain theorem" id="thm-1">
-        <p><span class="title"><strong>Theorem 1.1</strong></span> Some text</p>
+        <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
       </div>
       <p><img src="image.pdf" alt="my alt text" /></p>
       <figure><img src="image.pdf" alt="my alt text" />

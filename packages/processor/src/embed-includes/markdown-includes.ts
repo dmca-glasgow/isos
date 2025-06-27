@@ -9,7 +9,7 @@ import { visit } from 'unist-util-visit';
 import { readTextFile } from '@isos/fs';
 
 import { Context } from '../input-to-markdown/context';
-import { getDataUrl, supportedExtensions } from './images-to-context';
+import { getDataUrl, supportedExtensions } from './inline-image';
 
 export async function embedMarkdownIncludes(ctx: Context) {
   // console.log('embedMarkdownIncludes');

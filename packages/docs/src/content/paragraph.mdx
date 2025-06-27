@@ -1,0 +1,53 @@
+Here are the supported text macros which don't require any configuration:
+
+<CodeSnippet latex={String.raw`
+Some \emph{italic text}.
+
+Alternative {\em italic text} syntax.
+
+Alternative \textit{italic text} syntax.
+
+Some \textbf{bold text}.
+
+Some \emph{\textbf{bold and italic text}}.
+
+Some\textsuperscript{superscript text}.
+
+Some\textsubscript{subscript text}.
+
+An endash: \textendash
+
+An emdash: \textemdash
+
+A url: \url{http://www.yahoo.com}
+
+A link: \href{http://www.yahoo.com}{Yahoo}
+`} />
+
+To strikethrough text, use the `ulem` package with the `normalem` option (which prevents overriding default `\em` and `\emph` behaviour):
+
+<CodeSnippet latex={String.raw`
+\documentclass{article}
+\usepackage[normalem]{ulem}
+\begin{document}
+
+Some \sout{strikethrough text}.
+
+\end{document}
+
+`} />
+
+To create a quote block use the package `csquotes`:
+
+<CodeSnippet latex={String.raw`
+\documentclass{article}
+\usepackage{csquotes}
+\begin{document}
+
+\begin{displayquote}
+My quote block.
+\end{displayquote}
+
+\end{document}
+
+`} />

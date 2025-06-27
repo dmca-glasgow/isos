@@ -13,6 +13,7 @@ import { MdxState } from './mdx-handlers/mdx-state';
 export type Options = {
   noWrapper: boolean;
   noSections: boolean;
+  noIcons: boolean;
   markdownStringTransforms: Array<(markdown: string) => string>;
   mdAstTransforms: PluggableList;
   htmlAstTransforms: PluggableList;
@@ -32,9 +33,11 @@ export function createDefaultOptions(
 ): Options {
   const noWrapper = opts?.noWrapper || false;
   const noSections = opts?.noSections || false;
+  const noIcons = opts?.noIcons || false;
   return {
     noWrapper,
     noSections,
+    noIcons,
     // markdownStringTransforms: [
     //   (str) => `${str}2`,
     //   (str) => `${str}.jpg`
@@ -46,7 +49,7 @@ export function createDefaultOptions(
     ],
     mdAstTransforms: createMdastTransforms(ctx, { noSections }),
     htmlAstTransforms: createRehypePlugins(ctx, { noWrapper }),
-    mdxArticleRunOptions: createRunOptions(mdxState),
+    mdxArticleRunOptions: createRunOptions(mdxState, { noIcons }),
     mdxTOCRunOptions: createSidebarRunOptions(mdxState),
   };
 }

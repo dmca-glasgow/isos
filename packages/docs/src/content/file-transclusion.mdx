@@ -1,0 +1,169 @@
+### With LaTeX
+
+To include other `.tex` files in your `.tex` file, the `\input` or `\include` macros are supported with recursion (included files can also include files, and so on). In ISOS, both macros behave similarly, where their content is simple "pasted" into the parent document at the position of the macro.
+
+For example, with the following files co-located, `other1.tex`:
+
+<SyntaxHighlight
+  language="latex"
+  code={String.raw`
+    \section{Other 1}
+
+    A paragraph from other1.tex.
+
+    Another paragraph from other1.tex.
+
+    \input{other2.tex}
+
+`}
+/>
+
+And `other2.tex`:
+
+<SyntaxHighlight
+  language="latex"
+  code={String.raw`
+    \section{Other 2}
+
+    A paragraph from other2.tex.
+
+`}
+/>
+
+Outputs:
+
+<MockCodeSnippet
+  latex={String.raw`
+  \documentclass{article}
+  \begin{document}
+
+\section{Hello}
+
+Here's my paragraph in article.tex
+
+\input{other1.tex}
+
+Here's my second paragraph in article.tex
+
+\end{document}
+
+`}
+result={`
+
+<article>
+<section id="hello">
+  <h2>
+    <span class="count">1</span> Hello
+  </h2>
+  <p>Here’s my paragraph in article.tex</p>
+</section>
+<section id="other-1">
+  <h2>
+    <span class="count">2</span> Other 1
+  </h2>
+  <p>A paragraph from other1.tex.</p>
+  <p>Another paragraph from other1.tex.</p>
+</section>
+<section id="other-2">
+  <h2>
+    <span class="count">3</span> Other 2
+  </h2>
+  <p>Text from other2.tex.</p>
+  <p>Here’s my second paragraph in article.tex</p>
+  <figure>
+    <img src="image.png" alt="My alt text" />
+    <figcaption>
+      <strong>Figure 1:</strong> My <strong>caption</strong> text
+    </figcaption>
+  </figure>
+</section>
+<article>
+`} />
+
+### With Markdown
+
+Similarly, you can include other files inside `.qmd` or `.md` files by using the macro `{{< include x >}}`.
+
+For example, with the following files co-located, `other1.qmd`:
+
+<SyntaxHighlight
+  language="md"
+  code={String.raw`
+    ## Other 1
+
+    A paragraph from other1.qmd.
+
+    Another paragraph from other1.qmd.
+
+    {{< include other2.qmd >}}
+
+`}
+/>
+
+`other2.qmd`:
+
+<SyntaxHighlight
+  language="md"
+  code={String.raw`
+    ## Other 2
+
+    Text from other2.qmd.
+
+`}
+/>
+
+And `demo.py`:
+
+<SyntaxHighlight
+  language="python"
+  code={String.raw`
+    # This program prints Hello, world!
+    print('Hello, world!')
+`}
+/>
+
+With the following output:
+
+<MockCodeSnippet
+  markdown={`
+
+## Hello
+
+Here's my paragraph in article.qmd
+
+{{< include other1.qmd >}}
+
+Here's my second paragraph in article.qmd
+
+\`\`\`python
+{{< include demo.py >}}
+\`\`\`
+
+`}
+result={`
+
+<article>
+<section id="hello">
+<h2>
+<span class="count">1</span> Hello
+</h2>
+<p>Here's my paragraph in article.qmd</p>
+</section>
+<section id="other-1">
+<h2>
+<span class="count">2</span> Other 1
+</h2>
+<p>A paragraph from other1.qmd.</p>
+<p>Another paragraph from other1.qmd.</p>
+</section>
+<section id="other-2">
+<h2>
+<span class="count">3</span> Other 2
+</h2>
+<p>Text from other2.qmd.</p>
+<p>Here's my second paragraph in article.qmd</p>
+<pre class="language-python" tabindex="0" style="text-align: left; white-space: pre; word-spacing: normal; word-break: normal; overflow-wrap: normal; color: rgb(238, 238, 238); background: rgb(47, 47, 47); font-family: &quot;Roboto Mono&quot;, monospace; font-size: 1em; line-height: 1.5em; tab-size: 4; hyphens: none; position: relative; padding: 1.25em 1em;"><span class="token token" style="color: rgb(97, 97, 97);"># This program prints Hello, world!</span><span>
+</span><span></span><span class="token token" style="color: rgb(199, 146, 234);">print</span><span class="token token" style="color: rgb(137, 221, 255);">(</span><span class="token token" style="color: rgb(165, 232, 68);">'Hello, world!'</span><span class="token token" style="color: rgb(137, 221, 255);">)</span></pre>
+</section>
+</article>
+`} />

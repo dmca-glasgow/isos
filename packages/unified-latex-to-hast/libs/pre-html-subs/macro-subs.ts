@@ -1,5 +1,4 @@
 import { xcolorMacroToHex } from '@unified-latex/unified-latex-ctan/package/xcolor';
-import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
@@ -209,36 +208,13 @@ export const macroReplacements: Record<
   noindent: () => ({ type: 'string', content: '' }),
   includegraphics: (node) => {
     const args = getArgsContent(node);
-
-    const attributes: Record<string, string> = {
-      src: printRaw(args[args.length - 1] || []),
-    };
-
-    const attrs = args.slice(0, -1).filter(Boolean).flat() as Ast.Node[];
-    // console.log(attrs);
-
-    if (
-      attrs[0] &&
-      attrs[0].type === 'string' &&
-      attrs[0].content === 'alt' &&
-      attrs[2].type === 'group'
-    ) {
-      attributes.alt = convertToMarkdown(attrs[2].content).trim();
-    }
-    const caption = attrs.find(
-      (o) => o.type === 'string' && o.content.startsWith('caption="'),
-    ) as Ast.String;
-
-    if (caption !== undefined) {
-      const titleMatch = caption.content.match(/caption="(.*?)"/);
-      if (titleMatch !== null) {
-        attributes.title = titleMatch[1].replace(/"/g, '\"').trim();
-      }
-    }
-
+    const src = printRaw(args[args.length - 1] || []);
     return htmlLike({
       tag: 'img',
-      attributes,
+      attributes: {
+        className: 'includegraphics',
+        src,
+      },
       content: [],
     });
   },

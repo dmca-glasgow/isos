@@ -80,8 +80,7 @@ test('minted to code', async () => {
   expect(html).toBe(
     unindentStringAndTrim(`
       <p>hi</p>
-      <pre><code class="language-csharp">hello
-      </code></pre>
+      <pre><code class="language-csharp">hello</code></pre>
       <p>yo</p>
     `),
   );

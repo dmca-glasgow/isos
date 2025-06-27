@@ -45,6 +45,7 @@ export function RenderMDX({
         onError('');
       } catch (err: any) {
         onError(err?.message || '');
+        // throw err;
       }
     })();
   }, [markdown]);

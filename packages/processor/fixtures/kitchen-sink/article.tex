@@ -1,0 +1,256 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{authblk}
+\usepackage{orcidlink}
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage{awesomebox}
+\usepackage{minted}
+\usepackage{snotez}
+
+% \setsidenotes{footnote=false}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[subparagraph]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}{Definition}
+\newtheorem{example}[definition]{Example}
+\newtheorem{exercise}[definition]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{solution}[definition]{Solution}
+\newtheorem{remark}[definition]{Remark}
+
+\begin{document}
+
+\title{A kitchen sink LaTeX Document}
+\date{May 2025}
+\author[1]{Alison Carefully \orcidlink{0000-0002-1825-0097}}
+\author[2]{Ivor Question \orcidlink{0000-0002-1825-0097}}
+\affil[1]{Department of Mathematics, University X}
+\affil[2]{Department of Biology, University Y}
+\maketitle
+
+\begin{abstract}
+Maecenas faucibus mollis interdum. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec sed odio dui. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+\end{abstract}
+
+\section{Heading 2}
+\subsection{Heading 3} \label{sec:bravo}
+\section*{Heading 2 (unnumbered)}
+\subsection{Heading 3}
+\subsubsection{Heading 4}
+\paragraph{Heading 5}
+\subparagraph{Heading 6}
+
+Refer to \cref{sec:bravo} for more information.
+
+Some \emph{italic text}.
+
+Alternative {\em italic text} syntax.
+
+Alternative \textit{italic text} syntax.
+
+Some \textbf{bold text}.
+
+Some \emph{\textbf{bold and italic text}}.
+
+Some\textsuperscript{superscript text}.
+
+Some\textsubscript{subscript text}.
+
+An endash: \textendash
+
+An emdash: \textemdash
+
+A url: \url{http://www.yahoo.com}
+
+A link: \href{http://www.yahoo.com}{Yahoo}
+
+Some \sout{strikethrough text}.
+
+\begin{displayquote}
+A quote block.
+\end{displayquote}
+
+Inline maths $x^2 - 5$ and display maths:
+
+$$
+x^2 - 5 x + 6 = 0
+$$
+
+Equations are numbered:
+
+\begin{equation}
+\label{eq:myref1}
+x^2 - 5 x + 6 = 0
+\end{equation}
+
+\begin{equation}
+x^2 - 5 x + 6 = 0
+\end{equation}
+
+Check out \autoref{eq:myref1} and \autoref{eq:myref2}.
+
+Unordered list:
+
+\begin{itemize}
+\item alpha
+\item bravo
+\item charlie
+\end{itemize}
+
+Ordered list:
+
+\begin{enumerate}
+\item alpha
+\item bravo
+\item charlie
+\end{enumerate}
+
+Description list:
+
+\begin{description}
+\item[alpha] bravo
+\item charlie
+\item[delta] foxtrot
+\end{description}
+
+An image:
+
+\includegraphics[alt={My alt text}]{logo.png}
+
+A figure:
+
+\begin{figure}[H]
+  \label{fig:logo}
+  \centering
+  \includegraphics[alt={My alt text}]{logo.png}
+  \caption{My \textbf{caption} text}
+\end{figure}
+
+Refer to \cref{fig:logo}.
+
+\begin{theorem} Some text \end{theorem}
+\begin{lemma} Some text \end{lemma}
+\begin{corollary} Some text \end{corollary}
+\begin{proposition} Some text \end{proposition}
+\begin{conjecture} Some text \end{conjecture}
+\begin{definition} Some text \end{definition}
+\begin{example} Some text \end{example}
+\begin{exercise} Some text \end{exercise}
+\begin{solution} Some text \end{solution}
+\begin{remark} Some text \end{remark}
+\begin{proof} Some text \end{proof}
+
+\begin{theorem} Some text \end{theorem}
+\begin{lemma} Some text \end{lemma}
+\begin{corollary} Some text \end{corollary}
+\begin{proposition} Some text \end{proposition}
+\begin{conjecture} Some text \end{conjecture}
+\begin{definition} Some text \end{definition}
+\begin{example} Some text \end{example}
+\begin{exercise} Some text \end{exercise}
+\begin{solution} Some text \end{solution}
+\begin{remark} Some text \end{remark}
+\begin{proof} Some text \end{proof}
+
+A small table:
+
+\begin{tabular}{lrr}
+  1 & 2 & 3 \\
+  Urban Clinic & 213 & 30 \\
+  Rural Clinic & 156 & 43 \\
+\end{tabular}
+
+A full width table:
+
+\begin{table}[H]
+  \caption{My \emph{example} table caption}
+  \begin{tabular}{lrr}
+    Area & Number of dogs inspected & Number of dogs with a flea infestation \\
+    Urban Clinic & 213 & 30 \\
+    Rural Clinic & 156 & 43 \\
+  \end{tabular}
+  \label{tbl:example}
+\end{table}
+
+See \autoref{tbl:example}.
+
+\notebox{I'm a \emph{note} callout box}
+\tipbox{I'm a \emph{tip} callout box}
+\warningbox{I'm a \emph{warning} callout box}
+\cautionbox{I'm a \emph{caution} callout box}
+\importantbox{I'm an \emph{important} callout box}
+
+An example of \verb|inline code|.
+
+A block of code:
+
+\begin{verbatim}
+code {
+  display: inline-block;
+  background: hsl(from #fff h s calc(l - 75));
+  font-family: monospace;
+  margin: 0 0.2em;
+}
+\end{verbatim}
+
+Inline syntax-highlighted code: \mintinline{javascript}{var i = 0;}.
+
+A block of syntax-highlighted code:
+
+\begin{minted}{css}
+code {
+  display: inline-block;
+  background: hsl(from #fff h s calc(l - 75));
+  font-family: monospace;
+  margin: 0 0.2em;
+}
+\end{minted}
+
+And inline footnote \footnote{
+  Text for \emph{footnote}.
+
+  Paragraphs are ok.
+}~and \footnote{Text for \emph{footnote}}.
+
+Block footnotes \footnotemark[3] and \footnotemark[4].
+
+Another paragraph.
+
+\footnotetext[3]{
+  Text for \emph{footnote}.
+
+  Paragraphs are ok.
+}
+
+\footnotetext[4]{
+  Text for \emph{footnote} 2.
+}
+
+Block footnotes with labels \footnotemark[alpha] and \footnotemark[bravo].
+
+Another paragraph.
+
+\footnotetext[alpha]{
+  Text for \emph{footnote}.
+
+  Paragraphs are ok.
+}
+
+\footnotetext[bravo]{
+  Text for \emph{footnote} 2.
+}
+
+\end{document}
