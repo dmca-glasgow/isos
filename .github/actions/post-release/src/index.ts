@@ -74,10 +74,13 @@ async function run() {
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
     const windowsInstaller = getAsset(assets, 'x64-setup.exe');
-    const linuxInstaller = getAsset(assets, 'amd64.AppImage');
+    const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
+    const linuxRpmInstaller = getAsset(assets, 'x86_64.rpm');
+    const linuxDebInstaller = getAsset(assets, 'amd64.deb');
 
     const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
     const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
+
     const updater = await getAssetTextContent(token, latestJsonAsset);
     renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
     renameUpdaterAsset(updater, 'darwin-x86_64', macIntelUpdaterName);
@@ -107,9 +110,19 @@ async function run() {
         label: `ISOS installer for Windows`,
       },
       {
-        id: linuxInstaller.id,
+        id: linuxAppImageInstaller.id,
         name: `isos_installer_nix_${version}_amd64.AppImage`,
-        label: `ISOS installer for Linux`,
+        label: `ISOS installer for Linux (AppImage)`,
+      },
+      {
+        id: linuxRpmInstaller.id,
+        name: `isos_installer_nix_${version}_x86_64.rpm`,
+        label: `ISOS installer for Linux (rpm)`,
+      },
+      {
+        id: linuxDebInstaller.id,
+        name: `isos_installer_nix_${version}_amd64.deb`,
+        label: `ISOS installer for Linux (deb)`,
       },
     ];
 

@@ -9,8 +9,14 @@ const macIntelInstallerName = `isos_installer_mac_${version}_x64.dmg`;
 const windowsInstallerLabel = `ISOS installer for Windows`;
 const windowsInstallerName = `isos_installer_win_${version}_x64-setup.exe`;
 
-const linuxInstallerLabel = `ISOS installer for Linux (cross-distribution AppImage)`;
-const linuxInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
+const linuxAppImageInstallerLabel = `ISOS installer for Linux (AppImage)`;
+const linuxAppImageInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
+
+const linuxRpmInstallerLabel = `ISOS installer for Linux (rpm)`;
+const linuxRpmInstallerName = `isos_installer_nix_${version}_x86_64.rpm`;
+
+const linuxDebInstallerLabel = `ISOS installer for Linux (deb)`;
+const linuxDebInstallerName = `isos_installer_nix_${version}_amd64.deb`;
 
 export function Downloads() {
   return (
@@ -31,8 +37,18 @@ export function Downloads() {
         </a>
       </li>
       <li>
-        <a href={createHref(linuxInstallerName, version)}>
-          {linuxInstallerLabel}
+        <a href={createHref(linuxAppImageInstallerName, version)}>
+          {linuxAppImageInstallerLabel}
+        </a>
+      </li>
+      <li>
+        <a href={createHref(linuxRpmInstallerName, version)}>
+          {linuxRpmInstallerLabel}
+        </a>
+      </li>
+      <li>
+        <a href={createHref(linuxDebInstallerName, version)}>
+          {linuxDebInstallerLabel}
         </a>
       </li>
     </ul>
