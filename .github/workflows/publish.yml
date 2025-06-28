@@ -148,8 +148,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - run: npm -w @isos/docs run ci
-      # - run: VITE_ISOS_VERSION=${{ needs.version-check.outputs.version }} npm run build -- --base /isos/
+      - run: npm -w @isos/docs ci
+      - run: npm run build -- --base /isos/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./packages/docs/dist
