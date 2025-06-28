@@ -9,8 +9,8 @@ const macIntelInstallerName = `isos_installer_mac_${version}_x64.dmg`;
 const windowsInstallerLabel = `ISOS installer for Windows`;
 const windowsInstallerName = `isos_installer_win_${version}_x64-setup.exe`;
 
-const linuxAppImageInstallerLabel = `ISOS installer for Linux (AppImage)`;
-const linuxAppImageInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
+// const linuxAppImageInstallerLabel = `ISOS installer for Linux (AppImage)`;
+// const linuxAppImageInstallerName = `isos_installer_nix_${version}_amd64.AppImage`;
 
 const linuxRpmInstallerLabel = `ISOS installer for Linux (rpm)`;
 const linuxRpmInstallerName = `isos_installer_nix_${version}_x86_64.rpm`;
@@ -36,11 +36,11 @@ export function Downloads() {
           {windowsInstallerLabel}
         </a>
       </li>
-      <li>
+      {/* <li>
         <a href={createHref(linuxAppImageInstallerName, version)}>
           {linuxAppImageInstallerLabel}
         </a>
-      </li>
+      </li> */}
       <li>
         <a href={createHref(linuxRpmInstallerName, version)}>
           {linuxRpmInstallerLabel}

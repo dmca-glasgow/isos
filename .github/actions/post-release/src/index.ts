@@ -74,7 +74,7 @@ async function run() {
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
     const windowsInstaller = getAsset(assets, 'x64-setup.exe');
-    const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
+    // const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
     const linuxRpmInstaller = getAsset(assets, 'x86_64.rpm');
     const linuxDebInstaller = getAsset(assets, 'amd64.deb');
 
@@ -109,11 +109,11 @@ async function run() {
         name: `isos_installer_win_${version}_x64-setup.exe`,
         label: `ISOS installer for Windows`,
       },
-      {
-        id: linuxAppImageInstaller.id,
-        name: `isos_installer_nix_${version}_amd64.AppImage`,
-        label: `ISOS installer for Linux (AppImage)`,
-      },
+      // {
+      //   id: linuxAppImageInstaller.id,
+      //   name: `isos_installer_nix_${version}_amd64.AppImage`,
+      //   label: `ISOS installer for Linux (AppImage)`,
+      // },
       {
         id: linuxRpmInstaller.id,
         name: `isos_installer_nix_${version}_x86_64.rpm`,
