@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -19,6 +19,9 @@
     "@babel/plugin-transform-react-jsx": "^7.23.4",
     "@babel/preset-env": "^7.26.8",
     "@babel/preset-typescript": "^7.26.0",
+    "@preact/preset-vite": "^2.10.1",
+    "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-commonjs": "^28.0.6",
     "@linaria/react": "^6.3.0",
     "@mdx-js/rollup": "^3.0.1",
     "@wyw-in-js/babel-preset": "^0.6.0",
