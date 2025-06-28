@@ -117,18 +117,18 @@ jobs:
   #         args: ${{ matrix.args }}
 
   # post-release:
-    needs: [create-release, build-tauri]
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - uses: ./.github/actions/post-release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
+  # needs: [create-release, build-tauri]
+  # runs-on: ubuntu-22.04
+  # steps:
+  #   - uses: actions/checkout@v4
+  #   - uses: actions/setup-node@v4
+  #     with:
+  #       node-version: lts/*
+  #   - uses: ./.github/actions/post-release
+  #     env:
+  #       GH_TOKEN: ${{ github.token }}
+  #       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  #       RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
 
   publish-docs:
     # needs: [version-check, post-release]
