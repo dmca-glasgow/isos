@@ -155,7 +155,7 @@ export const HTMLPreview = styled.div`
     }
   }
 
-  code {
+  code:not(.maths) {
     display: inline-block;
     background: hsl(from #fff h s calc(l - 75));
     font-family: monospace;
@@ -241,7 +241,7 @@ export const HTMLPreview = styled.div`
     background: hsl(from #fff h s calc(l - 80));
     border-left: 0.3em solid hsl(from #fff h s calc(l - 50));
 
-    code {
+    code:not(.maths) {
       display: block;
       background: none;
       padding: 1em;

@@ -24,6 +24,10 @@ body {
   margin: 0;
 }
 
+a {
+  color: coral;
+}
+
 #app {
   position: absolute;
   top: 55px;
@@ -60,6 +64,13 @@ body {
           list-style: none;
           padding-top: 0.6rem;
           pointer-events: auto;
+          a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: 0.2s color;
+            &:hover {
+              color: rgba(255, 255, 255, 1);
+            }
+          }
         }
       }
     }
@@ -134,7 +145,7 @@ pre {
   margin: 0;
 }
 
-code {
+code:not(.maths) {
   /* padding: 0.1em 0.5em; */
   /* background: rgba(255, 255, 255, 0.11); */
   border-radius: 0.3em;

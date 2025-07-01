@@ -1,6 +1,6 @@
 ### With LaTeX
 
-To include other `.tex` files in your `.tex` file, the `\input` or `\include` macros are supported with recursion (included files can also include files, and so on). In ISOS, both macros behave similarly, where their content is simple "pasted" into the parent document at the position of the macro.
+To include other `.tex` files in your `.tex` file, the `\input` or `\include` macros are supported with recursion (included files can also include files, and so on). In ISOS, both macros behave similarly, where their content is simply "pasted" into the parent document at the position of the macro.
 
 For example, with the following files co-located, `other1.tex`:
 
@@ -70,12 +70,6 @@ result={`
   </h2>
   <p>Text from other2.tex.</p>
   <p>Here’s my second paragraph in article.tex</p>
-  <figure>
-    <img src="image.png" alt="My alt text" />
-    <figcaption>
-      <strong>Figure 1:</strong> My <strong>caption</strong> text
-    </figcaption>
-  </figure>
 </section>
 <article>
 `} />

@@ -1,4 +1,5 @@
-const version = window.__ENV__.VITE_ISOS_VERSION;
+// const version = window.__ENV__.VITE_ISOS_VERSION;
+const version = '0.0.71';
 
 const macArmInstallerLabel = `ISOS installer for Mac (Apple Silicon)`;
 const macArmInstallerName = `isos_installer_mac_${version}_aarch64.dmg`;
