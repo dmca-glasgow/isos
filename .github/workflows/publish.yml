@@ -146,8 +146,8 @@ jobs:
         with:
           node-version: lts/*
       - run: npm install
-      - run: npm -w @isos/docsrun build -- --base /isos/
-      # - run: VITE_ISOS_VERSION=${{ needs.version-check.outputs.version }} npm -w @isos/docsrun build -- --base /isos/
+      - run: npm -w @isos/docs run build -- --base /isos/
+      # - run: VITE_ISOS_VERSION=${{ needs.version-check.outputs.version }} npm -w @isos/docs run build -- --base /isos/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./packages/docs/dist
