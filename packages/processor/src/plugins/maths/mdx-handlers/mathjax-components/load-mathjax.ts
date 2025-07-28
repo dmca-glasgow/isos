@@ -12,7 +12,7 @@ import { MathJaxTermesFont } from 'mathjax-termes-font/js/svg.js';
 import { MathJaxFiraFont } from 'mathjax-fira-font/js/svg.js';
 import { mathjax } from 'mathjax-full/js/mathjax.js';
 
-import { MathsFont } from '../Maths';
+import { MathsFont } from '../../mdx-state';
 import { loadPackages } from './packages';
 import { fonts } from './fonts';
 

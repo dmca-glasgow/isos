@@ -12,7 +12,7 @@ import { MathJaxFiraFont } from 'mathjax-fira-font/js/svg.js';
 import 'mathjax-fira-font/js/svg/dynamic/arrows.js';
 import 'mathjax-fira-font/js/svg/dynamic/double-struck.js';
 
-import { MathsFont } from '../Maths';
+import { MathsFont } from '../../mdx-state';
 
 type Output = OutputJax<HTMLElement, Text, Document>;
 

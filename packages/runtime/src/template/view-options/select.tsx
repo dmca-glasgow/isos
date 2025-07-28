@@ -1,5 +1,6 @@
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
+import { startCase } from 'lodash';
 
 type Props = {
   name: string;
@@ -9,17 +10,11 @@ type Props = {
   onChange: (value: string) => unknown;
 };
 
-export function ColourSelect({
-  name,
-  label,
-  value,
-  options,
-  onChange,
-}: Props) {
+export function Select({ name, label, value, options, onChange }: Props) {
   return (
-    <ColourSelectWrapper>
+    <SelectWrapper>
       <Label for={name}>{label}</Label>
-      <Select>
+      <StyledSelect>
         <select
           id={name}
           name={name}
@@ -28,15 +23,17 @@ export function ColourSelect({
             onChange(e.currentTarget.value);
           }}>
           {options.map((value) => (
-            <option key={value}>{value}</option>
+            <option key={value} value={value}>
+              {startCase(value)}
+            </option>
           ))}
         </select>
-      </Select>
-    </ColourSelectWrapper>
+      </StyledSelect>
+    </SelectWrapper>
   );
 }
 
-const ColourSelectWrapper = styled.div`
+const SelectWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -50,7 +47,7 @@ const Label = styled.label`
   flex: 0 0 auto;
 `;
 
-const Select = styled.div`
+const StyledSelect = styled.div`
   flex: 1;
   position: relative;
 

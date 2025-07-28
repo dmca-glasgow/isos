@@ -30,7 +30,7 @@ export async function embedLatexIncludes(ctx: Context, options: Options) {
 // TODO: rework this section to:
 // * first get all the included image paths recursively
 // * check those files exist
-// * allow for injection of test files using `withFiles`
+// * allow for injection of test files using `options.withFiles`
 // * paste files into the document recursively
 
 async function getLatexAst(input: string, ctx: Context, options: Options) {

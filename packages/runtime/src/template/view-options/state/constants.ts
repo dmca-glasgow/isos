@@ -73,3 +73,9 @@ export const colourOptions = Object.freeze([
   'Pink',
   'Orange',
 ]);
+
+export const ariaModes = Object.freeze([
+  'both',
+  'braille-only',
+  'speech-only',
+]);

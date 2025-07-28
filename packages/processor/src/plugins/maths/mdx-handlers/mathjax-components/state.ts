@@ -1,6 +1,6 @@
 import { createContext } from 'preact';
 
-import { MathsFont } from '../Maths';
+import { MathsFont } from '../../mdx-state';
 import { loadMathJax } from './load-mathjax';
 
 export type MathJaxComponentState = {

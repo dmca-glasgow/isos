@@ -1,24 +1,10 @@
-import { Signal } from '@preact/signals';
-
+import { MathsFormat, MathsState } from '../mdx-state';
 import { formatLaTeX, syntaxHighlight } from './latex';
-// import {
-//   MathJaxComponentsDisplay,
-//   // MathJaxComponentsInline,
-// } from './mathjax-components/MathJaxComponents';
-import { toMathJaxSvgString } from './mathjax-prerender';
-
-export type MathsFont = 'fira' | 'termes';
-export type MathsFormat = 'display' | 'inline';
-
-export type MathsOptions = {
-  mathsFontName: Signal<MathsFont>;
-  mathsAsTex: Signal<boolean>;
-  syntaxHighlight: Signal<boolean>;
-};
+import { MathJaxPrerender } from './mathjax-prerender';
 
 type Props = {
   expr: string;
-  options: MathsOptions;
+  options: MathsState;
   format: MathsFormat;
   asComponents?: boolean;
 };
@@ -33,13 +19,10 @@ export function Maths({
     const formatted = formatLaTeX(expr);
     if (options.syntaxHighlight.value) {
       return (
-        <MathsElement
-          className="latex"
-          html={syntaxHighlight(formatted)}
-        />
+        <CodeElement className="latex" html={syntaxHighlight(formatted)} />
       );
     } else {
-      return <MathsElement className="latex" html={formatted} />;
+      return <CodeElement className="latex" html={formatted} />;
     }
   }
 
@@ -54,10 +37,7 @@ export function Maths({
   // }
 
   return (
-    <MathsElement
-      className="maths"
-      html={toMathJaxSvgString(expr, options.mathsFontName.value)}
-    />
+    <MathJaxPrerender className="maths" expr={expr} options={options} />
   );
 }
 
@@ -66,7 +46,7 @@ type MathsProps = {
   html: string;
 };
 
-function MathsElement({ className, html }: MathsProps) {
+function CodeElement({ className, html }: MathsProps) {
   return (
     <code
       className={className}

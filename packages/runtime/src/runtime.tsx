@@ -46,7 +46,7 @@ const Main = styled.main`
   --transitionDuration: 0.15s;
 
   /* width: 200vw; */
-  /* min-height: 100%; */
+  height: 100%;
   display: flex;
   overflow: hidden;
 

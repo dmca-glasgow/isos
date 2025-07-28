@@ -2,13 +2,15 @@ import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
 import { useContext } from 'preact/hooks';
 
+import { MathsState, MathsStateType } from '@isos/processor';
+
 import { actions, rootEl } from '../../constants';
 import { mdxState } from '../../mdx-state';
 // import { MathsOptionsContext } from '@isos/processor';
 import { Checkbox } from './checkbox';
-import { ColourSelect } from './colour-select';
 import { DarkModeToggle } from './dark-mode-toggle';
 import { RangeInput } from './range-input';
+import { Select } from './select';
 import { ViewOptionsContext } from './state';
 import * as constants from './state/constants';
 import { useFullScreenHandle } from './use-fullscreen';
@@ -41,7 +43,7 @@ export function ViewOptions() {
           onInput={viewOptions.setBrightness}
         />
         {viewOptions.data.theme.value === 'dark' ? (
-          <ColourSelect
+          <Select
             name="textColor"
             label="Text Colour"
             value={viewOptions.data.textColor as Signal<string>}
@@ -49,7 +51,7 @@ export function ViewOptions() {
             onChange={viewOptions.setTextColor}
           />
         ) : (
-          <ColourSelect
+          <Select
             name="bgColor"
             label="Background"
             value={viewOptions.data.bgColor as Signal<string>}
@@ -103,7 +105,7 @@ export function ViewOptions() {
           onChange={(sansSerif) => {
             mdxState.maths.mathsFontName.value = sansSerif
               ? 'fira'
-              : 'termes';
+              : 'computerModern';
           }}
         />
         <Checkbox
@@ -111,6 +113,27 @@ export function ViewOptions() {
           value={mdxState.maths.mathsAsTex.value}
           onChange={(val: boolean) => {
             mdxState.maths.mathsAsTex.value = val;
+          }}
+        />
+        <Checkbox
+          label="Set Aria label to braille"
+          value={mdxState.maths.ariaMode.value === 'braille-only'}
+          onChange={(brailleOnly) => {
+            mdxState.maths.ariaMode.value = brailleOnly
+              ? 'braille-only'
+              : 'both';
+          }}
+        />
+        <Select
+          name="bgColor"
+          label="Braille locale"
+          value={
+            mdxState.maths.brailleLocale as MathsState['brailleLocale']
+          }
+          options={['nemeth', 'euro']}
+          onChange={(val: string) => {
+            mdxState.maths.brailleLocale.value =
+              val as MathsStateType['brailleLocale'];
           }}
         />
       </Fieldset>

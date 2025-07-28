@@ -21,7 +21,9 @@ export { RenderMDX } from './markdown-to-mdx/render-mdx';
 
 export type {
   MathsFont,
-  MathsOptions,
-} from './plugins/maths/mdx-handlers/Maths';
+  MathsFormat,
+  MathsStateType,
+  MathsState,
+} from './plugins/maths/mdx-state';
 
 export { embedIncludes } from './embed-includes';
