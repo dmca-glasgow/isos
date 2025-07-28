@@ -174,6 +174,8 @@ function spanHandler(
       className.includes('macro-maketitle') ||
       className.includes('macro-newpage') ||
       className.includes('macro-newline') ||
+      className.includes('macro-vfill') ||
+      className.includes('macro-pagebreak') ||
       className.includes('macro-tableofcontents')
     ) {
       return state.all(node);

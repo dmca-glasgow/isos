@@ -1,22 +1,23 @@
 import { styled } from '@linaria/react';
+import { RefCallback } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
-
-// import { RefCallback } from 'preact';
-// import { useCallback } from 'preact/hooks';
+import { useCallback } from 'preact/hooks';
 
 export function WarnSpan({
   children,
   ...props
 }: HTMLAttributes<HTMLSpanElement>) {
-  // console.log(props);
-  // const ref: RefCallback<HTMLSpanElement> = useCallback((element) => {
-  //   if (element !== null) {
-  //     const { y, height } = element.getBoundingClientRect();
-  //     console.log('hey!', { y, height });
-  //   }
-  // }, []);
-  // return <Warn {...props} ref={ref} />;
-  return <Warn {...props}>{children}</Warn>;
+  const ref: RefCallback<HTMLSpanElement> = useCallback((element) => {
+    if (element !== null) {
+      // const { y, height } = element.getBoundingClientRect();
+      // console.log('hey!', { y, height });
+    }
+  }, []);
+  return (
+    <Warn {...props} ref={ref}>
+      {children}
+    </Warn>
+  );
 }
 
 const Warn = styled.span`
