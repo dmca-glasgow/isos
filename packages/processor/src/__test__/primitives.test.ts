@@ -162,3 +162,17 @@ test('anchor href to link', async () => {
   const html = await testProcessor.md(markdown);
   expect(html).toBe('<p><a href="#yahoo">Yahoo</a></p>');
 });
+
+test('open and close single quotation marks', async () => {
+  const markdown = await testProcessor.latex("`obviously true'");
+  expect(markdown).toBe('‘obviously true’');
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe('<p>‘obviously true’</p>');
+});
+
+test('open and close double quotation marks', async () => {
+  const markdown = await testProcessor.latex("``obviously true''");
+  expect(markdown).toBe('“obviously true”');
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe('<p>“obviously true”</p>');
+});

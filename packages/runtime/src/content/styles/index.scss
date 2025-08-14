@@ -201,6 +201,45 @@ article {
     list-style-type: latex-style-ol;
   }
 
+  // dl {
+  //   display: grid;
+  //   grid-gap: 1em 0;
+  //   grid-template-columns: max-content;
+
+  //   dt {
+  //     width: 1.5em;
+  //     font-weight: bold;
+  //   }
+  //   dd {
+  //     text-indent: 1em;
+  //     margin: 0;
+  //     grid-column-start: 2;
+  //   }
+  // }
+
+  dl {
+    $marginLeft: 1.5em;
+    margin-left: $marginLeft;
+
+    dt, dd {
+      display: inline;
+    }
+    dt {
+      margin-left: -$marginLeft;
+      margin-right: 0.3em;
+      font-style: italic;
+    }
+
+    dd {
+      margin-left: 0;
+      &::after {
+        display: block;
+        margin-bottom: 1em;
+        content: ''
+      }
+    }
+  }
+
   table {
     margin: 0 auto;
     border-collapse: collapse;

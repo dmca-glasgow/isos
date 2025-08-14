@@ -7,7 +7,7 @@ import { visit } from 'unist-util-visit';
 
 import { getPdfJs } from './pdfjs';
 
-export async function pdfToSvg(data: Uint8Array<ArrayBuffer>) {
+export async function pdfToSvg(data: Uint8Array<ArrayBufferLike>) {
   const { SVGGraphics, getDocument } = await getPdfJs();
   const doc = await getDocument({
     data: new Uint8Array(data),

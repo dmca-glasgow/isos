@@ -32,10 +32,6 @@ const mmlDoc = mathjax.document('', {
     macros: {
       pounds: '\\textsterling',
     },
-    formatError(_jax: any, err: any) {
-      console.error('[mathjax document]:', err.message);
-      // process.exit(1);
-    },
   }),
 });
 

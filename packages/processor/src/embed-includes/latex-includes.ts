@@ -76,6 +76,7 @@ function embedIncludes(ctx: Context, options: Options) {
     for (const filePath of filePaths) {
       const content = await readFileContents(filePath);
       if (content !== null) {
+        // the recursive bit
         const ast = await getLatexAst(content, ctx, options);
         contents[filePath] = ast;
       }
