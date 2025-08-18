@@ -18,6 +18,7 @@ import {
   mathsMetaToPandocAttributes,
   pandocAttributesToMathsMeta,
 } from '../plugins/maths/formatted-maths';
+import { enumerateToOl } from '../plugins/ordered-list/enumberate-to-ol';
 import {
   codeToTableCaption,
   tableCaptionToCode,
@@ -135,6 +136,7 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
       // figure: ,
       minted: mintedToPre,
       description: descriptionToDl,
+      enumerate: enumerateToOl,
     },
     macroReplacements: {
       includegraphics: createFigure,
