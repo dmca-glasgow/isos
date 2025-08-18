@@ -7,14 +7,13 @@ import { Options } from './options';
 import { createTableOfContents } from './sidebar';
 
 export async function markdownToArticle(md: string, options: Options) {
-  // console.log(md);
   const markdown = markdownStringTransforms(
     md,
     options.markdownStringTransforms,
   );
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
-  // console.dir(mdAst, { depth: null });
+  // console.dir(transformed, { depth: null });
 
   const transformed = await mdAstProcessor.run(mdAst);
   // console.dir(transformed, { depth: null });
@@ -33,16 +32,17 @@ export async function markdownToArticle(md: string, options: Options) {
   return run(mdxString, options.mdxArticleRunOptions);
 }
 
-export async function markdownToTOC(markdown: string, _options: Options) {
-  const options = {
-    ..._options,
-    noSections: true,
-  };
+export async function markdownToTOC(md: string, options: Options) {
+  const markdown = markdownStringTransforms(
+    md,
+    options.markdownStringTransforms,
+  );
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
-  // console.dir(mdAst, { depth: null });
+
   const transformed = await mdAstProcessor.run(mdAst);
   // console.dir(transformed, { depth: null });
+
   const jsString = await createTableOfContents(transformed as Root);
 
   return run(jsString, options.mdxTOCRunOptions);

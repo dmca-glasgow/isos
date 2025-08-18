@@ -5,6 +5,7 @@ import { PluggableList } from 'unified';
 
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
+import { createFancySection } from '../plugins/fancy/fancy-section-to-section';
 import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
 import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
 import { createFigure } from '../plugins/images/create-figure';
@@ -81,7 +82,6 @@ export function createDefaultOptions(
           // sidenote: { signature: 'm' },
           // title: { signature: 'om' },
           // underline: { signature: 'm' },
-          // fancysection: { signature: 'm' },
           // exsheetnumber: { signature: 'm' },
           textsuperscript: { signature: 'm' },
           textsubscript: { signature: 'm' },
@@ -89,6 +89,7 @@ export function createDefaultOptions(
           mintinline: { signature: 'm m' },
           counterwithin: { signature: 'm m' },
           footnote: { signature: 'm' },
+          sidenote: { signature: 'm' },
           setsidenotes: { signature: 'm' },
 
           author: { signature: 'o m' },
@@ -100,6 +101,12 @@ export function createDefaultOptions(
           warningbox: { signature: 'm' },
           cautionbox: { signature: 'm' },
           importantbox: { signature: 'm' },
+
+          fancysection: {
+            signature: 'm',
+            renderInfo: { breakAround: true },
+          },
+          fancyboxed: { signature: 'm' },
         },
       },
       latexAstTransforms: createLatexastTransforms(ctx),

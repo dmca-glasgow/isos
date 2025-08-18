@@ -151,7 +151,7 @@ test('maths with \\pounds', async () => {
     state: {
       maths: {
         mathsAsTex: false,
-        mathsFontName: 'termes',
+        mathsFontName: 'computerModern',
         syntaxHighlight: false,
       },
     },

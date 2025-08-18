@@ -3,7 +3,7 @@ import { createElement } from 'preact';
 import renderToString from 'preact-render-to-string';
 import formatHtml from 'pretty';
 
-import { createMdxState, inputToMarkdown, markdownToArticle } from '..';
+import { createMdxState, inputToMarkdown } from '..';
 import { embedIncludes } from '../embed-includes';
 import {
   createContext,
@@ -13,6 +13,7 @@ import {
   Options,
   createDefaultOptions,
 } from '../input-to-markdown/options';
+import { markdownToArticle, markdownToTOC } from '../markdown-to-mdx';
 import { createContext as createHtmlContext } from '../markdown-to-mdx/context';
 import { MdxDefaultState } from '../markdown-to-mdx/mdx-handlers/mdx-state';
 import { Options as MarkdownToMdxOptions } from '../markdown-to-mdx/options';
@@ -23,6 +24,7 @@ export const testProcessor = {
   latex: latexToMarkdown,
   md: markdownToHtml,
   mdToMd: markdownToMarkdown,
+  mdToToc: markdownToTableOfContents,
   fixture: fixtureToMarkdown,
 };
 
@@ -73,6 +75,37 @@ async function markdownToHtml(
     ...options,
   });
   const component = await markdownToArticle(markdown, htmlOptions);
+  // @ts-expect-error
+  const element = createElement(component.default);
+  const str = renderToString(element);
+  return formatHtml(str);
+}
+
+async function markdownToTableOfContents(
+  md: string,
+  { state, ...options }: Partial<Opts> = {},
+) {
+  const prepared = unindentStringAndTrim(md);
+  const ctx = createTestContext('markdown', prepared);
+  const opts = createDefaultOptions(ctx, {
+    ...testOptions,
+    ...options,
+  });
+  const markdown = await inputToMarkdown(ctx.content, opts);
+  const mdxState = createMdxState();
+  const { mathsAsTex, syntaxHighlight } = state?.maths || {};
+
+  mdxState.maths.mathsAsTex.value =
+    mathsAsTex !== undefined ? mathsAsTex : true;
+  mdxState.maths.syntaxHighlight.value =
+    syntaxHighlight !== undefined ? syntaxHighlight : false;
+
+  const htmlCtx = createHtmlContext();
+  const htmlOptions = createHtmlOptions(mdxState, htmlCtx, {
+    ...testHtmlOptions,
+    ...options,
+  });
+  const component = await markdownToTOC(markdown, htmlOptions);
   // @ts-expect-error
   const element = createElement(component.default);
   const str = renderToString(element);

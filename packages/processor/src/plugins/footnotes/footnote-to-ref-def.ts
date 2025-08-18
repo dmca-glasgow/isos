@@ -6,7 +6,7 @@ export function footnoteToRefDef() {
     let count = 0;
     // console.dir(tree, { depth: null });
     visit(tree, 'textDirective', (node, idx, parent) => {
-      if (node.name === 'footnote') {
+      if (['footnote', 'sidenote'].includes(node.name)) {
         ++count;
 
         const reference: FootnoteReference = {

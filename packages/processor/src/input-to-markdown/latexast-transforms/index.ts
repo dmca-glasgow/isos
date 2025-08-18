@@ -2,6 +2,10 @@ import { PluggableList } from 'unified';
 
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
 import { extractTopMatter } from '../../plugins/cover/extract-top-matter';
+import {
+  fancyBoxedToSubSection,
+  fancySectionToSection,
+} from '../../plugins/fancy/fancy-section-to-section';
 import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
 import { figureToImage } from '../../plugins/images/figure-to-image';
 // import { inlineFilesFromContext } from '../../plugins/includes/inline-files-from-context';
@@ -34,5 +38,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     // [extractFancyTitle, ctx],
     insertParbreaksAroundBlockElements,
     tableCaptionToData,
+    fancySectionToSection,
+    fancyBoxedToSubSection,
   ];
 }

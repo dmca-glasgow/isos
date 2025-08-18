@@ -1,4 +1,4 @@
-import { Element, Root } from 'hast';
+import { Element, ElementContent, Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
@@ -19,82 +19,211 @@ export function footNotesToSideNotes(ctx: Context) {
       return;
     }
 
-    visit(tree, 'element', (node, idx, parent) => {
-      if (node.tagName === 'p') {
-        const refs = node.children.filter((o) => {
-          return o.type === 'element' && o.tagName === 'sup';
-        }) as Element[];
-        const definitions: Element[] = [];
+    visit(tree, 'element', (node) => {
+      if (node.type === 'element' && node.tagName === 'sup') {
+        const { className } = node.properties;
+        if (Array.isArray(className) && className.includes('fn-ref')) {
+          const a = node.children[0] as ElementContent;
 
-        refs.forEach((ref) => {
-          const { className } = ref.properties;
-          if (Array.isArray(className) && className.includes('fn-ref')) {
-            const a = ref.children[0] as Element;
+          if (a.type === 'element') {
             const href = String(a.properties.href || '');
             const id = href.replace(/^#fn-/, '');
-            const sideNotes = findFootnote(footnotes, id);
+            const { idx, definition } = findDefinition(footnotes, id);
 
-            if (sideNotes !== null) {
-              definitions.push({
+            if (definition !== null) {
+              const sideNote: ElementContent = {
                 type: 'element',
-                tagName: 'aside',
+                tagName: 'span',
                 properties: {
-                  className: ['inline-fn'],
-                  id: `fn-${id}`,
+                  className: ['sidenote'],
                 },
-                children: sideNotes,
-              });
+                children: [
+                  {
+                    type: 'element',
+                    tagName: 'sup',
+                    properties: {
+                      className: ['sidenote-count'],
+                    },
+                    children: [
+                      {
+                        type: 'element',
+                        tagName: 'a',
+                        properties: {
+                          id: `fn-${id}`,
+                          href: `#fn-ref-${id}`,
+                        },
+                        children: [
+                          {
+                            type: 'text',
+                            value: String(idx + 1),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: 'element',
+                    tagName: 'span',
+                    properties: {
+                      className: ['sidenote-label'],
+                    },
+                    children: [
+                      {
+                        type: 'text',
+                        value: ' (sidenote: ',
+                      },
+                    ],
+                  },
+                  {
+                    type: 'element',
+                    tagName: 'small',
+                    properties: {
+                      className: ['sidenote-content'],
+                    },
+                    children: [
+                      {
+                        type: 'element',
+                        tagName: 'sup',
+                        properties: {
+                          className: ['sidenote-count'],
+                        },
+                        children: [
+                          {
+                            type: 'element',
+                            tagName: 'a',
+                            properties: {
+                              id: `fn-ref${id}`,
+                              href: `#fn-${id}`,
+                            },
+                            children: [
+                              {
+                                type: 'text',
+                                value: String(idx + 1),
+                              },
+                            ],
+                          },
+                          {
+                            type: 'text',
+                            value: ' ',
+                          },
+                        ],
+                      },
+                      ...definition,
+                    ],
+                  },
+                  {
+                    type: 'element',
+                    tagName: 'span',
+                    properties: {
+                      className: ['sidenote-label'],
+                    },
+                    children: [
+                      {
+                        type: 'text',
+                        value: ')',
+                      },
+                    ],
+                  },
+                ],
+              };
+
+              Object.assign(node, sideNote);
             }
           }
-        });
-
-        const nextIdx = (idx || 0) + 1;
-        parent?.children.splice(nextIdx, 0, ...definitions);
+        }
       }
     });
   };
 }
 
-function findFootnote(
-  definitions: Element[],
-  id: string,
-): Element[] | null {
+// appends an aside after the paragraph the footnote is mentioned.
+// matches quarto margin notes (but with bug when used in list items).
+
+// visit(tree, 'element', (node, idx, parent) => {
+//   if (node.tagName === 'p') {
+//     const refs = node.children.filter((o) => {
+//       return o.type === 'element' && o.tagName === 'sup';
+//     }) as Element[];
+//     const definitions: Element[] = [];
+
+//     refs.forEach((ref) => {
+//       const { className } = ref.properties;
+//       if (Array.isArray(className) && className.includes('fn-ref')) {
+//         const a = ref.children[0] as Element;
+//         const href = String(a.properties.href || '');
+//         const id = href.replace(/^#fn-/, '');
+//         const sideNotes = findFootnote(footnotes, id);
+
+//         if (sideNotes !== null) {
+//           definitions.push({
+//             type: 'element',
+//             tagName: 'aside',
+//             properties: {
+//               className: ['inline-fn'],
+//               id: `fn-${id}`,
+//             },
+//             children: sideNotes,
+//           });
+//         }
+//       }
+//     });
+
+//     const nextIdx = (idx || 0) + 1;
+//     parent?.children.splice(nextIdx, 0, ...definitions);
+//   }
+// });
+
+type Footnote = {
+  idx: number;
+  definition: ElementContent[] | null;
+};
+
+function findDefinition(definitions: Element[], id: string): Footnote {
   const idx = definitions.findIndex((o) => o.properties.id === `fn-${id}`);
   if (idx === -1) {
-    return null;
+    return {
+      idx,
+      definition: null,
+    };
   }
-  return injectSupMarker(definitions[idx].children as Element[], id, idx);
+  let definition = definitions[idx].children;
+  definition = removeReturnArrow(definition);
+  definition = paragraphsToSpans(definition);
+  return { idx, definition };
 }
 
-function injectSupMarker(sideNotes: Element[], id: string, idx: number) {
-  const firstP = sideNotes.find(
+function paragraphsToSpans(contents: ElementContent[]) {
+  const paragraphs = contents.filter(
+    (o) => o.type === 'element' && o.tagName === 'p',
+  ) as Element[];
+
+  return paragraphs.reduce((acc: ElementContent[], o, idx) => {
+    o.tagName = 'span';
+
+    if (idx > 0) {
+      acc.push({
+        type: 'text',
+        value: ' ',
+      });
+    }
+
+    const last = o.children[o.children.length - 1];
+    if (last.type === 'text') {
+      last.value = last.value.trimEnd();
+    }
+
+    acc.push(o);
+    return acc;
+  }, []);
+  // console.log(contents);
+}
+
+function removeReturnArrow(sideNotes: ElementContent[]) {
+  const lastP = sideNotes.findLast(
     (o) => o.type === 'element' && o.tagName === 'p',
   );
-  firstP?.children.unshift(
-    {
-      type: 'element',
-      tagName: 'sup',
-      properties: {},
-      children: [
-        {
-          type: 'element',
-          tagName: 'a',
-          properties: {
-            href: `#fn-ref-${id}`,
-          },
-          children: [
-            {
-              type: 'text',
-              value: String(idx + 1),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'text',
-      value: ' ',
-    },
-  );
+  if (lastP && lastP.type === 'element') {
+    lastP.children = lastP.children.slice(0, -1);
+  }
   return sideNotes;
 }

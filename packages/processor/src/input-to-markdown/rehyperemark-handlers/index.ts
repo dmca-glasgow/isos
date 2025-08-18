@@ -182,16 +182,16 @@ function spanHandler(
     }
 
     // unhandled
-    const macroName = className.find((str) =>
-      String(str).startsWith('macro-'),
-    ) as string;
+    // const macroName = className.find((str) =>
+    //   String(str).startsWith('macro-'),
+    // ) as string;
 
-    if (macroName) {
-      const name = macroName.slice(6);
-      const result = createWarn(node, 'macro', name);
-      state.patch(node, result);
-      return result;
-    }
+    // if (macroName) {
+    //   const name = macroName.slice(6);
+    //   const result = createWarn(node, 'macro', name);
+    //   state.patch(node, result);
+    //   return result;
+    // }
   }
 
   return state.all(node);
@@ -218,9 +218,9 @@ function divHandler(ctx: Context, state: State, node: Element) {
       }
 
       // unhandled
-      const result = createWarn(node, 'theorem', theoremType);
-      state.patch(node, result);
-      return result;
+      // const result = createWarn(node, 'theorem', theoremType);
+      // state.patch(node, result);
+      // return result;
     }
 
     if (className.includes('environment')) {
@@ -251,9 +251,9 @@ function divHandler(ctx: Context, state: State, node: Element) {
       }
 
       // unhandled
-      const result = createWarn(node, 'environment', environmentName);
-      state.patch(node, result);
-      return result;
+      // const result = createWarn(node, 'environment', environmentName);
+      // state.patch(node, result);
+      // return result;
     }
   }
 
