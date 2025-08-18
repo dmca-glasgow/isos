@@ -7,6 +7,7 @@ import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { footnoteReference } from '../../plugins/footnotes/footnote-reference';
 import { headings } from '../../plugins/headings/mdx-headings';
+import { setHeadingCounterToDiv } from '../../plugins/headings/set-counter-directive-to-div';
 import { imageAttributes } from '../../plugins/images/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
 import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
@@ -42,6 +43,7 @@ export function createMdastTransforms(
     removeComments,
     createCallouts,
     htmlToWarn,
+    setHeadingCounterToDiv,
     [divSyntax, ctx],
     [footnoteReference, ctx],
     [headings, ctx], // headingSections depends on this

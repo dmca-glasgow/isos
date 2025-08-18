@@ -92,6 +92,8 @@ export function createDefaultOptions(
           sidenote: { signature: 'm' },
           setsidenotes: { signature: 'm' },
 
+          setcounter: { signature: 'm m' },
+
           author: { signature: 'o m' },
           affil: { signature: 'o m' },
           orcidlink: { signature: 'm' },

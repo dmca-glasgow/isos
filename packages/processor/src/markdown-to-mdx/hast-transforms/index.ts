@@ -68,18 +68,6 @@ function createRehypeFragmentPlugins(
 
     [replaceFootnoteRefDefs, ctx],
     [footNotesToSideNotes, ctx],
-
-    // () => (tree: Root) => {
-    //   console.dir(tree, { depth: null });
-    //   // visit(tree, 'element', (node, idx, parent) => {
-    //   //   if (node.tagName === 'p' && node.children.length === 0) {
-    //   //     parent?.children.splice(idx || 0, 1);
-    //   //     // if (node.properties.alt === '') {
-    //   //     //   node.properties.alt = 'image';
-    //   //     // }
-    //   //   }
-    //   // });
-    // },
     // TODO:
     // [
     // autolinkHeadings,
@@ -92,5 +80,9 @@ function createRehypeFragmentPlugins(
     // should be last
     [addCounts, ctx],
     [atReferenceToLink, ctx], // depends on addCounts
+
+    // () => (tree: Root) => {
+    //   console.dir(tree, { depth: null });
+    // },
   ];
 }

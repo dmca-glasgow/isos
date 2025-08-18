@@ -1,8 +1,9 @@
-import { RefObjectsYaml } from '../refs-and-counts/default-objects';
+// import { RefObjectsYaml } from '../refs-and-counts/default-objects';
 
 export type HeadingCounter = {
   get: (depth: number) => number;
   getCounts: (depth: number) => number[];
+  setCount: (depth: number, value: number) => void;
   increment: (depth: number) => void;
 };
 
@@ -16,9 +17,12 @@ export function createHeadingCounter(): HeadingCounter {
     getCounts(depth: number) {
       const counts = count.slice(1, depth);
 
-      // remove zero counts at the left side of the count
+      // remove zero counts from the left side
       const idx = counts.findIndex((n) => n !== 0);
       return idx > 0 ? counts.slice(idx) : counts;
+    },
+    setCount(depth: number, value: number) {
+      count[depth - 1] = value - 1;
     },
     increment(depth: number) {
       ++count[depth - 1];
@@ -35,7 +39,7 @@ export function formatCounts(counts: number[]) {
   return counts.join('.');
 }
 
-const headingDepths: Record<string, number> = {
+export const headingDepths: Record<string, number> = {
   title: 1,
   section: 2,
   subsection: 3,
@@ -44,38 +48,37 @@ const headingDepths: Record<string, number> = {
   subparagraph: 6,
 };
 
-// TODO: return TheoremCounter instead of error?
-export function getHeadingDepth(
-  theorems: RefObjectsYaml,
-  name: string,
-): number {
-  // console.log(theorems, name);
-  const environment = theorems[name];
-  if (environment === undefined) {
-    throw new Error(`thereom not found: ${name}`);
-  }
+// export function getHeadingDepth(
+//   theorems: RefObjectsYaml,
+//   name: string,
+// ): number {
+//   // console.log(theorems, name);
+//   const environment = theorems[name];
+//   if (environment === undefined) {
+//     throw new Error(`thereom not found: ${name}`);
+//   }
 
-  function findParentHeading(name: string) {
-    const environment = theorems[name];
-    if (environment.numberWithin) {
-      return environment.numberWithin;
-    }
-    if (environment.referenceCounter) {
-      return findParentHeading(environment.referenceCounter);
-    }
-    throw new Error(
-      `thereom parent \`numberWithin\` not found for: ${name}`,
-    );
-  }
+//   function findParentHeading(name: string) {
+//     const environment = theorems[name];
+//     if (environment.numberWithin) {
+//       return environment.numberWithin;
+//     }
+//     if (environment.referenceCounter) {
+//       return findParentHeading(environment.referenceCounter);
+//     }
+//     throw new Error(
+//       `thereom parent \`numberWithin\` not found for: ${name}`,
+//     );
+//   }
 
-  const parentHeading = findParentHeading(name);
+//   const parentHeading = findParentHeading(name);
 
-  // console.log(parentHeading, theorems);
+//   // console.log(parentHeading, theorems);
 
-  const parentDepth = headingDepths[parentHeading];
-  if (parentDepth === undefined) {
-    throw new Error(`thereom \`numberWithin\` not found: ${name}`);
-  }
+//   const parentDepth = headingDepths[parentHeading];
+//   if (parentDepth === undefined) {
+//     throw new Error(`thereom \`numberWithin\` not found: ${name}`);
+//   }
 
-  return parentDepth + 1;
-}
+//   return parentDepth + 1;
+// }

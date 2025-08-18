@@ -43,33 +43,37 @@ test('itemize to ul', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('enumerate to ol', async () => {
-  const markdown = await testProcessor.latex(String.raw`
+test('enumerate to ol with setcounter', async () => {
+  const latex = String.raw`
     Let.
     \begin{enumerate}
+    \setcounter{enumi}{7}
     \item one
     \item two
     \end{enumerate}
     me.
-  `);
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
     Let.
 
-    1. one
+    8. one
 
-    2. two
+    9. two
 
     me.
   `);
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(expectedMarkdown);
+  // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
     <p>Let.</p>
-    <ol>
+    <ol start="8">
       <li>
         <p>one</p>
       </li>

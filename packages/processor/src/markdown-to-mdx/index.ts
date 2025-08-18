@@ -13,7 +13,7 @@ export async function markdownToArticle(md: string, options: Options) {
   );
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
-  // console.dir(transformed, { depth: null });
+  // console.dir(mdAst, { depth: null });
 
   const transformed = await mdAstProcessor.run(mdAst);
   // console.dir(transformed, { depth: null });

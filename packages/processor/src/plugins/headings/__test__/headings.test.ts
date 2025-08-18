@@ -191,3 +191,51 @@ test('headings with counters and attributes', async () => {
 
   expect(html).toBe(expected);
 });
+
+test('headings with setcounter', async () => {
+  const latex = String.raw`
+    \section{Alpha}
+    \section{Bravo}
+    \section{Charlie}
+    \section{Delta}
+    \setcounter{section}{8}
+    \section{Charlie}
+    \section{Delta}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ## Alpha
+
+    ## Bravo
+
+    ## Charlie
+
+    ## Delta
+
+    ::set-counter{name="section" value="8"}
+
+    ## Charlie
+
+    ## Delta
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expected = unindentStringAndTrim(`
+    <h2 id="alpha"><span class="count">1</span> Alpha</h2>
+    <h2 id="bravo"><span class="count">2</span> Bravo</h2>
+    <h2 id="charlie"><span class="count">3</span> Charlie</h2>
+    <h2 id="delta"><span class="count">4</span> Delta</h2>
+
+    <h2 id="charlie-1"><span class="count">8</span> Charlie</h2>
+    <h2 id="delta-1"><span class="count">9</span> Delta</h2>
+  `);
+
+  expect(html).toBe(expected);
+});

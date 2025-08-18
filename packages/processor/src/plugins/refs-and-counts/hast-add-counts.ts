@@ -2,7 +2,10 @@ import { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
-import { createHeadingCounter } from '../headings/heading-counter';
+import {
+  createHeadingCounter,
+  headingDepths,
+} from '../headings/heading-counter';
 import { latexSectionToDepth } from '../headings/section-to-heading';
 import { createTheoremCounter } from '../theorems-proofs/theorem-counter';
 import { formatCount } from './format-count';
@@ -20,7 +23,33 @@ export function addCounts(ctx: Context) {
 
     // console.dir(tree, { depth: null });
 
-    visit(tree, 'element', (node, idx, parent) => {
+    visit(tree, 'element', (node, idx = 0, parent) => {
+      // set counter
+      if (node.tagName === 'div') {
+        const className = node.properties.className;
+        if (Array.isArray(className) && className[0] === 'set-counter') {
+          const name = String(node.properties['data-name'] || '');
+          const isHeading = [
+            'title',
+            'section',
+            'subsection',
+            'subsubsection',
+            'paragraph',
+            'subparagraph',
+          ].includes(name);
+
+          if (isHeading) {
+            const value = node.properties['data-value'];
+            headingCounter.setCount(headingDepths[name], Number(value));
+
+            // remove div
+            if (parent) {
+              parent.children.splice(idx, 1);
+            }
+          }
+        }
+      }
+
       if (node.tagName === 'span') {
         const className = node.properties.className;
 

@@ -14,12 +14,13 @@ import {
 } from '../../plugins/footnotes/footnote';
 // import { createFramed } from './framed';
 import { createHeadings } from '../../plugins/headings/headings';
+import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
 import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
-import { createWarn } from '../../plugins/warn/mdast-warn';
+// import { createWarn } from '../../plugins/warn/mdast-warn';
 import { Context } from '../context';
 // import { createFancySection, createFancyTitle } from './fancy';
 import { createLabel } from './label';
@@ -146,6 +147,12 @@ function spanHandler(
       })
     ) {
       const result = createCallout(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-setcounter')) {
+      const result = createSetCounter(state, node);
       state.patch(node, result);
       return result;
     }

@@ -12,5 +12,10 @@ export function createHastTransforms(_ctx: Context): PluggableList {
     mintInlineToCode,
     figureToP,
     tablePropertiesToTextDirective,
+    // () => {
+    //   return (tree) => {
+    //     console.dir(tree, { depth: null });
+    //   };
+    // },
   ];
 }
