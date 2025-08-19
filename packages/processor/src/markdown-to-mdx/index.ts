@@ -7,16 +7,8 @@ import { Options } from './options';
 import { createTableOfContents } from './sidebar';
 
 export async function markdownToArticle(md: string, options: Options) {
-  const markdown = markdownStringTransforms(
-    md,
-    options.markdownStringTransforms,
-  );
-  const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
-  const mdAst = mdAstProcessor.parse(markdown);
+  const mdAst = await getMdAst(md, options);
   // console.dir(mdAst, { depth: null });
-
-  const transformed = await mdAstProcessor.run(mdAst);
-  // console.dir(transformed, { depth: null });
 
   const mdxProcessor = createProcessor({
     ...processorOptions,
@@ -24,28 +16,34 @@ export async function markdownToArticle(md: string, options: Options) {
   });
 
   // @ts-expect-error: mdAst is not of type Program
-  const esAst = await mdxProcessor.run(transformed);
-  // console.dir(esAst, {depth: null})
-
+  const esAst = await mdxProcessor.run(mdAst);
   const mdxString = mdxProcessor.stringify(esAst);
-
   return run(mdxString, options.mdxArticleRunOptions);
 }
 
 export async function markdownToTOC(md: string, options: Options) {
+  const mdAst = await getMdAst(md, options);
+  // console.dir(mdAst, { depth: null });
+
+  const toc = await createTableOfContents(mdAst as Root);
+  // console.dir(toc, { depth: null });
+
+  const mdxProcessor = createProcessor(processorOptions);
+
+  // @ts-expect-error: toc is not of type Program
+  const esAst = await mdxProcessor.run(toc);
+  const mdxString = mdxProcessor.stringify(esAst);
+  return run(mdxString, options.mdxTOCRunOptions);
+}
+
+async function getMdAst(md: string, options: Options) {
   const markdown = markdownStringTransforms(
     md,
     options.markdownStringTransforms,
   );
   const mdAstProcessor = createRemarkProcessor(options.mdAstTransforms);
   const mdAst = mdAstProcessor.parse(markdown);
-
-  const transformed = await mdAstProcessor.run(mdAst);
-  // console.dir(transformed, { depth: null });
-
-  const jsString = await createTableOfContents(transformed as Root);
-
-  return run(jsString, options.mdxTOCRunOptions);
+  return mdAstProcessor.run(mdAst);
 }
 
 function markdownStringTransforms(

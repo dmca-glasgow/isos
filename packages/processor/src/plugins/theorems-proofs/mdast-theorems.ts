@@ -1,10 +1,11 @@
 import { ElementContent, Properties, Text } from 'hast';
-import { PhrasingContent, Root } from 'mdast';
+import { Parent, PhrasingContent, Root } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { toHast } from 'mdast-util-to-hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../remark-processor';
 import { Theorem } from './default-theorems';
 
 export function theorems(ctx: Context) {
@@ -19,6 +20,7 @@ export function theorems(ctx: Context) {
     const theoremArr = refArr.filter((o) => o.type === 'theorem');
 
     visit(tree, 'containerDirective', (node) => {
+      // Pandoc divs
       if (node.name === ' ') {
         const id = node.attributes?.id;
         if (id) {
@@ -128,13 +130,28 @@ function createTitle(
   ];
 
   if (name) {
-    result.push({
-      type: 'text',
-      value: ` (${name})`,
-    });
+    result.push(
+      {
+        type: 'text',
+        value: ' (',
+      },
+      ...getNameAst(name),
+      {
+        type: 'text',
+        value: ')',
+      },
+    );
   }
 
   return result;
+}
+
+function getNameAst(name: string) {
+  const processor = createRemarkProcessor();
+  const parsed = processor.parse(String(name));
+  const transformed = processor.runSync(parsed) as Parent;
+  const firstChild = transformed.children[0] as Parent;
+  return firstChild.children as PhrasingContent[];
 }
 
 function createTitleElements(theorem: Theorem, label: PhrasingContent[]) {

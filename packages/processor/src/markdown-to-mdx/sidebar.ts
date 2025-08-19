@@ -1,33 +1,26 @@
-import { createProcessor } from '@mdx-js/mdx';
-import { ListItem, Nodes, Paragraph, Root } from 'mdast';
+import { List, ListItem, Nodes, Paragraph, Root } from 'mdast';
 import { toc } from 'mdast-util-toc';
 
-import { processorOptions } from './hast-transforms';
-
-export async function createTableOfContents(mdast: Root) {
+export function createTableOfContents(mdast: Root) {
   const { map: tocMdast } = toc(mdast as Nodes, {
     maxDepth: 3,
     minDepth: 2,
     tight: true,
   });
 
-  if (tocMdast === undefined) {
-    return '';
-  }
-
-  const list = inlineList(tocMdast.children || []);
-  // console.log(list);
-
-  const processor = createProcessor(processorOptions);
-
-  const estree = await processor.run({
-    // @ts-expect-error: mdast is not of type Program
+  const result: List = {
     type: 'list',
     ordered: true,
-    children: list,
-  });
+    children: [],
+  };
 
-  return processor.stringify(estree);
+  if (tocMdast === undefined) {
+    console.log('[table of contents]: not generated');
+  } else {
+    result.children = inlineList(tocMdast.children || []);
+  }
+
+  return result;
 }
 
 function inlineList(list: ListItem[]) {

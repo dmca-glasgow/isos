@@ -105,6 +105,41 @@ test('theorem with name', async () => {
   expect(html).toBe(expectedHtml);
 });
 
+test('theorem with math in the name', async () => {
+  const latex = unindentStringAndTrim(String.raw`
+    \theoremstyle{definition}
+    \newtheorem{theorem}{Theorem}
+    \newcommand{\R}{\mathbb{R}}
+    \begin{document}
+    \begin{theorem}[Order for $ \R $]
+    a
+    \end{theorem}
+    \end{document}
+  `);
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {#thm-1 name="Order for $\\mathbb{R}$"}
+    a
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <div class="definition theorem" id="thm-1">
+      <p><span class="title"><strong>Theorem 1 (Order for <code class="latex">\\mathbb{R}</code>).</strong></span> a</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
 test('theorem with id', async () => {
   const latex = unindentStringAndTrim(String.raw`
     \documentclass{article}
