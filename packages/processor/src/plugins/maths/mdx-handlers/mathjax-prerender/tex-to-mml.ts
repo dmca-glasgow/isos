@@ -26,16 +26,22 @@ const packages = [
   'textcomp',
 ];
 
+const tex = new TeX({
+  packages,
+  macros: {
+    pounds: '\\textsterling',
+  },
+});
+
 const mmlDoc = mathjax.document('', {
-  InputJax: new TeX({
-    packages,
-    macros: {
-      pounds: '\\textsterling',
-    },
-  }),
+  InputJax: tex,
 });
 
 export function texToMml(latex: string) {
+  // https://docs.mathjax.org/en/latest/advanced/typeset.html
+  // multiply-defined labels
+  tex.reset();
+
   const mmlNode = mmlDoc.convert(latex, { end: STATE.CONVERT });
   return visitor.visitTree(mmlNode);
 }

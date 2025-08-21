@@ -5,6 +5,7 @@ import { endashEmdashToDashes } from '../../plugins/endash-emdash';
 import { figureToP } from '../../plugins/images/figure-to-p';
 import { tablePropertiesToTextDirective } from '../../plugins/tables/table-properties-to-directive';
 import { Context } from '../context';
+import { removeCenterEnv } from './remove-centre-env';
 
 export function createHastTransforms(_ctx: Context): PluggableList {
   return [
@@ -12,6 +13,7 @@ export function createHastTransforms(_ctx: Context): PluggableList {
     mintInlineToCode,
     figureToP,
     tablePropertiesToTextDirective,
+    removeCenterEnv,
     // () => {
     //   return (tree) => {
     //     console.dir(tree, { depth: null });

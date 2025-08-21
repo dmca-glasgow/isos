@@ -133,6 +133,53 @@ test('maths equations', async () => {
   // console.log(quartoHtml);
 });
 
+test.only('maths equations bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsmath}
+    \usepackage{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+    \begin{document}
+
+    \begin{equation}\label{S1}
+    \exists M \in \R \st \forall x \in S, x \leq M.
+    \end{equation}
+
+    \begin{equation}\label{S2}
+    \forall x \in S, \exists M \in \R, x \leq M
+    \end{equation}
+
+    In particular (\cref{S2}) will be true no matter what the subset $ S \subseteq \R $ is.
+    The key difference between (\cref{S1}) and (\cref{S2}) is that in (\cref{S2}) the value of $ M $ is allowed to depend on $ x $ as $ M $ is
+    specified after $ x $ in the statement; whereas in (\cref{S1}) the value of $ M $ must be specified first, and for the statement to be
+    true, this value of $ M $ must be greater than or equal to every element of $ S $. You may find it helpful to record the possible
+    dependence of $ M $ on $ x $ in (\cref{S2}) explicitly and write this statement as
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  console.log(markdown);
+
+  // const expectedMarkdown = unindentStringAndTrim(String.raw`
+
+  // `);
+
+  // expect(markdown).toBe(expectedMarkdown);
+
+  // const html = await testProcessor.md(markdown);
+  // // console.log(html);
+
+  // const expectedHtml = unindentStringAndTrim(String.raw`
+
+  // `);
+
+  // expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
+
 test('maths with \\pounds', async () => {
   const latex = String.raw`
     i.e.  $\pounds 1$ wins

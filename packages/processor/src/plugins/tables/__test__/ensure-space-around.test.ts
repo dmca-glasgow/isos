@@ -36,14 +36,10 @@ test('tables', async () => {
     ::: {#thm-1}
     Hi.
 
-
-
     | Date gilt matures | Coupon |       Price      |
     | :---------------: | :----: | :--------------: |
     | 7th December 2028 |  $6\%$ | $\pounds 120.66$ |
     |   7th June 2021   |  $8\%$ | $\pounds 134.70$ |
-
-
 
     Hello.
     :::
@@ -87,4 +83,85 @@ test('tables', async () => {
 
   // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
   // console.log(quartoHtml);
+});
+
+test('table syntax bug', async () => {
+  const latex = String.raw`
+    \begin{theorem}
+    has truth table
+    \begin{center}
+    \begin{tabular}{c|c|c}
+    $ P $ & $ Q $ & $ P \implies Q $ \\
+    \hline
+    T & T & T \\
+    T & F & F \\
+    F & T & T \\
+    F & F & T
+    \end{tabular}.
+    \end{center}
+    \end{theorem}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {#thm-1}
+    has truth table
+
+    | $P$ | $Q$ | $P \\implies Q$ |
+    | :-: | :-: | :------------: |
+    |  T  |  T  |        T       |
+    |  T  |  F  |        F       |
+    |  F  |  T  |        T       |
+    |  F  |  F  |        T       |
+
+    .
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(expectedMarkdown);
+  // console.log(html);
+
+  const expected = unindentStringAndTrim(`
+    <div class="definition theorem" id="thm-1">
+      <p><span class="title"><strong>Theorem 1.</strong></span> has truth table</p>
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:center;"><code class="latex">P</code></th>
+            <th style="text-align:center;"><code class="latex">Q</code></th>
+            <th style="text-align:center;"><code class="latex">P \\implies Q</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:center;">T</td>
+            <td style="text-align:center;">T</td>
+            <td style="text-align:center;">T</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">T</td>
+            <td style="text-align:center;">F</td>
+            <td style="text-align:center;">F</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">F</td>
+            <td style="text-align:center;">T</td>
+            <td style="text-align:center;">T</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">F</td>
+            <td style="text-align:center;">F</td>
+            <td style="text-align:center;">T</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>.</p>
+    </div>
+  `);
+
+  expect(html).toBe(expected);
 });

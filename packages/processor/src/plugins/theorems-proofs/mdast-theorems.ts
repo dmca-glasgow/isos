@@ -102,12 +102,16 @@ function createTitle(
   id?: string,
 ) {
   if (theoremName === 'proof') {
-    return [
-      {
-        type: 'text',
-        value: name || theorem.heading || '',
-      },
-    ] as PhrasingContent[];
+    if (name) {
+      return getNameAst(name);
+    } else {
+      return [
+        {
+          type: 'text',
+          value: name || theorem.heading || '',
+        },
+      ] as PhrasingContent[];
+    }
   }
 
   const result: PhrasingContent[] = [

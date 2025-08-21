@@ -16,24 +16,32 @@ export function insertParbreaksAroundBlockElements() {
       if (shouldGetParBreaks(node)) {
         const parent = (info.parents[0] || {}) as Root;
         const children = parent.content || [];
+
         parent.content = children.reduce((acc: Node[], child, idx) => {
-          if (
-            idx > 0 &&
-            shouldGetParBreaks(child) &&
-            !isParBreak(children[idx - 1])
-          ) {
-            acc.push(parBreak, parBreak);
+          if (shouldGetParBreaks(child)) {
+            acc.push(parBreak, child, parBreak);
+          } else {
+            acc.push(child);
           }
-          acc.push(child);
-          if (
-            idx < children.length - 1 &&
-            shouldGetParBreaks(child) &&
-            !isParBreak(children[idx + 1])
-          ) {
-            acc.push(parBreak, parBreak);
-          }
+          // if (
+          //   idx > 0 &&
+          //   shouldGetParBreaks(child) &&
+          //   !isParBreak(children[idx - 1])
+          // ) {
+          //   acc.push(parBreak, parBreak);
+          // }
+          // acc.push(child);
+          // if (
+          //   idx < children.length - 1 &&
+          //   shouldGetParBreaks(child) &&
+          //   !isParBreak(children[idx + 1])
+          // ) {
+          //   acc.push(parBreak, parBreak);
+          // }
           return acc;
         }, []);
+
+        // console.log(parent.content);
       }
     });
   };
@@ -46,8 +54,7 @@ function shouldGetParBreaks(node: Node | Argument) {
     isItemize(node) ||
     isFigure(node) ||
     isTable(node) ||
-    isCallout(node) ||
-    isCenter(node)
+    isCallout(node)
   );
 }
 
