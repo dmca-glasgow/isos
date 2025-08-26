@@ -1,5 +1,6 @@
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
+import classNames from 'classnames';
 import { useContext } from 'preact/hooks';
 
 import { MathsState, MathsStateType } from '@isos/processor';
@@ -20,12 +21,15 @@ export function ViewOptions() {
   // const mathsOptions = useContext(MathsOptionsContext);
   const handle = useFullScreenHandle(rootEl);
 
-  if (viewOptions.data.showViewOptions.value === false) {
-    return null;
-  }
+  // if (viewOptions.data.showViewOptions.value === false) {
+  //   return null;
+  // }
 
   return (
-    <ViewOptionsForm>
+    <ViewOptionsForm
+      className={classNames({
+        show: viewOptions.data.showViewOptions.value,
+      })}>
       <Fieldset>
         <Legend>Theme</Legend>
         <DarkModeToggle
@@ -141,7 +145,12 @@ export function ViewOptions() {
   );
 }
 
-const ViewOptionsForm = styled.form``;
+const ViewOptionsForm = styled.form`
+  display: none;
+  &.show {
+    display: block;
+  }
+`;
 
 const Fieldset = styled.fieldset`
   padding: 0 0.75em 0 ${actions.x};

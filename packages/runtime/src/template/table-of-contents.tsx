@@ -1,4 +1,5 @@
 import { styled } from '@linaria/react';
+import classNames from 'classnames';
 import { useContext, useState } from 'preact/hooks';
 
 import { RenderMDX, markdownToTOC } from '@isos/processor';
@@ -15,48 +16,32 @@ export function TableOfContents({ markdown }: Props) {
   const { data } = useContext(ViewOptionsContext);
   const [error, setError] = useState('');
 
-  if (data.showViewOptions.value === true) {
-    return null;
-  }
-
   return (
-    <>
+    <TableOfContentsWrapper
+      className={classNames({ show: !data.showViewOptions.value })}>
       {error && (
         <Error>
           <span>Error:</span> {error}
         </Error>
       )}
-      <TableOfContentsWrapper>
-        <RenderMDX
-          markdown={markdown}
-          mdxState={mdxState}
-          renderFn={markdownToTOC}
-          onError={setError}
-          options={{ noSections: true }}
-        />
-      </TableOfContentsWrapper>
-    </>
+      <RenderMDX
+        markdown={markdown}
+        mdxState={mdxState}
+        renderFn={markdownToTOC}
+        onError={setError}
+        options={{ noSections: true }}
+      />
+    </TableOfContentsWrapper>
   );
 }
 
-const Error = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-
-  font-size: 0.6rem;
-  color: white;
-  background: #b41b1b;
-  padding: 0 0.6rem;
-  box-sizing: border-box;
-
-  & > span {
-    font-weight: bold;
-  }
-`;
-
 const TableOfContentsWrapper = styled.div`
+  position: relative;
+  display: none;
+  &.show {
+    display: block;
+  }
+
   ol {
     margin: 0;
     padding: 0 calc(0.7em - ${scrollbarSize}) 2em 0.7em;
@@ -168,6 +153,23 @@ const TableOfContentsWrapper = styled.div`
     a {
       text-decoration: none;
     }
+  }
+`;
+
+const Error = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  font-size: 0.6rem;
+  color: white;
+  background: #b41b1b;
+  padding: 0 0.6rem;
+  box-sizing: border-box;
+
+  & > span {
+    font-weight: bold;
   }
 `;
 

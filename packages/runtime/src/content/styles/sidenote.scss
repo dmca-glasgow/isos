@@ -10,14 +10,17 @@
 
   .sidenote-label {
     display: none;
+    // display: inline-block;
+    // text-indent: -9999px;
   }
 
   .sidenote-content {
     float: right;
     clear: right;
     margin-bottom: 1.8em;
+    line-height: 1.5;
 
-    span:not(:first-of-type) {
+    & > span:not(:first-of-type) {
       display: inline-block;
       margin-top: 1em;
     }

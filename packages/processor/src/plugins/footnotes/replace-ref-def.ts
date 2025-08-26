@@ -23,7 +23,7 @@ export function replaceFootnoteRefDefs(ctx: Context) {
           // those identifiers can be added to the global refMap
           if (!/^\d+$/.test(ref)) {
             ctx.frontmatter.refMap[ref] = {
-              id: ref,
+              id: `fn-ref-${ref}`,
               label: `Sidenote ${idx + 1}`,
             };
           }

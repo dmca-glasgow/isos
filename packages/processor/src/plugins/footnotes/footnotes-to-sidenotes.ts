@@ -92,7 +92,7 @@ export function footNotesToSideNotes(ctx: Context) {
                             type: 'element',
                             tagName: 'a',
                             properties: {
-                              id: `fn-ref${id}`,
+                              id: `fn-ref-${id}`,
                               href: `#fn-${id}`,
                             },
                             children: [

@@ -18,7 +18,7 @@ export type ViewOptions = {
 
 export type ViewOptionsState = {
   data: SignalState<ViewOptions>;
-  toggleSidebar: () => unknown;
+  setShowSidebar: (show: boolean) => unknown;
   setShowViewOptions: (show: boolean) => unknown;
   setTheme: (theme: 'light' | 'dark') => unknown;
   setTextColor: (textColor: string) => unknown;
@@ -53,8 +53,8 @@ export function createViewOptionsState(
   const data = createStateSignals(initial);
   return {
     data,
-    toggleSidebar() {
-      data.showSidebar.value = !data.showSidebar.value;
+    setShowSidebar(show: boolean) {
+      data.showSidebar.value = show;
     },
     setShowViewOptions(show: boolean) {
       data.showViewOptions.value = show;

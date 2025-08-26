@@ -1,5 +1,5 @@
 import { styled } from '@linaria/react';
-import { useContext } from 'preact/hooks';
+import { useContext, useEffect, useRef } from 'preact/hooks';
 
 import { actions, sidebarWidth } from '../constants';
 import { scrollbarOnHover } from '../scrollbars';
@@ -14,26 +14,55 @@ type Props = {
 };
 
 export function Template({ markdown }: Props) {
-  const { data, toggleSidebar } = useContext(ViewOptionsContext);
+  const { data, setShowSidebar } = useContext(ViewOptionsContext);
+  const ref = useRef<HTMLDivElement>();
+
+  useEffect(() => {
+    function escapeKeyToClose(e: KeyboardEvent) {
+      if (data.showSidebar.value) {
+        if (e.key === 'Escape') {
+          setShowSidebar(false);
+        }
+      }
+    }
+    function clickOutsideToClose(e: MouseEvent) {
+      if (data.showSidebar.value) {
+        if (ref.current && !ref.current.contains(e.target as Element)) {
+          setShowSidebar(false);
+        }
+      }
+    }
+    window.addEventListener('keydown', escapeKeyToClose);
+    document.addEventListener('mousedown', clickOutsideToClose);
+    return () => {
+      window.removeEventListener('keydown', escapeKeyToClose);
+      document.removeEventListener('mousedown', clickOutsideToClose);
+    };
+  }, [data.showSidebar.value]);
 
   return (
     <>
       <ActionsTopLeft>
         <HamburgerButton
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
-          aria-controls="sidebar"
-          aria-expanded={data.showSidebar.value}>
+          onClick={() => setShowSidebar(true)}
+          aria-label="Show sidebar"
+          aria-controls="sidebar">
           <Hamburger />
         </HamburgerButton>
       </ActionsTopLeft>
 
       {/* <ActionsTopRight><DarkModeToggle /></ActionsTopRight> */}
 
-      <Sidebar id="sidebar">
-        <ActionsTopRight>
+      <Sidebar id="sidebar" ref={ref}>
+        <SidebarTop>
+          <HamburgerButton
+            onClick={() => setShowSidebar(false)}
+            aria-label="Hide sidebar"
+            aria-controls="sidebar">
+            <Hamburger />
+          </HamburgerButton>
           <Menu />
-        </ActionsTopRight>
+        </SidebarTop>
         <View>
           <TableOfContents markdown={markdown} />
           <ViewOptions />
@@ -48,15 +77,14 @@ const ActionsTopLeft = styled.div`
   top: ${actions.y};
   left: ${actions.x};
   height: ${actions.height};
-  z-index: 1;
 `;
 
-const ActionsTopRight = styled.div`
-  position: absolute;
-  top: ${actions.y};
-  right: ${actions.x};
-  height: ${actions.height};
-`;
+// const ActionsTopRight = styled.div`
+//   position: absolute;
+//   top: ${actions.y};
+//   right: ${actions.x};
+//   height: ${actions.height};
+// `;
 
 const HamburgerButton = styled.button`
   margin: 0;
@@ -76,23 +104,31 @@ const HamburgerButton = styled.button`
   svg {
     fill: var(--textColor);
   }
+
+  #sidebar & {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const Sidebar = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
   width: ${sidebarWidth};
   height: 100%;
   margin-left: -${sidebarWidth};
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: var(--sidebarBg);
+  transition: margin-left var(--transitionDuration);
 
   ${scrollbarOnHover('var(--textColor)', 'var(--sidebarBg)')};
 
-  @media (prefers-reduced-motion: no-preference) {
-    transition: margin-left var(--transitionDuration);
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 
   #root.sidebar-show & {
@@ -100,6 +136,14 @@ const Sidebar = styled.div`
   }
 `;
 
+const SidebarTop = styled.div`
+  padding: ${actions.y} ${actions.x};
+  height: ${actions.height};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const View = styled.div`
-  padding-top: 4.5em;
+  margin-top: 0.75em;
 `;

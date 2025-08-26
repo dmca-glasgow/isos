@@ -1,26 +1,38 @@
 @use '../../styles/fonts.scss' as fonts;
 
-pre:has(code.latex) {
-  text-wrap-mode: wrap;
-  margin-bottom: 1.5em;
+p.maths {
+  &:has(code.latex) {
+    text-wrap-mode: wrap;
+    margin-bottom: 1.5em;
+    text-align: left;
+  }
+  code.latex {
+    display: block;
+  }
 }
 
-pre code.latex {
-  display: block;
+code:not(.maths) {
+  display: inline-block;
+  @include fonts.monospace-slab;
+  background: hsl(from var(--textColor) h s calc(l - 75));
+  // font-size: 0.9em;
+  padding: 0 0.4em;
+  border-radius: 0.3em;
+  // margin: 0 0.2em;
 }
 
 code.latex {
-  @include fonts.monospace-slab;
   font-weight: bold;
-  font-size: 0.8em;
+  // font-size: 0.8em;
+  // line-height: 1;
   font-style: normal;
-  display: inline-block;
-  background: #444;
-  color: #ccc;
-  padding: 0.1em 0.5em 0.05em;
-  border-radius: 0.3em;
-  position: relative;
-  bottom: 0.1em;
+  // display: inline-block;
+  // background: #444;
+  // color: #ccc;
+  // padding: 0.1em 0.5em 0.05em;
+  // border-radius: 0.3em;
+  // position: relative;
+  // bottom: 0.1em;
 }
 
 // https://github.com/PrismJS/prism/blob/master/themes/prism-dark.css
