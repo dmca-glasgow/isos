@@ -25,7 +25,11 @@ export function addMathsRefsAndCount() {
               properties['data-id'] = id;
             }
 
-            if (toString(code).startsWith('\\begin{equation}')) {
+            const str = toString(code);
+            if (
+              str.startsWith('\\begin{equation}') ||
+              str.startsWith('\\begin{align}')
+            ) {
               node.children.push({
                 type: 'element',
                 tagName: 'span',

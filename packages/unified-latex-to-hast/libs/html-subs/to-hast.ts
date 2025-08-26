@@ -111,17 +111,13 @@ export function toHastWithLoggerFactory(
           )}\``,
           node,
         );
-        // if (node.content === 'begin') {
-        //   console.log(node);
+        // if (node.content === 'sidenote') {
+        //   console.dir(node, { depth: null });
         // }
         return h(
           'span',
           { className: ['macro', `macro-${node.content}`] },
           (node.args || []).map(toHast).flat(),
-          // TODO: check if this has been fixed by change to line 121
-          // node.content === 'sidenote'
-          //   ? (node.args || [])[0].content.map(toHast).flat()
-          //   : (node.args || []).map(toHast).flat(),
         );
       case 'argument':
         return h(

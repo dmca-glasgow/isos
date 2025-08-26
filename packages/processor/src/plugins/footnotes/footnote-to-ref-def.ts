@@ -1,4 +1,6 @@
 import { FootnoteDefinition, FootnoteReference, Root } from 'mdast';
+import { TextDirective } from 'mdast-util-directive';
+import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
 
 export function footnoteToRefDef() {
@@ -9,10 +11,12 @@ export function footnoteToRefDef() {
       if (['footnote', 'sidenote'].includes(node.name)) {
         ++count;
 
+        const label = extractLabel(node);
+
         const reference: FootnoteReference = {
           type: 'footnoteReference',
           identifier: String(count),
-          label: String(count),
+          label: label || String(count),
         };
 
         Object.assign(node, reference);
@@ -20,7 +24,7 @@ export function footnoteToRefDef() {
         const definition: FootnoteDefinition = {
           type: 'footnoteDefinition',
           identifier: String(count),
-          label: String(count),
+          label: label || String(count),
           children: [{ type: 'paragraph', children: node.children }],
         };
 
@@ -30,7 +34,7 @@ export function footnoteToRefDef() {
     });
 
     // move footnote definitions to their own paragraphs
-    visit(tree, 'paragraph', (node, _idx, parent) => {
+    visit(tree, 'paragraph', (node, idx = 0, parent) => {
       const definitions = node.children.filter((o) => {
         // @ts-expect-error
         return o.type === 'footnoteDefinition';
@@ -42,7 +46,6 @@ export function footnoteToRefDef() {
           return o.type !== 'footnoteDefinition';
         });
 
-        const idx = _idx || 0;
         if (node.children.length > 0) {
           parent.children.splice(idx + 1, 0, ...definitions);
         } else {
@@ -52,4 +55,17 @@ export function footnoteToRefDef() {
     });
     // console.dir(tree, { depth: null });
   };
+}
+
+function extractLabel(footnote: TextDirective): string | null {
+  let label = null;
+  visit(footnote, 'textDirective', (node, idx = 0, parent) => {
+    if (node.name === 'label') {
+      label = toString(node);
+      if (parent) {
+        parent.children.splice(idx, 1);
+      }
+    }
+  });
+  return label;
 }

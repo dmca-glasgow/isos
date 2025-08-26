@@ -1,3 +1,4 @@
+import { kebabCase } from 'lodash';
 import { Root } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { visit } from 'unist-util-visit';
@@ -27,12 +28,14 @@ export function theoremLabelAsId(ctx: Context) {
             ? idFromLabel(label, typeKey, ctx)
             : idFromCount(counter.increment(type), typeKey);
 
+        // console.log({ label, id });
+
         const { unnumbered } = theorems[type];
         const newClass = prepareClasses(klass, type, unnumbered);
 
         node.attributes = {
           ...(node.attributes || {}),
-          id,
+          id: kebabCase(id),
           class: newClass,
         };
 
@@ -85,12 +88,11 @@ function extractLabelFromContainer(
 
 function idFromLabel(label: string, typeKey: string = '', ctx: Context) {
   const { theorems } = ctx.frontmatter;
-  // console.log(theorems);
-  const [key] = label.split('-');
+  const [key, value] = label.split(':');
   if (defaultTheorems.map((o) => o.abbr).includes(key)) {
-    return label;
+    return `${key}-${value}`;
   } else if (theorems[key]) {
-    return label;
+    return `${key}-${value}`;
   } else {
     return `${typeKey}-${label}`;
   }

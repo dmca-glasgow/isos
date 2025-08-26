@@ -1,9 +1,10 @@
 import { Element, ElementContent, Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
+import { Context } from '../../markdown-to-mdx/context';
 import { extractFootnoteDefinitions } from './extract-definitions';
 
-export function replaceFootnoteRefDefs() {
+export function replaceFootnoteRefDefs(ctx: Context) {
   return (tree: Root) => {
     const footnotes = extractFootnoteDefinitions(tree);
     if (footnotes === null) {
@@ -15,7 +16,17 @@ export function replaceFootnoteRefDefs() {
         const id = String(o.properties?.id || '');
         const match = id.match(/^user-content-fn-(.+)$/);
         if (match !== null) {
-          acc[match[1]] = idx;
+          const ref = match[1];
+          acc[ref] = idx;
+
+          // Sidenotes containing labels have non-numeric identifiers
+          // those identifiers can be added to the global refMap
+          if (!/^\d+$/.test(ref)) {
+            ctx.frontmatter.refMap[ref] = {
+              id: ref,
+              label: `Sidenote ${idx + 1}`,
+            };
+          }
         }
 
         return acc;

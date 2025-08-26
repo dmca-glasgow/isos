@@ -14,21 +14,26 @@ type Props = {
 };
 
 export function Template({ markdown }: Props) {
-  const { setShowSidebar } = useContext(ViewOptionsContext);
+  const { data, toggleSidebar } = useContext(ViewOptionsContext);
 
   return (
     <>
       <ActionsTopLeft>
-        <StyledHamburger onClick={() => setShowSidebar(true)} />
+        <HamburgerButton
+          onClick={toggleSidebar}
+          aria-label="Toggle sidebar"
+          aria-controls="sidebar"
+          aria-expanded={data.showSidebar.value}>
+          <Hamburger />
+        </HamburgerButton>
       </ActionsTopLeft>
 
       {/* <ActionsTopRight><DarkModeToggle /></ActionsTopRight> */}
 
-      <Sidebar>
-        <ActionsTopLeft>
-          <StyledHamburger onClick={() => setShowSidebar(false)} />
+      <Sidebar id="sidebar">
+        <ActionsTopRight>
           <Menu />
-        </ActionsTopLeft>
+        </ActionsTopRight>
         <View>
           <TableOfContents markdown={markdown} />
           <ViewOptions />
@@ -43,36 +48,37 @@ const ActionsTopLeft = styled.div`
   top: ${actions.y};
   left: ${actions.x};
   height: ${actions.height};
-
-  nav & {
-    position: absolute;
-    width: calc(100% - (${actions.y} * 2));
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  z-index: 1;
 `;
 
-// const ActionsTopRight = styled.div`
-//   position: fixed;
-//   top: ${actions.y};
-//   right: ${actions.x};
-//   height: ${actions.height};
-// `;
-
-const StyledHamburger = styled(Hamburger)`
-  display: block;
-  width: ${actions.height};
+const ActionsTopRight = styled.div`
+  position: absolute;
+  top: ${actions.y};
+  right: ${actions.x};
   height: ${actions.height};
-  fill: var(--textColor);
+`;
+
+const HamburgerButton = styled.button`
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 1rem;
   cursor: pointer;
 
-  nav & {
-    position: static;
+  &,
+  svg {
+    display: block;
+    width: ${actions.height};
+    height: ${actions.height};
+  }
+
+  svg {
+    fill: var(--textColor);
   }
 `;
 
-const Sidebar = styled.nav`
+const Sidebar = styled.div`
   position: fixed;
   top: 0;
   left: 0;

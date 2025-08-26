@@ -1,4 +1,3 @@
-import { css } from '@linaria/core';
 import { styled } from '@linaria/react';
 import classNames from 'classnames';
 import { useContext } from 'preact/hooks';
@@ -9,32 +8,39 @@ import { ViewOptionsContext } from './view-options/state';
 export function Menu() {
   const { data, setShowViewOptions } = useContext(ViewOptionsContext);
   return (
-    <MenuWrapper>
+    <MenuWrapper role="menu">
       <MenuItem
         className={classNames({
           active: !data.showViewOptions.value,
-        })}
-        onClick={() => setShowViewOptions(false)}>
-        <TableOfContents />
+        })}>
+        <a href="#" onClick={() => setShowViewOptions(false)}>
+          <TableOfContents />
+          <span>Table of contents</span>
+        </a>
       </MenuItem>
       <MenuItem
         className={classNames({
           active: data.showViewOptions.value,
-        })}
-        onClick={() => setShowViewOptions(true)}>
-        <Gear />
+        })}>
+        <a href="#" onClick={() => setShowViewOptions(true)}>
+          <Gear />
+          <span>View options</span>
+        </a>
       </MenuItem>
     </MenuWrapper>
   );
 }
 
-const backgroundMixin = css`
-  background: red;
-`;
+// const backgroundMixin = css`
+//   background: red;
+// `;
 
-const MenuWrapper = styled.div`
+const MenuWrapper = styled.ul`
   --diameter: 1.5em;
   --spacing: 0.15em;
+
+  padding: 0;
+  margin: 0;
 
   display: flex;
   justify-content: space-around;
@@ -44,11 +50,13 @@ const MenuWrapper = styled.div`
   border: 1px solid var(--textColor);
   box-shadow: inset 0 0 0 1px var(--textColor);
   border-radius: var(--diameter);
-  overflow: hidden;
-  ${backgroundMixin}
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled.li`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
   flex: 1;
   height: 100%;
   display: flex;
@@ -56,22 +64,42 @@ const MenuItem = styled.div`
   align-items: center;
   cursor: pointer;
 
-  &:not(:first-child) {
-    box-shadow: inset 1px 0 0#0003;
+  &:first-child {
+    border-radius: var(--diameter) 0 0 var(--diameter);
   }
 
-  svg {
-    display: block;
-    width: var(--diameter);
-    height: var(--diameter);
-    fill: var(--textColor);
-    transform: scale(0.65);
+  &:last-child {
+    border-radius: 0 var(--diameter) var(--diameter) 0;
+  }
+
+  &:not(:first-child) {
+    box-shadow: inset 1px 0 0#0003;
   }
 
   &.active {
     background: var(--textColor);
     svg {
       fill: var(--bg);
+    }
+  }
+
+  a {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      display: block;
+      width: var(--diameter);
+      height: var(--diameter);
+      fill: var(--textColor);
+      transform: scale(0.65);
+    }
+
+    span {
+      text-indent: -9999px;
+      overflow: hidden;
     }
   }
 `;

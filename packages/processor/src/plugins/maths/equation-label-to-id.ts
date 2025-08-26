@@ -10,8 +10,12 @@ export function equationLabelToId() {
     visit(tree, (node) => {
       if (node.type === 'mathenv') {
         const env = (node.env || {}) as Ast.Node;
-        if (env.type === 'string' && env.content === 'equation') {
-          const label = extractLabel(node);
+        const label = extractLabel(node);
+
+        if (
+          env.type === 'string' &&
+          ['equation', 'align'].includes(env.content)
+        ) {
           if (label) {
             Object.assign(node, {
               data: {

@@ -88,7 +88,9 @@ export function createDefaultOptions(
           textsubscript: { signature: 'm' },
           sout: { signature: 'm' },
           mintinline: { signature: 'm m' },
+
           counterwithin: { signature: 'm m' },
+
           footnote: { signature: 'm' },
           sidenote: { signature: 'm' },
           setsidenotes: { signature: 'm' },

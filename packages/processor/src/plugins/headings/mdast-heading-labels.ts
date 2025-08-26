@@ -1,3 +1,4 @@
+import { kebabCase } from 'lodash';
 import { Root, Text } from 'mdast';
 import { visit } from 'unist-util-visit';
 
@@ -30,7 +31,7 @@ export function headingLabels() {
 
       // extract id
       const text = firstChild.children[0] as Text;
-      const id = text.value;
+      const id = kebabCase(text.value);
 
       // append to heading text
       const lastChild = node.children[node.children.length - 1];

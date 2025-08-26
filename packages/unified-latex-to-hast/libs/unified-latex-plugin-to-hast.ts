@@ -1,16 +1,17 @@
-import * as Hast from 'hast';
-import rehypeRaw from 'rehype-raw';
-import { h } from 'hastscript';
-import { Plugin, unified } from 'unified';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { TypeGuard } from '@unified-latex/unified-latex-types';
 import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
 import { match } from '@unified-latex/unified-latex-util-match';
 import { EXIT, visit } from '@unified-latex/unified-latex-util-visit';
+import * as Hast from 'hast';
+import { h } from 'hastscript';
+import rehypeRaw from 'rehype-raw';
+import { Plugin, unified } from 'unified';
+
 import { toHastWithLoggerFactory } from './html-subs/to-hast';
 import {
-  unifiedLatexToHtmlLike,
   PluginOptions as HtmlLikePluginOptions,
+  unifiedLatexToHtmlLike,
 } from './unified-latex-plugin-to-html-like';
 
 export type PluginOptions = HtmlLikePluginOptions & {
@@ -52,9 +53,9 @@ export const unifiedLatexToHast: Plugin<
         test: ((node) =>
           match.environment(
             node,
-            'document'
+            'document',
           )) as TypeGuard<Ast.Environment>,
-      }
+      },
     );
 
     // console.log(JSON.stringify(content, null, 2));
@@ -68,12 +69,12 @@ export const unifiedLatexToHast: Plugin<
     // Wrap everything in a Hast.Root node
     let ret = h();
     ret.children = converted;
-    if (!skipHtmlValidation) {
-      // We never want to produce invalid HTML, so we reparse the HTML we have generated.
-      // Ideally, any invalid HTML generation should be caught and fixed where it is, but
-      // we don't want to upset library users with invalid HTML
-      ret = unified().use(rehypeRaw).runSync(ret);
-    }
+    // if (!skipHtmlValidation) {
+    //   // We never want to produce invalid HTML, so we reparse the HTML we have generated.
+    //   // Ideally, any invalid HTML generation should be caught and fixed where it is, but
+    //   // we don't want to upset library users with invalid HTML
+    //   ret = unified().use(rehypeRaw).runSync(ret);
+    // }
     return ret;
   };
 };

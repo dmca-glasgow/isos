@@ -14,8 +14,8 @@ type Props = {
 export function Runtime({ markdown, onRendered, hide }: Props) {
   return (
     <Main hide={hide === true}>
-      <Content markdown={markdown} onRendered={onRendered} />
       <Template markdown={markdown} />
+      <Content markdown={markdown} onRendered={onRendered} />
     </Main>
   );
 }
@@ -58,5 +58,9 @@ const Main = styled.main`
 
   &.hide {
     visibility: hidden;
+  }
+
+  *:focus {
+    outline: 2px solid orange !important;
   }
 `;

@@ -82,7 +82,8 @@ function createRehypeFragmentPlugins(
     [atReferenceToLink, ctx], // depends on addCounts
 
     // () => (tree: Root) => {
-    //   console.dir(tree, { depth: null });
+    //   // console.dir(tree, { depth: null });
+    //   console.log(ctx.frontmatter.refMap);
     // },
   ];
 }

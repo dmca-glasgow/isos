@@ -187,18 +187,22 @@ function findDefinition(definitions: Element[], id: string): Footnote {
     };
   }
   let definition = definitions[idx].children;
-  definition = removeReturnArrow(definition);
+  removeReturnArrow(definition);
   definition = paragraphsToSpans(definition);
+  // console.log(definition);
   return { idx, definition };
 }
 
 function paragraphsToSpans(contents: ElementContent[]) {
-  const paragraphs = contents.filter(
-    (o) => o.type === 'element' && o.tagName === 'p',
+  // console.dir(contents, { depth: 3 });
+  const elements = contents.filter(
+    (o) => o.type === 'element',
   ) as Element[];
 
-  return paragraphs.reduce((acc: ElementContent[], o, idx) => {
-    o.tagName = 'span';
+  return elements.reduce((acc: ElementContent[], node, idx) => {
+    if (node.tagName === 'p') {
+      node.tagName = 'span';
+    }
 
     if (idx > 0) {
       acc.push({
@@ -207,23 +211,24 @@ function paragraphsToSpans(contents: ElementContent[]) {
       });
     }
 
-    const last = o.children[o.children.length - 1];
-    if (last.type === 'text') {
-      last.value = last.value.trimEnd();
+    const lastChild = node.children[node.children.length - 1];
+    if (lastChild.type === 'text') {
+      lastChild.value = lastChild.value.trimEnd();
     }
 
-    acc.push(o);
+    acc.push(node);
     return acc;
   }, []);
   // console.log(contents);
 }
 
-function removeReturnArrow(sideNotes: ElementContent[]) {
-  const lastP = sideNotes.findLast(
-    (o) => o.type === 'element' && o.tagName === 'p',
-  );
-  if (lastP && lastP.type === 'element') {
-    lastP.children = lastP.children.slice(0, -1);
-  }
-  return sideNotes;
+function removeReturnArrow(children: ElementContent[]) {
+  visit({ type: 'root', children }, 'element', (a, idx = 0, parent) => {
+    if (a.tagName === 'a') {
+      const href = String(a.properties?.href || '');
+      if (href.startsWith('#fn-ref')) {
+        parent?.children.splice(idx, 1);
+      }
+    }
+  });
 }

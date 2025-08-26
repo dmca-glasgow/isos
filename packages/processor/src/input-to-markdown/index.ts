@@ -75,19 +75,25 @@ export async function latexToMdAstProcessor(
 
   const htmlAst = await unified()
     .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions())
-    .use(options.htmlAstTransforms)
     .run(latexAst as LatexAstRoot);
 
   // console.dir(htmlAst, { depth: null });
+
+  const htmlAstTransformed = await unified()
+    .use(options.htmlAstTransforms)
+    .run(htmlAst as HastRoot);
+
+  // console.dir(htmlAstTransformed, { depth: 4 });
+
   // const html = unified()
   //   .use(rehypeStringify)
-  //   .stringify(htmlAst as HastRoot);
+  //   .stringify(htmlAstTransformed as HastRoot);
   // console.log(formatHtml(html));
 
   const mdAst = await createRemarkProcessor([
     [rehypeRemark, options.htmlAstToMdAstOptions()],
     ...options.mdAstTransforms,
-  ]).run(htmlAst as HastRoot);
+  ]).run(htmlAstTransformed as HastRoot);
 
   // console.dir(mdAst, { depth: null });
 

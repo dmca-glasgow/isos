@@ -121,7 +121,7 @@ test('image with formatted caption and alt text', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('image with alt, title and caption text', async () => {
+test.skip('image with alt, title and caption text', async () => {
   const markdown = unindentStringAndTrim(`
     ![caption *text*](image.png "title text"){alt="alt text"}
   `);

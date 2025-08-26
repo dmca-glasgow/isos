@@ -47,27 +47,12 @@ test('footnote', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <sup class="fn-ref"><a href="#fn-1" id="#fn-ref-1">1</a></sup> and <sup class="fn-ref"><a href="#fn-2" id="#fn-ref-2">2</a></sup>.</p>
-      <aside class="inline-fn" id="fn-1">
-        <p><sup><a href="#fn-ref-1">1</a></sup> text for <em>footnote</em></p>
-        <p>Subsequent paragraphs are indented to show that they belong to the previous footnote. <a href="#fn-ref-1">↩</a></p>
-      </aside>
-      <aside class="inline-fn" id="fn-2">
-        <p><sup><a href="#fn-ref-2">2</a></sup> text for <em>footnote</em> <a href="#fn-ref-2">↩</a></p>
-      </aside>
+      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em></span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em></span></small><span class="sidenote-label">)</span></span>.</p>
       <p>Another paragraph.</p>
     </section>
   `);
 
   expect(html).toBe(expectedHtml);
-
-  // TODO: test for footnotes at the bottom
-
-  // const pandocHtml = await markdownToPandocHtml(expectedMarkdown);
-  // console.log(pandocHtml);
-
-  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
-  // console.log(quartoHtml);
 });
 
 test('footnotemark and footnotetext', async () => {
@@ -111,17 +96,11 @@ test('footnotemark and footnotetext', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <sup class="fn-ref"><a href="#fn-1" id="#fn-ref-1">1</a></sup> and <sup class="fn-ref"><a href="#fn-2" id="#fn-ref-2">2</a></sup>.</p>
-      <aside class="inline-fn" id="fn-1">
-        <p><sup><a href="#fn-ref-1">1</a></sup> text for <em>footnote</em> 1</p>
-        <p>Subsequent paragraphs are indented to show that they belong to the previous footnote. <a href="#fn-ref-1">↩</a></p>
-      </aside>
-      <aside class="inline-fn" id="fn-2">
-        <p><sup><a href="#fn-ref-2">2</a></sup> text for <em>footnote</em> 2 <a href="#fn-ref-2">↩</a></p>
-      </aside>
+      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em> 1</span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em> 2</span></small><span class="sidenote-label">)</span></span>.</p>
       <p>Another paragraph.</p>
     </section>
   `);
@@ -170,6 +149,7 @@ test('footnotemark and footnotetext with no identifier', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
@@ -358,8 +338,132 @@ test('footnotes with labels', async () => {
 
   expect(html).toBe(expectedHtml);
 
-  // TODO: test for footnotes at the bottom
-
   // const pandocHtml = await markdownToPandocHtml(expectedMarkdown);
   // console.log(pandocHtml);
+});
+
+test('footnote with display maths', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \newcommand{\eps}{\varepsilon}
+    \newcommand{\N}{\mathbb{N}}
+    \begin{document}
+
+    a
+
+    b \sidenote{c
+    $$
+    x
+    $$
+
+    d \cref{lem:1.8}
+
+    \begin{align*}
+    a_n
+    \end{align*}
+    }
+
+    \begin{lemma} \label{lem:1.8}
+    c
+    \end{lemma}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    a
+
+    b [^1]
+
+    [^1]: c
+
+
+
+        $$
+        x
+        $$
+
+
+
+
+
+        d @lem-1-8
+
+
+
+
+
+        $$
+        \begin{align*}a_{n}\end{align*}
+        $$
+
+
+
+
+
+    ::: {#lem-1-8}
+    c
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>a</p>
+    <p>b <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref1" href="#fn-1">1</a> </sup><span>c</span>
+        <p class="maths"><code class="latex">x</code></p> <span>d <a href="#lem-1-8" class="ref">Lemma 1</a></span>
+        <p class="maths"><code class="latex">\begin{align*}
+    a_{n}
+    \end{align*}</code></p>
+      </small><span class="sidenote-label">)</span></span></p>
+    <div class="definition lemma" id="lem-1-8">
+      <p><span class="title"><strong>Lemma 1.</strong></span> c</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('footnote referencing other footnote', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \begin{document}
+
+    a\sidenote{\label{Com2}b.}
+
+    c\sidenote{d \cref{Com2}.}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    a[^com-2]
+
+    [^com-2]: b.
+
+    c[^2]
+
+    [^2]: d @com-2.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>a<span class="sidenote"><sup class="sidenote-count"><a id="fn-com-2" href="#fn-ref-com-2">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-refcom-2" href="#fn-com-2">1</a> </sup><span>b.</span></small><span class="sidenote-label">)</span></span></p>
+    <p>c<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref2" href="#fn-2">2</a> </sup><span>d <a href="#com-2" class="ref">Sidenote 1</a>.</span></small><span class="sidenote-label">)</span></span></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
 });

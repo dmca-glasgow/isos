@@ -4,25 +4,17 @@
 
 \begin{document}
 
-\section{Volume of a sphere}
+\section{A simple example}
 
-Here is a small formula rendered by MathJax:
+Here is a small formula rendered by MathJax, for the volume of a sphere:
 
 $$
 V=\frac{4}{3} \pi r^3
 $$
 
-I interact with MathJax in two main ways:
+In the underlying HTML, I have associated a sentence for screen readers with \verb|aria-label| and a braille equivalent with \verb|aria-braillelabel| in Nemeth or Euro dialects.  Unfortunately, \verb|aria-braillelabel| is \href{https://github.com/nvaccess/nvda/issues/11829}{not yet supported} with NVDA.  To work around this, I've added the option "Set Aria label to braille" to the side bar view options, which hopefully forces NVDA to output the braille maths to a braille display.
 
-\begin{enumerate}
-  \item Right-clicking opens a contextual menu with configuration options.  Under Accessibility > Braille > Code Format, it's possible to change from Nemeth to Euro.  Then under Show Math As > Braille Code we can preview the braille.  I hope we can verify this is UEB.
-
-  \item Each time I press Tab, the browser jumps to the next interactive element, including MathJax items, and when in focus displays both the maths as a readable sentence (to be dictated by a screen reader) and the Braille.  Does the braille somehow appear in the BrailleNote braille cells?  Can we get this to work?
-\end{enumerate}
-
-I realise that both ways I interact with MathJax would not be suitable for someone using a screen reader or braille.  I am interested to know how this works.
-
-\section{Standard deviation}
+\section{Two larger examples}
 
 Here is a larger maths formula with sub-expressions:
 
@@ -30,11 +22,20 @@ $$
 \sqrt{\frac{\sum(x-\bar{x})^2}{n-1}}=\sqrt{\frac{\sum x^2-\left(\sum x\right)^2 / n}{n-1}}
 $$
 
-With maths equations this large and above (the equations in University coursework can be much much larger than this) the readable sentence no longer seems practical, and braille seems a better medium as the learner can more naturally jump around the different sub-expressions taking them in one at a time.
+With maths equations this large and above (in University coursework, maths blocks are often much larger than this) the readable sentence no longer seems practical, and braille seems a better medium as the learner can more naturally jump around the different sub-expressions taking them in one at a time, especially on a multi-line braille display.
 
-However MathJax has a new trick up it's sleeve for screen reader users. There is now a Maths Explorer which allows the user to traverse sub-expressions using \href{https://docs.mathjax.org/en/latest/basic/explorer-commands.html}{keyboard controls}. When the maths is highlighted (by pressing Tab until it is active), you can begin "exploring" this formula by pressing the down arrow.
+Another example:
 
-I'm interested to know if this is useful, it looks tricky to learn.  I'm interested to know if it is effective when using a screen reader, and if we can get the braille sub-expressions to appear in the BrailleNote braille cells as the user traverses the formula.
+\begin{align*}
+|z| < 1 &\iff |w - 1| < |2w + 1| \\
+&\iff |u + iv - 1| < |2u + 2iv + 1| \\
+&\iff (u - 1)^2 + v^2 < (2u + 1)^2 + (2v)^2 \\
+&\iff u^2 + v^2 - 2u + 1 < 4u^2 + 4v^2 + 4u + 1 \\
+&\iff 3u^2 + 3v^2 + 6u > 0 \\
+&\iff u^2 + v^2 + 2u > 0 \\
+&\iff (u + 1)^2 + v^2 > 1 \\
+&\iff |w + 1| > 1.
+\end{align*}
 
 \section{Tabular data}
 
@@ -48,7 +49,5 @@ Alpha & Bravo & Charlie \\
 \end{tabular}
 
 I am interested to know if it's possible, either in screen reader or braille mode, to navigate the cells of a table with keyboard controls.  For example, is it possible to navigate down from Charlie to 3 to 6 to 9?
-
-
 
 \end{document}

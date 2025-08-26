@@ -99,6 +99,8 @@ export function createRunOptions(
           const id = props['data-id'];
           const expr = child.props.children as string;
           const className = classNames('maths', { 'env-equation': count });
+
+          // TODO: don't add paragraphs in sidenotes
           return (
             <p id={id} className={className}>
               <Maths expr={expr} format="display" options={maths} />
