@@ -1,4 +1,4 @@
-import { styled } from '@linaria/react';
+// import { styled } from '@linaria/react';
 import { HTMLAttributes } from 'preact/compat';
 
 export function OrcidLink({
@@ -6,9 +6,9 @@ export function OrcidLink({
   ...props
 }: HTMLAttributes<HTMLAnchorElement>) {
   return (
-    <StyledOrcidLink {...props} title="ORCID link" target="_blank">
+    <a {...props} className="orcid" title="ORCID link" target="_blank">
       <Svg />
-    </StyledOrcidLink>
+    </a>
   );
 }
 
@@ -36,13 +36,13 @@ function Svg() {
   );
 }
 
-const StyledOrcidLink = styled.a`
-  background: none;
-  padding: 0;
-  svg {
-    display: inline-block;
-    width: 1.1rem;
-    height: 1.1rem;
-    overflow: visible;
-  }
-`;
+// const StyledOrcidLink = styled.a`
+//   background: none;
+//   padding: 0;
+//   svg {
+//     display: inline-block;
+//     width: 1.1rem;
+//     height: 1.1rem;
+//     overflow: visible;
+//   }
+// `;

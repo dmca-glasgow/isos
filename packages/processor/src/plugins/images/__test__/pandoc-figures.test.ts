@@ -121,18 +121,21 @@ test('image with formatted caption and alt text', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test.skip('image with alt, title and caption text', async () => {
+test('image with alt, title and caption text', async () => {
   const markdown = unindentStringAndTrim(`
     ![caption *text*](image.png "title text"){alt="alt text"}
   `);
-  const pandocHtml = await markdownToPandocHtml(markdown);
+  // const pandocHtml = await markdownToPandocHtml(markdown);
   // console.log(pandocHtml);
 
-  const expectedPandocHtml = unindentStringAndTrim(`
-    <figure>
-    <img src="image.png" title="title text" alt="alt text" />
-    <figcaption>caption <em>text</em></figcaption>
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <figure><img src="image.png" alt="alt text" />
+      <figcaption><strong>Figure 1:</strong> caption <em>text</em></figcaption>
     </figure>
   `);
-  expect(pandocHtml).toBe(expectedPandocHtml);
+
+  expect(html).toBe(expectedHtml);
 });

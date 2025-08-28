@@ -47,7 +47,7 @@ test('footnote', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em></span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em></span></small><span class="sidenote-label">)</span></span>.</p>
+      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em></span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em></span></small><span class="sidenote-label">)</span></span>.</p>
       <p>Another paragraph.</p>
     </section>
   `);
@@ -100,7 +100,7 @@ test('footnotemark and footnotetext', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em> 1</span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em> 2</span></small><span class="sidenote-label">)</span></span>.</p>
+      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em> 1</span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em> 2</span></small><span class="sidenote-label">)</span></span>.</p>
       <p>Another paragraph.</p>
     </section>
   `);
@@ -416,7 +416,7 @@ test('footnote with display maths', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p>a</p>
-    <p>b <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref1" href="#fn-1">1</a> </sup><span>c</span>
+    <p>b <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>c</span>
         <p class="maths"><code class="latex">x</code></p> <span>d <a href="#lem-1-8" class="ref">Lemma 1</a></span>
         <p class="maths"><code class="latex">\begin{align*}
     a_{n}
@@ -461,8 +461,8 @@ test('footnote referencing other footnote', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p>a<span class="sidenote"><sup class="sidenote-count"><a id="fn-com-2" href="#fn-ref-com-2">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-refcom-2" href="#fn-com-2">1</a> </sup><span>b.</span></small><span class="sidenote-label">)</span></span></p>
-    <p>c<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref2" href="#fn-2">2</a> </sup><span>d <a href="#com-2" class="ref">Sidenote 1</a>.</span></small><span class="sidenote-label">)</span></span></p>
+    <p>a<span class="sidenote"><sup class="sidenote-count"><a id="fn-com-2" href="#fn-ref-com-2">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-com-2" href="#fn-com-2">1</a> </sup><span>b.</span></small><span class="sidenote-label">)</span></span></p>
+    <p>c<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>d <a href="#fn-ref-com-2" class="ref">Sidenote 1</a>.</span></small><span class="sidenote-label">)</span></span></p>
   `);
 
   expect(html).toBe(expectedHtml);
