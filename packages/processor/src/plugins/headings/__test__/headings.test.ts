@@ -239,3 +239,27 @@ test('headings with setcounter', async () => {
 
   expect(html).toBe(expected);
 });
+
+test('unnumbered heading with italic word in the middle', async () => {
+  const latex = String.raw`
+    \noindent\fancyboxed{Do \emph{not} converge}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ### Do *not* converge {.unnumbered}
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <h3 id="do-not-converge">Do <em>not</em> converge</h3>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

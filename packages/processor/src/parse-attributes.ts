@@ -29,7 +29,7 @@ export function parseAttributes(attributeStr: string): ParsedAttributes {
     };
   }
 
-  const text = match[1].trim();
+  const text = match[1].trimEnd();
 
   const attributes = match[2].split(' ').reduce((acc: Attributes, str) => {
     if (str.startsWith('#')) {

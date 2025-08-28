@@ -1,4 +1,6 @@
 import { resolveResource } from '@tauri-apps/api/path';
+import { startCase } from 'lodash';
+import { filename } from 'pathe/utils';
 import { useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
@@ -90,7 +92,7 @@ export function App() {
 
   async function handleExportFile(saveFilePath: string) {
     const frontmatter = {
-      docTitle: 'Test', // TODO
+      docTitle: startCase(filename(filePath)),
     };
     const bundle = {
       css: await readTextFile(
