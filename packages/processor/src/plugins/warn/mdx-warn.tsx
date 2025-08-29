@@ -9,8 +9,11 @@ export function WarnSpan({
 }: HTMLAttributes<HTMLSpanElement>) {
   const ref: RefCallback<HTMLSpanElement> = useCallback((element) => {
     if (element !== null) {
-      // const { y, height } = element.getBoundingClientRect();
-      // console.log('hey!', { y, height });
+      const { y } = element.getBoundingClientRect();
+      const top = Math.round(y);
+      window.dispatchEvent(
+        new CustomEvent<number>('warning', { detail: top }),
+      );
     }
   }, []);
   return (

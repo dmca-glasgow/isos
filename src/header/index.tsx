@@ -1,6 +1,7 @@
 import { OpenFileButton } from './open-file-button';
 import { OverflowMiddle } from './overflow-middle';
 import { SaveFileButton } from './save-file-button';
+import { WarningsCount } from './warnings-count';
 
 type Props = {
   filePath: string;
@@ -35,6 +36,7 @@ export function Header({
               </span>
             )}
           </span>
+          <WarningsCount loading={loading} />
           <SaveFileButton filePath={filePath} onSave={handleExportFile} />
         </>
       )}

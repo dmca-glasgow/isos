@@ -18,6 +18,8 @@ import { Header } from './header';
 
 import './styles.scss';
 
+import { WarningLineHighlight } from './warnings/warn-line-highlight';
+
 const watchers: (() => void)[] = [];
 
 export function App() {
@@ -125,6 +127,7 @@ export function App() {
         hide={loading}
         onRendered={handleRendered}
       />
+      <WarningLineHighlight loading={loading} />
     </>
   );
 }

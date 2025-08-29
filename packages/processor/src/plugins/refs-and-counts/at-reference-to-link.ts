@@ -3,7 +3,7 @@ import { findAndReplace } from 'hast-util-find-and-replace';
 
 import { Context, Reference } from '../../markdown-to-mdx/context';
 
-const pattern = /@([\w-]+)/g;
+const pattern = /(^|\s)@([\w-]+)/g;
 
 export default function atReferenceToLink(ctx: Context) {
   return (tree: Root) => {

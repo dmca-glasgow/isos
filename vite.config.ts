@@ -74,6 +74,7 @@ export default defineConfig({
     },
   },
   test: {
+    pool: 'threads',
     exclude: [
       ...configDefaults.exclude,
       '**/_old/**',
