@@ -1,5 +1,10 @@
-import { createProcessor, run } from '@mdx-js/mdx';
-import { Root } from 'mdast';
+import {
+  ProcessorOptions,
+  RunOptions,
+  createProcessor,
+  run,
+} from '@mdx-js/mdx';
+import { Node, Root } from 'mdast';
 
 import { createRemarkProcessor } from '../remark-processor';
 import { processorOptions } from './hast-transforms';
@@ -10,30 +15,21 @@ export async function markdownToArticle(md: string, options: Options) {
   const mdAst = await getMdAst(md, options);
   // console.dir(mdAst, { depth: null });
 
-  const mdxProcessor = createProcessor({
+  const procOptions: ProcessorOptions = {
     ...processorOptions,
     rehypePlugins: options.htmlAstTransforms,
-  });
-
-  // @ts-expect-error: mdAst is not of type Program
-  const esAst = await mdxProcessor.run(mdAst);
-  const mdxString = mdxProcessor.stringify(esAst);
-  return run(mdxString, options.mdxArticleRunOptions);
+  };
+  return createMDX(mdAst, procOptions, options.mdxArticleRunOptions);
 }
 
 export async function markdownToTOC(md: string, options: Options) {
   const mdAst = await getMdAst(md, options);
   // console.dir(mdAst, { depth: null });
 
-  const toc = await createTableOfContents(mdAst as Root);
+  const toc = createTableOfContents(mdAst as Root);
   // console.dir(toc, { depth: null });
 
-  const mdxProcessor = createProcessor(processorOptions);
-
-  // @ts-expect-error: toc is not of type Program
-  const esAst = await mdxProcessor.run(toc);
-  const mdxString = mdxProcessor.stringify(esAst);
-  return run(mdxString, options.mdxTOCRunOptions);
+  return createMDX(toc, processorOptions, options.mdxTOCRunOptions);
 }
 
 async function getMdAst(md: string, options: Options) {
@@ -55,4 +51,16 @@ function markdownStringTransforms(
   transforms: Options['markdownStringTransforms'],
 ) {
   return transforms.reduce((acc, fn) => fn(acc), markdown);
+}
+
+async function createMDX(
+  mdAst: Node,
+  options: ProcessorOptions,
+  runOptions: RunOptions,
+) {
+  const processor = createProcessor(options);
+  // @ts-expect-error: mdAst is not of type Program
+  const esAst = await processor.run(mdAst);
+  const mdxString = processor.stringify(esAst);
+  return run(mdxString, runOptions);
 }

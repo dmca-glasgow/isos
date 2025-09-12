@@ -9,20 +9,26 @@
   // }
 
   .sidenote-label {
-    display: none;
-    // display: inline-block;
-    // text-indent: -9999px;
+    // display: none;
+    display: inline-block;
+    text-indent: -9999px;
   }
 
   .sidenote-content {
     float: right;
     clear: right;
+    text-align: left;
     margin-bottom: 1.8em;
-    line-height: 1.5;
+    // line-height: 1.5;
+    hyphens: auto;
 
     & > span:not(:first-of-type) {
       display: inline-block;
       margin-top: 1em;
+    }
+
+    & > p.maths {
+      margin: 1em 0 0 0;
     }
   }
 

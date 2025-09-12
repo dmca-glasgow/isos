@@ -1,8 +1,8 @@
 import { ElementContent, Properties, Root } from 'hast';
 
-import { Context } from '../context';
+import { Context } from '../../markdown-to-mdx/context';
 
-export function createWrapper(ctx: Context) {
+export function articleWrapper(ctx: Context) {
   return (tree: Root) => {
     const properties: Properties = {};
 

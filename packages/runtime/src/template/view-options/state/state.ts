@@ -1,6 +1,6 @@
 import { Signal, batch, signal } from '@preact/signals';
 
-import * as constants from './constants';
+import * as constants from '../../../constants';
 
 export type ViewOptions = {
   showSidebar: boolean;

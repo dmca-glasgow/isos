@@ -1,23 +1,28 @@
+import { ArticleState } from '../../article/mdx-state';
 import { MathsFormat, MathsState } from '../mdx-state';
 import { formatLaTeX, syntaxHighlight } from './latex';
 import { MathJaxPrerender } from './mathjax-prerender';
 
 type Props = {
   expr: string;
-  options: MathsState;
+  maths: MathsState;
+  article: ArticleState;
+  inSidenote?: boolean;
   format: MathsFormat;
   asComponents?: boolean;
 };
 
 export function Maths({
   expr,
-  options,
-  // format,
+  maths,
+  article,
+  inSidenote,
+  format,
   // asComponents = true,
 }: Props) {
-  if (options.mathsAsTex.value) {
+  if (maths.mathsAsTex.value) {
     const formatted = formatLaTeX(expr);
-    if (options.syntaxHighlight.value) {
+    if (maths.syntaxHighlight.value) {
       return (
         <CodeElement className="latex" html={syntaxHighlight(formatted)} />
       );
@@ -31,13 +36,20 @@ export function Maths({
   //     <MathJaxComponentsDisplay
   //       expr={expr}
   //       // format={format}
-  //       mathsFont={options.mathsFontName.value}
+  //       mathsFont={maths.mathsFontName.value}
   //     />
   //   );
   // }
 
   return (
-    <MathJaxPrerender className="maths" expr={expr} options={options} />
+    <MathJaxPrerender
+      className="maths"
+      format={format}
+      expr={expr}
+      maths={maths}
+      article={article}
+      inSidenote={inSidenote}
+    />
   );
 }
 

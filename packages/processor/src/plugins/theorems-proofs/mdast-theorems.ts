@@ -240,16 +240,19 @@ function createQed(node: ContainerDirective) {
       hChildren: [
         {
           type: 'text',
-          value: ' ◻',
+          value: ' q.e.d.',
         },
       ],
     },
   };
 
-  const lastP = node.children.findLast((o) => o.type === 'paragraph');
+  const last = node.children.findLast(
+    (o) => o.type !== 'footnoteDefinition',
+  );
+  // console.log(node);
 
-  if (lastP) {
-    lastP.children.push(proofBox);
+  if (last?.type === 'paragraph') {
+    last.children.push(proofBox);
   } else {
     node.children.push({
       type: 'paragraph',

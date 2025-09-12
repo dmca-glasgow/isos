@@ -169,5 +169,7 @@ export function addCounts(ctx: Context) {
         }
       }
     });
+
+    // console.log(ctx.frontmatter.refMap);
   };
 }

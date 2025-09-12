@@ -46,7 +46,10 @@ html#editor {
         left: 0;
         width: 100%;
         height: 2px;
-        background: orange;
+        background: rgb(205, 106, 0);
+        .dark-mode & {
+          background: orange;
+        }
       }
     }
   }

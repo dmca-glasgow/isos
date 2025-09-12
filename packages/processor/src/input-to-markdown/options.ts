@@ -5,7 +5,6 @@ import { PluggableList } from 'unified';
 
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
-import { createFancySection } from '../plugins/fancy/fancy-section-to-section';
 import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
 import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
 import { createFigure } from '../plugins/images/create-figure';
@@ -93,6 +92,8 @@ export function createDefaultOptions(
 
           footnote: { signature: 'm' },
           sidenote: { signature: 'm' },
+          marginnote: { signature: 'm' },
+          framedsidenote: { signature: 'o o m' },
           setsidenotes: { signature: 'm' },
 
           setcounter: { signature: 'm m' },

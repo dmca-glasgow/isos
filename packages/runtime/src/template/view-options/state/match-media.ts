@@ -1,4 +1,4 @@
-import * as constants from './constants';
+import * as constants from '../../../constants';
 import { ViewOptions, ViewOptionsState } from './state';
 
 export function getPrefersState(): Partial<ViewOptions> {

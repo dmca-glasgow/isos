@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 
-import { MathsState } from '../../mdx-state';
+import { ArticleState } from '../../../article/mdx-state';
+import { MathsFormat, MathsState } from '../../mdx-state';
 import { mmlToSpeech } from './mml-to-speech';
 import { mmlToSvg } from './mml-to-svg';
 import { texToMml } from './tex-to-mml';
@@ -8,37 +9,46 @@ import { texToMml } from './tex-to-mml';
 type MathsProps = {
   expr: string;
   className: string;
-  options: MathsState;
+  maths: MathsState;
+  article: ArticleState;
+  format: MathsFormat;
+  inSidenote?: boolean;
 };
 
 export type LayoutOptions = {
   containerWidth?: number;
 };
 
-const layoutOptions: LayoutOptions = {
-  containerWidth: 1000,
-};
+// const layoutOptions: LayoutOptions = {
+//   containerWidth: 225,
+// };
 
-export function MathJaxPrerender({
-  expr,
-  className,
-  options,
-}: MathsProps) {
+export function MathJaxPrerender(props: MathsProps) {
+  switch (props.format) {
+    case 'inline':
+      return <MathsInline {...props} />;
+    case 'display':
+      return <MathsDisplay {...props} />;
+  }
+}
+
+export function MathsInline({ expr, className, maths }: MathsProps) {
+  // console.log('inline');
   const [label, setLabel] = useState<string>();
   const [braille, setBraille] = useState<string>();
 
-  const mml = texToMml(expr);
-  const svg = mmlToSvg(mml, options, layoutOptions);
-  const brailleOnly = options.ariaMode.value === 'braille-only';
+  const mml = useMemo(() => texToMml(formatLaTeX(expr)), [expr]);
+  const svg = useMemo(() => mmlToSvg(mml, maths, {}), [mml]);
 
   useEffect(() => {
     (async () => {
-      const speech = await mmlToSpeech(mml, options);
+      const speech = await mmlToSpeech(mml, maths);
       setLabel(speech.label);
       setBraille(speech.braille);
     })();
-  }, [options.brailleLocale.value, options.speechLocale.value]);
+  }, [mml, maths.brailleLocale.value, maths.speechLocale.value]);
 
+  const brailleOnly = maths.ariaMode.value === 'braille-only';
   return (
     <code
       className={className}
@@ -47,4 +57,56 @@ export function MathJaxPrerender({
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
+}
+
+export function MathsDisplay({
+  expr,
+  className,
+  maths,
+  article,
+  inSidenote,
+}: MathsProps) {
+  const [label, setLabel] = useState<string>();
+  const [braille, setBraille] = useState<string>();
+
+  const mml = useMemo(() => texToMml(formatLaTeX(expr)), [expr]);
+  const svg = useMemo(() => {
+    const containerWidth = inSidenote
+      ? article.marginWidth.value
+      : article.mainWidth.value;
+    return mmlToSvg(mml, maths, { containerWidth });
+  }, [
+    mml,
+    inSidenote,
+    article.marginWidth.value,
+    article.mainWidth.value,
+  ]);
+
+  useEffect(() => {
+    (async () => {
+      if (mml !== undefined) {
+        const speech = await mmlToSpeech(mml, maths);
+        setLabel(speech.label);
+        setBraille(speech.braille);
+      }
+    })();
+  }, [mml, maths.brailleLocale.value, maths.speechLocale.value]);
+
+  if (!svg) {
+    return null;
+  }
+
+  const brailleOnly = maths.ariaMode.value === 'braille-only';
+  return (
+    <code
+      className={className}
+      aria-label={brailleOnly ? braille : label}
+      aria-braillelabel={brailleOnly ? undefined : braille}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+}
+
+function formatLaTeX(expr: string) {
+  return expr.replace(/\\qedhere/g, '');
 }

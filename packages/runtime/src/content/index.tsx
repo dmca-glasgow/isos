@@ -103,10 +103,11 @@ const ArticleWrapper = styled.div`
     //   }
     // }
 
-    --contentWidth: ${constants.lineWidth.base} *
-      var(--lineWidth, ${constants.lineWidth.initial});
-    --margin: calc((100vw - var(--contentWidth)) / 2);
-    margin: 0 var(--margin);
+    width: calc(
+      ${constants.lineWidth.base} *
+        var(--lineWidth, ${constants.lineWidth.initial})
+    );
+    margin: 0 auto;
 
     // section,
     // header {
@@ -131,12 +132,23 @@ const ArticleWrapper = styled.div`
             );
           }
         }
+
+        .framed {
+          .sidenote {
+            .sidenote-content {
+              margin-right: calc(
+                -${constants.sideNoteWidth} - ${constants.sideNoteGap} -
+                  2rem
+              );
+            }
+          }
+        }
       }
     }
 
-    @media (max-width: 1000px) {
-      width: calc(${constants.mobileLineWidthBase} * var(--lineWidth, 1));
-    }
+    // @media (max-width: 1000px) {
+    //   width: calc(${constants.mobileLineWidthBase} * var(--lineWidth, 1));
+    // }
 
     font-size: calc(
       ${constants.fontSize.base} *

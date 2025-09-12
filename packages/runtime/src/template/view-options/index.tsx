@@ -6,6 +6,7 @@ import { useContext } from 'preact/hooks';
 import { MathsState, MathsStateType } from '@isos/processor';
 
 import { actions, rootEl } from '../../constants';
+import * as constants from '../../constants';
 import { mdxState } from '../../mdx-state';
 // import { MathsOptionsContext } from '@isos/processor';
 import { Checkbox } from './checkbox';
@@ -13,7 +14,6 @@ import { DarkModeToggle } from './dark-mode-toggle';
 import { RangeInput } from './range-input';
 import { Select } from './select';
 import { ViewOptionsContext } from './state';
-import * as constants from './state/constants';
 import { useFullScreenHandle } from './use-fullscreen';
 
 export function ViewOptions() {

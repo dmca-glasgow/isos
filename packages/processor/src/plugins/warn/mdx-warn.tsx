@@ -1,25 +1,42 @@
 // import { styled } from '@linaria/react';
-import { RefCallback } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
-import { useCallback } from 'preact/hooks';
+import { useLayoutEffect, useRef } from 'preact/hooks';
 
 export function WarnSpan({
   children,
   ...props
 }: HTMLAttributes<HTMLSpanElement>) {
-  const ref: RefCallback<HTMLSpanElement> = useCallback((element) => {
-    if (element !== null) {
-      const { y } = element.getBoundingClientRect();
-      const top = Math.round(y);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const y = ref.current?.getBoundingClientRect().y || 0;
+    const top = Math.round(y);
+    // setTooltipHeight(height);
+    window.dispatchEvent(
+      new CustomEvent<number>('warning', { detail: top }),
+    );
+    return () => {
       window.dispatchEvent(
-        new CustomEvent<number>('warning', { detail: top }),
+        new CustomEvent<number>('warning-remove', { detail: top }),
       );
-    }
+    };
   }, []);
+
+  // const ref: RefCallback<HTMLSpanElement> = useCallback((element) => {
+  //   if (element !== null) {
+  //     const { y } = element.getBoundingClientRect();
+  //     window.dispatchEvent(
+  //       new CustomEvent<number>('warning', { detail: Math.round(y) }),
+  //     );
+  //   }
+  // }, []);
   return (
-    <span {...props} className="warn" ref={ref}>
-      {children}
-    </span>
+    <>
+      {' '}
+      <span {...props} className="warn" ref={ref}>
+        {children}
+      </span>
+    </>
   );
 }
 

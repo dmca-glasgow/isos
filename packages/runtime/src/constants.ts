@@ -29,8 +29,8 @@ export const lineWidth: ViewOptionsParam = Object.freeze({
   base: '80vw',
   initial: '1',
   min: '0.6',
-  max: '1.5',
-  increment: '0.05',
+  max: '1.25',
+  increment: '0.01',
 });
 
 export const mobileLineWidthBase = '85vw';
@@ -41,13 +41,13 @@ export const fontSize: ViewOptionsParam = Object.freeze({
   initial: '1',
   min: '0.45',
   max: '2',
-  increment: '0.05',
+  increment: '0.01',
 });
 
 export const lineHeight: ViewOptionsParam = Object.freeze({
   label: 'Line height',
   base: '1.7',
-  initial: '1.1',
+  initial: '1',
   min: '0.7',
   max: '2',
   increment: '0.1',

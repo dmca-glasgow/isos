@@ -1,7 +1,7 @@
-import { List, ListItem, Nodes, Paragraph, Root } from 'mdast';
+import { List, ListItem, Node, Nodes, Paragraph } from 'mdast';
 import { toc } from 'mdast-util-toc';
 
-export function createTableOfContents(mdast: Root) {
+export function createTableOfContents(mdast: Node) {
   const { map: tocMdast } = toc(mdast as Nodes, {
     maxDepth: 3,
     minDepth: 2,

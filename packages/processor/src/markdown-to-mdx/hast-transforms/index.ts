@@ -3,6 +3,7 @@ import { ProcessorOptions } from '@mdx-js/mdx';
 // import { createSvg } from '../utils/icons';
 import { PluggableList } from 'unified';
 
+import { articleWrapper } from '../../plugins/article/article-wrapper';
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
@@ -15,7 +16,6 @@ import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
 import { Context } from '../context';
 import { Options } from '../options';
 import { removeEmptyParagraphs } from './remove-empty-paragraphs';
-import { createWrapper } from './wrapper';
 
 export const processorOptions: ProcessorOptions = {
   outputFormat: 'function-body',
@@ -35,7 +35,7 @@ export function createRehypePlugins(
   const plugins = createRehypeFragmentPlugins(ctx, options);
 
   if (!options.noWrapper) {
-    plugins.push([createWrapper, ctx]);
+    plugins.push([articleWrapper, ctx]);
   }
   return plugins;
 }

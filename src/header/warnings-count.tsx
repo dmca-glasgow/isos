@@ -8,7 +8,7 @@ export function WarningsCount({ loading }: Props) {
   const [warnings, setWarnings] = useState<number[]>([]);
 
   useEffect(() => {
-    function listener(e: CustomEventInit<number>) {
+    function addWarning(e: CustomEventInit<number>) {
       if (e.detail !== undefined) {
         // @ts-expect-error
         setWarnings((prev) => {
@@ -17,9 +17,23 @@ export function WarningsCount({ loading }: Props) {
         });
       }
     }
-    window.addEventListener('warning', listener);
+
+    function removeWarning(e: CustomEventInit<number>) {
+      if (e.detail !== undefined) {
+        setWarnings((prev) => {
+          // @ts-expect-error
+          return prev.includes(e.detail)
+            ? prev.filter((n) => n !== e.detail)
+            : prev;
+        });
+      }
+    }
+
+    window.addEventListener('warning', addWarning);
+    window.addEventListener('warning-remove', removeWarning);
     return () => {
-      window.removeEventListener('warning', listener);
+      window.removeEventListener('warning', addWarning);
+      window.removeEventListener('warning-remove', removeWarning);
     };
   }, []);
 

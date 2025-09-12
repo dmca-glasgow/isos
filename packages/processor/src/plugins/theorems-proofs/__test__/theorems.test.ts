@@ -1298,7 +1298,7 @@ test('theorems with reference and section counters', async () => {
         <p><span class="title"><strong>Exercise 1.2.1.</strong></span> Some text</p>
       </div>
       <div class="remark proof">
-        <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+        <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
       </div>
       <div class="remark solution" id="sol-2">
         <p><span class="title"><em>Solution 1.4</em>. </span>Some text</p>
@@ -1328,4 +1328,138 @@ test('ignore an unsupported boxout', async () => {
   `);
 
   expect(markdown).toBe(expectedMarkdown);
+});
+
+test('nested theorems', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \theoremstyle{definition}
+    \newtheorem{proposition}{Proposition}
+    \begin{document}
+
+    \begin{proposition}Let $S$.
+
+    a
+
+    b
+    \begin{proof}Let:
+    \end{proof}
+    c
+    \end{proposition}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    :::: {#prp-1}
+    Let $S$.
+
+    a
+
+    b
+
+    ::: {.proof}
+    Let:
+    :::
+
+    c
+    ::::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+});
+
+test('qed placement', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \begin{document}
+
+    \begin{proof}We must:
+    \begin{enumerate}
+    \item[1.] Let:
+    \item[2.] Let
+    \[
+    S\qedhere
+    \]
+    \end{enumerate}
+    \end{proof}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ::: {.proof}
+    We must:
+
+    1) Let:
+
+    2) Let
+
+       $$
+       S\qedhere
+       $$
+
+
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="remark proof">
+      <p><span class="title"><em>Proof</em>. </span>We must:</p>
+      <ol>
+        <li>
+          <p>Let:</p>
+        </li>
+        <li>
+          <p>Let</p>
+          <p class="maths"><code class="latex">S\qedhere</code></p>
+        </li>
+      </ol>
+      <p><span class="qed"> q.e.d.</span></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('qed placement 2', async () => {
+  const latex = String.raw`
+    \begin{proof}
+    Observe that \sidenote{If we substitute}
+    \end{proof}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ::: {.proof}
+    Observe that [^1]
+
+    [^1]: If we substitute
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="remark proof">
+      <p><span class="title"><em>Proof</em>. </span>Observe that <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>If we substitute</span></small><span class="sidenote-label">)</span></span><span class="qed"> q.e.d.</span></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
 });

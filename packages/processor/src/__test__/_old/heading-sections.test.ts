@@ -28,39 +28,3 @@ test.skip('fancy section heading', async () => {
 
   expect(html).toBe(expectedHtml);
 });
-
-test('framed environment', async () => {
-  const markdown = await testProcessor.latex(`
-    \\begin{framed}
-    \\begin{definition} A \\emph{matrix}.
-    \\end{definition}
-    \\vspace*{-4mm}
-    \\end{framed}
-  `);
-
-  // console.log(markdown);
-
-  const expectedMarkdown = unindentStringAndTrim(`
-    ::::framed
-    :::definition
-    A *matrix*.
-    :::
-    ::::
-  `);
-
-  expect(markdown).toBe(expectedMarkdown);
-
-  const html = await testProcessor.md(markdown);
-
-  // console.log(html);
-
-  const expectedHtml = unindentStringAndTrim(`
-    <div class="framed">
-      <div id="definition-1" class="boxout definition">
-        <p><span class="type">Definition <span class="count">1.</span></span> A <em>matrix</em>.</p>
-      </div>
-    </div>
-  `);
-
-  expect(html).toBe(expectedHtml);
-});

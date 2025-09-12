@@ -37,9 +37,13 @@ packages.forEach((fontPackage) => {
   MathJaxFiraFont.dynamicFiles[fontPackage].setup(FiraFont);
 });
 
+const fontOptions = {
+  displayOverflow: 'linebreak',
+};
+
 const fonts: Record<MathsFont, any> = {
-  computerModern: new SVG({ fontData: NewcmFont }),
-  fira: new SVG({ fontData: FiraFont }),
+  computerModern: new SVG({ ...fontOptions, fontData: NewcmFont }),
+  fira: new SVG({ ...fontOptions, fontData: FiraFont }),
 };
 
 export function mmlToSvg(
@@ -50,8 +54,12 @@ export function mmlToSvg(
   htmlDoc.outputJax = fonts[options.mathsFontName.value];
   htmlDoc.outputJax.setAdaptor(htmlDoc.adaptor);
 
-  const htmlNode = htmlDoc.convert(mml, layoutOptions);
+  const htmlNode = htmlDoc.convert(mml, {
+    containerWidth: layoutOptions.containerWidth,
+    // overflow: 'linebreak',
+  });
   const svg = htmlNode.children[0];
+
   const html = adaptor.outerHTML(svg);
 
   const match = html.match(/data-mjx-error="(.*?)"/);

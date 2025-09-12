@@ -6,6 +6,7 @@ import { cover } from '../../plugins/cover/cover';
 import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { footnoteReference } from '../../plugins/footnotes/footnote-reference';
+import { framed } from '../../plugins/framed/create-framed';
 import { headings } from '../../plugins/headings/mdx-headings';
 import { setHeadingCounterToDiv } from '../../plugins/headings/set-counter-directive-to-div';
 import { imageAttributes } from '../../plugins/images/image-attributes';
@@ -43,6 +44,7 @@ export function createMdastTransforms(
     removeComments,
     createCallouts,
     htmlToWarn,
+    framed,
     setHeadingCounterToDiv,
     [divSyntax, ctx],
     [footnoteReference, ctx],

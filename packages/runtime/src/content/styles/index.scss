@@ -3,6 +3,7 @@
 
 @include meta.load-css('./sidenote.scss');
 @include meta.load-css('./syntax-highlight.scss');
+@include meta.load-css('./maths.scss');
 
 // :root {
 //   background: #d3d3d3;
@@ -103,6 +104,8 @@ article {
 
   p {
     margin-bottom: 1.5em;
+    hyphens: auto;
+    text-align: justify;
   }
 
   u {
@@ -180,16 +183,15 @@ article {
 
   ul,
   ol {
-    margin-top: 2em;
-    li {
-      margin-left: 0.3em;
-      p {
-        margin: 0;
-        text-indent: 0;
-      }
-    }
+    // margin-top: 0;
+    margin-bottom: 1.5em;
     li {
       margin-bottom: 1em;
+      margin-left: 0.3em;
+      p {
+        // margin: 0;
+        text-indent: 0;
+      }
     }
 
     ul,
@@ -284,6 +286,25 @@ article {
     }
   }
 
+  .framed {
+    box-shadow: 0 0 0 2px hsl(from var(--textColor) h s calc(l - 50));
+    padding: 1em 2em 1em 1.2em;
+    margin: 2em 0;
+
+    *:first-child {
+      margin-top: 0;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .maths {
+    svg {
+      overflow: visible;
+    }
+  }
+
   p.maths {
     // padding-left: 1em;
     text-align: center;
@@ -318,6 +339,24 @@ article {
   .remark {
     .title {
       padding-right: 0.5em;
+    }
+  }
+
+  .proof {
+    .qed {
+      float: right;
+      display: block;
+      width: 1ex;
+      height: 1ex;
+      margin-top: 0.6em;
+      text-indent: -9999px;
+      overflow: hidden;
+      border: 1px solid var(--textColor);
+    }
+
+    // clear float hack
+    p:has(.qed) {
+      min-height: 1.5em;
     }
   }
 

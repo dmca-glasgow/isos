@@ -9,7 +9,7 @@ const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
 
 export function inlineImagesFromContext(ctx: Context, options: Options) {
   return async (tree: Root) => {
-    // console.log(ctx);
+    // console.log(ctx.base64Images);
     // console.log('inlineImages', options.noInlineImages);
     if (options.noInlineImages) {
       return;
@@ -25,7 +25,11 @@ export function inlineImagesFromContext(ctx: Context, options: Options) {
     for (const node of nodes) {
       const imagePath = resolve(dir, node.url);
       const ext = extname(imagePath);
-      if (supportedExtensions.includes(ext)) {
+
+      if (node.url.startsWith('data')) {
+        // already inlined
+        continue;
+      } else if (supportedExtensions.includes(ext)) {
         if (ctx.base64Images[imagePath]) {
           node.url = ctx.base64Images[imagePath];
         }

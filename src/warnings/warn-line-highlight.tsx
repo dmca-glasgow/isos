@@ -8,17 +8,37 @@ export function WarningLineHighlight({ loading }: Props) {
   const [warnings, setWarnings] = useState<number[]>([]);
   const [articleHeight, setArticleHeight] = useState(0);
   // const { height, ref } = useElementDimensions();
+  // console.log({ loading, warnings });
 
   useEffect(() => {
-    function listener(e: CustomEventInit<number>) {
+    function addWarning(e: CustomEventInit<number>) {
+      // console.log('listening');
       if (e.detail !== undefined) {
         // @ts-expect-error
-        setWarnings((prev) => [...prev, e.detail]);
+        setWarnings((prev) => {
+          // @ts-expect-error
+          return prev.includes(e.detail) ? prev : [...prev, e.detail];
+        });
       }
     }
-    window.addEventListener('warning', listener);
+
+    function removeWarning(e: CustomEventInit<number>) {
+      if (e.detail !== undefined) {
+        setWarnings((prev) => {
+          // @ts-expect-error
+          return prev.includes(e.detail)
+            ? prev.filter((n) => n !== e.detail)
+            : prev;
+        });
+      }
+    }
+
+    window.addEventListener('warning', addWarning);
+    window.addEventListener('warning-remove', removeWarning);
     return () => {
-      window.removeEventListener('warning', listener);
+      console.log('dismount');
+      window.removeEventListener('warning', addWarning);
+      window.removeEventListener('warning-remove', removeWarning);
     };
   }, []);
 

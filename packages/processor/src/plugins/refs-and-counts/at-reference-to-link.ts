@@ -1,32 +1,43 @@
-import { Element, Root } from 'hast';
+import { Element, Root, Text } from 'hast';
 import { findAndReplace } from 'hast-util-find-and-replace';
 
 import { Context, Reference } from '../../markdown-to-mdx/context';
 
-const pattern = /(^|\s)@([\w-]+)/g;
+const pattern = /(^|[^a-zA-Z0-9])@([\w-]+)/g;
 
 export default function atReferenceToLink(ctx: Context) {
   return (tree: Root) => {
+    // console.dir(tree, { depth: null });
     // console.log(ctx.frontmatter.refMap);
     findAndReplace(tree, [
       pattern,
-      (_, ref) => {
+      (_, prefix, ref) => {
         const reference = ctx.frontmatter.refMap[ref];
-        // console.log(reference);
+        // console.log(ref, reference);
+
+        const output: (Element | Text)[] = [
+          {
+            type: 'text',
+            value: prefix,
+          },
+        ];
+
         if (reference) {
-          return createReferenceLink(reference);
+          output.push(createReferenceLink(reference));
         } else {
           // TODO: warn about undefined reference
           // console.error(`undefined reference: ${ref}`);
 
-          return createBrokenReferenceWarning(ref);
+          output.push(createBrokenReferenceWarning(ref));
         }
+
+        return output;
       },
     ]);
   };
 }
 
-function createReferenceLink(reference: Reference): Element | null {
+function createReferenceLink(reference: Reference): Element {
   return {
     type: 'element',
     tagName: 'a',
@@ -38,7 +49,7 @@ function createReferenceLink(reference: Reference): Element | null {
   };
 }
 
-function createBrokenReferenceWarning(ref: string): Element | null {
+function createBrokenReferenceWarning(ref: string): Element {
   if (process.env.NODE_ENV !== 'test') {
     console.log(`unknown ref:`, ref);
   }

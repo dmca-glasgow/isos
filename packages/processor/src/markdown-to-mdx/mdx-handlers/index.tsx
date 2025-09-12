@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { VNode } from 'preact';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 
+import { Article } from '../../plugins/article/article';
 import { CalloutIcon } from '../../plugins/callout/mdx-callout-icon';
 // import { Authors } from '../../plugins/cover/mdx-authors';
 import { OrcidLink } from '../../plugins/cover/orcid-link';
@@ -15,13 +16,15 @@ import { Section } from './toc-highlight/section';
 import { TocListItem } from './toc-highlight/toc-list-item';
 
 export function createRunOptions(
-  { maths }: MdxState,
+  { article, maths }: MdxState,
   { noIcons }: Pick<Options, 'noIcons'>,
 ): RunOptions {
   return {
     Fragment,
     useMDXComponents: () => ({
-      // TODO: not working with some tests
+      article(props) {
+        return <Article state={article} {...props} />;
+      },
       a(props) {
         const href = String(props?.href || '');
         const className = String(props?.class || '');
@@ -30,12 +33,11 @@ export function createRunOptions(
         } else if (href.startsWith('#')) {
           return <a {...props} />;
         } else {
-          // this is to ensure external links open in your
+          // this is to ensure external links open in the
           // default browser and not the tauri app window
           return <a {...props} target="_blank" />;
         }
       },
-      // TODO: not working with some tests
       span(props) {
         const className = String(props.class || '');
         if (!noIcons && className.includes('callout-icon')) {
@@ -59,7 +61,14 @@ export function createRunOptions(
 
         if (className.includes('math-inline')) {
           const expr = props.children as string;
-          return <Maths expr={expr} format="inline" options={maths} />;
+          return (
+            <Maths
+              expr={expr}
+              format="inline"
+              maths={maths}
+              article={article}
+            />
+          );
         }
 
         // if (className.startsWith('language')) {
@@ -99,11 +108,18 @@ export function createRunOptions(
           const id = props['data-id'];
           const expr = child.props.children as string;
           const className = classNames('maths', { 'env-equation': count });
+          const inSidenote = (props.class || '').includes('in-sidenote');
 
           // TODO: don't add paragraphs in sidenotes
           return (
             <p id={id} className={className}>
-              <Maths expr={expr} format="display" options={maths} />
+              <Maths
+                expr={expr}
+                format="display"
+                maths={maths}
+                article={article}
+                inSidenote={inSidenote}
+              />
               {count}
             </p>
           );
@@ -127,7 +143,10 @@ export function createRunOptions(
   };
 }
 
-export function createSidebarRunOptions(_mdxState: MdxState): RunOptions {
+export function createSidebarRunOptions({
+  article,
+  maths,
+}: MdxState): RunOptions {
   return {
     Fragment,
     jsx,
@@ -135,6 +154,31 @@ export function createSidebarRunOptions(_mdxState: MdxState): RunOptions {
     jsxDEV,
     useMDXComponents: () => ({
       li: TocListItem,
+      code(props) {
+        const className = String(props.class || '');
+
+        if (className.includes('math-inline')) {
+          const expr = props.children as string;
+          return (
+            <Maths
+              expr={expr}
+              format="inline"
+              maths={maths}
+              article={article}
+            />
+          );
+        }
+
+        // if (className.startsWith('language')) {
+        //   const match = className.match(/language-(\S+)/);
+        //   if (match !== null) {
+        //     console.log('code:', match[1]);
+        //     return <code>{props.children}</code>;
+        //   }
+        // }
+
+        return <code {...props} />;
+      },
     }),
   };
 }

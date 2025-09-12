@@ -155,8 +155,8 @@ test('footnotemark and footnotetext with no identifier', async () => {
     <section>
       <p>Some text <span class="warn">footnote mark has no identifier</span>and <span class="warn">footnote mark has no identifier</span>.</p>
       <p>Another paragraph.</p>
-      <p><span class="warn">footnote text has no identifier</span></p>
-      <p><span class="warn">footnote text has no identifier</span></p>
+      <p> <span class="warn">footnote text has no identifier</span></p>
+      <p> <span class="warn">footnote text has no identifier</span></p>
     </section>
   `);
 
@@ -345,6 +345,8 @@ test('footnotes with labels', async () => {
 test('footnote with display maths', async () => {
   const latex = String.raw`
     \documentclass{article}
+    \theoremstyle{definition}
+    \newtheorem{lemma}{Lemma}
     \newcommand{\eps}{\varepsilon}
     \newcommand{\N}{\mathbb{N}}
     \begin{document}
@@ -463,6 +465,160 @@ test('footnote referencing other footnote', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p>a<span class="sidenote"><sup class="sidenote-count"><a id="fn-com-2" href="#fn-ref-com-2">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-com-2" href="#fn-com-2">1</a> </sup><span>b.</span></small><span class="sidenote-label">)</span></span></p>
     <p>c<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>d <a href="#fn-ref-com-2" class="ref">Sidenote 1</a>.</span></small><span class="sidenote-label">)</span></span></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('framedsidenote', async () => {
+  const latex = String.raw`
+    \documentclass{tufte-handout}
+    \theoremstyle{definition}
+    \newtheorem{definition}{Definition}
+    \begin{document}
+
+    The algebra of real numbers depends\sidenote{abc} and\sidenote{def}:
+
+    \begin{framed}
+    \begin{definition}Let $S$ be a set.
+    \begin{enumerate}
+    \item[1.] We say that\framedsidenote{def}.
+    \item[2.] We say that\framedsidenote{ghi}.
+    \end{enumerate}
+    \end{definition}
+    \end{framed}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    The algebra of real numbers depends[^1] and[^2]:
+
+    [^1]: abc
+
+    [^2]: def
+
+    ::::framed
+    ::: {#def-1}
+    Let $S$ be a set.
+
+    1) We say that[^3].
+
+       [^3]: def
+
+    2) We say that[^4].
+
+       [^4]: ghi
+
+
+    :::
+    ::::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>The algebra of real numbers depends<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>abc</span></small><span class="sidenote-label">)</span></span> and<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>def</span></small><span class="sidenote-label">)</span></span>:</p>
+    <div class="framed">
+      <div class="definition" id="def-1">
+        <p><span class="title"><strong>Definition 1.</strong></span> Let <code class="latex">S</code> be a set.</p>
+        <ol>
+          <li>
+            <p>We say that<span class="sidenote"><sup class="sidenote-count"><a id="fn-3" href="#fn-ref-3">3</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-3" href="#fn-3">3</a> </sup><span>def</span></small><span class="sidenote-label">)</span></span>.</p>
+          </li>
+          <li>
+            <p>We say that<span class="sidenote"><sup class="sidenote-count"><a id="fn-4" href="#fn-ref-4">4</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-4" href="#fn-4">4</a> </sup><span>ghi</span></small><span class="sidenote-label">)</span></span>.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('framedsidenote with offset', async () => {
+  const latex = String.raw`
+    \documentclass{tufte-handout}
+    \theoremstyle{definition}
+    \newtheorem{definition}{Definition}
+    \begin{document}
+
+    \begin{framed}
+    Associativity for scalar multiplication\framedsidenote[2]{Again, Axiom 6 appears} every vector.
+    \end{framed}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    :::framed
+    Associativity for scalar multiplication[^1] every vector.
+
+    [^1]: Again, Axiom 6 appears
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="framed">
+      <p>Associativity for scalar multiplication<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>Again, Axiom 6 appears</span></small><span class="sidenote-label">)</span></span> every vector.</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('sidenote with image', async () => {
+  const markdown = await testProcessor.fixture(
+    'sidenote-images/article.tex',
+    {
+      // noInlineImages: false,
+    },
+  );
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    As right[^1].
+
+    [^1]: ![](ReflectionY.pdf) and bla bla.
+
+    As right[^2].
+
+    [^2]: ![](Rotation3D.pdf) and bla bla.
+
+    As right[^3].
+
+    [^3]: ![](Rotation90.pdf) and bla bla.
+
+    As right[^4].
+
+    [^4]: ![](RotationTheta.pdf) and bla bla.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span><img src="ReflectionY.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
+    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span><img src="Rotation3D.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
+    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-3" href="#fn-ref-3">3</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-3" href="#fn-3">3</a> </sup><span><img src="Rotation90.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
+    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-4" href="#fn-ref-4">4</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-4" href="#fn-4">4</a> </sup><span><img src="RotationTheta.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
   `);
 
   expect(html).toBe(expectedHtml);

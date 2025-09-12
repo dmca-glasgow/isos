@@ -12,7 +12,7 @@ import {
   createFootnoteMark,
   createFootnoteText,
 } from '../../plugins/footnotes/footnote';
-// import { createFramed } from './framed';
+import { createFramed } from '../../plugins/framed/framed';
 import { createHeadings } from '../../plugins/headings/headings';
 import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
@@ -93,12 +93,6 @@ function spanHandler(
       return result;
     }
 
-    if (className.includes('macro-sidenote')) {
-      const result = createSideNote(state, node);
-      state.patch(node, result);
-      return result;
-    }
-
     if (className.includes('macro-title')) {
       const result = createTitle(state, node);
       state.patch(node, result);
@@ -117,6 +111,17 @@ function spanHandler(
 
     if (className.includes('macro-label')) {
       const result = createLabel(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    // footnotes/sidenotes
+    if (
+      className.includes('macro-sidenote') ||
+      className.includes('macro-framedsidenote') ||
+      className.includes('macro-marginnote')
+    ) {
+      const result = createSideNote(state, node);
       state.patch(node, result);
       return result;
     }
@@ -244,13 +249,13 @@ function divHandler(ctx: Context, state: State, node: Element) {
       //   return result;
       // }
 
-      // if (environmentName === 'framed') {
-      //   const result = createFramed(state, node);
-      //   // console.log(result);
-      //   state.patch(node, result);
-      //   // console.log(state);
-      //   return result;
-      // }
+      if (environmentName === 'framed') {
+        const result = createFramed(state, node);
+        // console.log(result);
+        state.patch(node, result);
+        // console.log(state);
+        return result;
+      }
 
       // do nothing
       if (environmentName === 'table') {

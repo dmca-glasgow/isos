@@ -102,10 +102,10 @@ export function footNotesToSideNotes(ctx: Context) {
                               },
                             ],
                           },
-                          {
-                            type: 'text',
-                            value: ' ',
-                          },
+                          // {
+                          //   type: 'text',
+                          //   value: ' ',
+                          // },
                         ],
                       },
                       ...definition,
@@ -188,9 +188,29 @@ function findDefinition(definitions: Element[], id: string): Footnote {
   }
   let definition = definitions[idx].children;
   removeReturnArrow(definition);
+  addMathsClass(definition);
   definition = paragraphsToSpans(definition);
   // console.log(definition);
   return { idx, definition };
+}
+
+function removeReturnArrow(children: ElementContent[]) {
+  visit({ type: 'root', children }, 'element', (a, idx = 0, parent) => {
+    if (a.tagName === 'a') {
+      const href = String(a.properties?.href || '');
+      if (href.startsWith('#fn-ref')) {
+        parent?.children.splice(idx, 1);
+      }
+    }
+  });
+}
+
+function addMathsClass(children: ElementContent[]) {
+  visit({ type: 'root', children }, 'element', (node) => {
+    if (node.tagName === 'pre') {
+      node.properties.className = ['in-sidenote'];
+    }
+  });
 }
 
 function paragraphsToSpans(contents: ElementContent[]) {
@@ -220,15 +240,4 @@ function paragraphsToSpans(contents: ElementContent[]) {
     return acc;
   }, []);
   // console.log(contents);
-}
-
-function removeReturnArrow(children: ElementContent[]) {
-  visit({ type: 'root', children }, 'element', (a, idx = 0, parent) => {
-    if (a.tagName === 'a') {
-      const href = String(a.properties?.href || '');
-      if (href.startsWith('#fn-ref')) {
-        parent?.children.splice(idx, 1);
-      }
-    }
-  });
 }

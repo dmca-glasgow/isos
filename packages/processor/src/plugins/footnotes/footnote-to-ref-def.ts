@@ -8,7 +8,11 @@ export function footnoteToRefDef() {
     let count = 0;
     // console.dir(tree, { depth: null });
     visit(tree, 'textDirective', (node, idx, parent) => {
-      if (['footnote', 'sidenote'].includes(node.name)) {
+      if (
+        ['footnote', 'sidenote', 'framedsidenote', 'marginnote'].includes(
+          node.name,
+        )
+      ) {
         ++count;
 
         const label = extractLabel(node);
