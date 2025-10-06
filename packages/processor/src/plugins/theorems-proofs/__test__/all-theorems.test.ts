@@ -290,7 +290,7 @@ test('all theorems with default styles', async () => {
       <p><span class="title"><em>Remark 1</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
     <div class="definition theorem" id="thm-2">
       <p><span class="title"><strong>Theorem 2.</strong></span> Some text</p>
@@ -323,7 +323,7 @@ test('all theorems with default styles', async () => {
       <p><span class="title"><em>Remark 2</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 
@@ -558,7 +558,7 @@ test('all theorems with plain styles', async () => {
       <p><span class="title"><strong>Remark 1.</strong></span> Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
     <div class="plain theorem" id="thm-2">
       <p><span class="title"><strong>Theorem 2.</strong></span> Some text</p>
@@ -591,7 +591,7 @@ test('all theorems with plain styles', async () => {
       <p><span class="title"><strong>Remark 2.</strong></span> Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 
@@ -830,7 +830,7 @@ test('all theorems with custom headings', async () => {
       <p><span class="title"><em>Juliett 1</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
     <div class="definition theorem" id="thm-2">
       <p><span class="title"><strong>Alfa 2.</strong></span> Some text</p>
@@ -863,7 +863,7 @@ test('all theorems with custom headings', async () => {
       <p><span class="title"><em>Juliett 2</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 
@@ -1097,7 +1097,7 @@ test('all theorems with custom counters', async () => {
       <p><span class="title"><em>Remark 5</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
     <div class="definition theorem" id="thm-2">
       <p><span class="title"><strong>Theorem 6.</strong></span> Some text</p>
@@ -1130,7 +1130,7 @@ test('all theorems with custom counters', async () => {
       <p><span class="title"><em>Remark 10</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 
@@ -1347,7 +1347,7 @@ test('all theorems with custom names', async () => {
       <p><span class="title"><em>Remark 1 (Juliett)</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Kilo</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Kilo</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
     <div class="definition theorem" id="thm-2">
       <p><span class="title"><strong>Theorem 2 (Lima).</strong></span> Some text</p>
@@ -1380,7 +1380,7 @@ test('all theorems with custom names', async () => {
       <p><span class="title"><em>Remark 2 (Uniform)</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Victor</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Victor</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 
@@ -1555,7 +1555,7 @@ test('all theorems unnumbered', async () => {
       <p><span class="title"><em>Remark</em>. </span>Some text</p>
     </div>
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> ◻</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 

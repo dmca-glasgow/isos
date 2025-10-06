@@ -90,9 +90,9 @@ export function createDefaultOptions(
 
           counterwithin: { signature: 'm m' },
 
-          footnote: { signature: 'm' },
-          sidenote: { signature: 'm' },
-          marginnote: { signature: 'm' },
+          footnote: { signature: 'o o m' },
+          sidenote: { signature: 'o o m' },
+          marginnote: { signature: 'o o m' },
           framedsidenote: { signature: 'o o m' },
           setsidenotes: { signature: 'm' },
 
@@ -151,7 +151,7 @@ function createLatexMdAstTransforms(ctx: Context): PluggableList {
   return [
     [addFrontmatter, ctx],
     formatBreak,
-    imageToPandocFigure,
+    [imageToPandocFigure, ctx],
     footnoteMarkToRef,
     footnoteToRefDef,
   ];

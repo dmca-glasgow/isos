@@ -47,7 +47,7 @@ test('footnote', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em></span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em></span></small><span class="sidenote-label">)</span></span>.</p>
+      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>text for <em>footnote</em></span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a></sup>text for <em>footnote</em></span></small><span class="sidenote-label">)</span></span>.</p>
       <p>Another paragraph.</p>
     </section>
   `);
@@ -100,7 +100,7 @@ test('footnotemark and footnotetext', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>text for <em>footnote</em> 1</span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>text for <em>footnote</em> 2</span></small><span class="sidenote-label">)</span></span>.</p>
+      <p>Some text <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>text for <em>footnote</em> 1</span> <span>Subsequent paragraphs are indented to show that they belong to the previous footnote.</span></small><span class="sidenote-label">)</span></span> and <span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a></sup>text for <em>footnote</em> 2</span></small><span class="sidenote-label">)</span></span>.</p>
       <p>Another paragraph.</p>
     </section>
   `);
@@ -418,7 +418,7 @@ test('footnote with display maths', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p>a</p>
-    <p>b <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>c</span>
+    <p>b <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>c</span>
         <p class="maths"><code class="latex">x</code></p> <span>d <a href="#lem-1-8" class="ref">Lemma 1</a></span>
         <p class="maths"><code class="latex">\begin{align*}
     a_{n}
@@ -463,8 +463,8 @@ test('footnote referencing other footnote', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p>a<span class="sidenote"><sup class="sidenote-count"><a id="fn-com-2" href="#fn-ref-com-2">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-com-2" href="#fn-com-2">1</a> </sup><span>b.</span></small><span class="sidenote-label">)</span></span></p>
-    <p>c<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>d <a href="#fn-ref-com-2" class="ref">Sidenote 1</a>.</span></small><span class="sidenote-label">)</span></span></p>
+    <p>a<span class="sidenote"><sup class="sidenote-count"><a id="fn-com-2" href="#fn-ref-com-2">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-com-2" href="#fn-com-2">1</a></sup>b.</span></small><span class="sidenote-label">)</span></span></p>
+    <p>c<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a></sup>d <a href="#fn-ref-com-2" class="ref">Sidenote 1</a>.</span></small><span class="sidenote-label">)</span></span></p>
   `);
 
   expect(html).toBe(expectedHtml);
@@ -524,16 +524,16 @@ test('framedsidenote', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p>The algebra of real numbers depends<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>abc</span></small><span class="sidenote-label">)</span></span> and<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span>def</span></small><span class="sidenote-label">)</span></span>:</p>
+    <p>The algebra of real numbers depends<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>abc</span></small><span class="sidenote-label">)</span></span> and<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a></sup>def</span></small><span class="sidenote-label">)</span></span>:</p>
     <div class="framed">
       <div class="definition" id="def-1">
         <p><span class="title"><strong>Definition 1.</strong></span> Let <code class="latex">S</code> be a set.</p>
         <ol>
           <li>
-            <p>We say that<span class="sidenote"><sup class="sidenote-count"><a id="fn-3" href="#fn-ref-3">3</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-3" href="#fn-3">3</a> </sup><span>def</span></small><span class="sidenote-label">)</span></span>.</p>
+            <p>We say that<span class="sidenote"><sup class="sidenote-count"><a id="fn-3" href="#fn-ref-3">3</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-3" href="#fn-3">3</a></sup>def</span></small><span class="sidenote-label">)</span></span>.</p>
           </li>
           <li>
-            <p>We say that<span class="sidenote"><sup class="sidenote-count"><a id="fn-4" href="#fn-ref-4">4</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-4" href="#fn-4">4</a> </sup><span>ghi</span></small><span class="sidenote-label">)</span></span>.</p>
+            <p>We say that<span class="sidenote"><sup class="sidenote-count"><a id="fn-4" href="#fn-ref-4">4</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-4" href="#fn-4">4</a></sup>ghi</span></small><span class="sidenote-label">)</span></span>.</p>
           </li>
         </ol>
       </div>
@@ -575,7 +575,7 @@ test('framedsidenote with offset', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="framed">
-      <p>Associativity for scalar multiplication<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>Again, Axiom 6 appears</span></small><span class="sidenote-label">)</span></span> every vector.</p>
+      <p>Associativity for scalar multiplication<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>Again, Axiom 6 appears</span></small><span class="sidenote-label">)</span></span> every vector.</p>
     </div>
   `);
 
@@ -585,28 +585,59 @@ test('framedsidenote with offset', async () => {
 test('sidenote with image', async () => {
   const markdown = await testProcessor.fixture(
     'sidenote-images/article.tex',
-    {
-      // noInlineImages: false,
-    },
   );
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    As right[^1].
+    ::: {#exm-1}
+    The Manx triskelion or “three legs of Man”, shown in the figure to the right, is the national symbol of the Isle of Man.[^1]
 
-    [^1]: ![](ReflectionY.pdf) and bla bla.
+    [^1]: ![](Triskelion.jpg)
+        The three legs of Man.
+    :::
 
-    As right[^2].
+    ::: {#exm-2}
+    This is illustrated in the figure to the right.[^2]
 
-    [^2]: ![](Rotation3D.pdf) and bla bla.
+    [^2]: ![](FifthRootsOfUnity)The number $\beta=\omega^{3}$ is a primitive fifth root of unity.
+    :::
+  `);
 
-    As right[^3].
+  expect(markdown).toBe(expectedMarkdown);
 
-    [^3]: ![](Rotation90.pdf) and bla bla.
+  const html = await testProcessor.md(expectedMarkdown);
+  // console.log(html);
 
-    As right[^4].
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="definition example" id="exm-1">
+      <p><span class="title"><strong>Example 1.</strong></span> The Manx triskelion or “three legs of Man”, shown in the figure to the right, is the national symbol of the Isle of Man.<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup><img src="Triskelion.jpg" alt="Image"/>
+    The three legs of Man.</span></small><span class="sidenote-label">)</span></span></p>
+    </div>
+    <div class="definition example" id="exm-2">
+      <p><span class="title"><strong>Example 2.</strong></span> This is illustrated in the figure to the right.<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a></sup><img src="FifthRootsOfUnity" alt="Image"/>The number <code class="latex">\beta=\omega^{3}</code> is a primitive fifth root of unity.</span></small><span class="sidenote-label">)</span></span></p>
+    </div>
+  `);
 
-    [^4]: ![](RotationTheta.pdf) and bla bla.
+  expect(html).toBe(expectedHtml);
+});
+
+test('marginnote', async () => {
+  const latex = String.raw`
+    \documentclass{tufte-handout}
+    \begin{document}
+
+    Acting as the identity elsewhere.  For example, here is a $4$-cycle on the set $\{1,2,\ldots,8\}$:\marginnote[0.25in]{Throughout these notes, we will use colour to highlight portions of certain permutations, such as the red here.}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    Acting as the identity elsewhere. For example, here is a $4$-cycle on the set $\{1,2,\ldots,8\}$:[^1]
+
+    [^1]: Throughout these notes, we will use colour to highlight portions of certain permutations, such as the red here.
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -615,10 +646,7 @@ test('sidenote with image', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span><img src="ReflectionY.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
-    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-2" href="#fn-ref-2">2</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-2" href="#fn-2">2</a> </sup><span><img src="Rotation3D.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
-    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-3" href="#fn-ref-3">3</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-3" href="#fn-3">3</a> </sup><span><img src="Rotation90.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
-    <p>As right<span class="sidenote"><sup class="sidenote-count"><a id="fn-4" href="#fn-ref-4">4</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-4" href="#fn-4">4</a> </sup><span><img src="RotationTheta.pdf" alt="Image"/> and bla bla.</span></small><span class="sidenote-label">)</span></span>.</p>
+    <p>Acting as the identity elsewhere. For example, here is a <code class="latex">4</code>-cycle on the set <code class="latex">\{1,2,\ldots,8\}</code>:<span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>Throughout these notes, we will use colour to highlight portions of certain permutations, such as the red here.</span></small><span class="sidenote-label">)</span></span></p>
   `);
 
   expect(html).toBe(expectedHtml);

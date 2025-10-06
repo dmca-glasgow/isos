@@ -1457,7 +1457,7 @@ test('qed placement 2', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Observe that <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a> </sup><span>If we substitute</span></small><span class="sidenote-label">)</span></span><span class="qed"> q.e.d.</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Observe that <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>If we substitute</span></small><span class="sidenote-label">)</span></span><span class="qed"> q.e.d.</span></p>
     </div>
   `);
 

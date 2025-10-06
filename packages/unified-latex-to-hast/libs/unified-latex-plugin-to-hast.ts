@@ -5,7 +5,7 @@ import { match } from '@unified-latex/unified-latex-util-match';
 import { EXIT, visit } from '@unified-latex/unified-latex-util-visit';
 import * as Hast from 'hast';
 import { h } from 'hastscript';
-import rehypeRaw from 'rehype-raw';
+// import rehypeRaw from 'rehype-raw';
 import { Plugin, unified } from 'unified';
 
 import { toHastWithLoggerFactory } from './html-subs/to-hast';
@@ -32,7 +32,7 @@ export const unifiedLatexToHast: Plugin<
   Ast.Root,
   Hast.Root
 > = function unifiedLatexAttachMacroArguments(options) {
-  const { skipHtmlValidation = false } = options || {};
+  // const { skipHtmlValidation = false } = options || {};
   return (tree, file) => {
     unified().use(unifiedLatexToHtmlLike, options).run(tree);
 

@@ -2,24 +2,23 @@
 import { HTMLAttributes } from 'preact/compat';
 import { useLayoutEffect, useRef } from 'preact/hooks';
 
-export function WarnSpan({
-  children,
-  ...props
-}: HTMLAttributes<HTMLSpanElement>) {
+export function WarnSpan(props: HTMLAttributes<HTMLSpanElement>) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {
-    const y = ref.current?.getBoundingClientRect().y || 0;
-    const top = Math.round(y);
-    // setTooltipHeight(height);
-    window.dispatchEvent(
-      new CustomEvent<number>('warning', { detail: top }),
-    );
-    return () => {
+    if (ref.current) {
+      const { y } = ref.current.getBoundingClientRect();
+      const top = Math.round(y);
+      // setTooltipHeight(height);
       window.dispatchEvent(
-        new CustomEvent<number>('warning-remove', { detail: top }),
+        new CustomEvent<number>('warning', { detail: top }),
       );
-    };
+      return () => {
+        window.dispatchEvent(
+          new CustomEvent<number>('warning-remove', { detail: top }),
+        );
+      };
+    }
   }, []);
 
   // const ref: RefCallback<HTMLSpanElement> = useCallback((element) => {
@@ -33,9 +32,7 @@ export function WarnSpan({
   return (
     <>
       {' '}
-      <span {...props} className="warn" ref={ref}>
-        {children}
-      </span>
+      <span {...props} className="warn" ref={ref} />
     </>
   );
 }

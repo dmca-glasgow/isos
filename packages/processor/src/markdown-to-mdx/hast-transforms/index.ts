@@ -7,6 +7,7 @@ import { articleWrapper } from '../../plugins/article/article-wrapper';
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
+import { addFooter } from '../../plugins/footer/add-footer';
 import { footNotesToSideNotes } from '../../plugins/footnotes/footnotes-to-sidenotes';
 import { replaceFootnoteRefDefs } from '../../plugins/footnotes/replace-ref-def';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
@@ -30,9 +31,13 @@ export const processorOptions: ProcessorOptions = {
 
 export function createRehypePlugins(
   ctx: Context,
-  options: Pick<Options, 'noWrapper'>,
+  options: Pick<Options, 'noWrapper' | 'noFooter'>,
 ) {
   const plugins = createRehypeFragmentPlugins(ctx, options);
+
+  if (!options.noFooter) {
+    plugins.push([addFooter, ctx]);
+  }
 
   if (!options.noWrapper) {
     plugins.push([articleWrapper, ctx]);

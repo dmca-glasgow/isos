@@ -2,15 +2,13 @@
 import { SVG } from 'mathjax-full/js/output/svg.js';
 import type { OutputJax } from 'mathjax-full/js/core/OutputJax.js';
 
-// Termes
-import { MathJaxTermesFont } from 'mathjax-termes-font/js/svg.js';
-import 'mathjax-termes-font/js/svg/dynamic/arrows.js';
-import 'mathjax-termes-font/js/svg/dynamic/double-struck.js';
+import { MathJaxNewcmFont } from '@mathjax/mathjax-newcm-font/js/svg.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/arrows.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/double-struck.js';
 
-// Fira
-import { MathJaxFiraFont } from 'mathjax-fira-font/js/svg.js';
-import 'mathjax-fira-font/js/svg/dynamic/arrows.js';
-import 'mathjax-fira-font/js/svg/dynamic/double-struck.js';
+import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/arrows.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/double-struck.js';
 
 import { MathsFont } from '../../mdx-state';
 
@@ -25,11 +23,11 @@ export const fonts: Partial<Fonts> = {
     dynamicPrefix: '[mathjax-fira]/svg/dynamic',
     fontData: MathJaxFiraFont,
   }),
-  termes: new SVG({
+  computerModern: new SVG({
     ...MathJax.config.svg,
-    font: '[mathjax-termes]',
-    dynamicPrefix: '[mathjax-termes]/svg/dynamic',
-    fontData: MathJaxTermesFont,
+    font: '[mathjax-newcm]',
+    dynamicPrefix: '[mathjax-newcm]/svg/dynamic',
+    fontData: MathJaxNewcmFont,
   }),
 };
 

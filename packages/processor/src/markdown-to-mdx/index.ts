@@ -12,6 +12,7 @@ import { Options } from './options';
 import { createTableOfContents } from './sidebar';
 
 export async function markdownToArticle(md: string, options: Options) {
+  // console.log(md);
   const mdAst = await getMdAst(md, options);
   // console.dir(mdAst, { depth: null });
 

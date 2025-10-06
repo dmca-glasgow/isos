@@ -24,6 +24,14 @@ type Props = {
   withFiles?: Record<string, string>;
 };
 
+type Images = Record<
+  string,
+  {
+    error: boolean;
+    data: string;
+  }
+>;
+
 const mdxState = createMdxState();
 
 export function CodeSnippet(props: Props) {
@@ -36,7 +44,16 @@ export function CodeSnippet(props: Props) {
       const prepared = unindentStringAndTrim(latex);
       const ctx = createInputToMarkdownTestContext('latex', prepared);
       if (props.withImages) {
-        ctx.base64Images = props.withImages;
+        ctx.base64Images = Object.entries(props.withImages).reduce(
+          (acc: Images, [k, v]) => {
+            acc[k] = {
+              error: false,
+              data: v,
+            };
+            return acc;
+          },
+          {},
+        );
       }
       const options = createInputToMarkdownOptions(ctx);
       // await embedIncludes(ctx, options);

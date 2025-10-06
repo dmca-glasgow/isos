@@ -18,7 +18,7 @@ export function createTheorem(
 
   const children = state
     .all(div)
-    .reduce((acc: (Paragraph | ContainerDirective)[], child, idx, arr) => {
+    .reduce((acc: (Paragraph | ContainerDirective)[], child) => {
       if (child.type === 'containerDirective') {
         acc.push(child);
       } else {

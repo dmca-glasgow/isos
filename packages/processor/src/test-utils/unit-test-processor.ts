@@ -35,6 +35,7 @@ const testOptions = {
 const testHtmlOptions = {
   noWrapper: true,
   noSections: true,
+  noFooter: true,
 };
 
 async function latexToMarkdown(latex: string, options?: Partial<Options>) {

@@ -49,7 +49,8 @@ export function WarningsCount({ loading }: Props) {
 
   return (
     <div id="warning-count">
-      <WarningIcon /> {warnings.length} warnings
+      <WarningIcon /> {warnings.length} warning
+      {warnings.length === 1 ? '' : 's'}
     </div>
   );
 }

@@ -8,8 +8,8 @@ import { OutputUtil } from 'mathjax-full/components/src/output/util.js';
 // import { CONFIG } from 'mathjax-full/js/components/loader.js';
 import { SVG } from 'mathjax-full/js/output/svg.js';
 import { insert } from 'mathjax-full/js/util/Options.js';
-import { MathJaxTermesFont } from 'mathjax-termes-font/js/svg.js';
-import { MathJaxFiraFont } from 'mathjax-fira-font/js/svg.js';
+import { MathJaxNewcmFont } from '@mathjax/mathjax-newcm-font/js/svg.js';
+import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
 import { mathjax } from 'mathjax-full/js/mathjax.js';
 
 import { MathsFont } from '../../mdx-state';
@@ -33,7 +33,7 @@ export function loadMathJax(initialMathsFont: MathsFont) {
   const output = {
     fonts: {
       'mathjax-fira': { svg_ts: { MathJaxFiraFont } },
-      'mathjax-termes': { svg_ts: { MathJaxTermesFont } },
+      'mathjax-newcm': { svg_ts: { MathJaxNewcmFont } },
     },
   };
   insert(MathJax._, { output }, false);
@@ -45,9 +45,9 @@ export function loadMathJax(initialMathsFont: MathsFont) {
     return mathjax.handleRetriesFor(() => html.rerender());
   };
 
-  if (initialMathsFont === 'termes') {
-    OutputUtil.config('svg', SVG, 'mathjax-termes', MathJaxTermesFont);
-    OutputUtil.loadFont(checkSre(startup), 'svg', 'mathjax-termes', true);
+  if (initialMathsFont === 'computerModern') {
+    OutputUtil.config('svg', SVG, 'mathjax-newcm', MathJaxNewcmFont);
+    OutputUtil.loadFont(checkSre(startup), 'svg', 'mathjax-newcm', true);
   } else {
     OutputUtil.config('svg', SVG, 'mathjax-fira', MathJaxFiraFont);
     OutputUtil.loadFont(checkSre(startup), 'svg', 'mathjax-fira', true);

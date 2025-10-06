@@ -119,7 +119,8 @@ const ArticleWrapper = styled.div`
 
     &.has-sidenotes {
       section,
-      header {
+      header,
+      footer {
         margin-right: calc(
           ${constants.sideNoteWidth} + ${constants.sideNoteGap}
         );
@@ -163,7 +164,7 @@ const ArticleWrapper = styled.div`
         var(--letterSpacing, ${constants.letterSpacing.initial})
     );
 
-    padding: 2em 0 5em;
+    padding: 2em 0 3em;
     // margin: 0 auto;
 
     transition: padding-left 0.2s;

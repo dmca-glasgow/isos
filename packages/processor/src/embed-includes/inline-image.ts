@@ -1,43 +1,49 @@
+// import { Jimp } from 'jimp';
 import mimes from 'mime/lite';
+import { basename, extname } from 'pathe';
 
 import { readBinaryFile } from '@isos/fs';
-import { pdfToSvg } from '@isos/pdf-to-svg';
+import { pdfToSvg } from '@isos/image-tools';
+import { optimiseBitmap } from '@isos/image-tools';
 
 export const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
 
-export async function getDataUrl(imagePath: string, ext: string) {
+export async function getDataUrl(imagePath: string) {
   try {
-    switch (ext) {
-      case '.pdf': {
-        const mime = mimes.getType('.svg') as string;
-        const svg = await pdfToSvg(await readBinaryFile(imagePath));
-        const base64 = btoa(svg);
-        return toUrl({ mime, base64 });
-      }
-      case '.jpg':
-      case '.jpeg':
-      case '.png': {
-        const mime = mimes.getType(ext) as string;
-        const img = await readBinaryFile(imagePath);
-        const base64 = btoa(String.fromCharCode(...img));
-        return toUrl({ mime, base64 });
-      }
-      default:
-        throw new Error(
-          `[inline-images]: unsupported file extension "${ext || '(none)'}"`,
-        );
-    }
+    return {
+      error: false,
+      data: await getDataUrlForExtension(imagePath),
+    };
   } catch (err) {
-    console.log('image to data url:', err);
-    return '';
+    // console.log('image to data url:', err);
+    return {
+      error: true,
+      data: `${basename(imagePath)}: ${err}`,
+    };
   }
 }
 
-type Props = {
-  mime: string;
-  base64: string;
-};
+async function getDataUrlForExtension(imagePath: string) {
+  const ext = extname(imagePath);
+  switch (ext) {
+    case '.pdf': {
+      const mime = mimes.getType('.svg') as string;
+      const svg = await pdfToSvg(await readBinaryFile(imagePath));
+      // console.log(svg);
+      const base64 = btoa(svg);
+      return toUrl(mime, base64);
+    }
+    case '.jpg':
+    case '.jpeg':
+    case '.png': {
+      const img = await readBinaryFile(imagePath);
+      return optimiseBitmap(img);
+    }
+    default:
+      throw new Error(`unsupported file extension "${ext}"`);
+  }
+}
 
-function toUrl({ mime, base64 }: Props) {
+function toUrl(mime: string, base64: string) {
   return `data:${mime};base64,${base64}`;
 }

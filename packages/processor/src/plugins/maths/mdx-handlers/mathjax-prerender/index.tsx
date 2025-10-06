@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 
 import { ArticleState } from '../../../article/mdx-state';
+import { WarnSpan } from '../../../warn/mdx-warn';
 import { MathsFormat, MathsState } from '../../mdx-state';
 import { mmlToSpeech } from './mml-to-speech';
 import { mmlToSvg } from './mml-to-svg';
@@ -24,6 +25,7 @@ export type LayoutOptions = {
 // };
 
 export function MathJaxPrerender(props: MathsProps) {
+  // console.log(props.expr);
   switch (props.format) {
     case 'inline':
       return <MathsInline {...props} />;
@@ -48,13 +50,17 @@ export function MathsInline({ expr, className, maths }: MathsProps) {
     })();
   }, [mml, maths.brailleLocale.value, maths.speechLocale.value]);
 
+  if (svg.error) {
+    return <WarnSpan>{svg.html}</WarnSpan>;
+  }
+
   const brailleOnly = maths.ariaMode.value === 'braille-only';
   return (
     <code
       className={className}
       aria-label={brailleOnly ? braille : label}
       aria-braillelabel={brailleOnly ? undefined : braille}
-      dangerouslySetInnerHTML={{ __html: svg }}
+      dangerouslySetInnerHTML={{ __html: svg.html }}
     />
   );
 }
@@ -92,8 +98,8 @@ export function MathsDisplay({
     })();
   }, [mml, maths.brailleLocale.value, maths.speechLocale.value]);
 
-  if (!svg) {
-    return null;
+  if (svg.error) {
+    return <WarnSpan>{svg.html}</WarnSpan>;
   }
 
   const brailleOnly = maths.ariaMode.value === 'braille-only';
@@ -102,7 +108,7 @@ export function MathsDisplay({
       className={className}
       aria-label={brailleOnly ? braille : label}
       aria-braillelabel={brailleOnly ? undefined : braille}
-      dangerouslySetInnerHTML={{ __html: svg }}
+      dangerouslySetInnerHTML={{ __html: svg.html }}
     />
   );
 }

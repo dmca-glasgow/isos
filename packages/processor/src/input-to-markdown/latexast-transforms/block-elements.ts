@@ -17,7 +17,7 @@ export function insertParbreaksAroundBlockElements() {
         const parent = (info.parents[0] || {}) as Root;
         const children = parent.content || [];
 
-        parent.content = children.reduce((acc: Node[], child, idx) => {
+        parent.content = children.reduce((acc: Node[], child) => {
           if (shouldGetParBreaks(child)) {
             acc.push(parBreak, child, parBreak);
           } else {
@@ -74,9 +74,9 @@ function isFigure(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'figure';
 }
 
-function isCenter(node: Node | Argument) {
-  return node.type === 'macro' && node.content === 'html-tag:center';
-}
+// function isCenter(node: Node | Argument) {
+//   return node.type === 'macro' && node.content === 'html-tag:center';
+// }
 
 function isTable(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'tabular';
@@ -93,6 +93,6 @@ function isCallout(node: Node | Argument) {
   return node.type === 'macro' && callouts.includes(node.content);
 }
 
-function isParBreak(node?: Node) {
-  return node?.type === 'parbreak';
-}
+// function isParBreak(node?: Node) {
+//   return node?.type === 'parbreak';
+// }

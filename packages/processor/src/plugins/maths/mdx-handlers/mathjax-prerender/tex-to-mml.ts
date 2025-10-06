@@ -12,6 +12,8 @@ import '@mathjax/src/js/input/tex/boldsymbol/BoldsymbolConfiguration.js';
 import '@mathjax/src/js/input/tex/configmacros/ConfigMacrosConfiguration.js';
 import '@mathjax/src/js/input/tex/newcommand/NewcommandConfiguration.js';
 import '@mathjax/src/js/input/tex/textcomp/TextcompConfiguration.js';
+import '@mathjax/src/js/input/tex/color/ColorConfiguration.js';
+import '@mathjax/src/js/input/tex/extpfeil/ExtpfeilConfiguration.js';
 
 const adaptor = liteAdaptor();
 const visitor = new SerializedMmlVisitor();
@@ -24,6 +26,8 @@ const packages = [
   'configmacros',
   'boldsymbol',
   'textcomp',
+  'color',
+  'extpfeil',
 ];
 
 const tex = new TeX({

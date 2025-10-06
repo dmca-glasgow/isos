@@ -12,7 +12,7 @@ export type Author = {
 export type Context = {
   filePath: string;
   subFilePaths: string[];
-  base64Images: Record<string, string>;
+  base64Images: Record<string, { error: boolean; data: string }>;
   type: FileType;
   content: string;
   frontmatter: {

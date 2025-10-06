@@ -59,7 +59,7 @@ function embedIncludes(ctx: Context) {
 
       const ext = extname(imagePath);
       if (supportedExtensions.includes(ext)) {
-        ctx.base64Images[imagePath] = await getDataUrl(imagePath, ext);
+        ctx.base64Images[imagePath] = await getDataUrl(imagePath);
       }
     }
   };

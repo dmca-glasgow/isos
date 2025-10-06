@@ -1,4 +1,4 @@
-import { Element, ElementContent, Root } from 'hast';
+import { Element, ElementContent, Parent, Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
@@ -80,36 +80,7 @@ export function footNotesToSideNotes(ctx: Context) {
                     properties: {
                       className: ['sidenote-content'],
                     },
-                    children: [
-                      {
-                        type: 'element',
-                        tagName: 'sup',
-                        properties: {
-                          className: ['sidenote-count'],
-                        },
-                        children: [
-                          {
-                            type: 'element',
-                            tagName: 'a',
-                            properties: {
-                              id: `fn-ref-${id}`,
-                              href: `#fn-${id}`,
-                            },
-                            children: [
-                              {
-                                type: 'text',
-                                value: String(idx + 1),
-                              },
-                            ],
-                          },
-                          // {
-                          //   type: 'text',
-                          //   value: ' ',
-                          // },
-                        ],
-                      },
-                      ...definition,
-                    ],
+                    children: definition,
                   },
                   {
                     type: 'element',
@@ -137,7 +108,8 @@ export function footNotesToSideNotes(ctx: Context) {
 }
 
 // appends an aside after the paragraph the footnote is mentioned.
-// matches quarto margin notes (but with bug when used in list items).
+// matches quarto margin notes (but with bug when used in nested
+// elements like list items).
 
 // visit(tree, 'element', (node, idx, parent) => {
 //   if (node.tagName === 'p') {
@@ -187,11 +159,49 @@ function findDefinition(definitions: Element[], id: string): Footnote {
     };
   }
   let definition = definitions[idx].children;
+  addIdentifier(definition, id, idx);
   removeReturnArrow(definition);
   addMathsClass(definition);
   definition = paragraphsToSpans(definition);
   // console.log(definition);
   return { idx, definition };
+}
+
+function addIdentifier(
+  children: ElementContent[],
+  id: string,
+  idx: number,
+) {
+  const firstP = children.find(
+    (o) => o.type === 'element' && o.tagName === 'p',
+  ) as Parent;
+  firstP.children.unshift({
+    type: 'element',
+    tagName: 'sup',
+    properties: {
+      className: ['sidenote-count'],
+    },
+    children: [
+      {
+        type: 'element',
+        tagName: 'a',
+        properties: {
+          id: `fn-ref-${id}`,
+          href: `#fn-${id}`,
+        },
+        children: [
+          {
+            type: 'text',
+            value: String(idx + 1),
+          },
+        ],
+      },
+      // {
+      //   type: 'text',
+      //   value: ' ',
+      // },
+    ],
+  });
 }
 
 function removeReturnArrow(children: ElementContent[]) {

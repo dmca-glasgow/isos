@@ -4,14 +4,14 @@ import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse'
 import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 import { unifiedLatexStringCompiler } from '@unified-latex/unified-latex-util-to-string';
 import { visit } from '@unified-latex/unified-latex-util-visit';
-import { dirname, extname, resolve } from 'pathe';
+import { dirname, parse, resolve } from 'pathe';
 import { unified } from 'unified';
 
 import { readTextFile } from '@isos/fs';
 
 import { Context } from '../input-to-markdown/context';
 import { Options } from '../input-to-markdown/options';
-import { getDataUrl, supportedExtensions } from './inline-image';
+import { getDataUrl } from './inline-image';
 
 export async function embedLatexIncludes(ctx: Context, options: Options) {
   const ast = await getLatexAst(ctx.content, ctx, options);
@@ -64,10 +64,8 @@ function embedIncludes(ctx: Context, options: Options) {
 
     if (!options.noInlineImages) {
       for (const imagePath of imagePaths) {
-        const ext = extname(imagePath);
-        if (supportedExtensions.includes(ext)) {
-          ctx.base64Images[imagePath] = await getDataUrl(imagePath, ext);
-        }
+        const fsPath = getFsPath(imagePath);
+        ctx.base64Images[imagePath] = await getDataUrl(fsPath);
       }
     }
 
@@ -96,6 +94,11 @@ function embedIncludes(ctx: Context, options: Options) {
       }
     });
   };
+}
+
+function getFsPath(imagePath: string) {
+  const { dir, name, ext } = parse(imagePath);
+  return `${dir}/${name}${ext || '.pdf'}`;
 }
 
 function getFullPath(node: Ast.Macro, dir: string) {

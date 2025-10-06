@@ -21,14 +21,27 @@
     margin-bottom: 1.8em;
     // line-height: 1.5;
     hyphens: auto;
+    font-style: normal;
+
+    & > span {
+      display: block;
+    }
 
     & > span:not(:first-of-type) {
-      display: inline-block;
       margin-top: 1em;
+    }
+
+    sup {
+      padding-right: 0.2em;
     }
 
     & > p.maths {
       margin: 1em 0 0 0;
+    }
+
+    img {
+      max-width: 100%;
+      margin: 0 0 1em 0;
     }
   }
 

@@ -14,6 +14,7 @@ export type Options = {
   noWrapper: boolean;
   noSections: boolean;
   noIcons: boolean;
+  noFooter: boolean;
   markdownStringTransforms: Array<(markdown: string) => string>;
   mdAstTransforms: PluggableList;
   htmlAstTransforms: PluggableList;
@@ -34,10 +35,12 @@ export function createDefaultOptions(
   const noWrapper = opts?.noWrapper || false;
   const noSections = opts?.noSections || false;
   const noIcons = opts?.noIcons || false;
+  const noFooter = opts?.noFooter || false;
   return {
     noWrapper,
     noSections,
     noIcons,
+    noFooter,
     // markdownStringTransforms: [
     //   (str) => `${str}2`,
     //   (str) => `${str}.jpg`
@@ -48,7 +51,7 @@ export function createDefaultOptions(
       tableCaptionToDirective,
     ],
     mdAstTransforms: createMdastTransforms(ctx, { noSections }),
-    htmlAstTransforms: createRehypePlugins(ctx, { noWrapper }),
+    htmlAstTransforms: createRehypePlugins(ctx, { noWrapper, noFooter }),
     mdxArticleRunOptions: createRunOptions(mdxState, { noIcons }),
     mdxTOCRunOptions: createSidebarRunOptions(mdxState),
   };

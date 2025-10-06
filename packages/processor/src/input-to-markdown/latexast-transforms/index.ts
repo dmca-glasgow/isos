@@ -6,7 +6,7 @@ import {
   fancyBoxedToSubSection,
   fancySectionToSection,
 } from '../../plugins/fancy/fancy-section-to-section';
-import { framedSidenotes } from '../../plugins/footnotes/framed-sidenotes';
+import { ignoreOptionalSidenoteArgs } from '../../plugins/footnotes/ignore-optional-args';
 import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
 import { figureToImage } from '../../plugins/images/figure-to-image';
 // import { inlineFilesFromContext } from '../../plugins/includes/inline-files-from-context';
@@ -36,7 +36,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     expandDocumentMacrosPlugin,
     expandMathOperatorPlugin,
     equationLabelToId,
-    framedSidenotes,
+    ignoreOptionalSidenoteArgs,
     // [extractFancyTitle, ctx],
     insertParbreaksAroundBlockElements,
     tableCaptionToData,

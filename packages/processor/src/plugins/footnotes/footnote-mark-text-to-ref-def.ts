@@ -20,6 +20,7 @@ export function footnoteMarkToRef() {
       }
 
       if (node.name === 'footnote-text') {
+        // console.log(node);
         const mark = node.attributes?.mark || '';
         const definition: FootnoteDefinition = {
           type: 'footnoteDefinition',

@@ -1,4 +1,4 @@
-import { Element, Text } from 'hast';
+import { Element } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 import { toString } from 'hast-util-to-string';
 

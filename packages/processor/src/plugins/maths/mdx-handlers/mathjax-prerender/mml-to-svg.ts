@@ -9,11 +9,15 @@ import { MathJaxNewcmFont } from '@mathjax/mathjax-newcm-font/js/svg.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/arrows.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/calligraphic.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/double-struck.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/sans-serif.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/shapes.js';
 
 import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/arrows.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/calligraphic.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/double-struck.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/sans-serif.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/shapes.js';
 
 import { LayoutOptions } from '.';
 import { MathsFont, MathsState } from '../../mdx-state';
@@ -28,7 +32,13 @@ const htmlDoc = mathjax.document('', {
 const NewcmFont = new MathJaxNewcmFont();
 const FiraFont = new MathJaxFiraFont();
 
-const packages = ['arrows', 'calligraphic', 'double-struck'];
+const packages = [
+  'arrows',
+  'calligraphic',
+  'double-struck',
+  'sans-serif',
+  'shapes',
+];
 
 packages.forEach((fontPackage) => {
   // @ts-expect-error
@@ -55,8 +65,10 @@ export function mmlToSvg(
   htmlDoc.outputJax.setAdaptor(htmlDoc.adaptor);
 
   const htmlNode = htmlDoc.convert(mml, {
-    containerWidth: layoutOptions.containerWidth,
-    // overflow: 'linebreak',
+    // https://github.com/mathjax/MathJax/issues/3434
+    containerWidth: mml.includes('\\begin{multiline}')
+      ? layoutOptions.containerWidth
+      : undefined,
   });
   const svg = htmlNode.children[0];
 
@@ -65,8 +77,14 @@ export function mmlToSvg(
   const match = html.match(/data-mjx-error="(.*?)"/);
   if (match !== null) {
     console.log('mathjax error:', match[1]);
-    return `<span class="mathjax-error">${match[1]}</span>`;
+    return {
+      error: true,
+      html: `mathjax error: ${match[1]}`,
+    };
   }
 
-  return html;
+  return {
+    error: false,
+    html,
+  };
 }
