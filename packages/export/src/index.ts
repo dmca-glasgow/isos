@@ -1,4 +1,3 @@
-// TODO
 type FrontMatter = {
   docTitle: string;
 };
@@ -6,7 +5,6 @@ type FrontMatter = {
 type RuntimeBundle = {
   css: string;
   js: string;
-  font: string;
 };
 
 export async function createRuntimeHtml(
