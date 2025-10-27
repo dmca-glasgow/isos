@@ -25,6 +25,7 @@ export default defineConfig({
     },
   },
   build: {
+    target: 'es2022',
     sourcemap: true,
     assetsInlineLimit: 5 * 1000 * 1000,
     chunkSizeWarningLimit: 5 * 1000 * 1000,
