@@ -53,7 +53,7 @@ async function markdownToMdAstProcessor(
   return createRemarkProcessor().parse(markdown);
 }
 
-export async function latexToMdAstProcessor(
+async function latexToMdAstProcessor(
   input: string,
   options: Options['latexToMdAst'],
 ) {

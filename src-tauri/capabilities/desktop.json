@@ -9,8 +9,7 @@
     "main"
   ],
   "permissions": [
-    "window-state:default",
-    "dialog:default",
-    "updater:default"
+    "updater:default",
+    "window-state:default"
   ]
 }

@@ -1,13 +1,13 @@
 import * as Ast from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse';
-import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 import { unifiedLatexStringCompiler } from '@unified-latex/unified-latex-util-to-string';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 import { dirname, parse, resolve } from 'pathe';
 import { unified } from 'unified';
 
 import { readTextFile } from '@isos/fs';
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 import { Context } from '../input-to-markdown/context';
 import { Options } from '../input-to-markdown/options';

@@ -34,7 +34,7 @@ export function MathJaxPrerender(props: MathsProps) {
   }
 }
 
-export function MathsInline({ expr, className, maths }: MathsProps) {
+function MathsInline({ expr, className, maths }: MathsProps) {
   // console.log('inline');
   const [label, setLabel] = useState<string>();
   const [braille, setBraille] = useState<string>();
@@ -65,7 +65,7 @@ export function MathsInline({ expr, className, maths }: MathsProps) {
   );
 }
 
-export function MathsDisplay({
+function MathsDisplay({
   expr,
   className,
   maths,

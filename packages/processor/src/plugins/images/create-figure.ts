@@ -2,10 +2,11 @@ import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { Macro } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
-import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
-// import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
-import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 import { kebabCase } from 'lodash';
+
+import { htmlLike } from '@isos/unified-latex-util-html-like';
+// import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 // import { Context } from '../../input-to-markdown/context';
 

@@ -11,7 +11,6 @@
   "dependencies": {
     "classnames": "^2.5.1",
     "preact": "^10.25.4",
-    "prism-react-renderer": "^2.4.1",
     "react-syntax-highlighter": "^15.6.1"
   },
   "devDependencies": {
@@ -19,12 +18,9 @@
     "@babel/plugin-transform-react-jsx": "^7.23.4",
     "@babel/preset-env": "^7.26.8",
     "@babel/preset-typescript": "^7.26.0",
-    "@preact/preset-vite": "^2.10.1",
-    "@rollup/plugin-alias": "^5.1.1",
-    "@rollup/plugin-commonjs": "^28.0.6",
     "@linaria/react": "^6.3.0",
     "@mdx-js/rollup": "^3.0.1",
-    "@wyw-in-js/babel-preset": "^0.6.0",
+    "@preact/preset-vite": "^2.10.1",
     "@wyw-in-js/vite": "^0.6.0",
     "remark-gfm": "^4.0.0"
   }

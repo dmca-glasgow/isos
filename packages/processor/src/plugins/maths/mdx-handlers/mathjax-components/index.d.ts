@@ -1,1 +1,1 @@
-declare const MathJax: any;
+// declare const MathJax: any;

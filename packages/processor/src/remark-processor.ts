@@ -10,13 +10,7 @@ import remarkDirective from './plugins/remark-directive';
 import remarkGfm from './plugins/remark-gfm';
 import { remarkSuperSub } from './plugins/super-sub';
 
-export type RemarkProcessor = Processor<
-  Root,
-  undefined,
-  undefined,
-  Root,
-  string
->;
+type RemarkProcessor = Processor<Root, undefined, undefined, Root, string>;
 
 export function createRemarkProcessor(
   plugins: PluggableList = [],

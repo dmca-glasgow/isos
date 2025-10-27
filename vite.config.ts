@@ -1,20 +1,17 @@
-/// <reference types="vitest" />
 import preact from '@preact/preset-vite';
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import wyw from '@wyw-in-js/vite';
 import { defineConfig } from 'vite';
 import prismjs from 'vite-plugin-prismjs';
-// import { viteSingleFile } from 'vite-plugin-singlefile';
 import svgr from 'vite-plugin-svgr';
 import { configDefaults } from 'vitest/config';
 
 const host = process.env.TAURI_DEV_HOST;
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    // viteSingleFile(),
     svgr({
       include: '**/assets/*.svg',
     }),
@@ -39,24 +36,33 @@ export default defineConfig({
       enforce: 'pre',
     },
     commonjs({
-      include: ['node_modules/mathjax-*/**'],
+      include: [
+        'node_modules/@mathjax/**',
+        // 'node_modules/speech-rule-engine/cjs/**',
+      ],
     }),
   ],
-  // clearScreen: false,
+
+  // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
+  //
+  // 1. prevent Vite from obscuring rust errors
+  clearScreen: false,
+  // 2. tauri expects a fixed port, fail if that port is not available
   server: {
     port: 1420,
     strictPort: true,
     host: host || false,
-    watch: {
-      ignored: ['**/src-tauri/**'],
-    },
     hmr: host
       ? {
           protocol: 'ws',
-          host: host,
-          port: 1430,
+          host,
+          port: 1421,
         }
       : undefined,
+    watch: {
+      // 3. tell Vite to ignore watching `src-tauri`
+      ignored: ['**/src-tauri/**'],
+    },
   },
   css: {
     devSourcemap: true,
@@ -78,7 +84,7 @@ export default defineConfig({
     exclude: [
       ...configDefaults.exclude,
       '**/_old/**',
-      'packages/unified-latex-*/**',
+      'unified-latex-forks/**',
     ],
   },
 });

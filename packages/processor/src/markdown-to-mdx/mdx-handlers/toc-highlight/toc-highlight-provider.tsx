@@ -1,5 +1,4 @@
-import { ComponentChildren, createContext } from 'preact';
-import { useMemo, useState } from 'preact/hooks';
+import { createContext } from 'preact';
 
 type Section = {
   id: string;
@@ -18,39 +17,39 @@ export const TocHighlightContext = createContext<TocHighlight>({
   setActiveSection: () => {},
 });
 
-export function TocHighlightProvider({
-  children,
-}: {
-  children: ComponentChildren;
-}) {
-  const [activeSections, setActiveSection] = useState<Section[]>([]);
+// export function TocHighlightProvider({
+//   children,
+// }: {
+//   children: ComponentChildren;
+// }) {
+//   const [activeSections, setActiveSection] = useState<Section[]>([]);
 
-  const context = useMemo((): TocHighlight => {
-    return {
-      activeSectionId: getShortestSection(activeSections).id,
-      setActiveSection(inView: boolean, section: Section) {
-        setActiveSection((activeSections) => {
-          if (inView && !activeSections.find((o) => o.id === section.id)) {
-            return [...activeSections, section];
-          }
-          if (!inView && activeSections.find((o) => o.id === section.id)) {
-            return activeSections.filter((o) => o.id !== section.id);
-          }
-          return activeSections;
-        });
-      },
-    };
-  }, [activeSections]);
+//   const context = useMemo((): TocHighlight => {
+//     return {
+//       activeSectionId: getShortestSection(activeSections).id,
+//       setActiveSection(inView: boolean, section: Section) {
+//         setActiveSection((activeSections) => {
+//           if (inView && !activeSections.find((o) => o.id === section.id)) {
+//             return [...activeSections, section];
+//           }
+//           if (!inView && activeSections.find((o) => o.id === section.id)) {
+//             return activeSections.filter((o) => o.id !== section.id);
+//           }
+//           return activeSections;
+//         });
+//       },
+//     };
+//   }, [activeSections]);
 
-  return (
-    <TocHighlightContext.Provider value={context}>
-      {children}
-    </TocHighlightContext.Provider>
-  );
-}
+//   return (
+//     <TocHighlightContext.Provider value={context}>
+//       {children}
+//     </TocHighlightContext.Provider>
+//   );
+// }
 
-function getShortestSection(activeSections: Section[]) {
-  return activeSections.reduce((acc: Section, section: Section) => {
-    return section.height <= acc.height ? section : acc;
-  }, initialSection);
-}
+// function getShortestSection(activeSections: Section[]) {
+//   return activeSections.reduce((acc: Section, section: Section) => {
+//     return section.height <= acc.height ? section : acc;
+//   }, initialSection);
+// }

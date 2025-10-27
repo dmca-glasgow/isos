@@ -2,7 +2,7 @@ import { Signal, signal } from '@preact/signals';
 
 export type MathsFont = 'fira' | 'computerModern';
 export type MathsFormat = 'display' | 'inline';
-export type MathsAriaMode = 'both' | 'braille-only' | 'speech-only';
+type MathsAriaMode = 'both' | 'braille-only' | 'speech-only';
 export type BrailleLocale = 'nemeth' | 'euro';
 export type SpeechLocale =
   | 'af'

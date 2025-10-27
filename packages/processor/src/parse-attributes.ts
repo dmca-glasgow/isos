@@ -1,9 +1,9 @@
-export type Attributes = {
+type Attributes = {
   id: string;
   classes: string[];
 };
 
-export type ParsedAttributes = {
+type ParsedAttributes = {
   text: string;
   attributes: Attributes;
 };

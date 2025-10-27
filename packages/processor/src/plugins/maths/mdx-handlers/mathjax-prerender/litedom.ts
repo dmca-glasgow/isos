@@ -1,8 +1,8 @@
 import type {
   LiteElement,
   LiteNode,
-} from 'mathjax-full/js/adaptors/lite/Element.js';
-import type { LiteText } from 'mathjax-full/js/adaptors/lite/Text.js';
+} from '@mathjax/src/js/adaptors/lite/Element.js';
+import type { LiteText } from '@mathjax/src/js/adaptors/lite/Text.js';
 import { createElement } from 'preact';
 
 export function render(nodes: LiteNode[]): React.ReactNode[] {

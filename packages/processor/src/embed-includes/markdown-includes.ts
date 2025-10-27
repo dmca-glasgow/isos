@@ -17,7 +17,7 @@ export async function embedMarkdownIncludes(ctx: Context) {
   ctx.content = await replaceLines(ctx.content, ctx);
 }
 
-export async function replaceLines(input: string, ctx: Context) {
+async function replaceLines(input: string, ctx: Context) {
   const dir = dirname(ctx.filePath);
   const lines = input.split('\n');
 

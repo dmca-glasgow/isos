@@ -1,8 +1,9 @@
 import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
-import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
 import { visit } from '@unified-latex/unified-latex-util-visit';
+
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 export function tableCaptionToData() {
   return (tree: Ast.Root) => {

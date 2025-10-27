@@ -1,11 +1,15 @@
 import { ariaAttributes } from 'aria-attributes';
-import attrs from 'html-element-attributes';
+import { htmlElementAttributes } from 'html-element-attributes';
 // @ts-expect-error
 import parseAttr from 'md-attr-parser';
 import { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 
-const validAttrs = [...attrs['*'], ...attrs.img, ...ariaAttributes];
+const validAttrs = [
+  ...htmlElementAttributes['*'],
+  ...htmlElementAttributes.img,
+  ...ariaAttributes,
+];
 
 export function imageAttributes() {
   return (tree: Root) => {

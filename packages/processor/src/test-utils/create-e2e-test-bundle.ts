@@ -3,12 +3,12 @@ import { fileURLToPath } from 'node:url';
 
 import { createRuntimeHtml } from '@isos/export';
 
-import { unindentString } from './unindent-string';
+import { unindentStringAndTrim } from './unindent-string';
 
 export async function createE2eTestBundle(markdown: string) {
-  const md = unindentString(markdown);
+  const md = unindentStringAndTrim(markdown);
   const frontmatter = {
-    docTitle: 'Test', // TODO
+    docTitle: 'Test',
   };
   const folder = '../../../runtime/dist/assets';
 

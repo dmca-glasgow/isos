@@ -13,7 +13,7 @@ export type Theorem = {
 };
 
 // https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs
-export const names = [
+const names = [
   'theorem',
   'lemma',
   'corollary',

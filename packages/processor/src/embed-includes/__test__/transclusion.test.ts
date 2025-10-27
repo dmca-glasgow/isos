@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
 // @ts-ignore
-import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
+// import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
 import { unindentStringAndTrim } from '../../test-utils/unindent-string';
 import { testProcessor } from '../../test-utils/unit-test-processor';
 

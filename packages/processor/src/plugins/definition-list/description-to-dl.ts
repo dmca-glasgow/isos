@@ -1,6 +1,7 @@
 import { Environment } from '@unified-latex/unified-latex-types';
-import { htmlLike } from '@unified-latex/unified-latex-util-html-like';
 import { match } from '@unified-latex/unified-latex-util-match';
+
+import { htmlLike } from '@isos/unified-latex-util-html-like';
 
 export function descriptionToDl(node: Environment) {
   return htmlLike({

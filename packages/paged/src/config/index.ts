@@ -1,12 +1,12 @@
-import { HeaderFooter } from "./header-footer";
-import { Paper, Size } from "./paper";
-import { Breaks } from './breaks'
+import { Breaks } from './breaks';
+import { HeaderFooter } from './header-footer';
+import { Paper, Size } from './paper';
 
-export type Config = {
-  paper: Paper,
-  headerFooter: HeaderFooter,
-  breaks: Breaks,
-}
+type Config = {
+  paper: Paper;
+  headerFooter: HeaderFooter;
+  breaks: Breaks;
+};
 
 export const config: Config = {
   paper: {
@@ -14,24 +14,24 @@ export const config: Config = {
     sizes: {
       A4: {
         width: '210mm',
-        height: '297mm'
+        height: '297mm',
       },
       Letter: {
         width: '8.5in',
-        height: '11in'
+        height: '11in',
       },
       Legal: {
         width: '8.5in',
-        height: '14in'
-      }
-    }
+        height: '14in',
+      },
+    },
   },
   headerFooter: {
     header: {
       center: {
         type: 'text',
-        value: 'Complex Analysis'
-      }
+        value: 'Complex Analysis',
+      },
     },
     footer: {
       left: {
@@ -40,60 +40,60 @@ export const config: Config = {
       },
       right: {
         type: 'page-number',
-        template: (num, total = 0) => `Page ${num} of ${total}`
-      }
+        template: (num, total = 0) => `Page ${num} of ${total}`,
+      },
     },
     firstPage: {
       footer: {
         center: {
           type: 'page-number',
-          template: (num, total = 0) => `Page ${num} of ${total}`
-        }
-      }
-    }
+          template: (num, total = 0) => `Page ${num} of ${total}`,
+        },
+      },
+    },
   },
   breaks: {
-    "h2": [
+    h2: [
       {
-        "property": "break-before",
-        "value": "always",
-      }
+        property: 'break-before',
+        value: 'always',
+      },
     ],
-    "h3": [
+    h3: [
       {
-        "property": "break-after",
-        "value": "avoid",
-      }
+        property: 'break-after',
+        value: 'avoid',
+      },
     ],
-    "h4": [
+    h4: [
       {
-        "property": "break-after",
-        "value": "avoid",
-      }
+        property: 'break-after',
+        value: 'avoid',
+      },
     ],
-    "h5": [
+    h5: [
       {
-        "property": "break-after",
-        "value": "avoid",
-      }
+        property: 'break-after',
+        value: 'avoid',
+      },
     ],
-    "h6": [
+    h6: [
       {
-        "property": "break-after",
-        "value": "avoid",
-      }
+        property: 'break-after',
+        value: 'avoid',
+      },
     ],
-    ".boxout .type": [
+    '.boxout .type': [
       {
-        "property": "break-after",
-        "value": "avoid",
-      }
+        property: 'break-after',
+        value: 'avoid',
+      },
     ],
-    ".boxout .proof-box": [
+    '.boxout .proof-box': [
       {
-        "property": "break-before",
-        "value": "avoid",
-      }
-    ]
-  }
-}
+        property: 'break-before',
+        value: 'avoid',
+      },
+    ],
+  },
+};

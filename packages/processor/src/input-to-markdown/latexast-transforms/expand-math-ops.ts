@@ -1,10 +1,11 @@
-import { expandMacrosExcludingDefinitions } from '@unified-latex/unified-latex-util-macros';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { attachMacroArgs } from '@unified-latex/unified-latex-util-arguments';
-import { replaceNode } from '@unified-latex/unified-latex-util-replace';
+import { expandMacrosExcludingDefinitions } from '@unified-latex/unified-latex-util-macros';
 import { match } from '@unified-latex/unified-latex-util-match';
+import { replaceNode } from '@unified-latex/unified-latex-util-replace';
 import { visit } from '@unified-latex/unified-latex-util-visit';
-import { printRaw } from '@unified-latex/unified-latex-util-print-raw';
+
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 type MathOpSpec = {
   name: string;
@@ -19,7 +20,7 @@ export function expandMathOperatorPlugin() {
     const mathOps = listMathOps(tree);
 
     const macroInfo = Object.fromEntries(
-      mathOps.map((m) => [m.name, { signature: m.signature }])
+      mathOps.map((m) => [m.name, { signature: m.signature }]),
     );
 
     // We need to attach the arguments to each macro before we process it!
@@ -31,7 +32,7 @@ export function expandMathOperatorPlugin() {
     // Our document could have used `\newcommand` or `\NewDocumentCommand`, etc. We will remove
     // all of these.
     const mathOpsUsed = Object.fromEntries(
-      mathOps.map((x) => [x.definition.content, true])
+      mathOps.map((x) => [x.definition.content, true]),
     );
     replaceNode(tree, (node) => {
       if (match.anyMacro(node) && mathOpsUsed[node.content]) {
@@ -52,7 +53,7 @@ function listMathOps(tree: Ast.Ast): MathOpSpec[] {
 
       ret.push({ name, signature, body, definition: node });
     },
-    { test: mathOpsMatcher }
+    { test: mathOpsMatcher },
   );
   return ret;
 }
@@ -75,7 +76,7 @@ function macroToSpec(node: Ast.Macro): string {
   if (!node.args?.length) {
     console.warn(
       `Found a '\\DeclareMathOperator' macro that doesn't have any args`,
-      node
+      node,
     );
     return '';
   }

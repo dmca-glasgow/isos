@@ -1,8 +1,5 @@
-import {
-  engineReady,
-  setupEngine,
-  toSpeech,
-} from 'speech-rule-engine/js/common/system.js';
+// @ts-expect-error
+import { engineReady, setupEngine, toSpeech } from 'speech-rule-engine';
 
 import { BrailleLocale, MathsState, SpeechLocale } from '../../mdx-state';
 
@@ -21,13 +18,13 @@ export async function mmlToSpeech(mml: string, options: MathsState) {
   return { label, braille };
 }
 
-export async function mmlToLabel(mml: string, locale: SpeechLocale) {
+async function mmlToLabel(mml: string, locale: SpeechLocale) {
   await setupEngine({ locale, modality: 'speech' });
   await engineReady();
   return toSpeech(mml);
 }
 
-export async function mmlToBraille(mml: string, locale: BrailleLocale) {
+async function mmlToBraille(mml: string, locale: BrailleLocale) {
   await setupEngine({ locale, modality: 'braille' });
   await engineReady();
   return toSpeech(mml);

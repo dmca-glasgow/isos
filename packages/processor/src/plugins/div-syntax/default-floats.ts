@@ -3,12 +3,10 @@ import {
   defaultObjects,
 } from '../refs-and-counts/default-objects';
 
-export type Float = RefObject;
-
 // https://quarto.org/docs/authoring/cross-references-divs.html
-export const names = ['figure', 'table', 'listing'];
+const names = ['figure', 'table', 'listing'];
 
-export const defaultFloats: Float[] = defaultObjects.filter((o) => {
+export const defaultFloats: RefObject[] = defaultObjects.filter((o) => {
   return names.includes(o.name);
 });
 

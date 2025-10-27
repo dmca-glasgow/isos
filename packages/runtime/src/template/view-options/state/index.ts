@@ -12,7 +12,7 @@ const initialState = Object.assign(
   getCachedState(),
 );
 
-export const viewOptions = createViewOptionsState(initialState);
+const viewOptions = createViewOptionsState(initialState);
 setCachedState(viewOptions.data);
 createPrefersEvents(viewOptions);
 createSideEffects(viewOptions, rootEl, setCachedState);

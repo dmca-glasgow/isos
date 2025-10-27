@@ -1,7 +1,7 @@
 import fullscreen from 'fscreen';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 
-export interface FullScreenHandle {
+interface FullScreenHandle {
   active: boolean;
   enter: () => void;
   exit: () => void;

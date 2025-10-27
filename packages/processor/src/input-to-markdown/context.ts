@@ -3,7 +3,7 @@ import { readTextFile } from '@isos/fs';
 import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
-export type Author = {
+type Author = {
   name: string;
   orcid?: string;
   affiliation?: string;

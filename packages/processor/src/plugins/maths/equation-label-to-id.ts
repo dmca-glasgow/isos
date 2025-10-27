@@ -3,7 +3,7 @@ import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 import { kebabCase } from 'lodash';
 
-import { printRaw } from '../../../../unified-latex-util-print-raw/libs/print-raw';
+import { printRaw } from '../../../../../unified-latex-forks/unified-latex-util-print-raw/libs/print-raw';
 
 export function equationLabelToId() {
   return (tree: Ast.Root) => {

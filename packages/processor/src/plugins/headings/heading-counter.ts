@@ -1,6 +1,6 @@
 // import { RefObjectsYaml } from '../refs-and-counts/default-objects';
 
-export type HeadingCounter = {
+type HeadingCounter = {
   get: (depth: number) => number;
   getCounts: (depth: number) => number[];
   setCount: (depth: number, value: number) => void;
@@ -35,9 +35,9 @@ export function createHeadingCounter(): HeadingCounter {
   };
 }
 
-export function formatCounts(counts: number[]) {
-  return counts.join('.');
-}
+// export function formatCounts(counts: number[]) {
+//   return counts.join('.');
+// }
 
 export const headingDepths: Record<string, number> = {
   title: 1,

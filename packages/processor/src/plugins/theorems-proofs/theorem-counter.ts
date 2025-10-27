@@ -1,6 +1,6 @@
 type Store = Record<string, number>;
 
-export type TheoremCounter = {
+type TheoremCounter = {
   get: (key: string) => number;
   increment: (key: string) => number;
   reset: (key: string) => void;

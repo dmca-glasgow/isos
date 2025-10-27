@@ -1,4 +1,4 @@
-import { longestStreak } from 'longest-streak';
+// import { longestStreak } from 'longest-streak';
 
 /**
  * Create an extension for `mdast-util-to-markdown`.
