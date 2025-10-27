@@ -2,6 +2,7 @@
   "name": "isos",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.19.0",
   "scripts": {
     "dev": "vite",
     "check-types": "tsc",
