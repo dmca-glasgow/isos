@@ -5,27 +5,33 @@ import stringify from 'rehype-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-import { optimiseBitmap } from '../optimise-bitmap';
+import { optimiseBitmap } from '../../optimise-bitmap';
 import { getPdfJs } from './pdfjs';
 
 // https://github.com/mozilla/pdf.js/releases/tag/v2.14.305
-// These files bring in pdfjs-dist@2.14.305 which is the
+// These files depend on pdfjs-dist@2.14.305 which is the
 // last version of pdfjs I've found that can convert PDF
-// graphics to SVGs in Node and the browser. (SVG support
-// was later removed, leaving Canvas only).
+// graphics to SVG in Node and in the browser. (SVG support
+// was later removed, leaving only Canvas.. probably for
+// good reasons I haven't come across yet).
+
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1893645
+// https://github.com/dmca-glasgow/isos/security/dependabot/95
+// This version of pdfjs has a known vulnerability.
+// I have set the "isEvalSupported" option to false, the
+// workaround advised by dependabot.
 
 // https://bundlephobia.com/package/pdfjs-dist@2.14.305
-// While this solution is more awkward, it's 227.3kB minfied,
-// whereas mupdf's .wasm file is over 10MB (unminified).
+// 227.3kB minfied
 
-// Since this will never be in the runtime bundle, perhaps
-// the larger bundle size doesn't matter, but I'm trying
-// it out to find it's limitations before adopting MuPDF.
+// https://mupdf.readthedocs.io/en/latest/license.html
+// MuPDF is another option but has licensing issues
 
 export async function pdfToSvg(data: Uint8Array<ArrayBufferLike>) {
   const { SVGGraphics, getDocument } = await getPdfJs();
   const doc = await getDocument({
     data: new Uint8Array(data),
+    isEvalSupported: false,
     fontExtraProperties: true,
     verbosity: 0,
   }).promise;

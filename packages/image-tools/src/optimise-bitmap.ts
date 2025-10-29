@@ -1,11 +1,10 @@
 import { Jimp } from 'jimp';
 
 export async function optimiseBitmap(
-  img: Uint8Array<ArrayBufferLike> | ArrayBuffer,
+  img: ArrayBuffer,
   maxSize = 800,
   quality = 75,
 ) {
-  //@ts-expect-error
   const image = await Jimp.fromBuffer(img);
   // console.log(image.mime);
 
@@ -26,4 +25,8 @@ export async function optimiseBitmap(
   // without Jimp, works but for some reason the file size is 35x larger!
   // const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
   // node.properties.href = `data:${mime};base64,${base64}`;
+}
+
+function toUrl(mime: string, base64: string) {
+  return `data:${mime};base64,${base64}`;
 }

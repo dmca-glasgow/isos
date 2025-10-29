@@ -40,6 +40,8 @@ async function getPackage(): Promise<any> {
       'pdfjs-dist/build/pdf.worker.min.js?url'
     );
 
+    // pdfjsLib.getDocument
+
     pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker.default;
 
     return pdfjsLib;

@@ -1,10 +1,8 @@
-// import { Jimp } from 'jimp';
 import mimes from 'mime/lite';
 import { basename, extname } from 'pathe';
 
 import { readBinaryFile } from '@isos/fs';
-import { pdfToSvg } from '@isos/image-tools';
-import { optimiseBitmap } from '@isos/image-tools';
+import { optimiseBitmap, pdfToSvg } from '@isos/image-tools';
 
 export const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
 
@@ -37,7 +35,7 @@ async function getDataUrlForExtension(imagePath: string) {
     case '.jpeg':
     case '.png': {
       const img = await readBinaryFile(imagePath);
-      return optimiseBitmap(img);
+      return optimiseBitmap(img.buffer as ArrayBuffer);
     }
     default:
       throw new Error(`unsupported file extension "${ext}"`);
