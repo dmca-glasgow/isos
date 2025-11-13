@@ -9,13 +9,19 @@ type Props = {
   markdown: string;
   onRendered?: () => unknown;
   hide?: boolean;
+  setStatus?: (status: string) => unknown;
 };
 
-export function Runtime({ markdown, onRendered, hide }: Props) {
+export function Runtime({ markdown, onRendered, hide, setStatus }: Props) {
+  // console.log(markdown);
   return (
     <Main hide={hide === true}>
       <Template markdown={markdown} />
-      <Content markdown={markdown} onRendered={onRendered} />
+      <Content
+        markdown={markdown}
+        onRendered={onRendered}
+        setStatus={setStatus}
+      />
     </Main>
   );
 }

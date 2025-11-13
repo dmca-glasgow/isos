@@ -2,7 +2,7 @@ import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import * as Ast from '@unified-latex/unified-latex-types';
 import { Macro } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 
 import { htmlLike } from '@isos/unified-latex-util-html-like';
 // import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';

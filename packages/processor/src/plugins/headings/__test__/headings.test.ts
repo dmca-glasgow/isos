@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
+
 // @ts-ignore
-import { pdfLatexToHtml } from '../../../test-utils/pdflatex-to-html';
-import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
-import { testProcessor } from '../../../test-utils/unit-test-processor';
+// import { pdfLatexToHtml } from '../../../test-utils/pdflatex-to-html';
 
 test('heading with counter', async () => {
   const latex = String.raw`

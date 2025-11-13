@@ -1,7 +1,9 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
+import { createMockWatcher, fs } from '@isos/fs/node';
 import {
+  createFileCache,
   createInputToMarkdownContext,
   createInputToMarkdownOptions,
   inputToMarkdown,
@@ -23,8 +25,11 @@ import { createRuntimeHtml } from '.';
 //   'tex',
 // ];
 
+fs.createWatcher = createMockWatcher;
+const fileCache = createFileCache(fs);
 const ctx = await createInputToMarkdownContext(
   '/Users/staff/Work/latex-experiments/test1/MCA_lecturenotes.tex',
+  fileCache,
 );
 const options = createInputToMarkdownOptions(ctx);
 const markdown = await inputToMarkdown(ctx.content, options);
@@ -44,7 +49,6 @@ const bundle = {
     fileURLToPath(new URL(`${folder}/index.css`, import.meta.url)),
     'utf-8',
   ),
-  font: 'termes',
 };
 
 const runtime = await createRuntimeHtml(markdown, frontmatter, bundle);

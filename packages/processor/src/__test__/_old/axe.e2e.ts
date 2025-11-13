@@ -2,19 +2,25 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'fs/promises';
 
-import { inputToMarkdown } from '../../input-to-markdown';
-import { createContext } from '../../input-to-markdown/context';
-import { createDefaultOptions } from '../../input-to-markdown/options';
+import { createMockWatcher, fs } from '@isos/fs/node';
 // import { expect, test } from '@playwright/test';
 // import { readFile } from 'fs/promises';
 
-import { createE2eTestBundle } from '../../test-utils/create-e2e-test-bundle';
+import { createE2eTestBundle } from '@isos/test-utils/e2e';
+
+import { createFileCache } from '../../embed-includes/file-cache';
+import { inputToMarkdown } from '../../input-to-markdown';
+import { createContext } from '../../input-to-markdown/context';
+import { createDefaultOptions } from '../../input-to-markdown/options';
 
 test.skip('axe', async ({ page }) => {
   test.slow(); // approx. 45 seconds
 
+  fs.createWatcher = createMockWatcher;
+  const fileCache = createFileCache(fs);
   const ctx = await createContext(
     '/Users/staff/Work/latex-experiments/test1/MCA_lecturenotes.tex',
+    fileCache,
   );
 
   const options = createDefaultOptions(ctx);

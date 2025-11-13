@@ -1,4 +1,4 @@
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 import { Root, Text } from 'mdast';
 import { visit } from 'unist-util-visit';
 

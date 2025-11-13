@@ -1,5 +1,6 @@
 import { render } from 'preact';
 
 import { App } from './app';
+import { rootEl } from './constants';
 
-render(<App />, document.getElementById('root')!);
+render(<App />, rootEl);

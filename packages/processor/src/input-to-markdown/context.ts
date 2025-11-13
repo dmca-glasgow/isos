@@ -1,5 +1,4 @@
-import { readTextFile } from '@isos/fs';
-
+import { FileCache } from '../embed-includes/file-cache';
 import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
@@ -10,9 +9,10 @@ type Author = {
 };
 
 export type Context = {
-  filePath: string;
-  subFilePaths: string[];
-  base64Images: Record<string, { error: boolean; data: string }>;
+  srcFilePath: string;
+  includePaths: string[];
+  imagePaths: string[];
+  fileCache: FileCache;
   type: FileType;
   content: string;
   frontmatter: {
@@ -25,15 +25,26 @@ export type Context = {
   };
 };
 
-export async function createContext(filePath: string): Promise<Context> {
-  const { type } = parseFilePath(filePath);
-  const content = await readTextFile(filePath);
+export async function createContext(
+  srcFilePath: string,
+  fileCache: FileCache,
+): Promise<Context> {
+  const { type } = parseFilePath(srcFilePath);
+
+  // await fileCache.upsert(srcFilePath);
+  // const content = fileCache.getContent(srcFilePath);
+
+  // if (content === null) {
+  //   throw new Error(`No file exists: ${srcFilePath}`);
+  // }
+
   return {
-    filePath,
-    subFilePaths: [],
-    base64Images: {},
+    srcFilePath,
+    includePaths: [],
+    imagePaths: [],
+    fileCache,
     type,
-    content,
+    content: '',
     frontmatter: {
       title: '',
       date: '',
@@ -48,11 +59,13 @@ export async function createContext(filePath: string): Promise<Context> {
 export function createTestContext(
   type: FileType,
   content: string,
+  fileCache: FileCache,
 ): Context {
   return {
-    filePath: 'test',
-    subFilePaths: [],
-    base64Images: {},
+    srcFilePath: 'test',
+    includePaths: [],
+    imagePaths: [],
+    fileCache,
     type,
     content,
     frontmatter: {

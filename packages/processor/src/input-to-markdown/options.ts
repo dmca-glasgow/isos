@@ -33,7 +33,7 @@ import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
 import { nbspToSpace } from './string-transforms/nbsp-to-space';
 
 export type Options = {
-  filePath: string;
+  srcFilePath: string;
   type: 'latex' | 'markdown';
   frontmatter: {};
   noInlineImages: boolean;
@@ -136,7 +136,6 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
   return {
     environmentReplacements: {
       ...createTheoremHandlers(ctx),
-      // figure: ,
       minted: mintedToPre,
       description: descriptionToDl,
       enumerate: enumerateToOl,

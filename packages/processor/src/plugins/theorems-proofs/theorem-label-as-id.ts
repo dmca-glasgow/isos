@@ -1,4 +1,4 @@
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 import { Root } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { visit } from 'unist-util-visit';

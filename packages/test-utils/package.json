@@ -1,0 +1,25 @@
+{
+  "name": "@isos/test-utils",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": "./src/unit-test-processor.ts",
+    "./e2e": "./src/create-e2e-test-bundle.ts",
+    "./md-to-pandoc-html": "./src/md-to-pandoc-html.ts",
+    "./md-to-quarto-html": "./src/md-to-quarto-html.ts",
+    "./pdflatex-to-html": "./src/pdflatex-to-html.ts"
+  },
+  "dependencies": {
+    "mupdf": "^1.26.4",
+    "preact-render-to-string": "^6.6.3",
+    "pretty": "^2.0.0",
+    "rehype-parse": "^9.0.1",
+    "rehype-stringify": "^10.0.1",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/pretty": "^2.0.3"
+  }
+}

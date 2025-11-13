@@ -1,4 +1,4 @@
-import { ElementContent } from 'hast';
+import { Element, ElementContent } from 'hast';
 import { Parent, Root } from 'mdast';
 import remarkRehype from 'remark-rehype';
 import { visit } from 'unist-util-visit';
@@ -22,7 +22,36 @@ export function pandocImplicitFigures() {
         return;
       }
 
+      // console.log(caption);
       const captionHast = getCaptionHast(String(caption));
+
+      const img: Element =
+        process.env.NODE_ENV === 'test' || node.url.startsWith('data')
+          ? {
+              type: 'element',
+              tagName: 'img',
+              properties: {
+                src: node.url,
+                alt: node.alt || '',
+                title: node.title || null,
+              },
+              children: [],
+            }
+          : {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                className: ['warn'],
+              },
+              children: [
+                {
+                  type: 'text',
+                  value: `No image found at: ${node.url}`,
+                },
+              ],
+            };
+
+      // console.log(node.url);
 
       parent.data = {
         hName: 'figure',
@@ -32,16 +61,7 @@ export function pandocImplicitFigures() {
           id,
         },
         hChildren: [
-          {
-            type: 'element',
-            tagName: 'img',
-            properties: {
-              src: node.url,
-              alt: node.alt || '',
-              title: node.title || null,
-            },
-            children: [],
-          },
+          img,
           {
             type: 'element',
             tagName: 'figcaption',

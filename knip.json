@@ -1,0 +1,17 @@
+{
+  "ignore": ["unified-latex-forks/**", "src-tauri/**"],
+  "workspaces": {
+    ".": {
+      "entry": "src/main.tsx",
+      "project": "src/**/*"
+    },
+    "docs": {
+      "entry": "src/main.tsx",
+      "project": "src/**/*"
+    },
+    "packages/*": {
+      "entry": "src/{index.ts,main.tsx}",
+      "project": "src/**/*"
+    }
+  }
+}

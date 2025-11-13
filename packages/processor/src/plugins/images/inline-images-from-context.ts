@@ -1,5 +1,5 @@
 import { Image, Root } from 'mdast';
-import { dirname, resolve } from 'pathe';
+import { dirname, parse, resolve } from 'pathe';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../input-to-markdown/context';
@@ -9,20 +9,18 @@ import { Options } from '../../input-to-markdown/options';
 
 export function inlineImagesFromContext(ctx: Context, options: Options) {
   return async (tree: Root) => {
-    // console.log(ctx.base64Images);
+    // console.log(ctx.fileCache.getStore());
     // console.log('inlineImages', options.noInlineImages);
     if (options.noInlineImages) {
       return;
     }
     const nodes: Image[] = [];
 
-    // console.dir(tree, { depth: null });
     visit(tree, 'image', (node) => {
-      // console.log(parent?.type);
       nodes.push(node);
     });
 
-    const dir = dirname(ctx.filePath);
+    const dir = dirname(ctx.srcFilePath);
 
     for (const node of nodes) {
       const imagePath = resolve(dir, node.url);
@@ -32,23 +30,36 @@ export function inlineImagesFromContext(ctx: Context, options: Options) {
         continue;
       }
 
-      if (ctx.base64Images[imagePath]) {
-        const { error, data } = ctx.base64Images[imagePath];
-        if (!error) {
-          node.url = data;
-        } else {
-          Object.assign(node, {
-            type: 'textDirective',
-            name: 'warn',
-            children: [
-              {
-                type: 'text',
-                value: data,
-              },
-            ],
-          });
-        }
+      // with latex, if no extension is given, default to .pdf
+      const fullPath =
+        ctx.type === 'latex' ? normaliseImagePath(imagePath) : imagePath;
+
+      const data = ctx.fileCache.getContent(fullPath);
+
+      if (data !== null) {
+        node.url = data;
+        continue;
+      }
+
+      const error = ctx.fileCache.getError(fullPath);
+
+      if (error !== null) {
+        Object.assign(node, {
+          type: 'textDirective',
+          name: 'warn',
+          children: [
+            {
+              type: 'text',
+              value: data,
+            },
+          ],
+        });
       }
     }
   };
+}
+
+function normaliseImagePath(imagePath: string) {
+  const { dir, name, ext } = parse(imagePath);
+  return `${dir}/${name}${ext || '.pdf'}`;
 }

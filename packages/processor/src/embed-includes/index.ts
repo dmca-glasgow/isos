@@ -1,18 +1,32 @@
+import * as Ast from '@unified-latex/unified-latex-types';
+import { Root as MDAstRoot } from 'mdast';
+
+import { Fs } from '@isos/fs/types';
+
 import { Context } from '../input-to-markdown/context';
-import { Options } from '../input-to-markdown/options';
 import { embedLatexIncludes } from './latex-includes';
 import { embedMarkdownIncludes } from './markdown-includes';
 
+export type LaTeXResult = {
+  latexAstRoot: Ast.Root;
+  subFiles: string[];
+};
+
+export type MarkdownResult = {
+  mdAstRoot: MDAstRoot;
+  subFiles: string[];
+};
+
 export async function embedIncludes(
   ctx: Context,
-  options: Options,
-): Promise<void> {
-  switch (options.type) {
+  fs: Fs,
+): Promise<LaTeXResult | MarkdownResult> {
+  switch (ctx.type) {
     case 'markdown':
-      return embedMarkdownIncludes(ctx);
+      return embedMarkdownIncludes(ctx, fs);
     case 'latex':
-      return embedLatexIncludes(ctx, options);
+      return embedLatexIncludes(ctx, fs);
     default:
-      throw new Error(`file type: "${options.type}" is not supported`);
+      throw new Error(`file type: "${ctx.type}" is not supported`);
   }
 }

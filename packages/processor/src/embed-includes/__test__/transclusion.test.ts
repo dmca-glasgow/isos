@@ -1,11 +1,11 @@
 import { expect, test } from 'vitest';
 
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
+
 // @ts-ignore
 // import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
-import { unindentStringAndTrim } from '../../test-utils/unindent-string';
-import { testProcessor } from '../../test-utils/unit-test-processor';
 
-test('file transclusion with latex', async () => {
+test.only('file transclusion with latex', async () => {
   const markdown = await testProcessor.fixture(
     'transclusion-1/article.tex',
   );

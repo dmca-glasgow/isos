@@ -1,5 +1,5 @@
 import { Element, Root } from 'hast';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 import { visit } from 'unist-util-visit';
 
 import { serialiseAttributes } from '../images/formatted-caption';

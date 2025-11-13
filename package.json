@@ -2,7 +2,8 @@
   "name": "isos",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.19.0",
+  "version": "0.0.80",
+  "packageManager": "pnpm@10.20.0",
   "scripts": {
     "dev": "vite",
     "check-types": "tsc",
@@ -12,18 +13,19 @@
     "test": "vitest",
     "e2e": "NODE_ENV=test playwright test",
     "prettier": "prettier",
-    "test-bundle": "npm -w @isos/runtime run build && npm -w @isos/export run bundle",
+    "test-bundle": "pnpm --filter @isos/runtime run build && pnpm --filter @isos/export run bundle",
     "knip": "knip"
   },
   "dependencies": {
     "@isos/export": "workspace:*",
     "@isos/fs": "workspace:*",
+    "@isos/logger": "workspace:*",
     "@isos/processor": "workspace:*",
-    "@isos/use-local-storage": "workspace:*",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-dialog": "~2.4.0",
     "@tauri-apps/plugin-updater": "~2.9.0",
     "@tauri-apps/plugin-window-state": "~2.4.0",
+    "classnames": "^2.5.1",
     "lodash": "^4.17.21",
     "pathe": "^2.0.3",
     "preact": "^10.25.1"

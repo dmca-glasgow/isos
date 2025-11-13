@@ -1,0 +1,10 @@
+{
+  "name": "@isos/logger",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "packageManager": "pnpm@10.18.3",
+  "dependencies": {
+    "roarr": "^7.21.1"
+  }
+}

@@ -1,7 +1,7 @@
 import { Element, Text } from 'hast';
 import { State } from 'hast-util-to-mdast';
 import { toString } from 'hast-util-to-string';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 
 export function createReference(_state: State, node: Element): Text {
   const id = kebabCase(toString(node));

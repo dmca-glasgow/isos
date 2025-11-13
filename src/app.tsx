@@ -4,84 +4,54 @@ import { filename } from 'pathe/utils';
 import { useEffect, useState } from 'preact/hooks';
 
 import { createRuntimeHtml } from '@isos/export';
-import { readTextFile, watchImmediate, writeTextFile } from '@isos/fs';
-import {
-  createInputToMarkdownContext,
-  createInputToMarkdownOptions,
-  embedIncludes,
-  inputToMarkdown,
-} from '@isos/processor';
-import { useLocalStorage } from '@isos/use-local-storage';
+import { fs } from '@isos/fs/tauri';
 
 import { Runtime } from '../packages/runtime/src';
 import { Header } from './header';
+import { useLocalStorage } from './use-local-storage';
 
 import './styles.scss';
 
-import { WarningLineHighlight } from './warnings/warn-line-highlight';
+import { createProcessor } from '@isos/processor/input-to-markdown';
 
-const watchers: (() => void)[] = [];
+import { Log } from './log';
+import { WarningLineHighlight } from './warnings/warn-line-highlight';
 
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', '');
   const [subFilePaths, setSubFilePaths] = useState<string[]>([]);
+  const [_error, setError] = useState('');
   // const { setError } = useContext(ErrorContext);
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
+    const processor = createProcessor(filePath, fs, {
+      onError(err) {
+        setError(err.message);
+      },
+      onComplete({ markdown, ctx }) {
+        setMarkdown(markdown);
+
+        const filePaths = ctx.fileCache.getFilePaths();
+        setSubFilePaths(filePaths);
+        setError('');
+      },
+      onLoading: setLoading,
+      onStatus: setStatus,
+    });
+
     (async () => {
       if (filePath !== '') {
-        await processMarkdown();
+        await processor.process();
       }
     })();
+
+    return () => {
+      processor.destroy();
+    };
   }, [filePath]);
-
-  async function processMarkdown() {
-    try {
-      const ctx = await createInputToMarkdownContext(filePath);
-      const options = createInputToMarkdownOptions(ctx);
-      await embedIncludes(ctx, options);
-      const newMarkdown = await inputToMarkdown(ctx.content, options);
-      setMarkdown(newMarkdown);
-      setSubFilePaths(ctx.subFilePaths);
-      createFileWatchers(ctx.subFilePaths);
-      // setError('');
-    } catch (err: any) {
-      console.error(err);
-      // setError(err.message);
-    }
-  }
-
-  async function createFileWatchers(subFiles: string[]) {
-    // destroy previous watchers by calling them
-    // https://github.com/tauri-apps/tauri-plugin-fs-watch#usage
-    watchers.map((fn) => fn()).splice(0, watchers.length);
-    const pathsToWatch = [filePath, ...subFiles];
-
-    for (const toWatch of pathsToWatch) {
-      try {
-        watchers.push(
-          await watchImmediate(toWatch, (event) => {
-            // can be of type 'any' or 'other'
-            if (typeof event.type === 'string') {
-              return;
-            }
-            const type = event.type as Record<string, any>;
-            if (
-              type.create?.kind === 'file' ||
-              type.modify?.kind === 'data'
-            ) {
-              setLoading(true);
-              processMarkdown();
-            }
-          }),
-        );
-      } catch (err: any) {
-        console.log('[file watcher]:', String(err));
-      }
-    }
-  }
 
   async function handleProcessFile(newFilePath: string | null) {
     if (newFilePath === null || newFilePath === filePath) {
@@ -89,6 +59,7 @@ export function App() {
     }
     setLoading(true);
     setFilePath(newFilePath);
+    setMarkdown('');
     // createFileWatcher(newFilePath);
   }
 
@@ -97,16 +68,15 @@ export function App() {
       docTitle: startCase(filename(filePath)),
     };
     const bundle = {
-      css: await readTextFile(
+      css: await fs.readTextFile(
         await resolveResource('resources/runtime/index.css'),
       ),
-      js: await readTextFile(
+      js: await fs.readTextFile(
         await resolveResource('resources/runtime/runtime.js'),
       ),
-      font: 'termes',
     };
     const html = await createRuntimeHtml(markdown, frontmatter, bundle);
-    await writeTextFile(saveFilePath, html);
+    await fs.writeTextFile(saveFilePath, html);
   }
 
   function handleRendered() {
@@ -117,16 +87,21 @@ export function App() {
     <>
       <Header
         filePath={filePath}
-        numWatchedFiles={subFilePaths.length + 1}
+        numWatchedFiles={subFilePaths.length}
         loading={loading}
+        status={status}
         handleProcessFile={handleProcessFile}
         handleExportFile={handleExportFile}
       />
-      <Runtime
-        markdown={markdown}
-        hide={loading}
-        onRendered={handleRendered}
-      />
+      <Log />
+      {markdown !== '' && (
+        <Runtime
+          markdown={markdown}
+          hide={loading}
+          onRendered={handleRendered}
+          setStatus={setStatus}
+        />
+      )}
       <WarningLineHighlight loading={loading} />
     </>
   );

@@ -1,24 +1,39 @@
-import { Image, Root } from 'mdast';
-import { dirname, extname, resolve } from 'pathe';
-// import { toString } from 'mdast-util-to-string';
+import { Root } from 'mdast';
+import { dirname, resolve } from 'pathe';
 import remarkParse from 'remark-parse';
-// import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-import { readTextFile } from '@isos/fs';
+import { Fs } from '@isos/fs/types';
 
 import { Context } from '../input-to-markdown/context';
-import { getDataUrl, supportedExtensions } from './inline-image';
 
-export async function embedMarkdownIncludes(ctx: Context) {
-  // console.log('embedMarkdownIncludes');
-  await registerImages(ctx.content, ctx);
-  ctx.content = await replaceLines(ctx.content, ctx);
+export async function embedMarkdownIncludes(ctx: Context, fs: Fs) {
+  const subFiles: string[] = [];
+
+  ctx.content = await recursivelyIncludeFiles(
+    ctx.content,
+    fs,
+    ctx,
+    subFiles,
+  );
+
+  const processor = unified()
+    .use(remarkParse)
+    .use(collectImages, ctx, subFiles);
+  const parsed = processor.parse(ctx.content);
+  const mdAstRoot = (await processor.run(parsed)) as Root;
+
+  return { mdAstRoot, subFiles };
 }
 
-async function replaceLines(input: string, ctx: Context) {
-  const dir = dirname(ctx.filePath);
+async function recursivelyIncludeFiles(
+  input: string,
+  fs: Fs,
+  ctx: Context,
+  subFiles: string[],
+) {
+  const dir = dirname(ctx.srcFilePath);
   const lines = input.split('\n');
 
   for (let idx = 0; idx < lines.length; idx++) {
@@ -27,40 +42,26 @@ async function replaceLines(input: string, ctx: Context) {
 
     if (match !== null) {
       const fullPath = resolve(dir, match[1]);
-      ctx.subFilePaths.push(fullPath);
-      const contents = await readTextFile(fullPath);
-      lines[idx] = await replaceLines(contents.trim(), ctx);
+      subFiles.push(fullPath);
+      const contents = await fs.readTextFile(fullPath);
+      lines[idx] = await recursivelyIncludeFiles(
+        contents.trim(),
+        fs,
+        ctx,
+        subFiles,
+      );
     }
   }
 
   return lines.join('\n');
 }
 
-async function registerImages(input: string, ctx: Context) {
-  const processor = unified().use(remarkParse).use(embedIncludes, ctx);
-  const parsed = processor.parse(input);
-  const transformed = await processor.run(parsed);
-  return transformed as Root;
-}
-
-function embedIncludes(ctx: Context) {
-  return async (tree: Root) => {
-    const nodes: Image[] = [];
-
+function collectImages(ctx: Context, subFiles: string[]) {
+  return (tree: Root) => {
+    const dir = dirname(ctx.srcFilePath);
     visit(tree, 'image', (node) => {
-      nodes.push(node);
-    });
-
-    const dir = dirname(ctx.filePath);
-
-    for (const node of nodes) {
       const imagePath = resolve(dir, node.url);
-      ctx.subFilePaths.push(imagePath);
-
-      const ext = extname(imagePath);
-      if (supportedExtensions.includes(ext)) {
-        ctx.base64Images[imagePath] = await getDataUrl(imagePath);
-      }
-    }
+      subFiles.push(imagePath);
+    });
   };
 }

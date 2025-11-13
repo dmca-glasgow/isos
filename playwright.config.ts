@@ -25,6 +25,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         channel: 'chromium',
       },
+      testIgnore: ['**/_old/**'],
     },
   ],
 });

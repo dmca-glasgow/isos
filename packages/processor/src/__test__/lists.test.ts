@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { unindentStringAndTrim } from '../test-utils/unindent-string';
-import { testProcessor } from '../test-utils/unit-test-processor';
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
 
 test('itemize to ul', async () => {
   const markdown = await testProcessor.latex(String.raw`

@@ -3,12 +3,16 @@
   "private": false,
   "version": "0.0.1",
   "type": "module",
-  "files": [
-    "src"
-  ],
-  "exports": "./src/index.ts",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./input-to-markdown": "./src/input-to-markdown/processor.ts"
+  },
   "dependencies": {
+    "@isos/fs": "workspace:*",
     "@isos/image-tools": "workspace:*",
+    "@isos/logger": "workspace:*",
+    "@isos/test-utils": "workspace:*",
     "@isos/unified-latex-to-hast": "workspace:*",
     "@isos/unified-latex-util-html-like": "workspace:*",
     "@isos/unified-latex-util-print-raw": "workspace:*",
@@ -33,12 +37,17 @@
     "@unified-latex/unified-latex-util-visit": "^1.8.3",
     "aria-attributes": "^2.0.1",
     "classnames": "^2.5.1",
+    "crypto-hash": "^4.0.0",
     "devlop": "^1.1.0",
     "github-slugger": "^2.0.0",
     "hast-util-find-and-replace": "^5.0.1",
     "hast-util-to-mdast": "^10.1.2",
     "hast-util-to-string": "^3.0.1",
     "html-element-attributes": "^3.5.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.kebabcase": "^4.1.1",
+    "lodash.merge": "^4.6.2",
+    "lodash.startcase": "^4.4.0",
     "md-attr-parser": "^1.3.0",
     "mdast-util-directive": "^3.1.0",
     "mdast-util-from-markdown": "^2.0.2",
@@ -84,6 +93,10 @@
     "yaml": "^2.7.0"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/lodash.kebabcase": "^4.1.9",
+    "@types/lodash.merge": "^4.6.9",
+    "@types/lodash.startcase": "^4.4.9",
     "@types/pretty": "^2.0.3",
     "@types/prismjs": "^1.26.5",
     "mupdf": "^1.26.4",

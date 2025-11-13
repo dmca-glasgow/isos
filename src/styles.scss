@@ -6,6 +6,7 @@ html#editor {
   #root {
     height: 100%;
     overflow: hidden;
+    background: #222;
   }
 
   #root {
@@ -52,6 +53,26 @@ html#editor {
         }
       }
     }
+
+    .log {
+      position: fixed;
+      top: $headerHeight;
+      right: 0;
+      bottom: 0;
+      width: 600px;
+      margin-right: -600px;
+      transition: margin-right 0.2s ease-out;
+      z-index: 1;
+    }
+
+    &.log-show {
+      .log {
+        margin-right: 0;
+      }
+      .log-toggle svg {
+        fill: orange;
+      }
+    }
   }
 
   #root > header,
@@ -83,13 +104,33 @@ html#editor {
       color: #29e808;
       line-height: 1;
 
-      &.watching {
-        color: #29e808;
-      }
-
       &.loading {
         color: #e88308;
       }
+    }
+
+    .log-toggle {
+      display: block;
+      line-height: 1;
+      cursor: pointer;
+
+      svg {
+        display: inline-block;
+        width: 1.2rem;
+        margin-right: 0.8rem;
+        fill: #fff5;
+      }
+      // display: block;
+      // color: #29e808;
+      // line-height: 1;
+
+      // &.watching {
+      //   color: #29e808;
+      // }
+
+      // &.loading {
+      //   color: #e88308;
+      // }
     }
 
     #warning-count {
@@ -140,5 +181,121 @@ html#editor {
     }
   }
 
+  .log {
+    display:flex;
+    flex-direction: column;
+    background: black;
+    color: white;
+    padding: 1em;
+    box-sizing: border-box;
+    word-break: break-word;
+
+    h3 {
+      margin: 0 0 0.8em 0;
+    }
+
+    .scroll {
+      overflow: scroll;
+      display:flex;
+      flex: 1;
+      flex-direction:column-reverse;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      font: normal 0.7rem/1.4 monospace;
+    }
+
+    li {
+      list-style: none;
+      padding: 0;
+    }
+
+    /* https://rootloops.sh?sugar=7&colors=6&sogginess=4&flavor=1&fruit=10&milk=0 */
+    /*
+    "black": "#261d35",
+    "red": "#d97780",
+    "green": "#7aa860",
+    "yellow": "#bc904f",
+    "blue": "#6b9bd9",
+    "magenta": "#b77ed1",
+    "cyan": "#52a9a9",
+    "white": "#b2a2d1",
+    "brightBlack": "#584875",
+    "brightRed": "#e6949a",
+    "brightGreen": "#8ebf73",
+    "brightYellow": "#d3a563",
+    "brightBlue": "#88b1e5",
+    "brightMagenta": "#c899de",
+    "brightCyan": "#63c0bf",
+    "brightWhite": "#e5dff1"
+    */
+
+    .col-black {
+      color: #261d35;
+    }
+
+    .col-blue {
+      color: #6b9bd9;
+    }
+
+    .col-cyan {
+      color: #52a9a9;
+    }
+
+    .col-green {
+      color: #7aa860;
+    }
+
+    .col-magenta {
+      color: #b77ed1;
+    }
+
+    .col-red {
+      color: #d97780;
+    }
+
+    .col-white {
+      color: #b2a2d1;
+    }
+
+    .col-yellow {
+      color: #bc904f;
+    }
+
+    .col-blackBright {
+      color: #584875;
+    }
+
+    .col-blueBright {
+      color: #88b1e5;
+    }
+
+    .col-cyanBright {
+      color: #63c0bf;
+    }
+
+    .col-greenBright {
+      color: #8ebf73;
+    }
+
+    .col-magentaBright {
+      color: #c899de;
+    }
+
+    .col-redBright {
+      color: #e6949a;
+    }
+
+    .col-whiteBright {
+      color: #e5dff1;
+    }
+
+    .col-yellowBright {
+      color: #d3a563;
+    }
+
+  }
 
 }

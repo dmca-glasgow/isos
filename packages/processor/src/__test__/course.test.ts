@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
+
 // @ts-ignore
 // import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
-import { unindentStringAndTrim } from '../test-utils/unindent-string';
-import { testProcessor } from '../test-utils/unit-test-processor';
 
 test.skip('course', async () => {
   const markdown = await testProcessor.fixture('course/index.tex');

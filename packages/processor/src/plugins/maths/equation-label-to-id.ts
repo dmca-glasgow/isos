@@ -1,7 +1,7 @@
 import * as Ast from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { visit } from '@unified-latex/unified-latex-util-visit';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 
 import { printRaw } from '../../../../../unified-latex-forks/unified-latex-util-print-raw/libs/print-raw';
 

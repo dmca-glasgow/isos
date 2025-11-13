@@ -1,6 +1,6 @@
 import { Element, Text } from 'hast';
 import { State } from 'hast-util-to-mdast';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 import { PhrasingContent } from 'mdast';
 import { TextDirective } from 'mdast-util-directive';
 

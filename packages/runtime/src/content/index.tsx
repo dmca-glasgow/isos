@@ -12,9 +12,10 @@ import './styles/index.scss';
 type Props = {
   markdown: string;
   onRendered?: () => unknown;
+  setStatus?: (status: string) => unknown;
 };
 
-export function Content({ markdown, onRendered }: Props) {
+export function Content({ markdown, onRendered, setStatus }: Props) {
   const [error, setError] = useState('');
   const ref = useRef<HTMLElement>(null);
   return (
@@ -30,6 +31,7 @@ export function Content({ markdown, onRendered }: Props) {
         renderFn={markdownToArticle}
         onError={setError}
         onRendered={onRendered}
+        onStatus={setStatus}
       />
     </ArticleWrapper>
   );

@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest';
 
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
+
 // @ts-ignore
-import { markdownToPandocHtml } from '../../../test-utils/md-to-pandoc-html';
+// import { markdownToPandocHtml } from '@isos/test-utils/md-to-pandoc-html';
 // @ts-ignore
-import { markdownToQuartoHtml } from '../../../test-utils/md-to-quarto-html';
+// import { markdownToQuartoHtml } from '@isos/test-utils/md-to-quarto-html';
 // @ts-ignore
-import { pdfLatexToHtml } from '../../../test-utils/pdflatex-to-html';
-import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
-import { testProcessor } from '../../../test-utils/unit-test-processor';
+// import { pdfLatexToHtml } from '../../../test-utils/pdflatex-to-html';
 
 test('image', async () => {
   const latex = String.raw`

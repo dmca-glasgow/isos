@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
+
 // @ts-ignore
-import { markdownToQuartoHtml } from '../../../test-utils/md-to-quarto-html';
-import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
-import { testProcessor } from '../../../test-utils/unit-test-processor';
+// import { markdownToQuartoHtml } from '@isos/test-utils/md-to-quarto-html';
 
 test('callout', async () => {
   const latex = unindentStringAndTrim(String.raw`

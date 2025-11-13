@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 
+import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
+
 // @ts-ignore
-import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
-import { unindentStringAndTrim } from '../../../test-utils/unindent-string';
-import { testProcessor } from '../../../test-utils/unit-test-processor';
+// import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
 
 test('inline images', async () => {
   // const pdfLatexHtml = await pdfLatexFixtureToHtml.poppler(
@@ -40,7 +40,7 @@ test('inline images', async () => {
   `);
 
   expect(markdown).toBe(expectedMarkdown);
-  // return;
+  return;
 
   // const html = await testProcessor.md(markdown);
   // console.log(html);

@@ -2,20 +2,26 @@ import { MDXModule } from 'mdx/types';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { Fragment, JSX } from 'preact/jsx-runtime';
 
+import { logger } from '@isos/logger';
+
 import { createContext } from './context';
 import { MdxState } from './mdx-handlers/mdx-state';
 import { Options, createDefaultOptions } from './options';
 
 // import { MathsProviderOptions, Providers } from './providers';
 
+const log = logger('runtime');
+
 type Props = {
   markdown: string;
   renderFn: (
     markdown: string,
     options: Options,
+    onStatus?: (status: string) => unknown,
   ) => MDXModule | Promise<MDXModule>;
   onError: (err: string) => unknown;
   onRendered?: () => unknown;
+  onStatus?: (status: string) => unknown;
   mdxState: MdxState;
   options?: Partial<Options>;
 };
@@ -26,6 +32,7 @@ export function RenderMDX({
   markdown,
   renderFn,
   onRendered,
+  onStatus,
   onError,
   mdxState,
   options = {},
@@ -35,13 +42,16 @@ export function RenderMDX({
 
   useEffect(() => {
     (async () => {
-      if (markdown === '') {
-        return;
-      }
+      // if (markdown === '') {
+      //   return;
+      // }
       try {
+        // console.log({ onStatus });
+        onStatus && log.info('converting markdown to html');
         const ctx = createContext();
         const opts = createDefaultOptions(mdxState, ctx, options);
-        setMDX(await renderFn(markdown, opts));
+        setMDX(await renderFn(markdown, opts, onStatus));
+        onStatus && log.info('rendering');
         onError('');
       } catch (err: any) {
         onError(err?.message || '');
@@ -52,6 +62,7 @@ export function RenderMDX({
 
   const mdxRef = useCallback((instance: JSX.Element) => {
     if (instance !== null) {
+      onStatus && log.info('✨ Complete');
       onRendered && onRendered();
     }
   }, []);

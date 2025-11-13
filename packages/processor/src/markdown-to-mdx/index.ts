@@ -11,7 +11,11 @@ import { processorOptions } from './hast-transforms';
 import { Options } from './options';
 import { createTableOfContents } from './sidebar';
 
-export async function markdownToArticle(md: string, options: Options) {
+export async function markdownToArticle(
+  md: string,
+  options: Options,
+  _onStatus?: (status: string) => unknown,
+) {
   // console.log(md);
   const mdAst = await getMdAst(md, options);
   // console.dir(mdAst, { depth: null });

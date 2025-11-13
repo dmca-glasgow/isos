@@ -26,7 +26,3 @@ export async function optimiseBitmap(
   // const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
   // node.properties.href = `data:${mime};base64,${base64}`;
 }
-
-function toUrl(mime: string, base64: string) {
-  return `data:${mime};base64,${base64}`;
-}

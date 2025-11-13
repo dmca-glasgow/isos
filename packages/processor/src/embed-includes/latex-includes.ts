@@ -6,15 +6,16 @@ import { visit } from '@unified-latex/unified-latex-util-visit';
 import { dirname, parse, resolve } from 'pathe';
 import { unified } from 'unified';
 
-import { readTextFile } from '@isos/fs';
+import { Fs } from '@isos/fs/types';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 import { Context } from '../input-to-markdown/context';
-import { Options } from '../input-to-markdown/options';
-import { getDataUrl } from './inline-image';
 
-export async function embedLatexIncludes(ctx: Context, options: Options) {
-  const ast = await getLatexAst(ctx.content, ctx, options);
+export async function embedLatexIncludes(ctx: Context, fs: Fs) {
+  const subFiles: string[] = [];
+  const latexAstRoot = await getLatexAst(ctx.content, fs, ctx, subFiles);
+
+  // start remove
   const processor = unified()
     // @ts-expect-error
     .use(unifiedLatexStringCompiler, {
@@ -24,81 +25,92 @@ export async function embedLatexIncludes(ctx: Context, options: Options) {
       printWidth: 200,
     });
 
-  ctx.content = String(processor.stringify(ast));
+  ctx.content = String(processor.stringify(latexAstRoot));
+  // end remove
+
+  return { latexAstRoot, subFiles };
 }
 
-// TODO: rework this section to:
-// * first get all the included image paths recursively
-// * check those files exist
-// * allow for injection of test files using `options.withFiles`
-// * paste files into the document recursively
-
-async function getLatexAst(input: string, ctx: Context, options: Options) {
+async function getLatexAst(
+  input: string,
+  fs: Fs,
+  ctx: Context,
+  subFiles: string[],
+) {
   const processor = unified()
     // @ts-expect-error
     .use(unifiedLatexFromString)
-    .use(embedIncludes, ctx, options);
+    .use(recursivelyIncludeFiles, ctx, fs, subFiles);
   const parsed = processor.parse(input);
   const transformed = await processor.run(parsed);
+
   return transformed as Ast.Root;
 }
 
-function embedIncludes(ctx: Context, options: Options) {
+function recursivelyIncludeFiles(
+  ctx: Context,
+  fs: Fs,
+  subFiles: string[],
+) {
   return async (tree: Ast.Root) => {
-    const dir = dirname(ctx.filePath);
-    const imagePaths: string[] = [];
-    const filePaths: string[] = [];
+    const dir = dirname(ctx.srcFilePath);
+    const includePaths: string[] = [];
 
     visit(tree, (node) => {
       if (node.type === 'macro') {
-        if (node.content === 'includegraphics') {
-          imagePaths.push(getFullPath(node, dir));
+        if (isInclude(node)) {
+          const fullPath = getFullPath(node, dir);
+          includePaths.push(fullPath);
+          subFiles.push(fullPath);
         }
-
-        if (['input', 'include'].includes(node.content)) {
-          filePaths.push(getFullPath(node, dir));
-          // ctx.subFilePaths.push(fullPath);
+        if (isImage(node)) {
+          // default to .pdf if no extension given
+          const fullPath = getFullPath(node, dir);
+          const { name, ext } = parse(fullPath);
+          const filePath = `${dir}/${name}${ext || '.pdf'}`;
+          subFiles.push(filePath);
         }
       }
     });
 
-    if (!options.noInlineImages) {
-      for (const imagePath of imagePaths) {
-        const fsPath = getFsPath(imagePath);
-        ctx.base64Images[imagePath] = await getDataUrl(fsPath);
-      }
-    }
+    const contents: Record<string, Ast.Root | null> = {};
 
-    const contents: Record<string, Ast.Root> = {};
-
-    for (const filePath of filePaths) {
-      const content = await readFileContents(filePath);
-      if (content !== null) {
+    for (const includePath of includePaths) {
+      try {
         // the recursive bit
-        const ast = await getLatexAst(content, ctx, options);
-        contents[filePath] = ast;
+        contents[includePath] = await getLatexAst(
+          await fs.readTextFile(includePath),
+          fs,
+          ctx,
+          subFiles,
+        );
+      } catch (err) {
+        contents[includePath] = null;
       }
     }
 
     visit(tree, (node, info) => {
-      if (
-        node.type === 'macro' &&
-        ['input', 'include'].includes(node.content)
-      ) {
-        const fullPath = getFullPath(node, dir);
-        const ast = contents[fullPath] || { content: [] };
-
-        const idx = info.index || 0;
-        const parent = info.parents[0] as Ast.Environment;
-        parent.content.splice(idx, 1, ...ast.content);
+      if (node.type === 'macro' && isInclude(node)) {
+        const filePath = getFullPath(node, dir);
+        const ast = contents[filePath];
+        if (ast) {
+          const idx = info.index || 0;
+          const parent = info.parents[0] as Ast.Environment;
+          parent.content.splice(idx, 1, ...ast.content);
+        } else {
+          // TODO: add warning element
+        }
       }
     });
   };
 }
 
-function getFsPath(imagePath: string) {
-  const { dir, name, ext } = parse(imagePath);
-  return `${dir}/${name}${ext || '.pdf'}`;
+function isInclude(node: Ast.Macro) {
+  return ['input', 'include'].includes(node.content);
+}
+
+function isImage(node: Ast.Macro) {
+  return ['includegraphics'].includes(node.content);
 }
 
 function getFullPath(node: Ast.Macro, dir: string) {
@@ -106,31 +118,3 @@ function getFullPath(node: Ast.Macro, dir: string) {
   const filePath = printRaw(args[args.length - 1] || []);
   return resolve(dir, filePath);
 }
-
-async function readFileContents(filePath: string): Promise<string | null> {
-  try {
-    return await readTextFile(filePath);
-  } catch (err: any) {
-    console.log('[read file]:', err);
-    return null;
-  }
-}
-
-// export async function embedLatexIncludes(input: string, ctx: Context) {
-//   const lines = input.split('\n');
-
-//   for (let idx = 0; idx < lines.length; idx++) {
-//     const line = lines[idx];
-//     const match = line.match(
-//       /^\\(input|include|includegraphics)(.*){(.+)}$/,
-//     );
-//     if (match !== null) {
-//       const fullPath = resolve(dirname(ctx.filePath), match[3]);
-//       subFiles.push(fullPath);
-//       const contents = await readTextFile(fullPath);
-//       lines[idx] = await embedLatexIncludes(contents.trim(), ctx);
-//     }
-//   }
-
-//   return lines.join('\n');
-// }

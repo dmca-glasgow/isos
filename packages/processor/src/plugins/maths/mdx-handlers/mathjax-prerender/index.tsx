@@ -44,10 +44,14 @@ function MathsInline({ expr, className, maths }: MathsProps) {
 
   useEffect(() => {
     (async () => {
-      const speech = await mmlToSpeech(mml, maths);
-      setLabel(speech.label);
-      setBraille(speech.braille);
+      if (mml !== undefined) {
+        const speech = await mmlToSpeech(mml, maths);
+        setLabel(speech.label);
+        setBraille(speech.braille);
+        // console.log(speech.braille);
+      }
     })();
+    return () => {};
   }, [mml, maths.brailleLocale.value, maths.speechLocale.value]);
 
   if (svg.error) {
@@ -94,8 +98,10 @@ function MathsDisplay({
         const speech = await mmlToSpeech(mml, maths);
         setLabel(speech.label);
         setBraille(speech.braille);
+        // console.log(speech.braille);
       }
     })();
+    return () => {};
   }, [mml, maths.brailleLocale.value, maths.speechLocale.value]);
 
   if (svg.error) {

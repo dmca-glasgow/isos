@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import merge from 'lodash.merge';
 import { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 import { parse } from 'yaml';
