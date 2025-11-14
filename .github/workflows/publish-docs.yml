@@ -22,7 +22,6 @@ jobs:
         id: check
         with:
           file-name: ./docs/package.json
-          static-checking: localIsNew
       - name: Version update detected
         if: steps.check.outputs.changed == 'true'
         run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'

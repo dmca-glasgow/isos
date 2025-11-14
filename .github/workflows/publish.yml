@@ -15,13 +15,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: main
       - name: Check version changes
         uses: EndBug/version-check@v2
         id: check
-        with:
-          static-checking: localIsNew
       - name: Version update detected
         if: steps.check.outputs.changed == 'true'
         run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
