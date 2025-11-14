@@ -1,18 +1,29 @@
+import { Fs } from './types';
+
+export const fs: Fs = {
+  readBinaryFile: readFile,
+  readTextFile,
+  writeTextFile,
+  createWatcher,
+};
+
 // mocks
 
-export async function readFile(_filePath: string): Promise<Uint8Array> {
+async function readFile(
+  _filePath: string,
+): Promise<Uint8Array<ArrayBuffer>> {
   return new Uint8Array();
 }
 
-export async function readTextFile(_filePath: string): Promise<string> {
+async function readTextFile(_filePath: string): Promise<string> {
   return '';
 }
 
-export async function writeTextFile(_filePath: string, _contents: string) {
+async function writeTextFile(_filePath: string, _contents: string) {
   //
 }
 
-// export async function watchImmediate(
+// async function watchImmediate(
 //   _filePath: string,
 //   _callback: (...args: any[]) => unknown,
 // ) {
@@ -20,13 +31,9 @@ export async function writeTextFile(_filePath: string, _contents: string) {
 //   return () => {};
 // }
 
-export function createWatcher() {
+function createWatcher() {
   return {
-    async watch(_files: string[], _onChange: () => unknown) {
-      //
-    },
-    destroy() {
-      //
-    },
+    watch: async () => {},
+    destroy: () => {},
   };
 }

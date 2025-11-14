@@ -13,11 +13,12 @@ import rehypeStringify from 'rehype-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-// Helpful utility for development and have external untracked
+// Helpful utility for development and has external untracked
 // dependencies on pdflatex and poppler (it's CLI pdftohtml)
 
-// PDF-to-HTML conversion by either mupdf (Ghostscript) or Poppler
-// which both have pros and cons
+// PDF-to-HTML conversion by either mupdf (Ghostscript) or Poppler.
+// Mainly due to the input PDF by pdflatex, the output  of both is
+// severely limited but in strange and different ways
 
 const JOB_NAME = 'test';
 const FIXTURE_PATH = resolve(import.meta.dirname, '../../fixtures');

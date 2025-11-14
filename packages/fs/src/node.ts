@@ -10,15 +10,15 @@ export const fs: Fs = {
   createWatcher,
 };
 
-export async function readTextFile(filePath: string): Promise<string> {
+async function readTextFile(filePath: string): Promise<string> {
   return readFile(filePath, 'utf-8');
 }
 
-export async function writeTextFile(filePath: string, contents: string) {
+async function writeTextFile(filePath: string, contents: string) {
   return writeFile(filePath, contents, 'utf-8');
 }
 
-// export async function watchImmediate(
+// async function watchImmediate(
 //   filePath: string,
 //   callback: (...args: any[]) => unknown,
 // ) {
@@ -35,7 +35,7 @@ export function createMockWatcher() {
 
 // deleted files aren't detected when added back, because the watcher
 // is closed when the file is removed, so watch the parent directory instead.
-export function createWatcher(_filePath: string, onChange: () => unknown) {
+function createWatcher(_filePath: string, onChange: () => unknown) {
   let watcher: Watcher | null = null;
 
   return {
@@ -71,7 +71,7 @@ export function createWatcher(_filePath: string, onChange: () => unknown) {
 // better for files referenced outside the filePath directory
 // TODO can probably combine both techniques.
 
-// export function createWatchers(filePath: string, onChange: () => unknown) {
+// function createWatchers(filePath: string, onChange: () => unknown) {
 //   let watchers: Watcher[] = []
 //   return {
 //     watch(files: string[]) {

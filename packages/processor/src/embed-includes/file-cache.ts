@@ -19,7 +19,7 @@ type Store = Record<string, File>;
 type Waiting = [string, ArrayBufferView][];
 
 export type FileCache = {
-  upsert: (filePath: string) => Promise<boolean>;
+  upsert: (filePath: string, content?: string) => Promise<boolean>;
   getData: (filePath: string) => ArrayBufferView | null;
   getContent: (filePath: string) => string | null;
   setContent: (filePath: string, content: string) => void;
@@ -36,26 +36,31 @@ export type FileCache = {
 export function createFileCache(fs: Fs): FileCache {
   const store: Record<string, File> = {};
 
-  async function getFile(fp: string) {
-    let data: ArrayBufferView | string | null = null;
+  async function getFile(fp: string, _content?: string) {
     let hash: string | null = null;
+    let data: File['data'] = null;
+    let content: File['content'] = _content || null;
     let error = null;
-    try {
-      data = await fs.readBinaryFile(fp);
-      if (data) {
-        hash = await getHash(data);
+
+    if (content === null) {
+      try {
+        data = await fs.readBinaryFile(fp);
+        if (data) {
+          hash = await getHash(data);
+        }
+      } catch (err: any) {
+        console.log(err);
+        // log.error(err?.message);
+        error = err?.message;
       }
-    } catch (err: any) {
-      console.log(err);
-      // log.error(err?.message);
-      error = err?.message;
     }
-    return { data, hash, error };
+
+    return { hash, data, content, error };
   }
 
   return {
-    async upsert(fp) {
-      const { data, hash, error } = await getFile(fp);
+    async upsert(fp, _content) {
+      const { hash, data, content, error } = await getFile(fp, _content);
       const type = getType(fp);
 
       if (!store[fp]) {
@@ -65,7 +70,7 @@ export function createFileCache(fs: Fs): FileCache {
           hash,
           type,
           data: type === 'text' ? null : data,
-          content: getContent(type, data),
+          content: content === null ? getContent(type, data) : content,
           error,
         };
         return true;

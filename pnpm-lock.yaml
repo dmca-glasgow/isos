@@ -108,6 +108,12 @@ importers:
 
   docs:
     dependencies:
+      '@isos/fs':
+        specifier: workspace:*
+        version: link:../packages/fs
+      '@isos/processor':
+        specifier: workspace:*
+        version: link:../packages/processor
       classnames:
         specifier: ^2.5.1
         version: 2.5.1

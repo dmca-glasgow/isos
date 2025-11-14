@@ -1,0 +1,36 @@
+{/* TODO: this more straightforward syntax isn't currently possible... and probably should be */}
+
+<CodeSnippet latex={String.raw`
+
+\documentclass{article}
+\begin{document}
+
+\section{Hello}
+
+Here's my paragraph in article.tex
+
+\input{other1.tex}
+
+Here's my second paragraph in article.tex
+
+\end{document}
+
+`} withImages={{
+  '/other1.tex': String.raw`
+
+\section{Other 1}
+
+A paragraph from other1.tex.
+
+Another paragraph from other1.tex.
+
+\input{other2.tex}
+
+`,
+  '/other2.tex': String.raw`
+
+\section{Other 2}
+
+A paragraph from other2.tex.
+
+`}} />

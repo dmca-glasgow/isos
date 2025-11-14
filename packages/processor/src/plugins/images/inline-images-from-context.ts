@@ -1,5 +1,5 @@
 import { Image, Root } from 'mdast';
-import { dirname, parse, resolve } from 'pathe';
+import { dirname, join, parse, resolve } from 'pathe';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../input-to-markdown/context';
@@ -61,5 +61,5 @@ export function inlineImagesFromContext(ctx: Context, options: Options) {
 
 function normaliseImagePath(imagePath: string) {
   const { dir, name, ext } = parse(imagePath);
-  return `${dir}/${name}${ext || '.pdf'}`;
+  return join(dir, `${name}${ext || '.pdf'}`);
 }

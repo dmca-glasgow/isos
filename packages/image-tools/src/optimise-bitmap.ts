@@ -19,10 +19,15 @@ export async function optimiseBitmap(
     //@ts-expect-error
     image.resize(opts);
   }
+
   //@ts-expect-error
   return image.getBase64(image.mime, { quality });
 
-  // without Jimp, works but for some reason the file size is 35x larger!
+  // bitmap to base64 without Jimp
+  // works but for unknown reasons the file size is 35x larger!
   // const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
   // node.properties.href = `data:${mime};base64,${base64}`;
+
+  // TODO: try window.createImageBitmap()
+  // https://developer.mozilla.org/en-US/docs/Web/API/Window/createImageBitmap
 }

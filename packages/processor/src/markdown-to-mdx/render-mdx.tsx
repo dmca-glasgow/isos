@@ -52,7 +52,7 @@ export function RenderMDX({
         const opts = createDefaultOptions(mdxState, ctx, options);
         setMDX(await renderFn(markdown, opts, onStatus));
         onStatus && log.info('rendering');
-        onError('');
+        // onError('');
       } catch (err: any) {
         onError(err?.message || '');
         // throw err;

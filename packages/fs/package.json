@@ -6,6 +6,7 @@
   "exports": {
     "./tauri": "./src/tauri.ts",
     "./node": "./src/node.ts",
+    "./browser": "./src/browser.ts",
     "./types": "./src/types.ts"
   },
   "dependencies": {

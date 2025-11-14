@@ -5,7 +5,7 @@ import stringify from 'rehype-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-import { optimiseBitmap } from '../optimise-bitmap';
+import { optimiseBitmap } from '../../optimise-bitmap';
 import { getPdfJs } from './pdfjs';
 
 // https://github.com/mozilla/pdf.js/releases/tag/v2.14.305

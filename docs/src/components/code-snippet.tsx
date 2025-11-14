@@ -2,14 +2,13 @@ import { styled } from '@linaria/react';
 import classNames from 'classnames';
 import { useEffect, useState } from 'preact/hooks';
 
-// import { Prism } from 'prism-react-renderer';
-
+import { fs } from '@isos/fs/browser';
 import {
   RenderMDX,
+  createFileCache,
   createInputToMarkdownOptions,
   createInputToMarkdownTestContext,
   createMdxState,
-  // embedIncludes,
   inputToMarkdown,
   markdownToArticle,
 } from '@isos/processor';
@@ -24,14 +23,6 @@ type Props = {
   withFiles?: Record<string, string>;
 };
 
-type Images = Record<
-  string,
-  {
-    error: boolean;
-    data: string;
-  }
->;
-
 const mdxState = createMdxState();
 
 export function CodeSnippet(props: Props) {
@@ -42,19 +33,20 @@ export function CodeSnippet(props: Props) {
   useEffect(() => {
     (async () => {
       const prepared = unindentStringAndTrim(latex);
-      const ctx = createInputToMarkdownTestContext('latex', prepared);
+      const fileCache = createFileCache(fs);
+
       if (props.withImages) {
-        ctx.base64Images = Object.entries(props.withImages).reduce(
-          (acc: Images, [k, v]) => {
-            acc[k] = {
-              error: false,
-              data: v,
-            };
-            return acc;
-          },
-          {},
-        );
+        for (const [fp, content] of Object.entries(props.withImages)) {
+          await fileCache.upsert(fp, content);
+        }
       }
+
+      const ctx = createInputToMarkdownTestContext(
+        'latex',
+        prepared,
+        fileCache,
+      );
+
       const options = createInputToMarkdownOptions(ctx);
       // await embedIncludes(ctx, options);
       setMarkdown(await inputToMarkdown(ctx.content, options));
@@ -94,10 +86,8 @@ export function CodeSnippet(props: Props) {
             markdown={markdown}
             mdxState={mdxState}
             renderFn={markdownToArticle}
-            onError={(err) => {
-              throw err;
-            }}
-            // onRendered={onRendered}
+            onError={console.log}
+            options={{ noFooter: true }}
           />
         </HTMLPreview>
       </Result>
