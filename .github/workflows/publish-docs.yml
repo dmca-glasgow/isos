@@ -2,10 +2,9 @@ name: 'publish-docs'
 
 on:
   workflow_run:
+    branches: [main]
     workflows: ['test']
     types: [completed]
-    branches:
-      - main
 
 jobs:
   docs-version-check:

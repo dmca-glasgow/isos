@@ -8,6 +8,7 @@ export default defineConfig({
   reporter: 'list',
 
   testMatch: '**/*.e2e.ts',
+  testIgnore: ['**/_old/**'],
 
   expect: {
     toHaveScreenshot: {
@@ -25,7 +26,16 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         channel: 'chromium',
       },
-      testIgnore: ['**/_old/**'],
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 });
