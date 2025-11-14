@@ -23,6 +23,7 @@ jobs:
         run: pnpm run test
 
   e2e-test:
+    needs: unit-test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -31,6 +32,8 @@ jobs:
       - uses: actions/checkout@v5
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install
       - name: Build runtime dependencies
         run: pnpm --filter @isos/runtime run build
       - name: Get installed Playwright version
