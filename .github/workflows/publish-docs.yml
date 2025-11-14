@@ -1,12 +1,14 @@
 name: 'publish-docs'
 
 on:
-  push:
+  workflow_run:
+    workflows: ['test']
+    types: [completed]
     branches:
       - main
 
 jobs:
-  version-check:
+  docs-version-check:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.check.outputs.version}}
@@ -26,6 +28,8 @@ jobs:
         run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
 
   publish-docs:
+    needs: docs-version-check
+    if: needs.docs-version-check.outputs.has-version-change == 'true'
     runs-on: ubuntu-latest
     permissions:
       pages: write
