@@ -32,7 +32,7 @@ jobs:
         uses: CumulusDS/get-yaml-paths-action@v1.0.1
         with:
           file: pnpm-lock.yaml
-          v: 'importers["."]'
+          v: 'importers."."'
       - name: Playwright version
         run: 'echo "playwright version: ${{ steps.playwright-version.outputs.v }}"'
       # - uses: actions/cache@v3
