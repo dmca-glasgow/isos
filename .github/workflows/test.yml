@@ -37,7 +37,7 @@ jobs:
       - name: Build runtime dependencies
         run: pnpm --filter @isos/runtime run build
       - name: Get installed Playwright version
-        id: playwright-version
+        id: playwright-v
         uses: CumulusDS/get-yaml-paths-action@v1.0.1
         with:
           file: pnpm-lock.yaml
@@ -46,7 +46,7 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.v }}
+          key: ${{ runner.os }}-${{ matrix.browser }}-playwright-${{ steps.playwright-v.outputs.v }}
       - run: npx playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - run: npx playwright install-deps
