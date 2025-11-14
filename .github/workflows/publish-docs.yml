@@ -43,6 +43,6 @@ jobs:
       - run: pnpm --filter @isos/docs run build -- --base /isos/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./packages/docs/dist
+          path: ./docs/dist
       - id: deployment
         uses: actions/deploy-pages@v4
