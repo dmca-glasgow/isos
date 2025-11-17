@@ -19,6 +19,8 @@ jobs:
           ref: main
       - id: check-for-version-change
         uses: ./.github/actions/version-check
+        with:
+          dir: docs
         env:
           GH_TOKEN: ${{ github.token }}
 

@@ -1,8 +1,9 @@
-import { setFailed, setOutput } from '@actions/core';
+import { getInput, setFailed, setOutput } from '@actions/core';
 import { exec } from '@actions/exec';
 import { context, getOctokit } from '@actions/github';
 import { mkdirP } from '@actions/io';
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
 const workingDir = 'workspace';
 
@@ -50,7 +51,9 @@ async function run() {
 }
 
 async function getVersion(): Promise<string> {
-  const filePath = `${workingDir}/package.json`;
+  const dir = getInput('dir') || '';
+  const filePath = join(workingDir, dir, 'package.json');
+  console.log('Checking file path:', filePath);
   const contents = await readFile(filePath, 'utf-8');
   const json = JSON.parse(contents);
   return json.version;
