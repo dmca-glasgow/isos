@@ -81,7 +81,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: '${{ tauriDir }} -> target'
+          workspaces: '${{ env.tauriDir }} -> target'
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
@@ -96,7 +96,7 @@ jobs:
           WINDOWS_SIGN_COMMAND: trusted-signing-cli -e ${{ secrets.AZURE_ACCOUNT_URI }} -a ${{ secrets.AZURE_CODE_SIGNING_NAME }} -c ${{ secrets.AZURE_CERT_PROFILE_NAME }} %1
         run: |
           cd "$GITHUB_WORKSPACE"
-          cat '${{ tauriDir }} /tauri.conf.json' | jq '.bundle .windows += {"signCommand": env.WINDOWS_SIGN_COMMAND}' > '${{ tauriDir }} /temp.json' && mv '${{ tauriDir }} /temp.json' '${{ tauriDir }} /tauri.conf.json'
+          cat '${{ env.tauriDir }}/tauri.conf.json' | jq '.bundle .windows += {"signCommand": env.WINDOWS_SIGN_COMMAND}' > '${{ env.tauriDir }}/temp.json' && mv '${{ env.tauriDir }}/temp.json' '${{ env.tauriDir }}/tauri.conf.json'
           cargo install trusted-signing-cli
 
       - name: install frontend dependencies
@@ -118,7 +118,7 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
         with:
-          projectPath: ${{ tauriDir }}
+          projectPath: ${{ env.tauriDir }}
           releaseId: ${{ needs.create-release.outputs.release-id }}
           args: ${{ matrix.args }}
 
