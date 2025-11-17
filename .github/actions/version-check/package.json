@@ -1,0 +1,21 @@
+{
+  "name": "version-check",
+  "version": "0.0.2",
+  "description": "A GitHub action that checks if the version in package.json has changed",
+  "main": "lib/index.js",
+  "packageManager": "pnpm@10.22.0",
+  "scripts": {
+    "build": "ncc build src/index.ts --minify --out lib"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@vercel/ncc": "^0.38.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^6.0.0",
+    "@actions/io": "^1.1.3"
+  }
+}

@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.check.outputs.version}}
-      has-version-change: ${{ steps.check.outputs.changed }}
+      has-version-change: ${{ steps.check.outputs.has-version-change }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Check version changes
-        uses: EndBug/version-check@v2
-        id: check
-      - name: Version update detected
-        if: steps.check.outputs.changed == 'true'
-        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+        with:
+          ref: main
+      - id: check-for-version-change
+        uses: ./.github/actions/version-check
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   create-release:
     needs: version-check

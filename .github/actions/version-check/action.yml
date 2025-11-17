@@ -1,0 +1,13 @@
+name: 'Version check'
+branding:
+  icon: package
+  color: green
+description: 'Checks if the version in package.json has changed'
+inputs:
+  token:
+    description: 'GitHub token'
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'lib/index.js'
