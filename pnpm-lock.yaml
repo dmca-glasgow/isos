@@ -493,6 +493,9 @@ importers:
       '@linaria/react':
         specifier: ^6.3.0
         version: 6.3.0(react@19.2.0)
+      '@preact/preset-vite':
+        specifier: ^2.10.2
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.27.2)(vite@6.4.1(@types/node@24.9.1)(jiti@2.6.1)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))
       '@rollup/plugin-alias':
         specifier: ^5.1.1
         version: 5.1.1(rollup@4.52.5)
@@ -511,6 +514,9 @@ importers:
       vite-plugin-prismjs:
         specifier: ^0.0.11
         version: 0.0.11(prismjs@1.30.0)
+      vite-plugin-svgr:
+        specifier: ^4.5.0
+        version: 4.5.0(rollup@4.52.5)(typescript@5.9.3)(vite@6.4.1(@types/node@24.9.1)(jiti@2.6.1)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))
 
   packages/tauri:
     dependencies:
