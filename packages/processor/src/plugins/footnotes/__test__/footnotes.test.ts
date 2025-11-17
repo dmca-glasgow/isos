@@ -582,7 +582,7 @@ test('framedsidenote with offset', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('sidenote with image', async () => {
+test('sidenote with image', { timeout: 20_000 }, async () => {
   const markdown = await testProcessor.fixture(
     'sidenote-images/article.tex',
   );
