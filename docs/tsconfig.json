@@ -21,7 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["packages/**/src", "docs", "index.d.ts"],
-  "exclude": ["/node_modules/", "unified-latex-forks/**"],
+  "include": ["./src"],
+  "exclude": ["/node_modules/"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

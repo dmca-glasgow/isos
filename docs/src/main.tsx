@@ -1,6 +1,6 @@
 import './index.scss';
 
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash.kebabcase';
 import { JSX, render } from 'preact';
 
 import { CodeSnippet } from './components/code-snippet.tsx';

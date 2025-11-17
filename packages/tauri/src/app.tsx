@@ -6,7 +6,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { createRuntimeHtml } from '@isos/export';
 import { fs } from '@isos/fs/tauri';
 
-import { Runtime } from '../packages/runtime/src';
+import { Runtime } from '../../runtime/src';
 import { Header } from './header';
 import { useLocalStorage } from './use-local-storage';
 

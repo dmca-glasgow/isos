@@ -13,6 +13,8 @@
     "vite-node": "^3.0.9"
   },
   "dependencies": {
+    "@isos/fs": "workspace:*",
+    "@isos/processor": "workspace:*",
     "@isos/test-utils": "workspace:*"
   }
 }

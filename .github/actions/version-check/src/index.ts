@@ -22,11 +22,15 @@ async function run() {
 
     const url = `https://github.com/${owner}/${repo}.git`;
 
+    const dir = getInput('dir') || '';
+    const filePath = join(workingDir, dir, 'package.json');
+    console.log('Checking file path:', filePath);
+
     await exec('git', ['clone', url, '.'], execOptions);
-    const newVersion = await getVersion();
+    const newVersion = await getVersion(filePath);
 
     await exec('git', ['checkout', 'HEAD^'], execOptions);
-    const oldVersion = await getVersion();
+    const oldVersion = await getVersion(filePath);
 
     console.log(`Old version: ${oldVersion}`);
     console.log(`New version: ${newVersion}`);
@@ -50,13 +54,9 @@ async function run() {
   }
 }
 
-async function getVersion(): Promise<string> {
-  const dir = getInput('dir') || '';
-  const filePath = join(workingDir, dir, 'package.json');
-  console.log('Checking file path:', filePath);
+async function getVersion(filePath: string): Promise<string> {
   const contents = await readFile(filePath, 'utf-8');
-  const json = JSON.parse(contents);
-  return json.version;
+  return JSON.parse(contents).version;
 }
 
 async function getPreviousReleaseVersions() {

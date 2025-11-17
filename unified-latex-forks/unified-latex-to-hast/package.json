@@ -10,8 +10,8 @@
   ],
   "dependencies": {
     "@isos/unified-latex-util-html-like": "workspace:*",
-    "@isos/unified-latex-util-print-raw": "workspace:*",
     "@isos/unified-latex-util-parse": "workspace:*",
+    "@isos/unified-latex-util-print-raw": "workspace:*",
     "@unified-latex/unified-latex": "^1.7.0",
     "@unified-latex/unified-latex-builder": "^1.7.0",
     "@unified-latex/unified-latex-ctan": "^1.7.0",
@@ -30,5 +30,8 @@
     "rehype-raw": "^7.0.0",
     "rehype-stringify": "^10.0.1",
     "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/hast": "^3.0.4"
   }
 }

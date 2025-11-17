@@ -1,6 +1,6 @@
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
-import { startCase } from 'lodash';
+import startCase from 'lodash.startcase';
 
 type Props = {
   name: string;

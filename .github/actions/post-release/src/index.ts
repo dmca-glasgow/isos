@@ -1,10 +1,9 @@
 import { setFailed } from '@actions/core';
-import { getOctokit } from '@actions/github';
+import { context, getOctokit } from '@actions/github';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const owner = 'dmca-glasgow';
-const repo = 'isos';
+const { owner, repo } = context.repo;
 const gistId = '12a09637fb047aa519cc2ea5fd662a8c';
 const gistFileName = 'isos-update.json';
 
@@ -170,7 +169,7 @@ async function run() {
 }
 
 async function getVersion(): Promise<string> {
-  const filePath = `src-tauri/tauri.conf.json`;
+  const filePath = `package.json`;
   const contents = await readFile(filePath, 'utf-8');
   const json = JSON.parse(contents);
   return json.version;

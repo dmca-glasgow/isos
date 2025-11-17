@@ -12,6 +12,7 @@
     "@isos/fs": "workspace:*",
     "@isos/processor": "workspace:*",
     "classnames": "^2.5.1",
+    "lodash.kebabcase": "^4.1.1",
     "preact": "^10.25.4",
     "react-syntax-highlighter": "^15.6.1"
   },
@@ -23,7 +24,15 @@
     "@linaria/react": "^6.3.0",
     "@mdx-js/rollup": "^3.0.1",
     "@preact/preset-vite": "^2.10.1",
-    "@wyw-in-js/vite": "^0.6.0",
-    "remark-gfm": "^4.0.0"
+    "@types/lodash.kebabcase": "^4.1.9",
+    "@types/mdx": "^2.0.13",
+    "@wyw-in-js/vite": "^0.7.0",
+    "remark-gfm": "^4.0.0",
+    "sass-embedded": "^1.93.2",
+    "typescript": "~5.9.3",
+    "vite": "^6.0.3",
+    "vite-plugin-prismjs": "^0.0.11",
+    "vite-plugin-svgr": "^4.5.0",
+    "vitest": "^4.0.2"
   }
 }

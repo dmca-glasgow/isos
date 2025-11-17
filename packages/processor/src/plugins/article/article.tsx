@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { HTMLAttributes } from 'preact/compat';
 import { useEffect, useRef } from 'preact/hooks';
 
