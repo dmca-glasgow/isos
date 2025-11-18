@@ -31,21 +31,15 @@ run();
 
 async function run() {
   try {
-    console.log('hey!');
     const token = String(process.env.ACCESS_TOKEN);
-    console.log(1);
     const releaseId = Number(process.env.RELEASE_ID);
-    console.log(2);
 
     const octokit = getOctokit(token);
-    console.log(3);
     const version = await getVersion();
-    console.log(4);
 
     const releaseAssets = await octokit.request(
       `GET /repos/${owner}/${repo}/releases/${releaseId}/assets`,
     );
-    console.log(5);
     const assets = releaseAssets.data as Asset[];
 
     // console.log(assets.map((o) => o.name));
@@ -75,20 +69,30 @@ async function run() {
 
     console.log('renaming release assets...');
     const macArmInstaller = getAsset(assets, 'aarch64.dmg');
+    console.log(1);
     const macArmUpdater = getAsset(assets, 'aarch64.app.tar.gz');
+    console.log(2);
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
+    console.log(3);
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
+    console.log(4);
     const windowsInstaller = getAsset(assets, 'x64-setup.exe');
+    console.log(5);
     // const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
     const linuxRpmInstaller = getAsset(assets, 'x86_64.rpm');
+    console.log(6);
     const linuxDebInstaller = getAsset(assets, 'amd64.deb');
+    console.log(7);
 
     const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
     const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
 
     const updater = await getAssetTextContent(token, latestJsonAsset);
+    console.log(8);
     renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
+    console.log(9);
     renameUpdaterAsset(updater, 'darwin-x86_64', macIntelUpdaterName);
+    console.log(10);
 
     const newAssets = [
       {
@@ -131,11 +135,11 @@ async function run() {
       },
     ];
 
-    // console.log(
-    //   newAssets
-    //     .sort((a, b) => a.name.localeCompare(b.name))
-    //     .map((o) => o.label || o.name),
-    // );
+    console.log(
+      newAssets
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((o) => o.label || o.name),
+    );
 
     await Promise.all(
       newAssets.map(({ id, ...toUpdate }) =>
