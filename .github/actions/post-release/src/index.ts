@@ -46,6 +46,7 @@ async function run() {
 
     console.log('getting latest.json contents...');
     const latestJsonAsset = getAsset(assets, 'latest.json');
+    const updater = await getAssetTextContent(token, latestJsonAsset);
 
     console.log('removing latest.json asset...');
     await octokit.rest.repos.deleteReleaseAsset({
@@ -87,7 +88,6 @@ async function run() {
     const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
     const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
 
-    const updater = await getAssetTextContent(token, latestJsonAsset);
     console.log(8);
     renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
     console.log(9);
@@ -200,7 +200,7 @@ async function getAssetTextContent(token: string, asset: Asset) {
   console.log('asset url:', url);
   const res = await octokit.request(url, {
     headers: {
-      Accept: 'application/vnd.github+json',
+      Accept: 'application/octet-stream',
     },
   });
   console.log('asset response:', res);
