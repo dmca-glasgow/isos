@@ -123,7 +123,7 @@ jobs:
         with:
           projectPath: ${{ env.tauriDir }}
           releaseId: ${{ needs.create-release.outputs.release-id }}
-          args: ${{ matrix.args }} --debug
+          args: ${{ matrix.args }}
 
   post-release:
     needs: [create-release, build-tauri]
