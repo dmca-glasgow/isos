@@ -7,6 +7,9 @@ inputs:
   token:
     description: 'GitHub token'
     required: true
+  dir:
+    description: 'Directory to find package.json in. Defaults to .'
+    required: false
 
 runs:
   using: 'node20'

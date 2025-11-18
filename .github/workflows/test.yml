@@ -54,8 +54,8 @@ jobs:
       - name: Run Playwright tests
         run: PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-report/${{ github.sha }}/${{ matrix.browser }} npx playwright test --project=${{ matrix.browser }}
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: ${{ failure() }}
         with:
           name: playwright-report-${{ github.sha }}-${{ matrix.browser }}
           path: ./playwright-report/${{ github.sha }}/${{ matrix.browser }}
-          retention-days: 30
+          retention-days: 14

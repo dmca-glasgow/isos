@@ -42,7 +42,13 @@ async function run() {
     );
     const assets = releaseAssets.data as Asset[];
 
-    console.log('tauri generated release assets:', assets);
+    console.log(
+      'tauri generated release assets:',
+      assets.map((o) => ({
+        name: o.name,
+        id: o.id,
+      })),
+    );
 
     console.log('getting latest.json contents...');
     const latestJsonAsset = getAsset(assets, 'latest.json');
@@ -70,29 +76,19 @@ async function run() {
 
     console.log('renaming release assets...');
     const macArmInstaller = getAsset(assets, 'aarch64.dmg');
-    console.log(1);
     const macArmUpdater = getAsset(assets, 'aarch64.app.tar.gz');
-    console.log(2);
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
-    console.log(3);
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
-    console.log(4);
     const windowsInstaller = getAsset(assets, 'x64-setup.exe');
-    console.log(5);
     // const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
     const linuxRpmInstaller = getAsset(assets, 'x86_64.rpm');
-    console.log(6);
     const linuxDebInstaller = getAsset(assets, 'amd64.deb');
-    console.log(7);
 
     const macArmUpdaterName = `isos_updater_mac_${version}_aarch64.app.tar.gz`;
     const macIntelUpdaterName = `isos_updater_mac_${version}_x64.app.tar.gz`;
 
-    console.log(8);
     renameUpdaterAsset(updater, 'darwin-aarch64', macArmUpdaterName);
-    console.log(9);
     renameUpdaterAsset(updater, 'darwin-x86_64', macIntelUpdaterName);
-    console.log(10);
 
     const newAssets = [
       {
@@ -139,7 +135,11 @@ async function run() {
       'new assets:',
       newAssets
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map((o) => o.label || o.name),
+        .map((o) => ({
+          label: o.label,
+          name: o.name,
+          id: o.id,
+        })),
     );
 
     await Promise.all(
