@@ -53,7 +53,7 @@ jobs:
       #   if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Run Playwright tests
         run: PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-report/${{ matrix.browser }} npx playwright test --project=${{ matrix.browser }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
