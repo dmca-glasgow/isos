@@ -42,10 +42,7 @@ async function run() {
     );
     const assets = releaseAssets.data as Asset[];
 
-    console.log(
-      'release assets:',
-      assets.map((o) => o.name),
-    );
+    console.log('tauri generated release assets:', assets);
 
     console.log('getting latest.json contents...');
     const latestJsonAsset = getAsset(assets, 'latest.json');
