@@ -157,6 +157,15 @@ async function run() {
       ),
     );
 
+    console.log('publishing new latest.json...');
+    await octokit.rest.repos.uploadReleaseAsset({
+      owner,
+      repo,
+      release_id: releaseId,
+      name: 'latest.json',
+      data: JSON.stringify(updater),
+    });
+
     console.log('publishing release...');
     await octokit.rest.repos.updateRelease({
       owner,
@@ -165,22 +174,22 @@ async function run() {
       draft: false,
     });
 
-    console.log('uploading latest.json as gist...');
-    const release = await octokit.request(
-      `GET /repos/${owner}/${repo}/releases/${releaseId}`,
-    );
-    updater.notes = String(release.data.body);
-    await octokit.rest.gists.update({
-      gist_id: gistId,
-      files: {
-        [gistFileName]: {
-          content: JSON.stringify(updater, null, 2),
-        },
-      },
-    });
-    console.log(
-      `uploaded: https://gist.github.com/dmca-glasgow/${gistId}#file-${gistFileName}`,
-    );
+    // console.log('uploading latest.json as gist...');
+    // const release = await octokit.request(
+    //   `GET /repos/${owner}/${repo}/releases/${releaseId}`,
+    // );
+    // updater.notes = String(release.data.body);
+    // await octokit.rest.gists.update({
+    //   gist_id: gistId,
+    //   files: {
+    //     [gistFileName]: {
+    //       content: JSON.stringify(updater, null, 2),
+    //     },
+    //   },
+    // });
+    // console.log(
+    //   `uploaded: https://gist.github.com/dmca-glasgow/${gistId}#file-${gistFileName}`,
+    // );
   } catch (error) {
     setFailed(error as Error);
   }

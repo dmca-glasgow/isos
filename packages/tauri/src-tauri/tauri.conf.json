@@ -40,7 +40,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhGMzRCOUY4NDdGQURGNjkKUldScDMvcEgrTGswaitJY3VpcCtDM2l4eFk3dFFETGxoLzBNWFlzam8vdGhQdm5tV1JqUUhRQ1QK",
       "endpoints": [
-        "https://gist.githubusercontent.com/dmca-glasgow/12a09637fb047aa519cc2ea5fd662a8c/raw"
+        "https://github.com/dmca-glasgow/isos/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"
