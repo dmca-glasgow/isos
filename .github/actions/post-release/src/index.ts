@@ -31,15 +31,21 @@ run();
 
 async function run() {
   try {
+    console.log('hey!');
     const token = String(process.env.ACCESS_TOKEN);
+    console.log(1);
     const releaseId = Number(process.env.RELEASE_ID);
+    console.log(2);
 
     const octokit = getOctokit(token);
+    console.log(3);
     const version = await getVersion();
+    console.log(4);
 
     const releaseAssets = await octokit.request(
       `GET /repos/${owner}/${repo}/releases/${releaseId}/assets`,
     );
+    console.log(5);
     const assets = releaseAssets.data as Asset[];
 
     // console.log(assets.map((o) => o.name));
