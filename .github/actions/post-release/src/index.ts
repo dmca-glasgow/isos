@@ -42,7 +42,10 @@ async function run() {
     );
     const assets = releaseAssets.data as Asset[];
 
-    // console.log(assets.map((o) => o.name));
+    console.log(
+      'release assets:',
+      assets.map((o) => o.name),
+    );
 
     console.log('getting latest.json contents...');
     const latestJsonAsset = getAsset(assets, 'latest.json');
@@ -136,6 +139,7 @@ async function run() {
     ];
 
     console.log(
+      'new assets:',
       newAssets
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((o) => o.label || o.name),
@@ -195,15 +199,16 @@ function getAsset(assets: Asset[], endsWith: string) {
 
 async function getAssetTextContent(token: string, asset: Asset) {
   const octokit = getOctokit(token);
-  const res = await octokit.request(
-    `GET /repos/${owner}/${repo}/releases/assets/${asset.id}`,
-    {
-      headers: {
-        Accept: 'application/octet-stream',
-      },
+  const url = `GET /repos/${owner}/${repo}/releases/assets/${asset.id}`;
+  console.log('asset url:', url);
+  const res = await octokit.request(url, {
+    headers: {
+      Accept: 'application/vnd.github+json',
     },
-  );
+  });
+  console.log('asset response:', res);
   const contents = new TextDecoder('utf-8').decode(res.data);
+  console.log('asset contents:', contents);
   return JSON.parse(contents) as VersionContent;
 }
 
