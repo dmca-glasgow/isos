@@ -1,14 +1,10 @@
 name: 'publish'
 
-# on:
-#   push:
-#     branches: [main]
-
-# on:
-#   workflow_run:
-#     branches: [main]
-#     workflows: ['test']
-#     types: [completed]
+on:
+  workflow_run:
+    branches: [main]
+    workflows: ['test']
+    types: [completed]
 
 env:
   tauriDir: ./packages/tauri/src-tauri
