@@ -13,17 +13,15 @@ type Asset = {
   browser_download_url: string;
 };
 
-type Platform = {
-  signature: string;
-  url: string;
-};
-
 type VersionContent = {
   version: string;
   notes: string;
   pub_date: string;
   platforms: {
-    [key: string]: Platform;
+    [key: string]: {
+      signature: string;
+      url: string;
+    };
   };
 };
 
@@ -79,8 +77,9 @@ async function run() {
     const macArmUpdater = getAsset(assets, 'aarch64.app.tar.gz');
     const macIntelInstaller = getAsset(assets, 'x64.dmg');
     const macIntelUpdater = getAsset(assets, 'x64.app.tar.gz');
-    const windowsInstaller = getAsset(assets, 'x64-setup.exe');
-    // const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
+    const windowsExeInstaller = getAsset(assets, 'x64-setup.exe');
+    const windowsMsiInstaller = getAsset(assets, '.msi');
+    const linuxAppImageInstaller = getAsset(assets, 'amd64.AppImage');
     const linuxRpmInstaller = getAsset(assets, 'x86_64.rpm');
     const linuxDebInstaller = getAsset(assets, 'amd64.deb');
 
@@ -110,15 +109,20 @@ async function run() {
         name: macIntelUpdaterName,
       },
       {
-        id: windowsInstaller.id,
+        id: windowsExeInstaller.id,
         name: `isos_installer_win_${version}_x64-setup.exe`,
-        label: `ISOS installer for Windows`,
+        label: `ISOS installer for Windows (exe)`,
       },
-      // {
-      //   id: linuxAppImageInstaller.id,
-      //   name: `isos_installer_nix_${version}_amd64.AppImage`,
-      //   label: `ISOS installer for Linux (AppImage)`,
-      // },
+      {
+        id: windowsMsiInstaller.id,
+        name: `isos_installer_win_${version}_en-US.msi`,
+        label: `ISOS installer for Windows (msi)`,
+      },
+      {
+        id: linuxAppImageInstaller.id,
+        name: `isos_installer_nix_${version}_amd64.AppImage`,
+        label: `ISOS installer for Linux (AppImage)`,
+      },
       {
         id: linuxRpmInstaller.id,
         name: `isos_installer_nix_${version}_x86_64.rpm`,
@@ -174,6 +178,9 @@ async function run() {
         },
       },
     });
+    console.log(
+      `uploaded: https://gist.github.com/dmca-glasgow/${gistId}#file-${gistFileName}`,
+    );
   } catch (error) {
     setFailed(error as Error);
   }
@@ -197,15 +204,12 @@ function getAsset(assets: Asset[], endsWith: string) {
 async function getAssetTextContent(token: string, asset: Asset) {
   const octokit = getOctokit(token);
   const url = `GET /repos/${owner}/${repo}/releases/assets/${asset.id}`;
-  console.log('asset url:', url);
   const res = await octokit.request(url, {
     headers: {
       Accept: 'application/octet-stream',
     },
   });
-  console.log('asset response:', res);
   const contents = new TextDecoder('utf-8').decode(res.data);
-  console.log('asset contents:', contents);
   return JSON.parse(contents) as VersionContent;
 }
 
