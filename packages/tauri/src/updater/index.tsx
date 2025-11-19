@@ -42,7 +42,7 @@ function Window({ update }: Props) {
 
       let downloaded = 0;
       let contentLength: number | null = null;
-      // alternatively we could also call update.download() and update.install() separately
+
       update.downloadAndInstall((event) => {
         switch (event.event) {
           case 'Started':
