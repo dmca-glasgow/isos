@@ -15,6 +15,7 @@ import './styles.scss';
 import { createProcessor } from '@isos/processor/input-to-markdown';
 
 import { Log } from './log';
+import { Updater } from './updater';
 import { WarningLineHighlight } from './warnings/warn-line-highlight';
 
 export function App() {
@@ -103,6 +104,7 @@ export function App() {
         />
       )}
       <WarningLineHighlight loading={loading} />
+      <Updater />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { LogToggle } from './log-toggle';
 import { OpenFileButton } from './open-file-button';
 import { OverflowMiddle } from './overflow-middle';
+import { RefreshButton } from './refresh-button';
 import { SaveFileButton } from './save-file-button';
 import { Status } from './status';
 import { WarningsCount } from './warnings-count';
@@ -37,6 +38,7 @@ export function Header({
           </span>
           <WarningsCount loading={loading} />
           <LogToggle />
+          <RefreshButton />
           <SaveFileButton filePath={filePath} onSave={handleExportFile} />
         </>
       )}

@@ -54,6 +54,52 @@ html#editor {
       }
     }
 
+    & > #updater {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #333d;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      &.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      #updater-window {
+        width: 80%;
+        max-width: 30rem;
+        background: #000;
+        color: white;
+        padding: 1.5rem 2rem 2rem;
+        border-radius: 1rem;
+      }
+
+      h3 {
+        margin: 0 0 1.3rem 0;
+      }
+
+      #updater-progress {
+        box-shadow: 0 0 0 2px #fffc;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        & > div {
+          height: 1rem;
+          background: #dbd6;
+          // width: 30% !important;
+        }
+      }
+    }
+
     .log {
       position: fixed;
       top: $headerHeight;
