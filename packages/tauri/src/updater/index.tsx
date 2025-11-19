@@ -44,7 +44,7 @@ function Window({ update }: Props) {
       let downloaded = 0;
       let contentLength: number | null = null;
 
-      update.downloadAndInstall((event) => {
+      await update.downloadAndInstall((event) => {
         switch (event.event) {
           case 'Started':
             if (typeof event.data.contentLength === 'number') {
@@ -64,10 +64,12 @@ function Window({ update }: Props) {
             }
             break;
           case 'Finished':
+            setProgress(100);
             console.log('download finished');
             break;
         }
       });
+
       console.log('update installed');
       await relaunch();
     })();
@@ -83,7 +85,6 @@ function Window({ update }: Props) {
         Updating: {update?.currentVersion || '1.0.0'} →{' '}
         {update?.version || '2.0.0'}
       </h3>
-      <p></p>
       <div id="updater-progress">
         <div style={{ width: `${progress}%` }} />
       </div>
