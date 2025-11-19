@@ -7,7 +7,7 @@ import { rootEl } from './constants';
 
 const update = await check();
 
-console.log({ update });
+console.log('has update:', update);
 
 if (update) {
   console.log(
