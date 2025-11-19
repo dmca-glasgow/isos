@@ -1,4 +1,4 @@
-import { getVersion } from '@tauri-apps/api/app';
+// import { getVersion } from '@tauri-apps/api/app';
 import { relaunch } from '@tauri-apps/plugin-process';
 import { Update, check } from '@tauri-apps/plugin-updater';
 import classNames from 'classnames';
@@ -30,12 +30,13 @@ type Props = {
 function Window({ update }: Props) {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
+    if (update === null) {
+      return;
+    }
+
     (async () => {
-      if (update === null) {
-        return;
-      }
-      const appVersion = await getVersion();
-      console.log({ appVersion });
+      // const appVersion = await getVersion();
+      // console.log({ appVersion });
 
       const { currentVersion, version } = update;
       console.log({ currentVersion, version });
@@ -70,7 +71,7 @@ function Window({ update }: Props) {
       console.log('update installed');
       await relaunch();
     })();
-  }, []);
+  }, [update]);
 
   if (update === null) {
     return null;
