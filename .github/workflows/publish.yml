@@ -121,8 +121,9 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
         with:
-          projectPath: ${{ env.tauriDir }}
           releaseId: ${{ needs.create-release.outputs.release-id }}
+          # releaseAssetNamePattern: '[name]-[platform]-[arch][ext]'
+          projectPath: ${{ env.tauriDir }}
           args: ${{ matrix.args }}
 
   post-release:
