@@ -122,7 +122,7 @@ jobs:
           AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
         with:
           releaseId: ${{ needs.create-release.outputs.release-id }}
-          # releaseAssetNamePattern: '[name]-[platform]-[arch][ext]'
+          releaseAssetNamePattern: '[name]-[platform]-[arch][ext]'
           projectPath: ${{ env.tauriDir }}
           args: ${{ matrix.args }}
 
