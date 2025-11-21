@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: lts/*
       - run: pnpm install
-      - run: pnpm --filter @isos/docs run build -- --base /isos/
+      - run: pnpm --filter @isos/docs run build --base /isos/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs/dist
