@@ -57,5 +57,5 @@ export function Downloads() {
 }
 
 function createHref(fileName: string, version: string) {
-  return `https://github.com/dmca-glasgow/isos/releases/download/v${version}/${fileName}`;
+  return `https://github.com/isos-tools/isos/releases/download/v${version}/${fileName}`;
 }

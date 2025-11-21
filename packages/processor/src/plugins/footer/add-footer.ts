@@ -17,7 +17,7 @@ export function addFooter() {
           type: 'element',
           tagName: 'a',
           properties: {
-            href: 'https://github.com/dmca-glasgow/isos',
+            href: 'https://github.com/isos-tools/isos',
             target: '_blank',
           },
           children: [

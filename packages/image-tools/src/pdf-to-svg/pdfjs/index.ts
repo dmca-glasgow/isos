@@ -16,7 +16,7 @@ import { getPdfJs } from './pdfjs';
 // good reasons I haven't come across yet).
 
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1893645
-// https://github.com/dmca-glasgow/isos/security/dependabot/95
+// https://github.com/isos-tools/isos/security/dependabot/95
 // This version of pdfjs has a known vulnerability.
 // I have set the "isEvalSupported" option to false as
 // advised by dependabot.

@@ -14,6 +14,7 @@ import './styles.scss';
 
 import { createProcessor } from '@isos/processor/input-to-markdown';
 
+import { Intro } from './intro';
 import { Log } from './log';
 import { Updater } from './updater';
 import { WarningLineHighlight } from './warnings/warn-line-highlight';
@@ -95,7 +96,9 @@ export function App() {
         handleExportFile={handleExportFile}
       />
       <Log />
-      {markdown !== '' && (
+      {markdown === '' ? (
+        <Intro />
+      ) : (
         <Runtime
           markdown={markdown}
           hide={loading}

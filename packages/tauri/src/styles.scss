@@ -104,6 +104,28 @@ html#editor {
       }
     }
 
+    #intro {
+      position: relative;
+      margin: calc($headerHeight + 1rem) 7rem;
+      #intro-arrow {
+        position: absolute;
+        top: 0;
+        width: 2.2rem;
+        height: 2rem;
+        margin-left: -3.5rem;
+        fill: white;
+      }
+      #intro-text {
+        color: #fff;
+        h3 {
+          padding-top: 1.2rem;
+        }
+        p {
+          color: #fff9;
+        }
+      }
+    }
+
     .log {
       position: fixed;
       top: $headerHeight;
