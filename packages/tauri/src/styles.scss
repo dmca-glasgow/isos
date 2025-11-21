@@ -98,6 +98,10 @@ html#editor {
           // width: 30% !important;
         }
       }
+
+      #updater-error {
+        color: red;
+      }
     }
 
     .log {
@@ -228,7 +232,7 @@ html#editor {
   }
 
   .log {
-    display:flex;
+    display: flex;
     flex-direction: column;
     background: black;
     color: white;
@@ -242,9 +246,9 @@ html#editor {
 
     .scroll {
       overflow: scroll;
-      display:flex;
+      display: flex;
       flex: 1;
-      flex-direction:column-reverse;
+      flex-direction: column-reverse;
     }
 
     ul {
@@ -341,7 +345,5 @@ html#editor {
     .col-yellowBright {
       color: #d3a563;
     }
-
   }
-
 }

@@ -2,7 +2,7 @@
   "name": "isos",
   "private": true,
   "type": "module",
-  "version": "0.0.110",
+  "version": "0.0.111",
   "packageManager": "pnpm@10.22.0",
   "scripts": {
     "check-types": "tsc",

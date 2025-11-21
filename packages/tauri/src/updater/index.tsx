@@ -29,6 +29,8 @@ type Props = {
 
 function Window({ update }: Props) {
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState('');
+
   useEffect(() => {
     if (update === null) {
       return;
@@ -88,6 +90,7 @@ function Window({ update }: Props) {
       <div id="updater-progress">
         <div style={{ width: `${progress}%` }} />
       </div>
+      {error !== '' && <div id="updater-error">{error}</div>}
     </div>
   );
 }
